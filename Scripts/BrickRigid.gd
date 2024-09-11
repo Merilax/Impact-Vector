@@ -31,6 +31,11 @@ func die():
 		score_comp.emit_score()
 	brick_destroyed.emit()
 
+	if pickup_comp:
+		var pickup:Area2D = pickup_comp.pickup.instantiate()
+		add_sibling(pickup)
+		pickup.global_position = self.global_position
+
 	if destroy_sound_comp and hit_sound_comp:
 		hit_sound_comp.stop()
 		destroy_sound_comp.play()

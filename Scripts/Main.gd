@@ -36,11 +36,16 @@ func _ready():
 		if brick.has_signal('brick_destroyed'):
 			brick.brick_destroyed.connect(_on_brick_destroyed.bind())
 		if brick.is_in_group('Destructible'):
-			var pickup_comp = PickupComp.instantiate()
-			pickup_comp.pickup = PickupSpeed
-			brick.add_child(pickup_comp)
-			brick.pickup_comp = pickup_comp
 			brick_count += 1
+			if randi() % 5 == 0:
+				var pickup_comp:PickupComponent = PickupComp.instantiate()
+				brick.add_child(pickup_comp)
+				brick.pickup_comp = pickup_comp
+				brick.pickup_comp.sprite = brick.get_node("Sprite2D")
+				if randi() % 2 == 1:
+					pickup_comp.pickup = PickupSpeed
+				else:
+					pickup_comp.pickup = PickupSlow
 
 	get_tree().node_added.connect(_on_child_entered_tree.bind())
 	spawn_paddle()
@@ -127,6 +132,7 @@ func _on_brick_destroyed():
 
 func game_over():
 	can_spawn_balls = false
+	get_tree().quit()
 	pass # TODO: Game over
 
 func win():
@@ -150,14 +156,13 @@ func _on_child_entered_tree(node:Node):
 			change_speed.connect(node.set_speed.bind())
 
 	if node.is_in_group('PickUp'):
-		print('yeah')
 		node.trigger_pickup.connect(process_pickup.bind())
 
 func process_pickup(type:String):
 	match type.to_lower():
 		'speed':
-			speed_mult = clampf(speed_mult + 0.2, 0.5, 2)
+			speed_mult = clampf(speed_mult + 0.1, 0.7, 1.5)
 			change_speed.emit(speed_mult)
 		'slow':
-			speed_mult = clampf(speed_mult - 0.2, 0.5, 2)
+			speed_mult = clampf(speed_mult - 0.1, 0.7, 1.5)
 			change_speed.emit(speed_mult)
