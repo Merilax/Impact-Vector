@@ -1,0 +1,188 @@
+[gd_scene load_steps=13 format=3 uid="uid://la6hglf0tura"]
+
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_vf5nn"]
+[ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="2_kcxot"]
+[ext_resource type="Script" path="res://Scripts/Wall.gd" id="3_decgu"]
+[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="3_ulxu5"]
+[ext_resource type="AudioStream" uid="uid://bj2j6veyojd40" path="res://Assets/Audio/SFX/bfh1_rock_hit_01.ogg" id="4_eo5fe"]
+[ext_resource type="PackedScene" uid="uid://curw1ybc7eeef" path="res://Scenes/BrickStatic.tscn" id="4_ojmo1"]
+[ext_resource type="PackedScene" uid="uid://dtkn1xk6stg0v" path="res://Scenes/BrickRigid.tscn" id="5_enxd5"]
+[ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
+[ext_resource type="Script" path="res://Scripts/UI/LabelPercentMult.gd" id="10_0egqj"]
+[ext_resource type="Script" path="res://Scripts/UI/LabelCounter.gd" id="10_ers3y"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hr764"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
+size = Vector2(1702.5, 218)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_vf5nn")
+
+[node name="WorldBorder" type="Node2D" parent="."]
+
+[node name="WallUp" type="StaticBody2D" parent="WorldBorder" groups=["Hitable"]]
+position = Vector2(638, 0)
+collision_layer = 4
+collision_mask = 7
+physics_material_override = ExtResource("2_kcxot")
+script = ExtResource("3_decgu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBorder/WallUp"]
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_hr764")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="WorldBorder/WallUp"]
+position = Vector2(12.0092, -1012)
+rotation = 3.14159
+stream = ExtResource("4_eo5fe")
+
+[node name="WallR" type="StaticBody2D" parent="WorldBorder" groups=["Hitable"]]
+position = Vector2(1161, 445)
+rotation = 4.71238
+collision_layer = 4
+collision_mask = 7
+physics_material_override = ExtResource("2_kcxot")
+script = ExtResource("3_decgu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBorder/WallR"]
+shape = SubResource("WorldBoundaryShape2D_hr764")
+
+[node name="Sprite2D" type="Sprite2D" parent="WorldBorder/WallR"]
+position = Vector2(-5.00007, 7.99995)
+scale = Vector2(7.09532, 0.106805)
+texture = ExtResource("3_ulxu5")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="WorldBorder/WallR"]
+position = Vector2(12.0092, -1012)
+rotation = 3.14159
+stream = ExtResource("4_eo5fe")
+
+[node name="WallL" type="StaticBody2D" parent="WorldBorder" groups=["Hitable"]]
+position = Vector2(62, 433)
+rotation = 7.85397
+collision_layer = 4
+collision_mask = 7
+physics_material_override = ExtResource("2_kcxot")
+script = ExtResource("3_decgu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBorder/WallL"]
+shape = SubResource("WorldBoundaryShape2D_hr764")
+
+[node name="Sprite2D" type="Sprite2D" parent="WorldBorder/WallL"]
+position = Vector2(14.9999, 6.00017)
+scale = Vector2(7.15, 0.097)
+texture = ExtResource("3_ulxu5")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="WorldBorder/WallL"]
+stream = ExtResource("4_eo5fe")
+
+[node name="DeathZone" type="Area2D" parent="."]
+visible = false
+position = Vector2(0, 15)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
+position = Vector2(793.75, 1017)
+shape = SubResource("RectangleShape2D_pborx")
+
+[node name="LevelContent" type="Node2D" parent="."]
+
+[node name="StaticBrick" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(698, 426)
+
+[node name="StaticBrick2" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(760, 426)
+
+[node name="StaticBrick3" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(636, 426)
+
+[node name="StaticBrick4" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(883, 426)
+
+[node name="StaticBrick5" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(945, 426)
+
+[node name="StaticBrick6" parent="LevelContent" instance=ExtResource("4_ojmo1")]
+position = Vector2(821, 426)
+
+[node name="KineticBrick" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(574, 426)
+
+[node name="KineticBrick2" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(513, 426)
+
+[node name="KineticBrick3" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(452, 426)
+
+[node name="KineticBrick4" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(391, 426)
+
+[node name="KineticBrick5" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(330, 426)
+
+[node name="KineticBrick6" parent="LevelContent" instance=ExtResource("5_enxd5")]
+position = Vector2(269, 426)
+
+[node name="Balls" type="Node2D" parent="."]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchor_left = 0.735
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -47.5
+offset_bottom = 47.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer"]
+layout_mode = 2
+
+[node name="ScoreTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Score"
+label_settings = ExtResource("9_5v2rt")
+
+[node name="ScoreVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+label_settings = ExtResource("9_5v2rt")
+horizontal_alignment = 2
+script = ExtResource("10_ers3y")
+
+[node name="SpeedTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Speed"
+label_settings = ExtResource("9_5v2rt")
+
+[node name="SpeedVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "100%"
+label_settings = ExtResource("9_5v2rt")
+horizontal_alignment = 2
+script = ExtResource("10_0egqj")
+
+[node name="LivesTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Lives"
+label_settings = ExtResource("9_5v2rt")
+
+[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+alignment = 1

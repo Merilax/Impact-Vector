@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5s0bxfmkxjel"]
+
+[ext_resource type="Texture2D" uid="uid://d0y3qsom52lgg" path="res://Assets/Visuals/ball.png" id="1_l2amj"]
+
+[node name="TextureRect" type="TextureRect"]
+texture = ExtResource("1_l2amj")
+expand_mode = 2
+stretch_mode = 5

@@ -1,0 +1,66 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Impact Vector"
+run/main_scene="res://Scenes/Level.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://Assets/Visuals/icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/size/resizable=false
+
+[dotnet]
+
+project/assembly_name="Impact Vector"
+
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
+[global_group]
+
+Paddle=""
+Hitable=""
+Rigid=""
+Destructible=""
+Ball=""
+PickUp=""
+Brick=""
+
+[input]
+
+mouse_primary={
+"deadzone": 0.1,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(84, 22),"global_position":Vector2(93, 68),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+mouse_secondary={
+"deadzone": 0.1,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(133, 21),"global_position":Vector2(142, 67),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+
+[physics]
+
+common/physics_ticks_per_second=120
+2d/default_gravity=0.0
+2d/default_gravity_vector=Vector2(0, 0)
+2d/default_linear_damp=0.0
+2d/default_angular_damp=0.0

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxbg7h6mg1dtd"]
+
+[ext_resource type="Script" path="res://Scripts/Ball.gd" id="1_8lo0t"]
+[ext_resource type="Texture2D" uid="uid://d0y3qsom52lgg" path="res://Assets/Visuals/ball.png" id="2_ls637"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k4m8t"]
+friction = 0.0
+rough = true
+bounce = 1.0
+
+[node name="Ball" type="RigidBody2D" groups=["Ball"]]
+collision_mask = 6
+physics_material_override = SubResource("PhysicsMaterial_k4m8t")
+can_sleep = false
+lock_rotation = true
+freeze_mode = 1
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 3
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_8lo0t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 2)
+scale = Vector2(0.165371, 0.165371)
+texture = ExtResource("2_ls637")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, 2)
+scale = Vector2(0.165371, 0.165371)
+polygon = PackedVector2Array(13.5, -90.4, 13.5, -89.5, 18.5, -89.5, 18.5, -88.3, 30.5, -85.3, 30.5, -84.1, 46.5, -76.1, 46.5, -74.9, 48.9, -72.5, 51.5, -72.5, 51.5, -70.9, 61.5, -61.9, 61.5, -60, 64.5, -58, 64.5, -56, 70.5, -48.9, 70.5, -46.8, 75.5, -37.8, 75.5, -33.8, 79.5, -20.7, 79.5, 1.5, 78.4, 1.5, 75.3, 18.5, 74.1, 18.5, 70.2, 29.5, 69.1, 29.5, 65.1, 37.5, 63.9, 37.5, 62.5, 38.9, 62.5, 41.5, 60.9, 41.5, 45.9, 56.5, 43.9, 56.5, 39.9, 60.5, 37.8, 60.5, 24.8, 67.5, 20.8, 67.5, 17.8, 69.5, 13.5, 69.5, 7.7, 71.5, -10.6, 71.5, -22.5, 69.3, -22.5, 68.3, -34.5, 65.3, -34.5, 64.2, -42.5, 61.2, -42.5, 60.1, -51.5, 55.1, -51.5, 53.9, -57.9, 47.5, -59.9, 47.5, -61.5, 45.9, -61.5, 44, -66.5, 40, -66.5, 38, -72.5, 30.9, -72.5, 28.8, -76.5, 22.8, -76.5, 19.9, -78.5, 17.9, -78.5, 14.9, -80.5, 12.9, -80.5, 8.5, -81.5, 8.5, -81.5, 0.5, -82.5, -20.5, -81.5, -20.5, -81.5, -28.5, -80.5, -28.5, -80.5, -32.5, -79.3, -32.5, -76.3, -43.5, -75.3, -43.5, -74.3, -47.5, -73.1, -47.5, -65.1, -61.5, -63.9, -61.5, -52.9, -73.5, -50.9, -73.5, -44.9, -79.5, -42.8, -79.5, -32.8, -85.5, -29.7, -85.5, -20.7, -89.5, -16.5, -89.5, -3.5, -90.4, -3.5, -91.6)

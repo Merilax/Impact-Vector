@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dydm2dhj7p1nd"]
+
+[ext_resource type="Texture2D" uid="uid://caxekbaxpxgvy" path="res://Assets/Visuals/PickupSlow.png" id="1_1l7fv"]
+[ext_resource type="Script" path="res://Scripts/Pickup.gd" id="1_udhdi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ofbn4"]
+radius = 33.0
+
+[node name="PickupSlow" type="Area2D" groups=["PickUp"]]
+collision_layer = 16
+collision_mask = 0
+input_pickable = false
+monitoring = false
+script = ExtResource("1_udhdi")
+type = "Slow"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_1l7fv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ofbn4")

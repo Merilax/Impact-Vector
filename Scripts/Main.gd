@@ -1,0 +1,163 @@
+extends Node2D
+
+var Ball = preload("res://Scenes/Ball.tscn")
+var Paddle = preload("res://Scenes/Paddle.tscn")
+
+var PickupComp = preload("res://Scenes/Components/PickupComp.tscn")
+var PickupSpeed = preload("res://Scenes/PickupSpeed.tscn")
+var PickupSlow = preload("res://Scenes/PickupSlow.tscn")
+
+var brick_count:int = 0
+var ball_count:int = 0
+var lives:int = 3
+var speed_mult:float = 1
+
+var can_spawn_balls:bool = true
+
+@onready var score_counter:Label = $'UILayer'.find_child('ScoreVar')
+@onready var speed_counter:Label = $'UILayer'.find_child('SpeedVar')
+@onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer')
+var BallLifeRect = preload("res://Scenes/UI/BallLifeRect.tscn")
+
+signal change_speed(mult:float)
+
+func _ready():
+	$"DeathZone".body_entered.connect(_on_ball_lost.bind())
+
+	for life in lives:
+		life_counter.add_child(BallLifeRect.instantiate())
+
+	change_speed.connect(speed_counter.set_mult.bind())
+
+	# Delete when level builder is done
+	for brick:Node2D in $'LevelContent'.get_children():
+		if brick.has_signal('process_score'):
+			brick.process_score.connect(add_score.bind())
+		if brick.has_signal('brick_destroyed'):
+			brick.brick_destroyed.connect(_on_brick_destroyed.bind())
+		if brick.is_in_group('Destructible'):
+			var pickup_comp = PickupComp.instantiate()
+			pickup_comp.pickup = PickupSpeed
+			brick.add_child(pickup_comp)
+			brick.pickup_comp = pickup_comp
+			brick_count += 1
+
+	get_tree().node_added.connect(_on_child_entered_tree.bind())
+	spawn_paddle()
+	spawn_ball()
+
+
+func spawn_paddle():
+	var paddle:Node2D = Paddle.instantiate()
+	add_child(paddle)
+	paddle.position = Vector2(650, 880)
+
+func spawn_ball():
+	if not can_spawn_balls:
+		return
+	else:
+		var ball = Ball.instantiate()
+		$Balls.call_deferred("add_child", ball)
+		var paddle = get_node("Paddle")
+		ball.position.x = paddle.global_position.x
+		ball.position.y = paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)
+		paddle.single_use_magnet = true
+		paddle.call_deferred("receive_ball", ball)
+
+		change_speed.emit(speed_mult)
+
+		ball_count += 1
+ 
+func _on_ball_lost(ball):
+	if ball.is_in_group('Ball'):
+		ball_count -= 1
+		ball.die()
+
+		if ball_count <= 0:
+			lives -= 1
+
+			if lives >= 3:
+				var livesVar = life_counter.get_node("LivesVar")
+				if lives == 3:
+					livesVar.queue_free()
+					life_counter.add_child(BallLifeRect.instantiate())
+					life_counter.add_child(BallLifeRect.instantiate())
+				else:
+					livesVar.text = ' x ' + str(lives)
+			else:
+				life_counter.get_child(0).queue_free()
+			
+			if lives <= 0:
+				game_over()
+			else:
+				await get_tree().create_timer(1).timeout
+				spawn_ball()
+				speed_mult = 1
+				change_speed.emit(speed_mult) # Reset speed
+
+func add_life():
+	var livesVar:Label
+	if lives == 3:
+		for item:Node in life_counter.get_children():
+			item.queue_free()
+		life_counter.add_child(BallLifeRect.instantiate())
+		var newLabel = Label.new()
+		newLabel.name = 'LivesVar'
+		newLabel.text = ' x 3'
+		newLabel.label_settings = load("res://GDResources/LabelMedium.tres")
+		life_counter.add_child(newLabel, true)
+		livesVar = newLabel
+
+	lives += 1
+
+	if lives > 3:
+		if not livesVar:
+			livesVar = life_counter.get_node("LivesVar")
+		livesVar.text = ' x ' + str(lives)
+	else:
+		life_counter.add_child(BallLifeRect.instantiate())
+
+func add_score(amount:int):
+	score_counter.add_score(amount)
+
+func _on_brick_destroyed():
+	brick_count -= 1
+	if brick_count <= 0:
+		win()
+
+func game_over():
+	can_spawn_balls = false
+	pass # TODO: Game over
+
+func win():
+	for ball:Node in $Balls.get_children():
+		ball.queue_free()
+	can_spawn_balls = false
+	pass # TODO: Victory
+
+func _on_child_entered_tree(node:Node):
+	if node.is_in_group('Brick'):
+		if node.has_signal('process_score'):
+			node.process_score.connect(add_score.bind())
+		if node.has_signal('brick_destroyed'):
+			node.brick_destroyed.connect(_on_brick_destroyed.bind())
+		if node.is_in_group('Destructible'):
+			brick_count += 1
+
+	if node.is_in_group('Ball'):
+		change_speed.emit(speed_mult)
+		if not self.is_connected('change_speed', node.set_speed):
+			change_speed.connect(node.set_speed.bind())
+
+	if node.is_in_group('PickUp'):
+		print('yeah')
+		node.trigger_pickup.connect(process_pickup.bind())
+
+func process_pickup(type:String):
+	match type.to_lower():
+		'speed':
+			speed_mult = clampf(speed_mult + 0.2, 0.5, 2)
+			change_speed.emit(speed_mult)
+		'slow':
+			speed_mult = clampf(speed_mult - 0.2, 0.5, 2)
+			change_speed.emit(speed_mult)

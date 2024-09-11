@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjjlgc7puyxfe"]
+
+[ext_resource type="Script" path="res://Scripts/Paddle.gd" id="1_7bdbb"]
+[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="1_xdg01"]
+
+[node name="Paddle" type="CharacterBody2D" groups=["Paddle"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_7bdbb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.585, 0.150943)
+texture = ExtResource("1_xdg01")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_mask = 17
+input_pickable = false
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+position = Vector2(0, -8)
+scale = Vector2(1.585, 0.140081)
+polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(1.585, 0.150943)
+polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
+one_way_collision = true
+one_way_collision_margin = 5.0

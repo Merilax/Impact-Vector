@@ -1,0 +1,40 @@
+[gd_scene load_steps=10 format=3 uid="uid://curw1ybc7eeef"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_og0m8"]
+[ext_resource type="Script" path="res://Scripts/BrickStatic.gd" id="2_xrwc0"]
+[ext_resource type="Texture2D" uid="uid://dqx1mva2q54w6" path="res://Assets/Visuals/BrickMetal.png" id="3_mfscn"]
+[ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_ygwhr"]
+[ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Components/HealthComp.tscn" id="5_c3l1u"]
+[ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Components/HitSoundComp.tscn" id="6_bg3m3"]
+[ext_resource type="PackedScene" uid="uid://rjotxsowve6o" path="res://Scenes/Components/ScoreComp.tscn" id="6_pomk8"]
+[ext_resource type="PackedScene" uid="uid://ds6wn2kriuc8r" path="res://Scenes/Components/DestroySoundComp.tscn" id="8_gudhj"]
+[ext_resource type="AudioStream" uid="uid://daia0trjt8r2x" path="res://Assets/Audio/SFX/bfh1_metal_falling_05.ogg" id="9_ouui5"]
+
+[node name="BrickStatic" type="StaticBody2D" node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp") groups=["Brick", "Destructible", "Hitable"]]
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("1_og0m8")
+script = ExtResource("2_xrwc0")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.90625, 0.75)
+texture = ExtResource("3_mfscn")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.452571, 0.186447)
+polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
+
+[node name="HealthComp" parent="." instance=ExtResource("5_c3l1u")]
+
+[node name="ScoreComp" parent="." instance=ExtResource("6_pomk8")]
+score = 10
+
+[node name="HitSoundComp" parent="." instance=ExtResource("6_bg3m3")]
+stream = ExtResource("4_ygwhr")
+
+[node name="DestroySoundComp" parent="." instance=ExtResource("8_gudhj")]
+stream = ExtResource("9_ouui5")
