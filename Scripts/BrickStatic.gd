@@ -5,6 +5,7 @@ extends StaticBody2D
 @export var hit_sound_comp:AudioStreamPlayer2D
 @export var destroy_sound_comp:AudioStreamPlayer2D
 @export var pickup_comp:PickupComponent
+@export var editor_hitbox:EditorHitboxComponent
 
 signal process_score(score:int)
 signal brick_destroyed()

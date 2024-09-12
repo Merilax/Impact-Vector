@@ -22,6 +22,12 @@ var BallLifeRect = preload("res://Scenes/UI/BallLifeRect.tscn")
 signal change_speed(mult:float)
 
 func _ready():
+	var levels_available:int = DirAccess.open("res://Levels/").get_files().size()
+	var level_content_scene:PackedScene = load("res://Levels/Standard_" + str(randi() % levels_available + 1) + ".tscn")
+	var level_content:Node2D = level_content_scene.instantiate()
+	level_content.name = "LevelContent"
+	add_child(level_content, true)
+
 	$"DeathZone".body_entered.connect(_on_ball_lost.bind())
 
 	for life in lives:
@@ -29,28 +35,12 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult.bind())
 
-	# Delete when level builder is done
 	for brick:Node2D in $'LevelContent'.get_children():
-		if brick.has_signal('process_score'):
-			brick.process_score.connect(add_score.bind())
-		if brick.has_signal('brick_destroyed'):
-			brick.brick_destroyed.connect(_on_brick_destroyed.bind())
-		if brick.is_in_group('Destructible'):
-			brick_count += 1
-			if randi() % 5 == 0:
-				var pickup_comp:PickupComponent = PickupComp.instantiate()
-				brick.add_child(pickup_comp)
-				brick.pickup_comp = pickup_comp
-				brick.pickup_comp.sprite = brick.get_node("Sprite2D")
-				if randi() % 2 == 1:
-					pickup_comp.pickup = PickupSpeed
-				else:
-					pickup_comp.pickup = PickupSlow
+		init_brick(brick)
 
 	get_tree().node_added.connect(_on_child_entered_tree.bind())
 	spawn_paddle()
 	spawn_ball()
-
 
 func spawn_paddle():
 	var paddle:Node2D = Paddle.instantiate()
@@ -143,12 +133,7 @@ func win():
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Brick'):
-		if node.has_signal('process_score'):
-			node.process_score.connect(add_score.bind())
-		if node.has_signal('brick_destroyed'):
-			node.brick_destroyed.connect(_on_brick_destroyed.bind())
-		if node.is_in_group('Destructible'):
-			brick_count += 1
+		init_brick(node)
 
 	if node.is_in_group('Ball'):
 		change_speed.emit(speed_mult)
@@ -157,6 +142,24 @@ func _on_child_entered_tree(node:Node):
 
 	if node.is_in_group('PickUp'):
 		node.trigger_pickup.connect(process_pickup.bind())
+
+func init_brick(node):
+	if node.is_in_group('Brick'):
+		if node.has_signal('process_score'):
+			node.process_score.connect(add_score.bind())
+		if node.has_signal('brick_destroyed'):
+			node.brick_destroyed.connect(_on_brick_destroyed.bind())
+		if node.is_in_group('Destructible'):
+			brick_count += 1
+			if randi() % 5 == 0:
+				var pickup_comp:PickupComponent = PickupComp.instantiate()
+				node.add_child(pickup_comp)
+				node.pickup_comp = pickup_comp
+				node.pickup_comp.sprite = node.get_node("Sprite2D")
+				if randi() % 2 == 1:
+					pickup_comp.pickup = PickupSpeed
+				else:
+					pickup_comp.pickup = PickupSlow
 
 func process_pickup(type:String):
 	match type.to_lower():

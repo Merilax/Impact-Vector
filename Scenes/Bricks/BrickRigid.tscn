@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dtkn1xk6stg0v"]
+[gd_scene load_steps=12 format=3 uid="uid://dtkn1xk6stg0v"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
 [ext_resource type="Script" path="res://Scripts/BrickRigid.gd" id="2_sndss"]
@@ -9,8 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Components/HitSoundComp.tscn" id="6_kaqyv"]
 [ext_resource type="PackedScene" uid="uid://ds6wn2kriuc8r" path="res://Scenes/Components/DestroySoundComp.tscn" id="8_kdp57"]
 [ext_resource type="AudioStream" uid="uid://cai11ocuueh8w" path="res://Assets/Audio/SFX/bfh1_glass_hit_02.ogg" id="9_y0pj2"]
+[ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Components/EditorHitboxComp.tscn" id="10_a4cop"]
 
-[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a1ka5"]
+size = Vector2(64, 32)
+
+[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
 collision_layer = 4
 collision_mask = 3
 mass = 5.0
@@ -24,15 +28,16 @@ health_comp = NodePath("HealthComp")
 score_comp = NodePath("ScoreComp")
 hit_sound_comp = NodePath("HitSoundComp")
 destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.90625, 0.75)
 texture = ExtResource("3_pvsu6")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 visible = false
+position = Vector2(3, 4)
 scale = Vector2(0.452571, 0.186447)
-polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
+polygon = PackedVector2Array(64, 64, -77.3359, 64.3615, -77.3359, -107.269, 64.0783, -107.269)
 
 [node name="HealthComp" parent="." instance=ExtResource("5_mnfrv")]
 
@@ -44,3 +49,10 @@ stream = ExtResource("4_o56l3")
 
 [node name="DestroySoundComp" parent="." instance=ExtResource("8_kdp57")]
 stream = ExtResource("9_y0pj2")
+
+[node name="EditorHitboxComp" parent="." instance=ExtResource("10_a4cop")]
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorHitboxComp"]
+visible = false
+shape = SubResource("RectangleShape2D_a1ka5")

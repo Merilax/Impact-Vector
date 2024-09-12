@@ -1,0 +1,303 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Bricks/BrickRigid.tscn" id="1_60kiu"]
+[ext_resource type="PhysicsMaterial" path="res://GDResources/Wall.tres" id="2_0g0j1"]
+[ext_resource type="Script" path="res://Scripts/BrickRigid.gd" id="3_k8jiq"]
+[ext_resource type="PackedScene" path="res://Scenes/Bricks/BrickStatic.tscn" id="4_c2p3g"]
+[ext_resource type="Script" path="res://Scripts/BrickStatic.gd" id="5_lyosc"]
+
+[node name="LevelContent" type="Node2D"]
+
+[node name="@RigidBody2D@6" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(226, 567)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@7" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(347, 576)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@8" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(497, 570)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@9" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(696, 561)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@10" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(808, 562)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@11" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(956, 578)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@12" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_60kiu")]
+position = Vector2(586, 562)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_0g0j1")
+sleeping = true
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_k8jiq")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@13" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(877, 579)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@14" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(539, 784)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@15" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(606, 784)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@16" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(295, 374)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@17" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(304, 352)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@18" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(345, 315)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@19" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(392, 281)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@20" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(437, 255)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@21" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(534, 244)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@22" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(607, 260)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@23" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(664, 286)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@24" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(712, 316)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@25" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(765, 353)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@26" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("4_c2p3g")]
+position = Vector2(799, 391)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_0g0j1")
+script = ExtResource("5_lyosc")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")

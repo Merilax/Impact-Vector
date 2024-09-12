@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhtapwwblyog3"]
+
+[ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/WorldBorder.tscn" id="1_tjbma"]
+[ext_resource type="Script" path="res://Scripts/LevelEditor.gd" id="1_ur272"]
+[ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
+size = Vector2(1081, 794)
+
+[node name="LevelEditor" type="Node2D"]
+script = ExtResource("1_ur272")
+can_place_bricks = null
+
+[node name="WorldBorder" parent="." instance=ExtResource("1_tjbma")]
+
+[node name="LevelMouseBoundary" type="Area2D" parent="."]
+position = Vector2(59, 0)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelMouseBoundary"]
+visible = false
+position = Vector2(554.5, 408)
+shape = SubResource("RectangleShape2D_k1bnw")
+
+[node name="EditorUI" type="CanvasLayer" parent="."]
+
+[node name="Container" type="Control" parent="EditorUI"]
+layout_mode = 3
+anchor_left = 0.736
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.399902
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Container"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.999853
+anchor_bottom = 0.915889
+offset_right = 0.0619812
+offset_bottom = -0.300018
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+metadata/_edit_use_anchors_ = true
+
+[node name="BrickContainer" type="GridContainer" parent="EditorUI/Container/MarginContainer"]
+layout_mode = 2
+columns = 4
+script = ExtResource("2_ylr5r")
+
+[node name="MarginContainer2" type="MarginContainer" parent="EditorUI/Container"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.915556
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="SaveBtn" type="Button" parent="EditorUI/Container/MarginContainer2"]
+layout_mode = 2
+text = "Save"
+
+[node name="LevelContent" type="Node2D" parent="."]
