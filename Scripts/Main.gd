@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var current_level_path:String
+
 var Ball = preload("res://Scenes/Ball.tscn")
 var Paddle = preload("res://Scenes/Paddle.tscn")
 
@@ -22,12 +24,6 @@ var BallLifeRect = preload("res://Scenes/UI/BallLifeRect.tscn")
 signal change_speed(mult:float)
 
 func _ready():
-	var levels_available:int = DirAccess.open("res://Levels/").get_files().size()
-	var level_content_scene:PackedScene = load("res://Levels/Standard_" + str(randi() % levels_available + 1) + ".tscn")
-	var level_content:Node2D = level_content_scene.instantiate()
-	level_content.name = "LevelContent"
-	add_child(level_content, true)
-
 	$"DeathZone".body_entered.connect(_on_ball_lost.bind())
 
 	for life in lives:
@@ -35,10 +31,10 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult.bind())
 
-	for brick:Node2D in $'LevelContent'.get_children():
-		init_brick(brick)
+	load_level(current_level_path)
 
 	get_tree().node_added.connect(_on_child_entered_tree.bind())
+
 	spawn_paddle()
 	spawn_ball()
 
@@ -129,7 +125,26 @@ func win():
 	for ball:Node in $Balls.get_children():
 		ball.queue_free()
 	can_spawn_balls = false
-	pass # TODO: Victory
+	
+	$"LevelContent".queue_free()
+
+	var regex:RegEx = RegEx.new()
+	regex.compile(r'\d+\.tscn')
+	var match:RegExMatch = regex.search(current_level_path)
+
+	var dir:String = current_level_path.split(match.get_string(), false)[0]
+	var file:String = current_level_path.split(dir, false)[0]
+	var level_num:int = file.split('.tscn')[0].to_int() + 1
+	
+	var temp_path = "".join([dir, str(level_num), ".tscn"])
+
+	if FileAccess.file_exists(temp_path):
+		current_level_path = temp_path
+		load_level(current_level_path)
+		can_spawn_balls = true
+	else:
+		print("No levels left.")
+		return
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Brick'):
@@ -169,3 +184,15 @@ func process_pickup(type:String):
 		'slow':
 			speed_mult = clampf(speed_mult - 0.1, 0.7, 1.5)
 			change_speed.emit(speed_mult)
+
+func load_level(filepath:String):
+	if FileAccess.file_exists(filepath):
+		var level_content_scene = load(current_level_path)
+		var level_content:Node2D = level_content_scene.instantiate()
+		level_content.name = "LevelContent"
+		add_child(level_content, true)
+		
+		for brick:Node2D in level_content.get_children():
+			init_brick(brick)
+	else:
+		push_error('Level filepath does not exist: ' + filepath)

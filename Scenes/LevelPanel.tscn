@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct3pryubbc463"]
+
+[ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="1_r1rt8"]
+
+[sub_resource type="Theme" id="Theme_fg15h"]
+
+[node name="LevelPanel" type="PanelContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme = SubResource("Theme_fg15h")
+metadata/level_path = ""
+
+[node name="LevelName" type="Label" parent="."]
+layout_mode = 2
+label_settings = ExtResource("1_r1rt8")
+horizontal_alignment = 1
