@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bwcxgw014glpw"]
 
 [ext_resource type="Script" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
-[ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/VolumeRangeSetting.tscn" id="2_2hjfl"]
+[ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
 
 [node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
 anchors_preset = 15
@@ -11,9 +11,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_nb1hl")
-master_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/Master Setting")
-music_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/Music Setting")
-sfx_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/SFX Setting")
+master_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
+music_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
+sfx_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
 save_button = NodePath("ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
 metadata/_edit_use_anchors_ = true
 
@@ -22,9 +22,35 @@ layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Audio" type="TabBar" parent="SettingTabs"]
+[node name="Video" type="TabBar" parent="SettingTabs"]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingTabs/Video"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 285.0
+grow_horizontal = 2
+
+[node name="GridContainer" type="GridContainer" parent="SettingTabs/Video/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="VSync" type="Label" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "V-Sync"
+
+[node name="VSync Setting" type="CheckButton" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Audio" type="TabBar" parent="SettingTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SettingTabs/Audio"]
 layout_mode = 1
@@ -33,35 +59,35 @@ anchor_right = 1.0
 offset_bottom = 285.0
 grow_horizontal = 2
 
-[node name="AudioVBox" type="GridContainer" parent="SettingTabs/Audio/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="SettingTabs/Audio/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="Master Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+[node name="Master Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Master volume
 "
 
-[node name="Master Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+[node name="Master Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "Master"
 
-[node name="Music Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+[node name="Music Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Music volume"
 
-[node name="Music Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+[node name="Music Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "Music"
 
-[node name="SFX Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+[node name="SFX Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "SFX volume
 "
 
-[node name="SFX Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+[node name="SFX Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "SFX"
 

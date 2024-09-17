@@ -1,5 +1,7 @@
 extends Control
 
+@export var vsync_setting:CheckButton
+
 @export var master_volume_setting:HBoxContainer
 @export var music_volume_setting:HBoxContainer
 @export var sfx_volume_setting:HBoxContainer
@@ -9,11 +11,24 @@ extends Control
 signal menu_closed()
 
 func _ready():
+	if vsync_setting:
+		vsync_setting.toggled.connect(set_vsync)
+
 	if master_volume_setting:
 		master_volume_setting.value_changed.connect(on_set_audio_bus_volume)
+	if music_volume_setting:
+		music_volume_setting.value_changed.connect(on_set_audio_bus_volume)
+	if sfx_volume_setting:
+		sfx_volume_setting.value_changed.connect(on_set_audio_bus_volume)
 
 	if save_button:
 		save_button.pressed.connect(save_and_back)
+
+func set_vsync(to_enable:bool):
+	if to_enable:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 func on_set_audio_bus_volume(bus:String, volume_percent:float) -> bool:
 	var slider_range = 100  
@@ -21,12 +36,12 @@ func on_set_audio_bus_volume(bus:String, volume_percent:float) -> bool:
 	var volume_db = ((volume_percent * db_range) / slider_range) - 30
 	
 	var bus_idx:int = -1
-	match bus:
-		"Master":
+	match bus.to_lower():
+		"master":
 			bus_idx = 0
-		"Music":
+		"music":
 			bus_idx = 1
-		"SFX":
+		"sfx":
 			bus_idx = 2
 			
 	if bus_idx >= 0:
