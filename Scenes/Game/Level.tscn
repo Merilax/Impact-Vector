@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://la6hglf0tura"]
 
-[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_vf5nn"]
-[ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/WorldBorder.tscn" id="2_b1du0"]
+[ext_resource type="Script" path="res://Scripts/Game/Main.gd" id="1_vf5nn"]
+[ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_cwvof"]
 [ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]

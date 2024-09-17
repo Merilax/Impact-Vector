@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bhtapwwblyog3"]
 
-[ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/WorldBorder.tscn" id="1_tjbma"]
-[ext_resource type="Script" path="res://Scripts/LevelEditor.gd" id="1_ur272"]
+[ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
+[ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
 

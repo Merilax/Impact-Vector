@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bwcxgw014glpw"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Settings.gd" id="1_nb1hl"]
+[ext_resource type="Script" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/VolumeRangeSetting.tscn" id="2_2hjfl"]
 
 [node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]

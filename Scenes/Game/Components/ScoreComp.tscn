@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://rjotxsowve6o"]
 
-[ext_resource type="Script" path="res://Scripts/Components/ScoreComp.gd" id="1_mvd6h"]
+[ext_resource type="Script" path="res://Scripts/Game/Components/ScoreComp.gd" id="1_mvd6h"]
 
 [node name="ScoreComp" type="Node2D"]
 script = ExtResource("1_mvd6h")

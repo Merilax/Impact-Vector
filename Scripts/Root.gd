@@ -17,7 +17,7 @@ func close_settings():
 	settings_menu.hide()
 
 func play_level(selected_level_path):
-	var GameScene:PackedScene = load("res://Scenes/Level.tscn")
+	var GameScene:PackedScene = load("res://Scenes/Game/Level.tscn")
 	var game:Node2D = GameScene.instantiate()
 	game.current_level_path = selected_level_path
 	add_sibling(game)

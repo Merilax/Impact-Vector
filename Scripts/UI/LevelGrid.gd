@@ -1,6 +1,6 @@
 extends GridContainer
 
-var LevelPanel = preload("res://Scenes/LevelPanel.tscn")
+var LevelPanel = preload("res://Scenes/UI/LevelPanel.tscn")
 
 signal set_level(filepath:String)
 

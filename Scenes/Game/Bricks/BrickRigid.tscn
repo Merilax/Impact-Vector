@@ -1,15 +1,15 @@
 [gd_scene load_steps=12 format=3 uid="uid://dtkn1xk6stg0v"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
-[ext_resource type="Script" path="res://Scripts/BrickRigid.gd" id="2_sndss"]
+[ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickRigid.gd" id="2_sndss"]
 [ext_resource type="Texture2D" uid="uid://2dinph02wcbc" path="res://Assets/Visuals/BrickGlass.png" id="3_pvsu6"]
 [ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_o56l3"]
-[ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Components/HealthComp.tscn" id="5_mnfrv"]
-[ext_resource type="PackedScene" uid="uid://rjotxsowve6o" path="res://Scenes/Components/ScoreComp.tscn" id="6_6yfpm"]
-[ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Components/HitSoundComp.tscn" id="6_kaqyv"]
-[ext_resource type="PackedScene" uid="uid://ds6wn2kriuc8r" path="res://Scenes/Components/DestroySoundComp.tscn" id="8_kdp57"]
+[ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Game/Components/HealthComp.tscn" id="5_mnfrv"]
+[ext_resource type="PackedScene" uid="uid://rjotxsowve6o" path="res://Scenes/Game/Components/ScoreComp.tscn" id="6_6yfpm"]
+[ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Game/Components/HitSoundComp.tscn" id="6_kaqyv"]
+[ext_resource type="PackedScene" uid="uid://ds6wn2kriuc8r" path="res://Scenes/Game/Components/DestroySoundComp.tscn" id="8_kdp57"]
 [ext_resource type="AudioStream" uid="uid://cai11ocuueh8w" path="res://Assets/Audio/SFX/bfh1_glass_hit_02.ogg" id="9_y0pj2"]
-[ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Components/EditorHitboxComp.tscn" id="10_a4cop"]
+[ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Game/Components/EditorHitboxComp.tscn" id="10_a4cop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1ka5"]
 size = Vector2(64, 32)

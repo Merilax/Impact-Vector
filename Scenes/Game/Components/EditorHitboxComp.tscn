@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1e6rtu6u8o0b"]
 
-[ext_resource type="Script" path="res://Scripts/Components/EditorHitbox.gd" id="1_12bgk"]
+[ext_resource type="Script" path="res://Scripts/Game/Components/EditorHitbox.gd" id="1_12bgk"]
 
 [node name="EditorHitboxComp" type="Area2D"]
 collision_layer = 0

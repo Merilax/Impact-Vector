@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3]
 
-[ext_resource type="PackedScene" path="res://Scenes/Bricks/BrickRigid.tscn" id="1_60kiu"]
-[ext_resource type="PhysicsMaterial" path="res://GDResources/Wall.tres" id="2_0g0j1"]
-[ext_resource type="Script" path="res://Scripts/BrickRigid.gd" id="3_k8jiq"]
-[ext_resource type="PackedScene" path="res://Scenes/Bricks/BrickStatic.tscn" id="4_c2p3g"]
-[ext_resource type="Script" path="res://Scripts/BrickStatic.gd" id="5_lyosc"]
+[ext_resource type="PackedScene" uid="uid://dtkn1xk6stg0v" path="res://Scenes/Game/Bricks/BrickRigid.tscn" id="1_60kiu"]
+[ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="2_0g0j1"]
+[ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickRigid.gd" id="3_k8jiq"]
+[ext_resource type="PackedScene" uid="uid://curw1ybc7eeef" path="res://Scenes/Game/Bricks/BrickStatic.tscn" id="4_c2p3g"]
+[ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickStatic.gd" id="5_lyosc"]
 
 [node name="LevelContent" type="Node2D"]
 

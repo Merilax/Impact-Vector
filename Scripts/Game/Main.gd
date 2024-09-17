@@ -2,12 +2,12 @@ extends Node2D
 
 @export var current_level_path:String
 
-var Ball = preload("res://Scenes/Ball.tscn")
-var Paddle = preload("res://Scenes/Paddle.tscn")
+var Ball = preload("res://Scenes/Game/Ball.tscn")
+var Paddle = preload("res://Scenes/Game/Paddle.tscn")
 
-var PickupComp = preload("res://Scenes/Components/PickupComp.tscn")
-var PickupSpeed = preload("res://Scenes/PickupSpeed.tscn")
-var PickupSlow = preload("res://Scenes/PickupSlow.tscn")
+var PickupComp = preload("res://Scenes/Game/Components/PickupComp.tscn")
+var PickupSpeed = preload("res://Scenes/Game/PickupSpeed.tscn")
+var PickupSlow = preload("res://Scenes/Game/PickupSlow.tscn")
 
 var brick_count:int = 0
 var ball_count:int = 0
@@ -95,7 +95,7 @@ func add_life():
 		var newLabel = Label.new()
 		newLabel.name = 'LivesVar'
 		newLabel.text = ' x 3'
-		newLabel.label_settings = load("res://GDResources/LabelMedium.tres")
+		#newLabel.label_settings = load("res://GDResources/LabelMedium.tres")
 		life_counter.add_child(newLabel, true)
 		livesVar = newLabel
 

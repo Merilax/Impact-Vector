@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjjlgc7puyxfe"]
 
-[ext_resource type="Script" path="res://Scripts/Paddle.gd" id="1_7bdbb"]
+[ext_resource type="Script" path="res://Scripts/Game/Paddle.gd" id="1_7bdbb"]
 [ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="1_xdg01"]
 
 [node name="Paddle" type="CharacterBody2D" groups=["Paddle"]]
