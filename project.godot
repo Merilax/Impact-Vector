@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Impact Vector"
-run/main_scene="res://Scenes/Level.tscn"
+run/main_scene="res://Scenes/Root.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://Assets/Visuals/icon.svg"
 
 [audio]
 
 buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
+
+[autoload]
+
+GuiSignalBus="*res://Scripts/GUISignalBus.gd"
 
 [display]
 

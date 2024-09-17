@@ -30,7 +30,7 @@ func _on_area_entered_hitbox(node:Area2D):
 
 func calculate_bounce_vector(node) -> Vector2:
 	var x_diff = node.global_position.x - self.global_position.x
-	var calc_x = clampf(x_diff / (width/1.5), -0.85, 0.85) # No 90º bounces
+	var calc_x = clampf(x_diff / (width/1.5), -0.75, 0.75) # No 90º bounces
 	var calc_y = 1 - abs(calc_x)
 	return Vector2(calc_x, -calc_y).normalized()
 

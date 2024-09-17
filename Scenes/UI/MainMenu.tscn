@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://cc5tfydv0irtm"]
+
+[ext_resource type="Script" path="res://Scripts/UI/MainMenu.gd" id="1_w3h7v"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelGrid.gd" id="3_boaon"]
+
+[sub_resource type="Theme" id="Theme_arwi0"]
+
+[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("play_button", "settings_button", "exit_button", "level_selector")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 400
+dragger_visibility = 1
+script = ExtResource("1_w3h7v")
+play_button = NodePath("Control/PlayBtn")
+settings_button = NodePath("Control/SettingBtn")
+exit_button = NodePath("Control/QuitBtn")
+level_selector = NodePath("LevelGrid")
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayBtn" type="Button" parent="Control"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Play"
+metadata/_edit_use_anchors_ = true
+
+[node name="SettingBtn" type="Button" parent="Control"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Settings
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="QuitBtn" type="Button" parent="Control"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Quit"
+metadata/_edit_use_anchors_ = true
+
+[node name="LevelGrid" type="GridContainer" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_arwi0")
+columns = 4
+script = ExtResource("3_boaon")

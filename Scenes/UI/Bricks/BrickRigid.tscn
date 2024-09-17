@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cxf1fljvjj38y"]
 
 [ext_resource type="Texture2D" uid="uid://2dinph02wcbc" path="res://Assets/Visuals/BrickGlass.png" id="1_ytsm0"]
-[ext_resource type="Script" path="res://Scripts/UI/EditorBrickSample.gd" id="2_x3xoq"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_x3xoq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01k38"]
 size = Vector2(64, 32)

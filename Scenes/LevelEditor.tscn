@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=6 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/LevelEditor.gd" id="1_ur272"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1081, 794)
@@ -32,6 +33,7 @@ anchor_bottom = 1.0
 offset_left = 0.399902
 grow_horizontal = 0
 grow_vertical = 2
+theme = ExtResource("3_21i02")
 
 [node name="MarginContainer" type="MarginContainer" parent="EditorUI/Container"]
 layout_mode = 1

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=8 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/WorldBorder.tscn" id="2_b1du0"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_cwvof"]
 [ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
-[ext_resource type="Script" path="res://Scripts/UI/LabelPercentMult.gd" id="10_0egqj"]
-[ext_resource type="Script" path="res://Scripts/UI/LabelCounter.gd" id="10_ers3y"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
@@ -32,6 +33,7 @@ anchor_left = 0.735
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
+theme = ExtResource("3_cwvof")
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
 layout_mode = 1

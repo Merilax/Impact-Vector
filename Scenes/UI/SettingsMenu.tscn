@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwcxgw014glpw"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Settings.gd" id="1_nb1hl"]
+[ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/VolumeRangeSetting.tscn" id="2_2hjfl"]
+
+[node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+script = ExtResource("1_nb1hl")
+master_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/Master Setting")
+music_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/Music Setting")
+sfx_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/AudioVBox/SFX Setting")
+save_button = NodePath("ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
+metadata/_edit_use_anchors_ = true
+
+[node name="SettingTabs" type="TabContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Audio" type="TabBar" parent="SettingTabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingTabs/Audio"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 285.0
+grow_horizontal = 2
+
+[node name="AudioVBox" type="GridContainer" parent="SettingTabs/Audio/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="Master Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+layout_mode = 2
+text = "Master volume
+"
+
+[node name="Master Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+layout_mode = 2
+bus_name = "Master"
+
+[node name="Music Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+layout_mode = 2
+text = "Music volume"
+
+[node name="Music Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+layout_mode = 2
+bus_name = "Music"
+
+[node name="SFX Label" type="Label" parent="SettingTabs/Audio/MarginContainer/AudioVBox"]
+layout_mode = 2
+text = "SFX volume
+"
+
+[node name="SFX Setting" parent="SettingTabs/Audio/MarginContainer/AudioVBox" instance=ExtResource("2_2hjfl")]
+layout_mode = 2
+bus_name = "SFX"
+
+[node name="ActionBtns" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ActionBtns"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionBtns/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="SaveAndBack" type="Button" parent="ActionBtns/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save & Back"
