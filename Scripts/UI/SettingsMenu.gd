@@ -24,6 +24,22 @@ func _ready():
 	if save_button:
 		save_button.pressed.connect(save_and_back)
 
+func refresh():
+	var settings:SaveSettings = SaveLoader.new().load_settings()
+
+	if vsync_setting:
+		vsync_setting.set_pressed_no_signal(settings.vsync)
+
+	if master_volume_setting:
+		var volume_percent = ((settings.master_volume * 100) / 30) + 100
+		master_volume_setting.range_slider.value = volume_percent
+	if music_volume_setting:
+		var volume_percent = ((settings.music_volume * 100) / 30) + 100
+		music_volume_setting.range_slider.value = volume_percent
+	if sfx_volume_setting:
+		var volume_percent = ((settings.sfx_volume * 100) / 30) + 100
+		sfx_volume_setting.range_slider.value = volume_percent
+
 func set_vsync(to_enable:bool):
 	if to_enable:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
@@ -55,6 +71,6 @@ func on_set_audio_bus_volume(bus:String, volume_percent:float) -> bool:
 		return false
 	
 func save_and_back():
-	# TODO: Remember settings
+	SaveLoader.new().save_settings()
 	menu_closed.emit()
 	hide()

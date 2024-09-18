@@ -10,6 +10,7 @@ func _ready():
 
 func open_settings():
 	main_menu.hide()
+	settings_menu.refresh()
 	settings_menu.show()
 
 func close_settings():

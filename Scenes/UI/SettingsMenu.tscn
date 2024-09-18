@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
 
-[node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
+[node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,6 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_nb1hl")
+vsync_setting = NodePath("SettingTabs/Video/MarginContainer/GridContainer/VSync Setting")
 master_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
 music_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
 sfx_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
