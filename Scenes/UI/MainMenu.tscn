@@ -5,7 +5,7 @@
 
 [sub_resource type="Theme" id="Theme_arwi0"]
 
-[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("play_button", "settings_button", "exit_button", "level_selector")]
+[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("play_button", "editor_button", "settings_button", "exit_button", "level_selector")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,6 +15,7 @@ split_offset = 400
 dragger_visibility = 1
 script = ExtResource("1_w3h7v")
 play_button = NodePath("Control/PlayBtn")
+editor_button = NodePath("Control/EditorBtn")
 settings_button = NodePath("Control/SettingBtn")
 exit_button = NodePath("Control/QuitBtn")
 level_selector = NodePath("LevelGrid")
@@ -29,6 +30,10 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "Play"
 metadata/_edit_use_anchors_ = true
+
+[node name="EditorBtn" type="Button" parent="Control"]
+layout_mode = 2
+text = "Level editor"
 
 [node name="SettingBtn" type="Button" parent="Control"]
 layout_mode = 2

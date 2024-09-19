@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d12oa1rlme8xi"
+path="res://.godot/imported/02. House.mp3-1929cf951a473c70fa47d12fc4cc4ce7.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/InGame/02. House.mp3"
+dest_files=["res://.godot/imported/02. House.mp3-1929cf951a473c70fa47d12fc4cc4ce7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

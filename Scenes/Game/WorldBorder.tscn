@@ -10,7 +10,7 @@
 [node name="WorldBorder" type="Node2D"]
 
 [node name="WallUp" type="StaticBody2D" parent="." groups=["Hitable", "Wall"]]
-position = Vector2(638, 0)
+position = Vector2(757, 0)
 collision_layer = 4
 collision_mask = 7
 physics_material_override = ExtResource("1_ik1rj")
@@ -21,12 +21,11 @@ rotation = -3.14159
 shape = SubResource("WorldBoundaryShape2D_hr764")
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="WallUp"]
-position = Vector2(12.0092, -1012)
 rotation = 3.14159
 stream = ExtResource("3_tqyyy")
 
 [node name="WallR" type="StaticBody2D" parent="." groups=["Hitable", "Wall"]]
-position = Vector2(1161, 445)
+position = Vector2(1478, 542)
 rotation = 4.71238
 collision_layer = 4
 collision_mask = 7
@@ -37,17 +36,16 @@ script = ExtResource("2_bky3j")
 shape = SubResource("WorldBoundaryShape2D_hr764")
 
 [node name="Sprite2D" type="Sprite2D" parent="WallR"]
-position = Vector2(-5.00007, 7.99995)
-scale = Vector2(7.09532, 0.106805)
+position = Vector2(1.15984, 8.00001)
+scale = Vector2(8.56, 0.1)
 texture = ExtResource("4_dh06o")
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="WallR"]
-position = Vector2(12.0092, -1012)
 rotation = 3.14159
 stream = ExtResource("3_tqyyy")
 
 [node name="WallL" type="StaticBody2D" parent="." groups=["Hitable", "Wall"]]
-position = Vector2(62, 433)
+position = Vector2(40, 530)
 rotation = 7.85397
 collision_layer = 4
 collision_mask = 7
@@ -58,8 +56,8 @@ script = ExtResource("2_bky3j")
 shape = SubResource("WorldBoundaryShape2D_hr764")
 
 [node name="Sprite2D" type="Sprite2D" parent="WallL"]
-position = Vector2(14.9999, 6.00017)
-scale = Vector2(7.15, 0.097)
+position = Vector2(8.83999, 6.0001)
+scale = Vector2(8.56, 0.1)
 texture = ExtResource("4_dh06o")
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="WallL"]

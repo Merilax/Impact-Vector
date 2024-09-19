@@ -1,6 +1,9 @@
 extends Control
 
-@export var vsync_setting:CheckButton
+@export var window_mode_setting:OptionButton
+@export var resolution_setting:OptionButton
+@export var borderless_setting:CheckButton
+@export var vsync_setting:CheckButton # Creates major mouse delay
 
 @export var master_volume_setting:HBoxContainer
 @export var music_volume_setting:HBoxContainer
@@ -11,6 +14,12 @@ extends Control
 signal menu_closed()
 
 func _ready():
+	if window_mode_setting:
+		window_mode_setting.item_selected.connect(set_window_mode)
+	if borderless_setting:
+		borderless_setting.toggled.connect(set_borderless)
+	if resolution_setting:
+		resolution_setting.item_selected.connect(set_resolution)
 	if vsync_setting:
 		vsync_setting.toggled.connect(set_vsync)
 
@@ -39,6 +48,27 @@ func refresh():
 	if sfx_volume_setting:
 		var volume_percent = ((settings.sfx_volume * 100) / 30) + 100
 		sfx_volume_setting.range_slider.value = volume_percent
+
+func set_window_mode(option:int):
+	match option:
+		0:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		1:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func set_borderless(to_set:bool):
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, to_set)
+
+func set_resolution(option:int):
+	match option:
+		0:
+			get_window().size = Vector2i(1920, 1080)
+		1:
+			get_window().size = Vector2i(1600, 900)
+		2:
+			get_window().size = Vector2i(1366, 768)
+		3:
+			get_window().size = Vector2i(1280, 720)
 
 func set_vsync(to_enable:bool):
 	if to_enable:

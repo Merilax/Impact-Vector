@@ -1,21 +1,33 @@
 extends GridContainer
 
-var LevelPanel = preload("res://Scenes/UI/LevelPanel.tscn")
+var LevelBox = preload("res://Scenes/UI/LevelBox.tscn")
 
-signal set_level(filepath:String)
+signal play_level(dir:String)
+signal edit_level(dir:String)
 
 func _ready() -> void:
-	var levels:PackedStringArray = DirAccess.open("res://Levels/Standard").get_files()
+	var dir:DirAccess = DirAccess.open("user://Levels/Standard")
+	
+	if not dir:
+		DirAccess.make_dir_absolute("user://Levels")
+		DirAccess.make_dir_absolute("user://Levels/Standard")
+		dir = DirAccess.open("user://Levels/Standard")
+ 
+	for folder_num:String in dir.get_directories():
+		var level_data:LevelData = load("user://Levels/Standard/" + folder_num + "/data.tres")
 
-	for level_filename:String in levels:
-		var level_panel:PanelContainer = LevelPanel.instantiate()
-		level_panel.set_meta('level_path', "res://Levels/Standard/" + level_filename) # TODO: Manage Campaigns
-		level_panel.get_node("LevelName").text = level_filename.replace('_', ' ').trim_suffix(".tscn")
-		add_child(level_panel)
+		var level_box:MarginContainer = LevelBox.instantiate()
+		level_box.get_node("LevelBox/LevelName").text = level_data.name
+		#var thumb = Image.load_from_file(level_data.dir + "data.tres")
+		level_box.get_node("LevelBox/Thumbnail").texture = level_data.thumbnail
+		level_box.set_meta("level_dir", level_data.dir)
+		add_child(level_box)
 
-		level_panel.gui_input.connect(on_level_select.bind(level_panel.get_meta("level_path")))
+		level_box.play_level.connect(_on_play_level)
+		level_box.edit_level.connect(_on_edit_level)
 
-func on_level_select(event:InputEvent, filepath:String):
-	if event.is_action_pressed("mouse_primary"):
-		set_level.emit(filepath)
+func _on_play_level(dir:String) -> void:
+	play_level.emit(dir)
 
+func _on_edit_level(dir:String) -> void:
+	edit_level.emit(dir)

@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct3pryubbc463"]
+
+[ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="1_2wkfb"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="1_h4eun"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
+
+[sub_resource type="Theme" id="Theme_fg15h"]
+
+[node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("buttons", "play_button", "edit_button")]
+anchors_preset = -1
+anchor_right = 0.021
+anchor_bottom = 0.092
+offset_right = 0.679996
+offset_bottom = -0.360008
+size_flags_horizontal = 3
+theme = ExtResource("1_h4eun")
+script = ExtResource("2_83bsj")
+buttons = NodePath("HBoxContainer")
+play_button = NodePath("HBoxContainer/Play")
+edit_button = NodePath("HBoxContainer/Edit")
+metadata/_edit_use_anchors_ = true
+
+[node name="LevelBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_filter = 0
+theme = SubResource("Theme_fg15h")
+metadata/level_path = ""
+metadata/_edit_use_anchors_ = true
+
+[node name="LevelName" type="Label" parent="LevelBox"]
+layout_mode = 2
+label_settings = ExtResource("1_2wkfb")
+horizontal_alignment = 1
+
+[node name="Thumbnail" type="TextureRect" parent="LevelBox"]
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 4
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Play" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Play"
+
+[node name="Edit" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Edit"
+
+[connection signal="focus_entered" from="LevelBox" to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="LevelBox" to="." method="_on_focus_exited"]

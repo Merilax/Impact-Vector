@@ -6,11 +6,11 @@
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
-size = Vector2(1081, 794)
+size = Vector2(1433, 938)
 
-[node name="LevelEditor" type="Node2D"]
+[node name="LevelEditor" type="Node2D" node_paths=PackedStringArray("level_content")]
 script = ExtResource("1_ur272")
-can_place_bricks = null
+level_content = NodePath("LevelContent")
 
 [node name="WorldBorder" parent="." instance=ExtResource("1_tjbma")]
 
@@ -19,21 +19,21 @@ position = Vector2(59, 0)
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelMouseBoundary"]
-visible = false
-position = Vector2(554.5, 408)
+position = Vector2(701.5, 476)
 shape = SubResource("RectangleShape2D_k1bnw")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 
 [node name="Container" type="Control" parent="EditorUI"]
 layout_mode = 3
-anchor_left = 0.736
+anchor_left = 0.776875
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 0.399902
 grow_horizontal = 0
 grow_vertical = 2
 theme = ExtResource("3_21i02")
+metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="EditorUI/Container"]
 layout_mode = 1

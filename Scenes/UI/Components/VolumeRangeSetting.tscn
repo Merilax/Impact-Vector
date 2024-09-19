@@ -16,7 +16,7 @@ size_flags_vertical = 4
 value = 100.0
 rounded = true
 scrollable = false
-tick_count = 10
+tick_count = 11
 
 [node name="VarLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(105, 0)

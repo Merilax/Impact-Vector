@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var current_level_path:String
+@export var level_dir:String
 
 var Ball = preload("res://Scenes/Game/Ball.tscn")
 var Paddle = preload("res://Scenes/Game/Paddle.tscn")
@@ -31,7 +31,7 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult.bind())
 
-	load_level(current_level_path)
+	load_level(level_dir + "level.tscn")
 
 	get_tree().node_added.connect(_on_child_entered_tree.bind())
 
@@ -41,9 +41,9 @@ func _ready():
 func spawn_paddle():
 	var paddle:Node2D = Paddle.instantiate()
 	add_child(paddle)
-	paddle.position = Vector2(650, 880)
+	paddle.position = Vector2(1000, 1040)
 
-func spawn_ball():
+func spawn_ball(add_to_count:bool = true):
 	if not can_spawn_balls:
 		return
 	else:
@@ -56,8 +56,8 @@ func spawn_ball():
 		paddle.call_deferred("receive_ball", ball)
 
 		change_speed.emit(speed_mult)
-
-		ball_count += 1
+		if add_to_count:
+			ball_count += 1
  
 func _on_ball_lost(ball):
 	if ball.is_in_group('Ball'):
@@ -129,27 +129,24 @@ func win():
 	$"LevelContent".queue_free()
 
 	var regex:RegEx = RegEx.new()
-	regex.compile(r'\d+\.tscn')
-	var match:RegExMatch = regex.search(current_level_path)
+	regex.compile(r'\d+')
+	var match:RegExMatch = regex.search(level_dir)
 
-	var dir:String = current_level_path.split(match.get_string(), false)[0]
-	var file:String = current_level_path.split(dir, false)[0]
-	var level_num:int = file.split('.tscn')[0].to_int() + 1
-	
-	var temp_path = "".join([dir, str(level_num), ".tscn"])
+	var base_dir:String = level_dir.split(match.get_string(), false)[0]
+	var level_num:int = match.get_string().to_int() + 1
 
-	if FileAccess.file_exists(temp_path):
-		current_level_path = temp_path
-		load_level(current_level_path)
+	if FileAccess.file_exists(base_dir + str(level_num) + "/level.tscn"):
+		level_dir = base_dir + str(level_num)
+		load_level(base_dir + str(level_num) + "/level.tscn")
+
 		can_spawn_balls = true
+		spawn_ball(false)
 	else:
 		print("No levels left.")
+		get_tree().quit()
 		return
 
 func _on_child_entered_tree(node:Node):
-	if node.is_in_group('Brick'):
-		init_brick(node)
-
 	if node.is_in_group('Ball'):
 		change_speed.emit(speed_mult)
 		if not self.is_connected('change_speed', node.set_speed):
@@ -187,7 +184,7 @@ func process_pickup(type:String):
 
 func load_level(filepath:String):
 	if FileAccess.file_exists(filepath):
-		var level_content_scene = load(current_level_path)
+		var level_content_scene = load(filepath)
 		var level_content:Node2D = level_content_scene.instantiate()
 		level_content.name = "LevelContent"
 		add_child(level_content, true)

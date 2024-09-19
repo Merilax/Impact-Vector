@@ -1,5 +1,8 @@
 extends Node2D
 
+@export var hit_sound_comp:AudioStreamPlayer2D
+@export var magnet_sound:AudioStreamPlayer2D
+
 var magnetised:bool = false
 var single_use_magnet:bool = true
 var width:float = 0
@@ -41,8 +44,15 @@ func receive_ball(ball:RigidBody2D):
 		ball.reparent(self)
 
 		balls.append(ball)
+		if magnet_sound:
+			magnet_sound.play()
 	else:
 		ball.linear_velocity = calculate_bounce_vector(ball)
+
+		if hit_sound_comp: hit_sound_comp.play()
+		
+		await get_tree().create_tween().tween_property($Sprite2D, "position", Vector2(0, 10), 0.1).finished
+		get_tree().create_tween().tween_property($Sprite2D, "position", Vector2(0, 0), 0.1)
 
 func release_magnet():
 	for ball:RigidBody2D in balls:
