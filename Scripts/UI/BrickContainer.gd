@@ -6,7 +6,7 @@ signal set_active_brick_scene(brick_scene:PackedScene)
 
 func _ready() -> void:
 	for FilePath:String in DirAccess.get_files_at("res://Scenes/UI/Bricks/"):
-		var BrickRect:PackedScene = load("res://Scenes/UI/Bricks/" + FilePath)
+		var BrickRect:PackedScene = load("res://Scenes/UI/Bricks/" + FilePath.trim_suffix(".remap"))
 		bricks.append(BrickRect)
 
 		var panel = PanelContainer.new()

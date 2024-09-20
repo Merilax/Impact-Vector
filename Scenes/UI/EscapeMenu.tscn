@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7i168t34cg33"]
+
+[ext_resource type="Script" path="res://Scripts/UI/EscapeMenu.gd" id="1_2hvqt"]
+
+[node name="EscapeMenu" type="CenterContainer" node_paths=PackedStringArray("return_button", "settings_button", "save_and_quit_button")]
+script = ExtResource("1_2hvqt")
+return_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Return")
+settings_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Settings")
+save_and_quit_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Save&Quit")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="EscapeMenu" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Return" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
+layout_mode = 2
+text = "Return"
+
+[node name="Settings" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Save&Quit" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
+layout_mode = 2
+text = "Save and Quit (not really, but soon)"

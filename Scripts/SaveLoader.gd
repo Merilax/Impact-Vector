@@ -1,19 +1,25 @@
 class_name SaveLoader
 extends Node
 
-func _ready():
-	load_settings()
+signal loaded_settings()
+signal loaded_gamedata()
+signal saved_settings()
+signal saved_gamedata()
 
 func load_settings() -> SaveSettings:
+	loaded_settings.emit()
 	return _on_load_settings()
 
 func save_settings() -> SaveSettings:
+	saved_settings.emit()
 	return _on_save_settings()
 
 func load_gamedata():
+	loaded_gamedata.emit()
 	_on_load_gamedata()
 
 func save_gamedata():
+	saved_gamedata.emit()
 	_on_save_gamedata()
 
 func _on_save_settings() -> SaveSettings:

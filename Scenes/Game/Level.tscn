@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=11 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Main.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_cwvof"]
+[ext_resource type="Script" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
+[ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
+[ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
 [ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
@@ -86,3 +89,36 @@ label_settings = ExtResource("9_5v2rt")
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 alignment = 1
+
+[node name="EscapeLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("game_root", "escape_menu", "settings_menu")]
+process_mode = 3
+visible = false
+script = ExtResource("7_1osje")
+game_root = NodePath("..")
+escape_menu = NodePath("UI/MarginContainer2/EscapeMenu")
+settings_menu = NodePath("UI/MarginContainer2/SettingMenu")
+
+[node name="UI" type="Control" parent="EscapeLayer"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_cwvof")
+
+[node name="MarginContainer2" type="MarginContainer" parent="EscapeLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EscapeMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("8_ds3nv")]
+layout_mode = 2
+
+[node name="SettingMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("7_aufso")]
+visible = false
+layout_mode = 2

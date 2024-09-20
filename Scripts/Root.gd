@@ -4,11 +4,13 @@ extends Control
 @onready var settings_menu:Control = $PanelContainer/MarginContainer/SettingMenu
 
 func _ready():
-	MusicPlayer.set_track_type("MainMenu")
 	main_menu.start_game.connect(play_level)
 	main_menu.open_editor.connect(open_editor)
 	main_menu.open_settings_menu.connect(open_settings)
 	settings_menu.menu_closed.connect(close_settings)
+
+	SaveLoader.new().load_settings()
+	MusicPlayer.set_track_type("MainMenu")
 
 func play_level(level_dir):
 	var GameScene:PackedScene = load("res://Scenes/Game/Level.tscn")
