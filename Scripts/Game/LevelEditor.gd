@@ -1,8 +1,19 @@
 extends Node2D
+class_name LevelEditor
 
+@export var mouse_boundary:Area2D
+@export var world_border:WorldBorder
 @export var level_content:Node2D
 
-@export var dir:String = ""
+@export var place_tool:Button
+@export var erase_tool:Button
+
+@export var brick_container:GridContainer
+@export var level_name:LineEdit
+@export var save_button:Button
+
+@export var level_num:String = ""
+@export var campaign:String = "Default"
 
 @export var can_place_bricks:bool = false
 var active_brick_scene:PackedScene
@@ -11,13 +22,24 @@ var active_brick:Node2D
 var collision_detected:bool
 var illegal_collision_detected:bool
 
-func _ready():
-	$LevelMouseBoundary.mouse_entered.connect(on_mouse_enter_level_boundary)
-	$LevelMouseBoundary.mouse_exited.connect(on_mouse_leave_level_boundary)
-	$LevelMouseBoundary.input_event.connect(on_mouse_click)
-	$EditorUI/Container/MarginContainer/BrickContainer.set_active_brick_scene.connect(set_active_brick)
+var current_tool:String = "select"
 
-	find_child('SaveBtn').pressed.connect(save_level)
+func _ready():
+	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary)
+	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary)
+	mouse_boundary.input_event.connect(on_mouse_click)
+	brick_container.set_active_brick_scene.connect(set_active_brick)
+
+	world_border.show_walls(false)
+
+	save_button.pressed.connect(save_level)
+
+	place_tool.pressed.connect(set_tool.bind("select"))
+	erase_tool.pressed.connect(set_tool.bind("erase"))
+
+func set_tool(type:String):
+	if type in ["select", "erase"]:
+		current_tool = type
 
 func _process(_delta):
 	if can_place_bricks and active_brick:
@@ -52,15 +74,19 @@ func on_mouse_leave_level_boundary():
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if input.is_action_pressed("mouse_primary"):
-		if illegal_collision_detected: return
-		if collision_detected and not Input.is_action_pressed('shift'): return
-		
-		if active_brick_scene == null: return
+		if current_tool == "select":
+			if illegal_collision_detected: return
+			if collision_detected and not Input.is_action_pressed('shift'): return
 
-		var new_brick:Node2D = active_brick_scene.instantiate()
-		$LevelContent.add_child(new_brick)
-		new_brick.owner = $LevelContent
-		new_brick.global_position = get_global_mouse_position()
+			if active_brick_scene == null: return
+
+			var new_brick:Node2D = active_brick_scene.instantiate()
+			level_content.add_child(new_brick)
+			new_brick.owner = level_content
+			new_brick.global_position = get_global_mouse_position()
+
+		if current_tool == "erase":
+			pass
 
 func set_collision_detected(to_set:bool):
 	collision_detected = to_set
@@ -72,9 +98,12 @@ func reset_brick_collision_state():
 	collision_detected = false
 	illegal_collision_detected = false
 
-func load_level(level_dir):
-	var Level:PackedScene = load(level_dir + "level.tscn")
+func load_level(campaign_name:String, level_folder:String):
+	var Level:PackedScene = load("user://Levels/" + campaign_name + "/" + level_folder + "/level.tscn")
 	var loaded_level_content = Level.instantiate()
+
+	var level_data:LevelData = load("user://Levels/" + campaign_name + "/" + level_folder + "/data.tres")
+	level_name.text = level_data.name
 
 	level_content.free()
 
@@ -82,64 +111,68 @@ func load_level(level_dir):
 	add_child(loaded_level_content, true)
 	level_content = loaded_level_content
 
-	dir = level_dir
+	campaign_name = campaign_name
+	level_num = level_folder
 
 func save_level():
+	if level_name.text.is_empty(): return
+
 	var new_level:PackedScene = PackedScene.new()
-	var level_dir:DirAccess = DirAccess.open("user://Levels/Standard")
+	var level_dir:DirAccess = DirAccess.open("user://Levels/" + campaign)
 
 	for brick in level_content.get_children():
 		brick.owner = level_content
 
 	if not level_dir:
 		DirAccess.make_dir_absolute("user://Levels")
-		DirAccess.make_dir_absolute("user://Levels/Standard")
-		level_dir = DirAccess.open("user://Levels/Standard")
+		DirAccess.make_dir_absolute("user://Levels/" + campaign)
+		level_dir = DirAccess.open("user://Levels/" + campaign)
 
-	if dir:
-		new_level.pack(level_content)
-		ResourceSaver.save(new_level, dir)
+	new_level.pack(level_content)
 
-		var region = Rect2($WorldBorder/WallL.global_position.x, 0, $WorldBorder/WallR.global_position.x - $WorldBorder/WallL.global_position.x, get_viewport_rect().size.y)
-		var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
+	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, get_viewport_rect().size.y)
+	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
 
-		# Compress capture
-		screenshot.save_webp(dir + "thumb.webp", true, 0.5)
-		var thumb:Image = Image.load_from_file(dir + "thumb.webp")
+	# Compress capture
+	var buffer:PackedByteArray = screenshot.save_webp_to_buffer(true, 0.4)
+	var thumb:Image = Image.new()
+	thumb.load_webp_from_buffer(buffer)
 
-		var level_data:LevelData = load(dir + "data.tres")
-		level_data.dir = dir
-		#level_data.name = TODO name edit
+	var level_data:LevelData = LevelData.new()
+
+	if level_num:
+		var dir = "user://Levels/" + campaign + "/" + level_num + "/"
+
+		level_data = load(dir + "data.tres")
 		level_data.thumbnail = ImageTexture.create_from_image(thumb)
+		level_data.name = level_name.text 
 
+		ResourceSaver.save(new_level, dir + "level.tscn")
 		ResourceSaver.save(level_data, dir + "data.tres")
-
 	else:
-		var level_num:int = level_dir.get_directories().size() + 1
+		if not FileAccess.file_exists("user://Levels/" + campaign + "/campaign.json"):
+			CampaignManager.create_campaign("user://Levels/" + campaign + "/campaign.json", campaign)
+
+		var campaign_data:Dictionary = CampaignManager.load_campaign_data("user://Levels/" + campaign + "/campaign.json")
+		if campaign_data.levels.size() == 0:
+			level_num = "1"
+		else:
+			level_num = str(campaign_data.levels[campaign_data.levels.size() - 1].to_int() + 1)
 		
-		var new_dir = "user://Levels/Standard/" + str(level_num) + "/"
+		var new_dir = "user://Levels/" + campaign + "/" + level_num + "/"
 		DirAccess.make_dir_absolute(new_dir)
 
-		new_level.pack(level_content)
-		ResourceSaver.save(new_level, new_dir + "level.tscn")
-
-		var region = Rect2($WorldBorder/WallL.global_position.x, 0, $WorldBorder/WallR.global_position.x - $WorldBorder/WallL.global_position.x, get_viewport_rect().size.y)
-		var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
-
-		screenshot.save_webp(new_dir + "thumb.webp", true, 0.5)
-		var thumb:Image = Image.load_from_file(new_dir + "thumb.webp")
-
-		var level_data:LevelData = LevelData.new()
-		level_data.dir = new_dir
-		level_data.name = "Standard " + str(level_num)
+		level_data.name = level_name.text # TODO
 		level_data.thumbnail = ImageTexture.create_from_image(thumb)
 
+		ResourceSaver.save(new_level, new_dir + "level.tscn")
 		ResourceSaver.save(level_data, new_dir + "data.tres")
+		CampaignManager.add_campaign_level("user://Levels/Default/campaign.json", level_num)
 
 	go_back()
-	
+
 func go_back():
 	var MainScene:PackedScene = load("res://Scenes/Root.tscn")
 	var main_scene = MainScene.instantiate()
 	add_sibling(main_scene)
-	self.queue_free()
+	queue_free()

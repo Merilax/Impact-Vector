@@ -1,17 +1,24 @@
 extends Node2D
+class_name Game
 
-@export var level_dir:String
+@export var campaign_name:String
+@export var level_num:String
 
-var Ball = preload("res://Scenes/Game/Ball.tscn")
-var Paddle = preload("res://Scenes/Game/Paddle.tscn")
+var BallScene = preload("res://Scenes/Game/Ball.tscn")
+var PaddleScene = preload("res://Scenes/Game/Paddle.tscn")
 
 var PickupComp = preload("res://Scenes/Game/Components/PickupComp.tscn")
 var PickupSpeed = preload("res://Scenes/Game/PickupSpeed.tscn")
 var PickupSlow = preload("res://Scenes/Game/PickupSlow.tscn")
 
+var score:int = 0
+
+var lives:int = 3
+var total_lives:int = 3
+
 var brick_count:int = 0
 var ball_count:int = 0
-var lives:int = 3
+
 var speed_mult:float = 1
 
 var can_spawn_balls:bool = true
@@ -21,6 +28,10 @@ var can_spawn_balls:bool = true
 @onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer')
 var BallLifeRect = preload("res://Scenes/UI/BallLifeRect.tscn")
 
+@export var world_border:WorldBorder
+var level_content:Node2D
+
+signal game_over_signal(game_won:bool)
 signal change_speed(mult:float)
 
 func _ready():
@@ -31,7 +42,7 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult.bind())
 
-	load_level(level_dir + "level.tscn")
+	load_level("user://Levels/" + campaign_name + "/" + level_num + "/level.tscn")
 
 	get_tree().node_added.connect(_on_child_entered_tree.bind())
 
@@ -39,7 +50,7 @@ func _ready():
 	spawn_ball()
 
 func spawn_paddle():
-	var paddle:Node2D = Paddle.instantiate()
+	var paddle:Paddle = PaddleScene.instantiate()
 	add_child(paddle)
 	paddle.position = Vector2(1000, 1040)
 
@@ -47,7 +58,7 @@ func spawn_ball(add_to_count:bool = true):
 	if not can_spawn_balls:
 		return
 	else:
-		var ball = Ball.instantiate()
+		var ball:Ball = BallScene.instantiate()
 		$Balls.call_deferred("add_child", ball)
 		var paddle = get_node("Paddle")
 		ball.position.x = paddle.global_position.x
@@ -61,8 +72,8 @@ func spawn_ball(add_to_count:bool = true):
  
 func _on_ball_lost(ball):
 	if ball.is_in_group('Ball'):
+		ball.collision_mask = 0 # Let the ball visibly get lost, eventually dying off-screen
 		ball_count -= 1
-		ball.die()
 
 		if ball_count <= 0:
 			lives -= 1
@@ -78,10 +89,12 @@ func _on_ball_lost(ball):
 			else:
 				life_counter.get_child(0).queue_free()
 			
+			await get_tree().create_timer(1).timeout
+			ball.die()
+
 			if lives <= 0:
-				game_over()
+				game_over(false)
 			else:
-				await get_tree().create_timer(1).timeout
 				spawn_ball()
 				speed_mult = 1
 				change_speed.emit(speed_mult) # Reset speed
@@ -89,17 +102,17 @@ func _on_ball_lost(ball):
 func add_life():
 	var livesVar:Label
 	if lives == 3:
-		for item:Node in life_counter.get_children():
+		for item:Node in life_counter.get_children()	:
 			item.queue_free()
 		life_counter.add_child(BallLifeRect.instantiate())
 		var newLabel = Label.new()
 		newLabel.name = 'LivesVar'
 		newLabel.text = ' x 3'
-		#newLabel.label_settings = load("res://GDResources/LabelMedium.tres")
 		life_counter.add_child(newLabel, true)
 		livesVar = newLabel
 
 	lives += 1
+	total_lives += 1
 
 	if lives > 3:
 		if not livesVar:
@@ -111,40 +124,45 @@ func add_life():
 func add_score(amount:int):
 	score_counter.add_score(amount)
 
+	var _previous:int = score
+	score += amount
+
+	#if previous % 1000 < score % 1000:
+	#	add_life()
+
 func _on_brick_destroyed():
 	brick_count -= 1
 	if brick_count <= 0:
 		win()
 
-func game_over():
+func game_over(game_won:bool):
 	can_spawn_balls = false
-	get_tree().quit()
-	pass # TODO: Game over
+	game_over_signal.emit(game_won)
 
 func win():
-	for ball:Node in $Balls.get_children():
+	for ball:Ball in $Balls.get_children():
 		ball.queue_free()
 	can_spawn_balls = false
 	
-	$"LevelContent".queue_free()
+	level_content.queue_free()
 
-	var regex:RegEx = RegEx.new()
-	regex.compile(r'\d+')
-	var match:RegExMatch = regex.search(level_dir)
+	var campaign_data:Dictionary = CampaignManager.load_campaign_data("user://Levels/" + campaign_name + "/campaign.json")
+	var current_idx:int = campaign_data.levels.find(level_num)
+	
+	if current_idx == -1 or current_idx >= campaign_data.levels.size() - 1:
+		game_over(true)
+		return
 
-	var base_dir:String = level_dir.split(match.get_string(), false)[0]
-	var level_num:int = match.get_string().to_int() + 1
+	var next_level_num:String = campaign_data.levels[current_idx + 1]
 
-	if FileAccess.file_exists(base_dir + str(level_num) + "/level.tscn"):
-		level_dir = base_dir + str(level_num)
-		load_level(base_dir + str(level_num) + "/level.tscn")
+	if FileAccess.file_exists("user://Levels/" + campaign_name + "/" + next_level_num + "/level.tscn"):
+		level_num = next_level_num
+		load_level("user://Levels/" + campaign_name + "/" + next_level_num + "/level.tscn")
 
 		can_spawn_balls = true
 		spawn_ball(false)
 	else:
-		print("No levels left.")
-		get_tree().quit()
-		return
+		game_over(true)
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
@@ -163,7 +181,7 @@ func init_brick(node):
 			node.brick_destroyed.connect(_on_brick_destroyed.bind())
 		if node.is_in_group('Destructible'):
 			brick_count += 1
-			if randi() % 5 == 0:
+			if randi() % 4 == 0:
 				var pickup_comp:PickupComponent = PickupComp.instantiate()
 				node.add_child(pickup_comp)
 				node.pickup_comp = pickup_comp
@@ -185,11 +203,12 @@ func process_pickup(type:String):
 func load_level(filepath:String):
 	if FileAccess.file_exists(filepath):
 		var level_content_scene = load(filepath)
-		var level_content:Node2D = level_content_scene.instantiate()
-		level_content.name = "LevelContent"
-		add_child(level_content, true)
+		var new_level_content:Node2D = level_content_scene.instantiate()
+		new_level_content.name = "LevelContent"
+		add_child(new_level_content, true)
+		level_content = new_level_content
 		
-		for brick:Node2D in level_content.get_children():
+		for brick:Node2D in new_level_content.get_children():
 			init_brick(brick)
 	else:
 		push_error('Level filepath does not exist: ' + filepath)

@@ -4,9 +4,9 @@
 
 [node name="EscapeMenu" type="CenterContainer" node_paths=PackedStringArray("return_button", "settings_button", "save_and_quit_button")]
 script = ExtResource("1_2hvqt")
-return_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Return")
+return_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Resume")
 settings_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Settings")
-save_and_quit_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Save&Quit")
+save_and_quit_button = NodePath("PanelContainer/MarginContainer/EscapeMenu/Quit")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -18,14 +18,14 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Return" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
+[node name="Resume" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
 layout_mode = 2
-text = "Return"
+text = "Resume"
 
 [node name="Settings" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
 layout_mode = 2
 text = "Settings"
 
-[node name="Save&Quit" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
+[node name="Quit" type="Button" parent="PanelContainer/MarginContainer/EscapeMenu"]
 layout_mode = 2
-text = "Save and Quit (not really, but soon)"
+text = "Back to menu"

@@ -1,4 +1,5 @@
 extends Node2D
+class_name Paddle
 
 @export var hit_sound_comp:AudioStreamPlayer2D
 @export var magnet_sound:AudioStreamPlayer2D

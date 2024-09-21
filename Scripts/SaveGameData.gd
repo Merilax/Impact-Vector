@@ -2,4 +2,6 @@ class_name SaveGameData
 extends Resource
 
 @export var level_path:String
-@export var save_data:Array = []
+@export var score:int
+@export var lives:int
+@export var total_lives:int

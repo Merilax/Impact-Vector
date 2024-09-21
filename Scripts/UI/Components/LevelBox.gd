@@ -4,8 +4,8 @@ extends Control
 @export var play_button:Button
 @export var edit_button:Button
 
-signal play_level(dir:String)
-signal edit_level(dir:String)
+signal play_level(level_num:String)
+signal edit_level(level_num:String)
 
 func _ready():
 	if play_button:
@@ -22,7 +22,7 @@ func _on_focus_exited() -> void:
 		buttons.hide()
 
 func _on_play_pressed() -> void:
-	play_level.emit(get_meta("level_dir"))
+	play_level.emit(get_meta("folder_num"))
 
 func _on_edit_pressed() -> void:
-	edit_level.emit(get_meta("level_dir"))
+	edit_level.emit(get_meta("folder_num"))

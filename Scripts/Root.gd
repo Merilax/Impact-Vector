@@ -12,20 +12,21 @@ func _ready():
 	SaveLoader.new().load_settings()
 	MusicPlayer.set_track_type("MainMenu")
 
-func play_level(level_dir):
+func play_level(campaign, level_num):
 	var GameScene:PackedScene = load("res://Scenes/Game/Level.tscn")
 	var game:Node2D = GameScene.instantiate()
-	game.level_dir = level_dir
+	game.level_num = level_num
+	game.campaign_name = campaign
 	add_sibling(game)
 	MusicPlayer.set_track_type("InGame")
 	self.queue_free()
 
-func open_editor(level_dir:String = ""):
-	var LevelEditor:PackedScene = load("res://Scenes/Game/LevelEditor.tscn")
-	var editor:Node2D = LevelEditor.instantiate()
+func open_editor(campaign:String = "Default", level_num:String = ""):
+	var LevelEditorScene:PackedScene = load("res://Scenes/Game/LevelEditor.tscn")
+	var editor:LevelEditor = LevelEditorScene.instantiate()
 	add_sibling(editor)
-	if level_dir:
-		editor.load_level(level_dir)
+	if level_num:
+		editor.load_level(campaign, level_num)
 	self.queue_free()
 
 func open_settings():

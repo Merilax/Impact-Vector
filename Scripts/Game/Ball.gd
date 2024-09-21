@@ -1,4 +1,5 @@
 extends RigidBody2D
+class_name Ball
 
 @export var damage :float = 1
 @export var speed :float = 800

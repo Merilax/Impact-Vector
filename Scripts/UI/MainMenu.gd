@@ -5,10 +5,11 @@ extends Control
 @export var settings_button:Button
 @export var exit_button:Button
 
+@export var campaign_folder:String = "Default"
 @export var level_selector:GridContainer
 
-signal start_game(level_path:String)
-signal open_editor(level_path:String)
+signal start_game(campaign:String, level_path:String)
+signal open_editor(campaign:String, level_path:String)
 signal open_settings_menu()
 
 func _ready():
@@ -24,15 +25,15 @@ func _ready():
 	if exit_button:
 		exit_button.pressed.connect(quit)
 
-func play_level(level_dir:String):
-	if FileAccess.file_exists(level_dir + "level.tscn"):
-		start_game.emit(level_dir)
+func play_level(level_num:String):
+	if FileAccess.file_exists("user://Levels/" + campaign_folder + "/campaign.json") and FileAccess.file_exists("user://Levels/" + campaign_folder + "/" + level_num + "/level.tscn"):
+		start_game.emit(campaign_folder, level_num)
 
-func edit_level(level_dir:String = ""):
-	if FileAccess.file_exists(level_dir + "level.tscn"):
-		open_editor.emit(level_dir)
-	else:
+func edit_level(level_num:String = ""):
+	if level_num.is_empty():
 		open_editor.emit()
+	elif FileAccess.file_exists("user://Levels/" + campaign_folder + "/" + level_num + "/level.tscn"):
+		open_editor.emit(campaign_folder, level_num)
 
 func goto_settings():
 	open_settings_menu.emit()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=12 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Main.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
@@ -9,17 +9,19 @@
 [ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
+[ext_resource type="Script" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world_border")]
 script = ExtResource("1_vf5nn")
+world_border = NodePath("WorldBorder")
 
 [node name="WorldBorder" parent="." instance=ExtResource("2_b1du0")]
 
 [node name="DeathZone" type="Area2D" parent="."]
-position = Vector2(766, 1213)
+position = Vector2(766, 1168)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
 shape = SubResource("RectangleShape2D_pborx")
@@ -47,10 +49,6 @@ offset_top = -47.5
 offset_bottom = 47.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
 [node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer"]
 layout_mode = 2
@@ -122,3 +120,73 @@ layout_mode = 2
 [node name="SettingMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("7_aufso")]
 visible = false
 layout_mode = 2
+
+[node name="GameOverLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("game_root", "game_over_header", "final_score", "total_lives", "return_button")]
+process_mode = 3
+visible = false
+script = ExtResource("10_lyp6h")
+game_root = NodePath("..")
+game_over_header = NodePath("UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/GameOver")
+final_score = NodePath("UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/ScoreVar")
+total_lives = NodePath("UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer/LivesVar")
+return_button = NodePath("UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BackBtn")
+
+[node name="UI" type="Control" parent="GameOverLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_cwvof")
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOverLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="GameOverLayer/UI/CenterContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GameOver" type="Label" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Score" type="Label" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Score:"
+
+[node name="ScoreVar" type="Label" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="Lives" type="Label" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Total lives:"
+
+[node name="LivesVar" type="Label" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="BackBtn" type="Button" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back to menu"

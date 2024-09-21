@@ -1,13 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1ugkpvbo0utw"]
+[gd_scene load_steps=7 format=3 uid="uid://b1ugkpvbo0utw"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_ik1rj"]
+[ext_resource type="Script" path="res://Scripts/Game/WorldBorder.gd" id="1_monqw"]
 [ext_resource type="Script" path="res://Scripts/Game/Wall.gd" id="2_bky3j"]
 [ext_resource type="AudioStream" uid="uid://bj2j6veyojd40" path="res://Assets/Audio/SFX/bfh1_rock_hit_01.ogg" id="3_tqyyy"]
 [ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="4_dh06o"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hr764"]
 
-[node name="WorldBorder" type="Node2D"]
+[node name="WorldBorder" type="Node2D" node_paths=PackedStringArray("wall_right", "wall_left", "wall_up")]
+script = ExtResource("1_monqw")
+wall_right = NodePath("WallR")
+wall_left = NodePath("WallL")
+wall_up = NodePath("WallUp")
 
 [node name="WallUp" type="StaticBody2D" parent="." groups=["Hitable", "Wall"]]
 position = Vector2(757, 0)
