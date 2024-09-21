@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://ct3pryubbc463"]
+[gd_scene load_steps=4 format=3 uid="uid://ct3pryubbc463"]
 
-[ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="1_2wkfb"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="1_h4eun"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
 
@@ -14,10 +13,14 @@ offset_right = 0.679996
 offset_bottom = -0.360008
 size_flags_horizontal = 3
 theme = ExtResource("1_h4eun")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 script = ExtResource("2_83bsj")
-buttons = NodePath("HBoxContainer")
-play_button = NodePath("HBoxContainer/Play")
-edit_button = NodePath("HBoxContainer/Edit")
+buttons = NodePath("MarginContainer")
+play_button = NodePath("MarginContainer/HBoxContainer/Play")
+edit_button = NodePath("MarginContainer/HBoxContainer/Edit")
 metadata/_edit_use_anchors_ = true
 
 [node name="LevelBox" type="VBoxContainer" parent="."]
@@ -31,8 +34,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="LevelName" type="Label" parent="LevelBox"]
 layout_mode = 2
-label_settings = ExtResource("1_2wkfb")
 horizontal_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Thumbnail" type="TextureRect" parent="LevelBox"]
 layout_mode = 2
@@ -40,18 +43,25 @@ size_flags_vertical = 3
 expand_mode = 4
 stretch_mode = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="Play" type="Button" parent="HBoxContainer"]
+[node name="Play" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Play"
 
-[node name="Edit" type="Button" parent="HBoxContainer"]
+[node name="Edit" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0

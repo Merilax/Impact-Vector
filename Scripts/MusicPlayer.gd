@@ -25,14 +25,14 @@ func play_set_type():
             var dir:DirAccess = DirAccess.open("res://Assets/Audio/Music/MainMenu/")
             var files:PackedStringArray = dir.get_files()
             if files.size() > 0:
-                var track_file = ("res://Assets/Audio/Music/MainMenu/" + files[randi_range(0, files.size() - 1)].trim_suffix(".remap")).split(".import", false)[0]
+                var track_file = ("res://Assets/Audio/Music/MainMenu/" + files[randi_range(0, files.size() - 1)].trim_suffix(".remap")).trim_suffix(".import")
                 var track:AudioStream = ResourceLoader.load(track_file)
                 self.stream = track
         "ingame":
             var dir:DirAccess = DirAccess.open("res://Assets/Audio/Music/InGame/")
             var files = dir.get_files()
             if files.size() > 0:
-                var track_file = ("res://Assets/Audio/Music/InGame/" + files[randi_range(0, files.size() - 1)].trim_suffix(".remap")).split(".import", false)[0]
+                var track_file = ("res://Assets/Audio/Music/InGame/" + files[randi_range(0, files.size() - 1)].trim_suffix(".remap")).trim_suffix(".import")
                 var track:AudioStream = ResourceLoader.load(track_file)
                 self.stream = track
 

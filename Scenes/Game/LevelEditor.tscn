@@ -21,20 +21,6 @@ brick_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/Bri
 level_name = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/LineEdit")
 save_button = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/SaveBtn")
 
-[node name="LevelEditor" type="Node2D" parent="."]
-
-[node name="LevelContent" type="Node2D" parent="LevelEditor"]
-
-[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
-
-[node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
-position = Vector2(59, 0)
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
-position = Vector2(701.5, 476)
-shape = SubResource("RectangleShape2D_k1bnw")
-
 [node name="EditorUI" type="CanvasLayer" parent="."]
 
 [node name="Container" type="PanelContainer" parent="EditorUI"]
@@ -119,3 +105,17 @@ tooltip_text = "Erase tool"
 icon = ExtResource("7_evgdw")
 icon_alignment = 1
 expand_icon = true
+
+[node name="LevelEditor" type="Node2D" parent="."]
+
+[node name="LevelContent" type="Node2D" parent="LevelEditor"]
+
+[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
+
+[node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
+position = Vector2(59, 0)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
+position = Vector2(701.5, 476)
+shape = SubResource("RectangleShape2D_k1bnw")

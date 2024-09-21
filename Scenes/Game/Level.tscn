@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=13 format=3 uid="uid://la6hglf0tura"]
 
-[ext_resource type="Script" path="res://Scripts/Game/Main.gd" id="1_vf5nn"]
+[ext_resource type="Script" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
+[ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_cwvof"]
 [ext_resource type="Script" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
@@ -14,9 +15,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("world_border")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border")]
 script = ExtResource("1_vf5nn")
 world_border = NodePath("WorldBorder")
+
+[node name="Background" type="Parallax2D" parent="."]
+modulate = Color(0.244776, 0.244776, 0.244776, 1)
+repeat_times = 99
+script = ExtResource("2_hdl1t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
 
 [node name="WorldBorder" parent="." instance=ExtResource("2_b1du0")]
 
@@ -39,26 +47,27 @@ grow_horizontal = 0
 theme = ExtResource("3_cwvof")
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+[node name="PanelContainer" type="PanelContainer" parent="UILayer/UI"]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -47.5
-offset_bottom = 47.5
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI/PanelContainer"]
 layout_mode = 2
 
-[node name="ScoreTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="GridContainer" type="GridContainer" parent="UILayer/UI/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ScoreTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Score"
 label_settings = ExtResource("9_5v2rt")
 
-[node name="ScoreVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="ScoreVar" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
@@ -66,24 +75,24 @@ label_settings = ExtResource("9_5v2rt")
 horizontal_alignment = 2
 script = ExtResource("10_ers3y")
 
-[node name="SpeedTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="SpeedTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Speed"
 label_settings = ExtResource("9_5v2rt")
 
-[node name="SpeedVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="SpeedVar" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "100%"
 label_settings = ExtResource("9_5v2rt")
 horizontal_alignment = 2
 script = ExtResource("10_0egqj")
 
-[node name="LivesTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="LivesTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Lives"
 label_settings = ExtResource("9_5v2rt")
 
-[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 alignment = 1

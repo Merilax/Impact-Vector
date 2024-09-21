@@ -1,6 +1,6 @@
 extends Control
 
-@export var buttons:HBoxContainer
+@export var buttons:Control
 @export var play_button:Button
 @export var edit_button:Button
 

@@ -70,9 +70,14 @@ func spawn_ball(add_to_count:bool = true):
 		if add_to_count:
 			ball_count += 1
  
-func _on_ball_lost(ball):
-	if ball.is_in_group('Ball'):
-		ball.collision_mask = 0 # Let the ball visibly get lost, eventually dying off-screen
+func _on_ball_lost(node:Node2D):
+	if node.is_in_group("Pickup"):
+		await get_tree().create_timer(3).timeout
+		if node:
+			node.queue_free()
+	
+	if node.is_in_group('Ball'):
+		node.collision_mask = 0 # Let the ball visibly get lost, eventually dying off-screen
 		ball_count -= 1
 
 		if ball_count <= 0:
@@ -90,7 +95,7 @@ func _on_ball_lost(ball):
 				life_counter.get_child(0).queue_free()
 			
 			await get_tree().create_timer(1).timeout
-			ball.die()
+			node.die()
 
 			if lives <= 0:
 				game_over(false)
@@ -207,6 +212,8 @@ func load_level(filepath:String):
 		new_level_content.name = "LevelContent"
 		add_child(new_level_content, true)
 		level_content = new_level_content
+
+		$Background.retrigger() # Might tie to level data in the future
 		
 		for brick:Node2D in new_level_content.get_children():
 			init_brick(brick)

@@ -38,8 +38,11 @@ func _ready():
 	erase_tool.pressed.connect(set_tool.bind("erase"))
 
 func set_tool(type:String):
-	if type in ["select", "erase"]:
+	if type == "select":
 		current_tool = type
+	if type == "erase":
+		current_tool = type
+		set_active_brick(null)
 
 func _process(_delta):
 	if can_place_bricks and active_brick:
@@ -55,7 +58,8 @@ func on_mouse_enter_level_boundary():
 	can_place_bricks = true
 
 	if active_brick_scene == null: return
-
+	if current_tool != "select": return
+	
 	active_brick = active_brick_scene.instantiate()
 
 	level_content.add_child(active_brick)
@@ -86,7 +90,15 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			new_brick.global_position = get_global_mouse_position()
 
 		if current_tool == "erase":
-			pass
+			set_active_brick(null)
+			var space_state = get_world_2d().direct_space_state
+			var query = PhysicsPointQueryParameters2D.new()
+			query.position = get_global_mouse_position()
+			query.collision_mask = 4
+			var result = space_state.intersect_point(query)
+			
+			if result.size() > 0:
+				result[0].collider.queue_free()
 
 func set_collision_detected(to_set:bool):
 	collision_detected = to_set
