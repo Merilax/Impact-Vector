@@ -1,13 +1,10 @@
-extends TextureRect
+extends Control
+class_name EditorBrickSample
 
-@export var scene_name:String
+@export var resource_path:String
+@export var texture_rect:TextureRect
 
-signal set_active_brick(Brick:PackedScene)
+signal set_active_res(resource)
 
-func on_click(event:InputEvent):
-	if event.is_pressed():
-		var Brick = load("res://Scenes/Game/Bricks/" + scene_name + ".tscn")
-		if Brick == null: 
-			set_active_brick.emit(null)
-		else:
-			set_active_brick.emit(Brick)
+func _on_gui_input(event:InputEvent) -> void:
+	if event.is_pressed(): set_active_res.emit(resource_path)

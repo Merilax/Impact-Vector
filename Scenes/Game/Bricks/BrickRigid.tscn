@@ -2,7 +2,7 @@
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
 [ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickRigid.gd" id="2_sndss"]
-[ext_resource type="Texture2D" uid="uid://2dinph02wcbc" path="res://Assets/Visuals/BrickGlass.png" id="3_pvsu6"]
+[ext_resource type="Texture2D" uid="uid://dl6l7518cnvah" path="res://Assets/Visuals/BrickTextures/BaseTypes/BrickRigid.png" id="3_waav6"]
 [ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_o56l3"]
 [ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Game/Components/HealthComp.tscn" id="5_mnfrv"]
 [ext_resource type="PackedScene" uid="uid://rjotxsowve6o" path="res://Scenes/Game/Components/ScoreComp.tscn" id="6_6yfpm"]
@@ -32,7 +32,7 @@ destroy_sound_comp = NodePath("DestroySoundComp")
 editor_hitbox = NodePath("EditorHitboxComp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_pvsu6")
+texture = ExtResource("3_waav6")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 visible = false

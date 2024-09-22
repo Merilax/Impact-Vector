@@ -1,23 +1,26 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=9 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
+[ext_resource type="Texture2D" uid="uid://cxyyyoeudto8h" path="res://Assets/Visuals/Icons/brush.svg" id="5_k43gj"]
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="6_7hwva"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="7_evgdw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1433, 938)
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "erase_tool", "brick_container", "level_name", "save_button")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "paint_tool", "erase_tool", "brick_container", "texture_container", "level_name", "save_button")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 level_content = NodePath("LevelEditor/LevelContent")
-place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Select")
+place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Place")
+paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Paint")
 erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Erase")
-brick_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/BrickContainer")
+brick_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/BrickGrid")
+texture_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/TextureGrid")
 level_name = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/LineEdit")
 save_button = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/SaveBtn")
 
@@ -46,10 +49,18 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="BrickContainer" type="GridContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer"]
+[node name="BrickGrid" type="GridContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer"]
 layout_mode = 2
 columns = 4
 script = ExtResource("2_ylr5r")
+brick_or_texture = null
+
+[node name="TextureGrid" type="GridContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+columns = 4
+script = ExtResource("2_ylr5r")
+brick_or_texture = "Texture"
 
 [node name="MarginContainer2" type="MarginContainer" parent="EditorUI/Container/VBoxContainer"]
 layout_mode = 2
@@ -91,11 +102,18 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer"]
 layout_mode = 2
 
-[node name="Select" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+[node name="Place" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 tooltip_text = "Place tool"
 icon = ExtResource("6_7hwva")
+expand_icon = true
+
+[node name="Paint" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+tooltip_text = "Paint tool"
+icon = ExtResource("5_k43gj")
 expand_icon = true
 
 [node name="Erase" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]

@@ -1,5 +1,6 @@
 extends StaticBody2D
 
+@export var texture_path:String # Keep empty to use default editor sprite
 @export var health_comp:HealthComponent
 @export var score_comp:ScoreComponent
 @export var hit_sound_comp:AudioStreamPlayer2D
@@ -11,6 +12,9 @@ signal process_score(score:int)
 signal brick_destroyed()
 
 func _ready():
+	if texture_path:
+		$Sprite2D.texture = load(texture_path)
+
 	if health_comp:
 		health_comp.health = 2
 		health_comp.health_depleted.connect(die.bind())

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://c47txkxxgap4t"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_eycb0"]
+
+[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("texture_rect")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_eycb0")
+texture_rect = NodePath("MarginContainer/BrickRect")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="BrickRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+stretch_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -6,9 +6,12 @@ class_name LevelEditor
 @export var level_content:Node2D
 
 @export var place_tool:Button
+@export var paint_tool:Button
 @export var erase_tool:Button
 
 @export var brick_container:GridContainer
+@export var texture_container:GridContainer
+
 @export var level_name:LineEdit
 @export var save_button:Button
 
@@ -19,56 +22,75 @@ class_name LevelEditor
 var active_brick_scene:PackedScene
 var active_brick:Node2D
 
+var active_texture:Texture
+var active_texture_path:String
+
 var collision_detected:bool
 var illegal_collision_detected:bool
 
-var current_tool:String = "select"
+var current_tool:String = "place"
 
 func _ready():
 	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary)
 	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary)
 	mouse_boundary.input_event.connect(on_mouse_click)
-	brick_container.set_active_brick_scene.connect(set_active_brick)
+
+	brick_container.set_active_res_signal.connect(set_active_res)
+	texture_container.set_active_res_signal.connect(set_active_res)
 
 	world_border.show_walls(false)
 
 	save_button.pressed.connect(save_level)
 
-	place_tool.pressed.connect(set_tool.bind("select"))
+	place_tool.pressed.connect(set_tool.bind("place"))
+	paint_tool.pressed.connect(set_tool.bind("paint"))
 	erase_tool.pressed.connect(set_tool.bind("erase"))
 
 func set_tool(type:String):
-	if type == "select":
+	if type == "place":
 		current_tool = type
+		brick_container.show()
+		texture_container.hide()
+	if type == "paint":
+		current_tool = type
+		set_active_res("")
+		brick_container.hide()
+		texture_container.show()
 	if type == "erase":
 		current_tool = type
-		set_active_brick(null)
+		set_active_res()
+		brick_container.hide()
+		texture_container.hide()
 
 func _process(_delta):
 	if can_place_bricks and active_brick:
 		active_brick.position = get_global_mouse_position()
 
-func set_active_brick(Brick:PackedScene):
-	if Brick == null: 
+func set_active_res(res_path:String = ""):
+	if res_path == "":
 		active_brick_scene = null
-	else:
-		active_brick_scene = Brick
+		active_texture = null
+		return
+
+	if current_tool == "place":
+		active_brick_scene = load(res_path)
+	if current_tool == "paint":
+		active_texture = load(res_path)
+		active_texture_path = res_path
 
 func on_mouse_enter_level_boundary():
 	can_place_bricks = true
 
-	if active_brick_scene == null: return
-	if current_tool != "select": return
-	
-	active_brick = active_brick_scene.instantiate()
+	if current_tool == "place": 
+		if active_brick_scene == null: return
+		active_brick = active_brick_scene.instantiate()
+		level_content.add_child(active_brick)
 
-	level_content.add_child(active_brick)
-
-	active_brick.editor_hitbox.collision_detected.connect(set_collision_detected.bind(true))
-	active_brick.editor_hitbox.collision_freed.connect(set_collision_detected.bind(false))
-	active_brick.editor_hitbox.illegal_collision_detected.connect(set_illegal_collision_detected.bind(true))
-	active_brick.editor_hitbox.illegal_collision_freed.connect(set_illegal_collision_detected.bind(false))
-	active_brick.editor_hitbox.tree_exited.connect(reset_brick_collision_state)
+		active_brick.editor_hitbox.collision_detected.connect(set_collision_detected.bind(true))
+		active_brick.editor_hitbox.collision_freed.connect(set_collision_detected.bind(false))
+		active_brick.editor_hitbox.illegal_collision_detected.connect(set_illegal_collision_detected.bind(true))
+		active_brick.editor_hitbox.illegal_collision_freed.connect(set_illegal_collision_detected.bind(false))
+		active_brick.editor_hitbox.tree_exited.connect(reset_brick_collision_state)
 
 func on_mouse_leave_level_boundary():
 	can_place_bricks = false
@@ -77,8 +99,8 @@ func on_mouse_leave_level_boundary():
 		active_brick = null
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
-	if input.is_action_pressed("mouse_primary"):
-		if current_tool == "select":
+	if current_tool == "place":	
+		if input.is_action_pressed("mouse_primary"):
 			if illegal_collision_detected: return
 			if collision_detected and not Input.is_action_pressed('shift'): return
 
@@ -89,8 +111,24 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			new_brick.owner = level_content
 			new_brick.global_position = get_global_mouse_position()
 
-		if current_tool == "erase":
-			set_active_brick(null)
+	if current_tool == "paint":
+		if input.is_action_pressed("mouse_primary"):
+			if active_texture == null: return
+
+			var space_state = get_world_2d().direct_space_state
+			var query = PhysicsPointQueryParameters2D.new()
+			query.position = get_global_mouse_position()
+			query.collision_mask = 4
+			var result = space_state.intersect_point(query)
+			
+			if result.size() > 0:
+				result[0].collider.get_node("Sprite2D").texture = active_texture
+				result[0].collider.texture_path = active_texture_path
+		elif input.is_action_pressed("mouse_secondary"):
+			pass # hue shift shader
+
+	if current_tool == "erase":
+		if input.is_action_pressed("mouse_primary"):
 			var space_state = get_world_2d().direct_space_state
 			var query = PhysicsPointQueryParameters2D.new()
 			query.position = get_global_mouse_position()
@@ -146,7 +184,9 @@ func save_level():
 	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
 
 	# Compress capture
-	var buffer:PackedByteArray = screenshot.save_webp_to_buffer(true, 0.4)
+	@warning_ignore("integer_division")
+	screenshot.resize(screenshot.get_size().x / 4, screenshot.get_size().y / 4, Image.INTERPOLATE_LANCZOS) # Important !!!
+	var buffer:PackedByteArray = screenshot.save_webp_to_buffer(true)
 	var thumb:Image = Image.new()
 	thumb.load_webp_from_buffer(buffer)
 

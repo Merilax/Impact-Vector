@@ -41,7 +41,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_vertical = 3
 expand_mode = 4
-stretch_mode = 6
+stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 visible = false

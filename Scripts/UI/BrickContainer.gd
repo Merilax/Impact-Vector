@@ -1,30 +1,32 @@
 extends GridContainer
 
-var bricks:Array = []
+@export var brick_or_texture:String = "Brick"
 
-signal set_active_brick_scene(brick_scene:PackedScene)
+var BrickRect = preload("res://Scenes/UI/Components/BrickSample.tscn")
+
+signal set_active_res_signal(brick_scene:PackedScene)
 
 func _ready() -> void:
-	for FilePath:String in DirAccess.get_files_at("res://Scenes/UI/Bricks/"):
-		var BrickRect:PackedScene = load("res://Scenes/UI/Bricks/" + FilePath.trim_suffix(".remap"))
-		bricks.append(BrickRect)
+	var file_array:PackedStringArray = []
+	if brick_or_texture.to_lower() == "brick":
+		file_array = DirAccess.get_files_at("res://Scenes/Game/Bricks/")
+	elif brick_or_texture.to_lower() == "texture":
+		file_array = DirAccess.get_files_at("res://Assets/Visuals/BrickTextures/")
+	else: return
 
-		var panel = PanelContainer.new()
-		panel.mouse_filter = Control.MOUSE_FILTER_STOP
-		add_child(panel)
+	var filtered_array:Array = Array(file_array.duplicate()).filter(func(string): return not string.containsn(".import"))
 
-		var margin = MarginContainer.new()
-		margin.add_theme_constant_override('margin_left', 20)
-		margin.add_theme_constant_override('margin_top', 20)
-		margin.add_theme_constant_override('margin_right', 20)
-		margin.add_theme_constant_override('margin_bottom', 20)
-		
-		panel.add_child(margin)
+	for FilePath:String in filtered_array:
+		var brick_rect:EditorBrickSample = BrickRect.instantiate()
+		if brick_or_texture.to_lower() == "brick":
+			brick_rect.resource_path = "res://Scenes/Game/Bricks/" + FilePath
+			brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/BaseTypes/" + FilePath.trim_suffix(".tscn") + ".png")
+		elif brick_or_texture.to_lower() == "texture":
+			brick_rect.resource_path = "res://Assets/Visuals/BrickTextures/" + FilePath
+			brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/" + FilePath)
 
-		var brick_rect:TextureRect = BrickRect.instantiate()
-		margin.add_child(brick_rect)
-		panel.gui_input.connect(brick_rect.on_click)
-		brick_rect.set_active_brick.connect(set_active_brick)
+		add_child(brick_rect)
+		brick_rect.set_active_res.connect(set_active_res)
 
-func set_active_brick(brick_scene:PackedScene):
-	set_active_brick_scene.emit(brick_scene)
+func set_active_res(res):
+	set_active_res_signal.emit(res)
