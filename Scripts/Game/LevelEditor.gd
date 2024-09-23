@@ -87,9 +87,9 @@ func _process(_delta):
 			active_brick.global_position = Vector2(snap_to_x, snap_to_y)
 		else:
 			@warning_ignore("integer_division")
-			var snap_to_x:float = floori(get_global_mouse_position().x / 1)
+			var snap_to_x:float = floori(get_global_mouse_position().x)
 			@warning_ignore("integer_division")
-			var snap_to_y:float = floori(get_global_mouse_position().y / 1)
+			var snap_to_y:float = floori(get_global_mouse_position().y)
 			active_brick.global_position = Vector2(snap_to_x, snap_to_y)
 
 func show_options(what:String):
@@ -142,6 +142,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				result[0].collider.get_node("Sprite2D").texture = active_texture
 				result[0].collider.texture_path = active_texture_path
 				result[0].collider.set_shader_color(texture_container.shader_color)
+				result[0].collider.shader_color = texture_container.shader_color
 		elif input.is_action_pressed("mouse_secondary"):
 			pass # hue shift shader here maybe?
 
@@ -218,7 +219,7 @@ func save_level():
 
 	new_level.pack(level_content)
 
-	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, get_viewport_rect().size.y)
+	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, $LevelEditor/LevelMouseBoundary/CollisionShape2D.shape.size.y)
 	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
 
 	# Compress capture

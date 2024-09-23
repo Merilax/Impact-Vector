@@ -40,8 +40,8 @@ static func add_campaign_level(json_path:String, folder_number:String):
 	writer.store_line(json)
 	writer.close()
 
-static func remove_campaign_level(json_path:String, folder_number:String):
-	if not FileAccess.file_exists(json_path): return
+static func remove_campaign_level(json_path:String, folder_number:String) -> bool:
+	if not FileAccess.file_exists(json_path): return false
 
 	var json_file:String = FileAccess.get_file_as_string(json_path)
 	var dict:Dictionary = JSON.parse_string(json_file)
@@ -52,3 +52,5 @@ static func remove_campaign_level(json_path:String, folder_number:String):
 	var writer:FileAccess = FileAccess.open(json_path, FileAccess.WRITE)
 	writer.store_line(json)
 	writer.close()
+
+	return true

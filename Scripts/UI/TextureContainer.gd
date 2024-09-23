@@ -28,7 +28,6 @@ func _ready() -> void:
 func set_active_res(res):
 	set_active_res_signal.emit(res)
 	texture_button.texture_normal = load(res)
-	shader_color = Color(1, 1, 1)
 
 func show_color_picker(toggled:bool):
 	color_picker.visible = toggled

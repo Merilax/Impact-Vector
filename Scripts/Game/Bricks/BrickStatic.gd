@@ -20,7 +20,7 @@ func _ready():
 		$Sprite2D.material.set_shader_parameter("to", shader_color)
 
 	if health_comp:
-		health_comp.health = 2
+		health_comp.health = 1 # TODO editor
 		health_comp.health_depleted.connect(die.bind())
 
 	if score_comp:

@@ -16,6 +16,7 @@ func _ready():
 	if level_selector:
 		level_selector.play_level.connect(play_level)
 		level_selector.edit_level.connect(edit_level)
+		level_selector.delete_level.connect(delete_level)
 
 	if editor_button:
 		editor_button.pressed.connect(edit_level)
@@ -34,6 +35,13 @@ func edit_level(level_num:String = ""):
 		open_editor.emit()
 	elif FileAccess.file_exists("user://Levels/" + campaign_folder + "/" + level_num + "/level.tscn"):
 		open_editor.emit(campaign_folder, level_num)
+
+func delete_level(level_num:String, origin:Control):
+	if CampaignManager.remove_campaign_level("user://Levels/" + campaign_folder + "/campaign.json", level_num):
+		origin.queue_free()
+		DirAccess.remove_absolute("user://Levels/" + campaign_folder + "/" + level_num + "/level.tscn")
+		DirAccess.remove_absolute("user://Levels/" + campaign_folder + "/" + level_num + "/data.tres")
+		DirAccess.remove_absolute("user://Levels/" + campaign_folder + "/" + level_num)
 
 func goto_settings():
 	open_settings_menu.emit()

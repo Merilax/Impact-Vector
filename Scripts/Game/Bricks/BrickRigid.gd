@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 @export var texture_path:String # Keep empty to use default editor sprite
-@export var shader_color:Color = Color(1, 1, 1)
+@export var shader_color:Color
 
 @export var health_comp:HealthComponent
 @export var score_comp:ScoreComponent
@@ -20,7 +20,7 @@ func _ready():
 		$Sprite2D.material.set_shader_parameter("to", shader_color)
 
 	if health_comp:
-		health_comp.health = 2
+		health_comp.health = 2 # TODO editor
 		health_comp.health_depleted.connect(die.bind())
 
 	if score_comp:

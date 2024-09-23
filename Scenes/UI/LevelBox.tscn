@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://ct3pryubbc463"]
+[gd_scene load_steps=7 format=3 uid="uid://ct3pryubbc463"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="1_h4eun"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
+[ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_fskvx"]
+[ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="3_sk3lv"]
+[ext_resource type="Texture2D" uid="uid://b1kaq6gowgf4o" path="res://Assets/Visuals/Icons/edit.svg" id="4_voodn"]
 
 [sub_resource type="Theme" id="Theme_fg15h"]
 
-[node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("buttons", "play_button", "edit_button")]
+[node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("buttons", "play_button", "edit_button", "delete_button")]
 anchors_preset = -1
 anchor_right = 0.021
 anchor_bottom = 0.092
@@ -21,6 +24,7 @@ script = ExtResource("2_83bsj")
 buttons = NodePath("MarginContainer")
 play_button = NodePath("MarginContainer/HBoxContainer/Play")
 edit_button = NodePath("MarginContainer/HBoxContainer/Edit")
+delete_button = NodePath("MarginContainer/HBoxContainer/Delete")
 metadata/_edit_use_anchors_ = true
 
 [node name="LevelBox" type="VBoxContainer" parent="."]
@@ -44,7 +48,7 @@ expand_mode = 4
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-visible = false
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -52,6 +56,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 8
 
@@ -59,13 +64,25 @@ size_flags_vertical = 8
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-text = "Play"
+icon = ExtResource("3_sk3lv")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Edit" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-text = "Edit"
+icon = ExtResource("4_voodn")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Delete" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+icon = ExtResource("3_fskvx")
+icon_alignment = 1
+expand_icon = true
 
 [connection signal="focus_entered" from="LevelBox" to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="LevelBox" to="." method="_on_focus_exited"]

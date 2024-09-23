@@ -4,6 +4,7 @@ var LevelBox = preload("res://Scenes/UI/LevelBox.tscn")
 
 signal play_level(folder_num:String)
 signal edit_level(folder_num:String)
+signal delete_level(folder_num:String, origin:Control)
 
 func _ready() -> void:
 	var dir:DirAccess = DirAccess.open("user://Levels/Default")
@@ -26,9 +27,13 @@ func _ready() -> void:
 
 		level_box.play_level.connect(_on_play_level)
 		level_box.edit_level.connect(_on_edit_level)
+		level_box.delete_level.connect(_on_delete_level)
 
 func _on_play_level(folder_num:String) -> void:
 	play_level.emit(folder_num)
 
 func _on_edit_level(folder_num:String) -> void:
 	edit_level.emit(folder_num)
+
+func _on_delete_level(folder_num:String, origin:Control) -> void:
+	delete_level.emit(folder_num, origin)
