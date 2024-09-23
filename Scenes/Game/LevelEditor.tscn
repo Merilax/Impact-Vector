@@ -1,46 +1,69 @@
-[gd_scene load_steps=9 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=12 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
+[ext_resource type="Script" path="res://Scripts/UI/TextureContainer.gd" id="4_lhv3y"]
+[ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="5_fw0bt"]
 [ext_resource type="Texture2D" uid="uid://cxyyyoeudto8h" path="res://Assets/Visuals/Icons/brush.svg" id="5_k43gj"]
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="6_7hwva"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="7_evgdw"]
+[ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1433, 938)
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "paint_tool", "erase_tool", "brick_container", "texture_container", "level_name", "save_button")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "paint_tool", "erase_tool", "snap_button", "snap_options", "snap_mode", "snap_width", "snap_height", "brick_container", "texture_container", "level_name", "save_button")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 level_content = NodePath("LevelEditor/LevelContent")
-place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Place")
-paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Paint")
-erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Erase")
-brick_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/BrickGrid")
-texture_container = NodePath("EditorUI/Container/VBoxContainer/MarginContainer/TextureGrid")
-level_name = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/LineEdit")
-save_button = NodePath("EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer/SaveBtn")
+place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
+paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
+erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Erase")
+snap_button = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Snap")
+snap_options = NodePath("EditorUI/SnapOptions")
+snap_mode = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer/Snap")
+snap_width = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2/CellWidth")
+snap_height = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2/CellHeight")
+brick_container = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer/BrickGrid")
+texture_container = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer")
+level_name = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer/LineEdit")
+save_button = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer/SaveBtn")
+
+[node name="LevelEditor" type="Node2D" parent="."]
+
+[node name="LevelContent" type="Node2D" parent="LevelEditor"]
+
+[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
+
+[node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
+position = Vector2(59, 0)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
+position = Vector2(701.5, 476)
+shape = SubResource("RectangleShape2D_k1bnw")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 
-[node name="Container" type="PanelContainer" parent="EditorUI"]
+[node name="Selector" type="PanelContainer" parent="EditorUI"]
+custom_minimum_size = Vector2(0, 200)
 anchors_preset = -1
-anchor_left = 0.772188
+anchor_left = 0.771271
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 0.399902
+offset_left = 0.159912
 grow_horizontal = 0
 grow_vertical = 2
 theme = ExtResource("3_21i02")
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Container"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Container/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -49,20 +72,60 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="BrickGrid" type="GridContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer"]
+[node name="BrickGrid" type="GridContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer"]
 layout_mode = 2
 columns = 4
 script = ExtResource("2_ylr5r")
-brick_or_texture = null
 
-[node name="TextureGrid" type="GridContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer"]
+[node name="TextureContainer" type="Control" parent="EditorUI/Selector/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_grid", "texture_button", "color_picker")]
 visible = false
 layout_mode = 2
-columns = 4
-script = ExtResource("2_ylr5r")
-brick_or_texture = "Texture"
+script = ExtResource("4_lhv3y")
+texture_grid = NodePath("VBoxContainer/TextureGrid")
+texture_button = NodePath("VBoxContainer/MarginContainer/VBoxContainer/TextureButton")
+color_picker = NodePath("VBoxContainer/MarginContainer/VBoxContainer/ColorPicker")
 
-[node name="MarginContainer2" type="MarginContainer" parent="EditorUI/Container/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureGrid" type="GridContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ColorPicker" type="ColorPicker" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+edit_alpha = false
+color_mode = 1
+can_add_swatches = false
+sampler_visible = false
+color_modes_visible = false
+sliders_visible = false
+hex_visible = false
+presets_visible = false
+
+[node name="TextureButton" type="TextureButton" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+material = ExtResource("5_fw0bt")
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+toggle_mode = true
+stretch_mode = 5
+
+[node name="MarginContainer2" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -70,17 +133,17 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Container/VBoxContainer/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Level name"
 max_length = 50
 context_menu_enabled = false
 middle_mouse_paste_enabled = false
 
-[node name="SaveBtn" type="Button" parent="EditorUI/Container/VBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="SaveBtn" type="Button" parent="EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 text = "Save"
 
@@ -102,21 +165,25 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer"]
 layout_mode = 2
 
-[node name="Place" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+[node name="Tools" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Place" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 tooltip_text = "Place tool"
 icon = ExtResource("6_7hwva")
 expand_icon = true
 
-[node name="Paint" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+[node name="Paint" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 tooltip_text = "Paint tool"
 icon = ExtResource("5_k43gj")
 expand_icon = true
 
-[node name="Erase" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+[node name="Erase" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 tooltip_text = "Erase tool"
@@ -124,16 +191,75 @@ icon = ExtResource("7_evgdw")
 icon_alignment = 1
 expand_icon = true
 
-[node name="LevelEditor" type="Node2D" parent="."]
+[node name="Modes" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
-[node name="LevelContent" type="Node2D" parent="LevelEditor"]
+[node name="Snap" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+tooltip_text = "Place tool"
+icon = ExtResource("9_1pd6n")
+expand_icon = true
 
-[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
+[node name="SnapOptions" type="PanelContainer" parent="EditorUI"]
+visible = false
+offset_left = 39.9999
+offset_top = 957.0
+offset_right = 1481.0
+offset_bottom = 1081.0
+theme = ExtResource("3_21i02")
 
-[node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
-position = Vector2(59, 0)
-monitorable = false
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/SnapOptions"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
-position = Vector2(701.5, 476)
-shape = SubResource("RectangleShape2D_k1bnw")
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/SnapOptions/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="GridContainer" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Snap bricks to grid"
+
+[node name="Snap" type="CheckButton" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+
+[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label2" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Cell width"
+
+[node name="CellWidth" type="SpinBox" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+min_value = 1.0
+value = 3.0
+alignment = 2
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Cell height"
+
+[node name="CellHeight" type="SpinBox" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+min_value = 1.0
+value = 5.0
+alignment = 2
+select_all_on_focus = true

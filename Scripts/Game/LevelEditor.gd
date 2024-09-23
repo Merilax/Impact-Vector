@@ -9,8 +9,17 @@ class_name LevelEditor
 @export var paint_tool:Button
 @export var erase_tool:Button
 
+@export var snap_button:Button
+@export var snap_options:Control
+
+@export var snap_mode:Button
+@export var snap_width:SpinBox
+@export var snap_height:SpinBox
+var use_snap:bool = true
+var snap_cell_size:Vector2i = Vector2i(6, 10)
+
 @export var brick_container:GridContainer
-@export var texture_container:GridContainer
+@export var texture_container:Control
 
 @export var level_name:LineEdit
 @export var save_button:Button
@@ -31,6 +40,8 @@ var illegal_collision_detected:bool
 var current_tool:String = "place"
 
 func _ready():
+	world_border.show_walls(false)
+
 	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary)
 	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary)
 	mouse_boundary.input_event.connect(on_mouse_click)
@@ -38,13 +49,17 @@ func _ready():
 	brick_container.set_active_res_signal.connect(set_active_res)
 	texture_container.set_active_res_signal.connect(set_active_res)
 
-	world_border.show_walls(false)
-
 	save_button.pressed.connect(save_level)
 
 	place_tool.pressed.connect(set_tool.bind("place"))
 	paint_tool.pressed.connect(set_tool.bind("paint"))
 	erase_tool.pressed.connect(set_tool.bind("erase"))
+
+	snap_button.pressed.connect(show_options.bind("snap"))
+
+	snap_mode.toggled.connect(set_snap_mode)
+	snap_width.value_changed.connect(set_snap_size.bind(0))
+	snap_height.value_changed.connect(set_snap_size.bind(1))
 
 func set_tool(type:String):
 	if type == "place":
@@ -53,7 +68,7 @@ func set_tool(type:String):
 		texture_container.hide()
 	if type == "paint":
 		current_tool = type
-		set_active_res("")
+		set_active_res()
 		brick_container.hide()
 		texture_container.show()
 	if type == "erase":
@@ -64,7 +79,30 @@ func set_tool(type:String):
 
 func _process(_delta):
 	if can_place_bricks and active_brick:
-		active_brick.position = get_global_mouse_position()
+		if use_snap:
+			@warning_ignore("integer_division")
+			var snap_to_x:float = (floori(get_global_mouse_position().x - level_content.global_position.x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2)
+			@warning_ignore("integer_division")
+			var snap_to_y:float = (floori(get_global_mouse_position().y - level_content.global_position.y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2)
+			active_brick.global_position = Vector2(snap_to_x, snap_to_y)
+		else:
+			@warning_ignore("integer_division")
+			var snap_to_x:float = floori(get_global_mouse_position().x / 1)
+			@warning_ignore("integer_division")
+			var snap_to_y:float = floori(get_global_mouse_position().y / 1)
+			active_brick.global_position = Vector2(snap_to_x, snap_to_y)
+
+func show_options(what:String):
+	match what.to_lower():
+		"snap":
+			snap_options.show()
+			#others.hide()
+
+func set_snap_mode(toggle:bool):
+	use_snap = toggle
+
+func set_snap_size(amount:int, axis:int):
+	snap_cell_size[axis] = amount
 
 func set_active_res(res_path:String = ""):
 	if res_path == "":
@@ -77,6 +115,46 @@ func set_active_res(res_path:String = ""):
 	if current_tool == "paint":
 		active_texture = load(res_path)
 		active_texture_path = res_path
+
+func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
+	if current_tool == "place":	
+		if input.is_action_pressed("mouse_primary"):
+			if active_brick_scene == null: return
+			if illegal_collision_detected: return
+			if collision_detected and not Input.is_action_pressed('shift'): return
+
+			var new_brick:Node2D = active_brick_scene.instantiate()
+			level_content.add_child(new_brick)
+			new_brick.owner = level_content
+			new_brick.global_position = active_brick.global_position
+
+	if current_tool == "paint":
+		if input.is_action_pressed("mouse_primary"):
+			if active_texture == null: return
+
+			var space_state = get_world_2d().direct_space_state
+			var query = PhysicsPointQueryParameters2D.new()
+			query.position = get_global_mouse_position()
+			query.collision_mask = 4
+			var result = space_state.intersect_point(query)
+			
+			if result.size() > 0:
+				result[0].collider.get_node("Sprite2D").texture = active_texture
+				result[0].collider.texture_path = active_texture_path
+				result[0].collider.set_shader_color(texture_container.shader_color)
+		elif input.is_action_pressed("mouse_secondary"):
+			pass # hue shift shader here maybe?
+
+	if current_tool == "erase":
+		if input.is_action_pressed("mouse_primary"):
+			var space_state = get_world_2d().direct_space_state
+			var query = PhysicsPointQueryParameters2D.new()
+			query.position = get_global_mouse_position()
+			query.collision_mask = 4
+			var result = space_state.intersect_point(query)
+			
+			if result.size() > 0:
+				result[0].collider.queue_free()
 
 func on_mouse_enter_level_boundary():
 	can_place_bricks = true
@@ -97,46 +175,6 @@ func on_mouse_leave_level_boundary():
 	if active_brick:
 		active_brick.queue_free()
 		active_brick = null
-
-func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
-	if current_tool == "place":	
-		if input.is_action_pressed("mouse_primary"):
-			if illegal_collision_detected: return
-			if collision_detected and not Input.is_action_pressed('shift'): return
-
-			if active_brick_scene == null: return
-
-			var new_brick:Node2D = active_brick_scene.instantiate()
-			level_content.add_child(new_brick)
-			new_brick.owner = level_content
-			new_brick.global_position = get_global_mouse_position()
-
-	if current_tool == "paint":
-		if input.is_action_pressed("mouse_primary"):
-			if active_texture == null: return
-
-			var space_state = get_world_2d().direct_space_state
-			var query = PhysicsPointQueryParameters2D.new()
-			query.position = get_global_mouse_position()
-			query.collision_mask = 4
-			var result = space_state.intersect_point(query)
-			
-			if result.size() > 0:
-				result[0].collider.get_node("Sprite2D").texture = active_texture
-				result[0].collider.texture_path = active_texture_path
-		elif input.is_action_pressed("mouse_secondary"):
-			pass # hue shift shader
-
-	if current_tool == "erase":
-		if input.is_action_pressed("mouse_primary"):
-			var space_state = get_world_2d().direct_space_state
-			var query = PhysicsPointQueryParameters2D.new()
-			query.position = get_global_mouse_position()
-			query.collision_mask = 4
-			var result = space_state.intersect_point(query)
-			
-			if result.size() > 0:
-				result[0].collider.queue_free()
 
 func set_collision_detected(to_set:bool):
 	collision_detected = to_set

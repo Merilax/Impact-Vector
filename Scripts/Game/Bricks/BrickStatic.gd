@@ -1,6 +1,8 @@
 extends StaticBody2D
 
 @export var texture_path:String # Keep empty to use default editor sprite
+@export var shader_color:Color = Color(1, 1, 1)
+
 @export var health_comp:HealthComponent
 @export var score_comp:ScoreComponent
 @export var hit_sound_comp:AudioStreamPlayer2D
@@ -14,6 +16,8 @@ signal brick_destroyed()
 func _ready():
 	if texture_path:
 		$Sprite2D.texture = load(texture_path)
+	if shader_color:
+		$Sprite2D.material.set_shader_parameter("to", shader_color)
 
 	if health_comp:
 		health_comp.health = 2
@@ -55,3 +59,6 @@ func die():
 
 func add_score(score:int):
 	process_score.emit(score)
+
+func set_shader_color(color:Color):
+	$Sprite2D.material.set_shader_parameter("to", color)
