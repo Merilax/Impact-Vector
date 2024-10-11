@@ -2,7 +2,8 @@ extends Area2D
 class_name Pickup
 
 @export var type:String
-@export var falling_speed:int = 150
+@export var falling_speed:int = 200
+
 signal trigger_pickup(type:String)
 
 func _process(delta: float):

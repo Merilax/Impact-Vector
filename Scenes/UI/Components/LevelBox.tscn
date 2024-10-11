@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://ct3pryubbc463"]
 
-[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="1_h4eun"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_h4eun"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_fskvx"]
 [ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="3_sk3lv"]
@@ -48,6 +48,7 @@ expand_mode = 4
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_constants/margin_left = 10

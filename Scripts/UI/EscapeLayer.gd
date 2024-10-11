@@ -18,13 +18,16 @@ func _process(_delta):
 
 		if visible == false:
 			show()
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			get_tree().paused = true
 		else:
 			hide()
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 			get_tree().paused = false
 		
 func return_to_game():
 	hide()
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	get_tree().paused = false
 
 func open_settings():

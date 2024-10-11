@@ -1,12 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bjjlgc7puyxfe"]
+[gd_scene load_steps=9 format=3 uid="uid://bjjlgc7puyxfe"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Paddle.gd" id="1_7bdbb"]
 [ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="1_xdg01"]
 [ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Game/Components/HitSoundComp.tscn" id="3_8j1ci"]
 [ext_resource type="AudioStream" uid="uid://bd4eq5v6sj2g3" path="res://Assets/Audio/SFX/bfh1_hit_08.ogg" id="4_yd0vt"]
 [ext_resource type="AudioStream" uid="uid://d0a8nfaxxfi12" path="res://Assets/Audio/SFX/bfh1_metal_falling_04.ogg" id="5_nu7io"]
+[ext_resource type="Texture2D" uid="uid://dhobb8nxuhatk" path="res://Assets/Visuals/Minigun_.png" id="6_bfeil"]
+[ext_resource type="Script" path="res://Scripts/Game/Components/TurretsComp.gd" id="6_hmvgb"]
+[ext_resource type="AudioStream" uid="uid://c42a22fl3ld2h" path="res://Assets/Audio/SFX/gunfire.ogg" id="8_mdpqr"]
 
-[node name="Paddle" type="CharacterBody2D" node_paths=PackedStringArray("hit_sound_comp", "magnet_sound") groups=["Paddle"]]
+[node name="Paddle" type="CharacterBody2D" node_paths=PackedStringArray("hit_sound_comp", "magnet_sound", "turrets_comp") groups=["Paddle"]]
 collision_layer = 2
 collision_mask = 4
 motion_mode = 1
@@ -14,6 +17,7 @@ platform_on_leave = 2
 script = ExtResource("1_7bdbb")
 hit_sound_comp = NodePath("HitSoundComp")
 magnet_sound = NodePath("MagnetSound")
+turrets_comp = NodePath("TurretsComp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(1.585, 0.150943)
@@ -25,13 +29,16 @@ input_pickable = false
 monitorable = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+visible = false
 position = Vector2(0, -8)
 scale = Vector2(1.585, 0.140081)
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 scale = Vector2(1.585, 0.150943)
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
+one_way_collision = true
 one_way_collision_margin = 5.0
 
 [node name="HitSoundComp" parent="." instance=ExtResource("3_8j1ci")]
@@ -39,3 +46,32 @@ stream = ExtResource("4_yd0vt")
 
 [node name="MagnetSound" parent="." instance=ExtResource("3_8j1ci")]
 stream = ExtResource("5_nu7io")
+
+[node name="TurretsComp" type="Node2D" parent="."]
+visible = false
+script = ExtResource("6_hmvgb")
+ammo = null
+reload = null
+
+[node name="GunL" type="Sprite2D" parent="TurretsComp"]
+position = Vector2(-100, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_bfeil")
+
+[node name="GunR" type="Sprite2D" parent="TurretsComp"]
+position = Vector2(100, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_bfeil")
+
+[node name="MuzzlePos" type="Node2D" parent="TurretsComp"]
+
+[node name="Marker2D" type="Marker2D" parent="TurretsComp/MuzzlePos"]
+position = Vector2(-100, -15)
+
+[node name="Marker2D2" type="Marker2D" parent="TurretsComp/MuzzlePos"]
+position = Vector2(100, -15)
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="TurretsComp"]
+stream = ExtResource("8_mdpqr")
+volume_db = -2.0
+bus = &"SFX"

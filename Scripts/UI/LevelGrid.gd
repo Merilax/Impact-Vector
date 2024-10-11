@@ -1,30 +1,30 @@
 extends GridContainer
 
-var LevelBox = preload("res://Scenes/UI/LevelBox.tscn")
+var LevelBoxScene = preload("res://Scenes/UI/Components/LevelBox.tscn")
 
 signal play_level(folder_num:String)
 signal edit_level(folder_num:String)
 signal delete_level(folder_num:String, origin:Control)
 
-func _ready() -> void:
-	var dir:DirAccess = DirAccess.open("user://Levels/Default")
-	if not dir:
-		DirAccess.make_dir_absolute("user://Levels")
-		DirAccess.make_dir_absolute("user://Levels/Default")
-	if not FileAccess.file_exists("user://Levels/Default/campaign.json"):
-		CampaignManager.create_campaign("user://Levels/Default", "Default")
+func on_select_campaign(campaign_path:String, campaign_num:String):
+	for child:Node in get_children():
+		child.queue_free()
 
-	var campaign:Dictionary = CampaignManager.load_campaign_data("user://Levels/Default/campaign.json")
+	var dir:DirAccess = DirAccess.open(campaign_path + "/" + campaign_num)
+	
+	for folder_num:String in dir.get_directories():
+		var level_data:LevelData = load(campaign_path + "/" + campaign_num + "/" + folder_num + "/data.tres")
 
-	for folder_num:String in campaign.levels:
-		var level_data:LevelData = load("user://Levels/Default/" + folder_num + "/data.tres")
-
-		var level_box:MarginContainer = LevelBox.instantiate()
+		var level_box:LevelBox = LevelBoxScene.instantiate()
 		level_box.get_node("LevelBox/LevelName").text = level_data.name
 		level_box.get_node("LevelBox/Thumbnail").texture = level_data.thumbnail
 		level_box.set_meta("folder_num", folder_num)
 		add_child(level_box)
 
+		if campaign_path.contains("res://"):
+			level_box.edit_button.hide()
+			level_box.delete_button.hide()
+		
 		level_box.play_level.connect(_on_play_level)
 		level_box.edit_level.connect(_on_edit_level)
 		level_box.delete_level.connect(_on_delete_level)

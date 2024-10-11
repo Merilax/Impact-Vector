@@ -1,9 +1,0 @@
-[gd_resource type="Theme" format=3 uid="uid://dck5wvqkfemjm"]
-
-[resource]
-default_base_scale = 2.0
-default_font_size = 30
-MarginContainer/constants/margin_bottom = 40
-MarginContainer/constants/margin_left = 40
-MarginContainer/constants/margin_right = 40
-MarginContainer/constants/margin_top = 40

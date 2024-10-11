@@ -17,6 +17,7 @@ func finalise(game_won:bool):
 	final_score.text = str(game_root.score)
 	total_lives.text = str(game_root.total_lives)
 	show()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func back_to_main():
 	get_tree().paused = false

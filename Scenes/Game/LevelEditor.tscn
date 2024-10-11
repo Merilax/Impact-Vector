@@ -1,18 +1,20 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=14 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
-[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_21i02"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_t1m56"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="4_k5s8c"]
 [ext_resource type="Script" path="res://Scripts/UI/TextureContainer.gd" id="4_lhv3y"]
 [ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="5_fw0bt"]
 [ext_resource type="Texture2D" uid="uid://cxyyyoeudto8h" path="res://Assets/Visuals/Icons/brush.svg" id="5_k43gj"]
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="6_7hwva"]
+[ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="6_if84t"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="7_evgdw"]
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
-size = Vector2(1433, 938)
+size = Vector2(1423, 943)
 
 [node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "paint_tool", "erase_tool", "snap_button", "snap_options", "snap_mode", "snap_width", "snap_height", "brick_container", "texture_container", "level_name", "save_button")]
 script = ExtResource("1_ur272")
@@ -23,27 +25,29 @@ place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Plac
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
 erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Erase")
 snap_button = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Snap")
-snap_options = NodePath("EditorUI/SnapOptions")
-snap_mode = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer/Snap")
-snap_width = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2/CellWidth")
-snap_height = NodePath("EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2/CellHeight")
-brick_container = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer/BrickGrid")
-texture_container = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer")
-level_name = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer/LineEdit")
-save_button = NodePath("EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer/SaveBtn")
+snap_options = NodePath("EditorUI/Options")
+snap_mode = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer/Snap")
+snap_width = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer2/CellWidth")
+snap_height = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer2/CellHeight")
+brick_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/BrickGrid")
+texture_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer")
+level_name = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
+save_button = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/SaveBtn")
 
 [node name="LevelEditor" type="Node2D" parent="."]
+position = Vector2(59, 0)
 
 [node name="LevelContent" type="Node2D" parent="LevelEditor"]
 
 [node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
+position = Vector2(-37, 0)
 
 [node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
-position = Vector2(59, 0)
+position = Vector2(18, 0)
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
-position = Vector2(701.5, 476)
+position = Vector2(703.5, 473.5)
 shape = SubResource("RectangleShape2D_k1bnw")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
@@ -51,33 +55,63 @@ shape = SubResource("RectangleShape2D_k1bnw")
 [node name="Selector" type="PanelContainer" parent="EditorUI"]
 custom_minimum_size = Vector2(0, 200)
 anchors_preset = -1
-anchor_left = 0.771271
+anchor_left = 0.781688
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 0.159912
 grow_horizontal = 0
 grow_vertical = 2
-theme = ExtResource("3_21i02")
+theme = ExtResource("3_t1m56")
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector"]
+[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Selector"]
 layout_mode = 2
+theme = ExtResource("3_t1m56")
+texture = ExtResource("4_k5s8c")
+region_rect = Rect2(0, 0, 512, 512)
+patch_margin_left = 42
+patch_margin_top = 42
+patch_margin_right = 42
+patch_margin_bottom = 42
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
+[node name="BG" type="MarginContainer" parent="EditorUI/Selector/NinePatchRect"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="ColorRect" parent="EditorUI/Selector/NinePatchRect/BG"]
+layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="BrickGrid" type="GridContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer"]
+[node name="BrickGrid" type="GridContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 columns = 4
 script = ExtResource("2_ylr5r")
 
-[node name="TextureContainer" type="Control" parent="EditorUI/Selector/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_grid", "texture_button", "color_picker")]
+[node name="TextureContainer" type="Control" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_grid", "texture_button", "color_picker")]
 visible = false
 layout_mode = 2
 script = ExtResource("4_lhv3y")
@@ -85,7 +119,7 @@ texture_grid = NodePath("VBoxContainer/TextureGrid")
 texture_button = NodePath("VBoxContainer/MarginContainer/VBoxContainer/TextureButton")
 color_picker = NodePath("VBoxContainer/MarginContainer/VBoxContainer/ColorPicker")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -93,20 +127,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureGrid" type="GridContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+[node name="TextureGrid" type="GridContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 columns = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="ColorPicker" type="ColorPicker" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ColorPicker" type="ColorPicker" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 edit_alpha = false
@@ -118,42 +152,38 @@ sliders_visible = false
 hex_visible = false
 presets_visible = false
 
-[node name="TextureButton" type="TextureButton" parent="EditorUI/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 material = ExtResource("5_fw0bt")
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 toggle_mode = true
 stretch_mode = 5
 
-[node name="MarginContainer2" type="MarginContainer" parent="EditorUI/Selector/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/VBoxContainer/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Level name"
 max_length = 50
 context_menu_enabled = false
 middle_mouse_paste_enabled = false
 
-[node name="SaveBtn" type="Button" parent="EditorUI/Selector/VBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="SaveBtn" type="Button" parent="EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Save"
 
 [node name="Toolbar" type="PanelContainer" parent="EditorUI"]
 anchors_preset = -1
-anchor_right = 0.0208333
+anchor_right = 0.0317708
 anchor_bottom = 1.0
 grow_vertical = 2
-theme = ExtResource("3_21i02")
+theme = ExtResource("3_t1m56")
 metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="ColorRect" parent="EditorUI/Toolbar"]
+layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="EditorUI/Toolbar"]
 layout_mode = 2
@@ -167,29 +197,37 @@ layout_mode = 2
 
 [node name="Tools" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="Place" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+size_flags_horizontal = 4
 tooltip_text = "Place tool"
+theme = ExtResource("6_if84t")
 icon = ExtResource("6_7hwva")
-expand_icon = true
+icon_alignment = 1
 
 [node name="Paint" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+size_flags_horizontal = 4
 tooltip_text = "Paint tool"
+theme = ExtResource("6_if84t")
 icon = ExtResource("5_k43gj")
-expand_icon = true
+icon_alignment = 1
 
 [node name="Erase" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+size_flags_horizontal = 4
 tooltip_text = "Erase tool"
+theme = ExtResource("6_if84t")
 icon = ExtResource("7_evgdw")
 icon_alignment = 1
-expand_icon = true
+
+[node name="Container" type="Control" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Modes" type="VBoxContainer" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -197,68 +235,101 @@ layout_mode = 2
 [node name="Snap" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-tooltip_text = "Place tool"
+size_flags_horizontal = 4
+tooltip_text = "Snap to grid"
+theme = ExtResource("6_if84t")
 icon = ExtResource("9_1pd6n")
-expand_icon = true
+icon_alignment = 1
 
-[node name="SnapOptions" type="PanelContainer" parent="EditorUI"]
+[node name="Options" type="PanelContainer" parent="EditorUI"]
 visible = false
-offset_left = 39.9999
-offset_top = 957.0
-offset_right = 1481.0
-offset_bottom = 1081.0
-theme = ExtResource("3_21i02")
+anchors_preset = -1
+anchor_left = 0.0317708
+anchor_top = 1.0
+anchor_right = 0.781771
+anchor_bottom = 1.0
+offset_top = -144.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_t1m56")
+metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/SnapOptions"]
+[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Options"]
 layout_mode = 2
+theme = ExtResource("3_t1m56")
+texture = ExtResource("4_k5s8c")
+region_rect = Rect2(0, 0, 512, 469.024)
+patch_margin_left = 42
+patch_margin_top = 42
+patch_margin_right = 42
+
+[node name="BG" type="MarginContainer" parent="EditorUI/Options/NinePatchRect"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 10
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
+
+[node name="PanelContainer" type="ColorRect" parent="EditorUI/Options/NinePatchRect/BG"]
+layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
+
+[node name="Snap" type="MarginContainer" parent="EditorUI/Options"]
+layout_mode = 2
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/SnapOptions/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/Snap"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="VBoxContainer" type="GridContainer" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="GridContainer" parent="EditorUI/Options/Snap/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Snap bricks to grid"
 
-[node name="Snap" type="CheckButton" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Snap" type="CheckButton" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("6_if84t")
 button_pressed = true
 
-[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/Options/Snap/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label2" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Cell width"
+text = "Snap width"
 
-[node name="CellWidth" type="SpinBox" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="CellWidth" type="SpinBox" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("6_if84t")
 min_value = 1.0
 value = 3.0
 alignment = 2
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="Label3" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-text = "Cell height"
+text = "Snap height"
 
-[node name="CellHeight" type="SpinBox" parent="EditorUI/SnapOptions/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="CellHeight" type="SpinBox" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("6_if84t")
 min_value = 1.0
 value = 5.0
 alignment = 2

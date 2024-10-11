@@ -1,56 +1,70 @@
 class_name CampaignManager
 extends Object
 
-static func create_campaign(folderpath, name):
-	var dict:Dictionary = {"name": name, "levels": []}
-	var json = JSON.stringify(dict)
-	var writer:FileAccess = FileAccess.open(folderpath + "/campaign.json", FileAccess.WRITE)
-	writer.store_line(json)
-	writer.close()
-
-static func load_campaign_data(json_path) -> Dictionary:
-	var json_file = FileAccess.get_file_as_string(json_path)
-	var dict:Dictionary = JSON.parse_string(json_file)
+static func check_integrity():
+	var dir:DirAccess = DirAccess.open("user://Levels/")
+	if not dir:
+		DirAccess.make_dir_absolute("user://Levels/")
+		dir = DirAccess.open("user://Levels/")
 	
-	# Sanitize removed levels
-	var aux:Array = []
-	for level_num in dict.levels:
-		if not FileAccess.file_exists("user://Levels/" + dict.name + "/" + str(level_num) + "/level.tscn"):
-			aux.append(level_num)
-	for i in aux.size():
-		dict.levels.erase(aux[i])
-	
-	var writer:FileAccess = FileAccess.open(json_path, FileAccess.WRITE)
-	writer.store_line(JSON.stringify(dict))
+	var file:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.READ)
+	if not file:
+		var writer:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.WRITE)
+
+		var campaigns:Array = []
+		for dir_name in dir.get_directories():
+			var campaign:Dictionary = {"dir": dir_name, "name": "Unnamed " + dir_name}
+			campaigns.append(campaign)
+
+		writer.store_line(JSON.stringify(campaigns))
+		writer.close()
+
+static func add_campaign(name:String):
+	check_integrity()
+	var dir_name:int = 1
+
+	var file:String = FileAccess.get_file_as_string("user://Levels/campaigns.json")
+	var campaigns:Array = JSON.parse_string(file)
+
+	var dirs:PackedStringArray = DirAccess.open("user://Levels/").get_directories()
+	if dirs.size() > 0:
+		dir_name = dirs[dirs.size() - 1].to_int() + 1
+
+	DirAccess.make_dir_absolute("user://Levels/" + str(dir_name))
+	campaigns.append({"dir": str(dir_name), "name": name})
+
+	var writer:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.WRITE)
+	writer.store_line(JSON.stringify(campaigns))
 	writer.close()
 
-	return dict
+static func rename_campaign(dir_num:String, new_name:String):
+	check_integrity()
+	var file:String = FileAccess.get_file_as_string("user://Levels/campaigns.json")
+	var campaigns:Array = JSON.parse_string(file)
 
-static func add_campaign_level(json_path:String, folder_number:String):
-	var dict:Dictionary = {"name": "Default", "levels": []}
+	var found:Array = campaigns.filter(func(campaign:Dictionary): return campaign.dir == dir_num)
+	if found.size():
+		var idx:int = campaigns.find(found[0])
+		if idx >= 0:
+			campaigns[idx].name = new_name
 
-	if FileAccess.file_exists(json_path):
-		var json_file:String = FileAccess.get_file_as_string(json_path)
-		dict = JSON.parse_string(json_file)
+			var writer:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.WRITE)
+			writer.store_line(JSON.stringify(campaigns))
+			writer.close()
 
-	dict.levels.append(folder_number)
+static func remove_campaign(dir_num:String):
+	check_integrity()
+	DirAccess.remove_absolute("user://Levels/" + dir_num)
 
-	var json = JSON.stringify(dict)
-	var writer:FileAccess = FileAccess.open(json_path, FileAccess.WRITE)
-	writer.store_line(json)
-	writer.close()
+	var file:String = FileAccess.get_file_as_string("user://Levels/campaigns.json")
+	var campaigns:Array = JSON.parse_string(file)
 
-static func remove_campaign_level(json_path:String, folder_number:String) -> bool:
-	if not FileAccess.file_exists(json_path): return false
+	var found:Array = campaigns.filter(func(campaign:Dictionary): return campaign.dir == dir_num)
+	if found.size():
+		var idx:int = campaigns.find(found[0])
+		if idx >= 0:
+			campaigns.remove_at(idx)
 
-	var json_file:String = FileAccess.get_file_as_string(json_path)
-	var dict:Dictionary = JSON.parse_string(json_file)
-
-	dict.levels.erase(folder_number)
-
-	var json = JSON.stringify(dict)
-	var writer:FileAccess = FileAccess.open(json_path, FileAccess.WRITE)
-	writer.store_line(json)
-	writer.close()
-
-	return true
+			var writer:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.WRITE)
+			writer.store_line(JSON.stringify(campaigns))
+			writer.close()

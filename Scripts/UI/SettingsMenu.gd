@@ -1,5 +1,4 @@
 extends Control
-class_name SettingsMenu
 
 @export var window_mode_setting:OptionButton
 @export var resolution_setting:OptionButton

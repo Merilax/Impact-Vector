@@ -1,0 +1,1355 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Game/Bricks/BrickStatic.tscn" id="1_tlduh"]
+[ext_resource type="PhysicsMaterial" path="res://GDResources/Wall.tres" id="2_y27ty"]
+[ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickStatic.gd" id="3_6sv1h"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Bricks/BrickRigid.tscn" id="4_531d5"]
+[ext_resource type="Script" path="res://Scripts/Game/Bricks/BrickRigid.gd" id="5_8sjqh"]
+
+[node name="LevelContent" type="Node2D"]
+
+[node name="@StaticBody2D@87" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(300, 320)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@88" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(372, 340)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@89" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(444, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@90" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(516, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@91" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(588, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@92" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(660, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@93" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(732, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@94" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(804, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@95" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(876, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@97" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(948, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@98" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1020, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@99" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1092, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@100" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1164, 340)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@101" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1236, 320)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@102" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(300, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@103" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(372, 380)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@104" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(444, 400)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@105" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1092, 400)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@106" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1164, 380)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@107" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1236, 360)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@108" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(516, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@109" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1020, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@110" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(588, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@111" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(660, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@112" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(732, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@113" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(804, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@114" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(876, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@115" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(948, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@116" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(336, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@117" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(408, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@118" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(480, 460)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@119" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(552, 480)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@120" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(624, 500)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@121" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(696, 520)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@122" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(768, 540)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@123" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(840, 520)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@124" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(912, 500)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@125" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(984, 480)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@126" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1056, 460)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@127" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1128, 440)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@128" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1200, 420)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721242, 0.791111, 0.8125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@129" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1308, 340)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@130" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(228, 340)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.613961, 0.682227, 0.703125, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@133" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(696, 480)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@134" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(768, 500)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@135" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(840, 480)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@136" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(768, 460)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@137" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(876, 400)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@138" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(948, 400)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@139" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(660, 400)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@140" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(588, 400)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(1, 0.285214, 0.144928, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@141" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(336, 460)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@142" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(408, 480)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@143" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(480, 500)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@144" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(552, 520)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@145" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(624, 540)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@146" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(696, 560)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@147" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(840, 560)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@148" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(912, 540)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@149" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(984, 520)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@150" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(1056, 500)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@151" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(1128, 480)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@152" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(1200, 460)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.278194, 0.48187, 0.914063, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@153" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(408, 240)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@154" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1128, 240)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@155" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(480, 260)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@156" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(480, 220)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@157" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(552, 240)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@158" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1056, 260)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@159" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(1056, 220)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@160" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(984, 240)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.931697, 0.539856, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@161" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(588, 160)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@162" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(660, 180)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@163" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(660, 140)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@164" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(732, 160)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@165" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(804, 160)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@166" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(876, 180)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@167" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(948, 160)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@StaticBody2D@168" type="StaticBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable"] instance=ExtResource("1_tlduh")]
+position = Vector2(876, 140)
+collision_layer = 4
+collision_mask = 3
+physics_material_override = ExtResource("2_y27ty")
+script = ExtResource("3_6sv1h")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.743985, 0.283699, 0.824219, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@169" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(960, 200)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@170" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(564, 200)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@171" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(576, 280)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@172" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(612, 320)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@173" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(960, 280)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="@RigidBody2D@175" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("4_531d5")]
+position = Vector2(924, 320)
+collision_layer = 4
+collision_mask = 3
+mass = 5.0
+physics_material_override = ExtResource("2_y27ty")
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("5_8sjqh")
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+shader_color = Color(0.797102, 0.976223, 1, 1)
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")

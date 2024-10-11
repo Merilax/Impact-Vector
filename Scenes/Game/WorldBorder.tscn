@@ -41,6 +41,7 @@ script = ExtResource("2_bky3j")
 shape = SubResource("WorldBoundaryShape2D_hr764")
 
 [node name="Sprite2D" type="Sprite2D" parent="WallR"]
+visible = false
 position = Vector2(1.15984, 8.00001)
 scale = Vector2(8.56, 0.1)
 texture = ExtResource("4_dh06o")
@@ -61,6 +62,7 @@ script = ExtResource("2_bky3j")
 shape = SubResource("WorldBoundaryShape2D_hr764")
 
 [node name="Sprite2D" type="Sprite2D" parent="WallL"]
+visible = false
 position = Vector2(8.83999, 6.0001)
 scale = Vector2(8.56, 0.1)
 texture = ExtResource("4_dh06o")

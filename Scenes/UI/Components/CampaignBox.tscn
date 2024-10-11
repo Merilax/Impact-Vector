@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvlx80hocybuo"]
+
+[ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="1_impo0"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/CampaignBox.gd" id="1_o4srm"]
+[ext_resource type="Texture2D" uid="uid://b1kaq6gowgf4o" path="res://Assets/Visuals/Icons/edit.svg" id="2_awirr"]
+[ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_ye3xb"]
+
+[node name="CampaignBox" type="MarginContainer" node_paths=PackedStringArray("select_button", "edit_button", "delete_button", "name_label", "name_lineedit")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+script = ExtResource("1_o4srm")
+select_button = NodePath("HBoxContainer/Buttons/Select")
+edit_button = NodePath("HBoxContainer/Buttons/Rename")
+delete_button = NodePath("HBoxContainer/Buttons/Delete")
+name_label = NodePath("HBoxContainer/Name")
+name_lineedit = NodePath("HBoxContainer/LineEdit")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Unknown"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Unknown"
+alignment = 1
+max_length = 50
+context_menu_enabled = false
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="Buttons" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Select" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+icon = ExtResource("1_impo0")
+
+[node name="Rename" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+icon = ExtResource("2_awirr")
+
+[node name="Delete" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+icon = ExtResource("3_ye3xb")

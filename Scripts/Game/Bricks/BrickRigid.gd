@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 @export var texture_path:String # Keep empty to use default editor sprite
-@export var shader_color:Color
+@export var shader_color:Color = Color(1, 1, 1)
 
 @export var health_comp:HealthComponent
 @export var score_comp:ScoreComponent
@@ -11,6 +11,7 @@ extends RigidBody2D
 @export var editor_hitbox:EditorHitboxComponent
 
 signal process_score(score:int)
+signal spawn_pickup(global_position:Vector2, type:String, texture:String)
 signal brick_destroyed()
 
 func _ready():
@@ -26,12 +27,15 @@ func _ready():
 	if score_comp:
 		score_comp.process_score.connect(add_score.bind())
 
-func hit(ball):
-	if ball.is_in_group('Ball'):
+func hit(node):
+	if node.is_in_group('Ball'):
 		if hit_sound_comp:
 			hit_sound_comp.play()
 		if health_comp:
-			health_comp.damage(ball.damage)
+			health_comp.damage(node.damage)
+		
+	if node.is_in_group('Bullet'):
+		health_comp.damage(node.damage)
 
 func die():
 	$'CollisionPolygon2D'.disabled = true
@@ -41,9 +45,7 @@ func die():
 	brick_destroyed.emit()
 
 	if pickup_comp:
-		var pickup:Area2D = pickup_comp.pickup.instantiate()
-		add_sibling(pickup)
-		pickup.global_position = self.global_position
+		spawn_pickup.emit(self.global_position, pickup_comp.pickup_type, pickup_comp.pickup_sprite)
 
 	if destroy_sound_comp and hit_sound_comp:
 		hit_sound_comp.stop()

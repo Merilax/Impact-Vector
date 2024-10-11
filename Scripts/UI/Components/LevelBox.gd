@@ -1,4 +1,5 @@
 extends Control
+class_name LevelBox
 
 @export var buttons:Control
 @export var play_button:Button

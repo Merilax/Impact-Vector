@@ -25,7 +25,8 @@ var snap_cell_size:Vector2i = Vector2i(6, 10)
 @export var save_button:Button
 
 @export var level_num:String = ""
-@export var campaign:String = "Default"
+@export var campaign_num:String
+@export var campaign_path:String
 
 @export var can_place_bricks:bool = false
 var active_brick_scene:PackedScene
@@ -81,9 +82,9 @@ func _process(_delta):
 	if can_place_bricks and active_brick:
 		if use_snap:
 			@warning_ignore("integer_division")
-			var snap_to_x:float = (floori(get_global_mouse_position().x - level_content.global_position.x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2)
+			var snap_to_x:float = (floori(get_global_mouse_position().x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2)
 			@warning_ignore("integer_division")
-			var snap_to_y:float = (floori(get_global_mouse_position().y - level_content.global_position.y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2)
+			var snap_to_y:float = (floori(get_global_mouse_position().y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2)
 			active_brick.global_position = Vector2(snap_to_x, snap_to_y)
 		else:
 			@warning_ignore("integer_division")
@@ -95,7 +96,8 @@ func _process(_delta):
 func show_options(what:String):
 	match what.to_lower():
 		"snap":
-			snap_options.show()
+			if not snap_options.visible: snap_options.show()
+			else: snap_options.hide()
 			#others.hide()
 
 func set_snap_mode(toggle:bool):
@@ -109,6 +111,8 @@ func set_active_res(res_path:String = ""):
 		active_brick_scene = null
 		active_texture = null
 		return
+
+	res_path = res_path.trim_suffix(".remap")
 
 	if current_tool == "place":
 		active_brick_scene = load(res_path)
@@ -187,35 +191,34 @@ func reset_brick_collision_state():
 	collision_detected = false
 	illegal_collision_detected = false
 
-func load_level(campaign_name:String, level_folder:String):
-	var Level:PackedScene = load("user://Levels/" + campaign_name + "/" + level_folder + "/level.tscn")
+func load_level(level_folder:String):
+	var Level:PackedScene = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.tscn")
 	var loaded_level_content = Level.instantiate()
 
-	var level_data:LevelData = load("user://Levels/" + campaign_name + "/" + level_folder + "/data.tres")
+	var level_data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/data.tres")
 	level_name.text = level_data.name
 
 	level_content.free()
 
 	loaded_level_content.name = "LevelContent"
-	add_child(loaded_level_content, true)
+	$LevelEditor.add_child(loaded_level_content, true)
 	level_content = loaded_level_content
 
-	campaign_name = campaign_name
 	level_num = level_folder
 
 func save_level():
 	if level_name.text.is_empty(): return
 
 	var new_level:PackedScene = PackedScene.new()
-	var level_dir:DirAccess = DirAccess.open("user://Levels/" + campaign)
+	var level_dir:DirAccess = DirAccess.open(campaign_path + "/" + campaign_num)
 
 	for brick in level_content.get_children():
 		brick.owner = level_content
 
 	if not level_dir:
-		DirAccess.make_dir_absolute("user://Levels")
-		DirAccess.make_dir_absolute("user://Levels/" + campaign)
-		level_dir = DirAccess.open("user://Levels/" + campaign)
+		DirAccess.make_dir_absolute(campaign_path + "/")
+		DirAccess.make_dir_absolute(campaign_path + "/" + campaign_num)
+		level_dir = DirAccess.open(campaign_path + "/" + campaign_num)
 
 	new_level.pack(level_content)
 
@@ -232,7 +235,7 @@ func save_level():
 	var level_data:LevelData = LevelData.new()
 
 	if level_num:
-		var dir = "user://Levels/" + campaign + "/" + level_num + "/"
+		var dir = campaign_path + "/" + campaign_num + "/" + level_num + "/"
 
 		level_data = load(dir + "data.tres")
 		level_data.thumbnail = ImageTexture.create_from_image(thumb)
@@ -241,16 +244,13 @@ func save_level():
 		ResourceSaver.save(new_level, dir + "level.tscn")
 		ResourceSaver.save(level_data, dir + "data.tres")
 	else:
-		if not FileAccess.file_exists("user://Levels/" + campaign + "/campaign.json"):
-			CampaignManager.create_campaign("user://Levels/" + campaign + "/campaign.json", campaign)
-
-		var campaign_data:Dictionary = CampaignManager.load_campaign_data("user://Levels/" + campaign + "/campaign.json")
-		if campaign_data.levels.size() == 0:
+		var dirs = DirAccess.open(campaign_path + "/" + campaign_num).get_directories()
+		if dirs.size() == 0:
 			level_num = "1"
 		else:
-			level_num = str(campaign_data.levels[campaign_data.levels.size() - 1].to_int() + 1)
+			level_num = str(dirs[dirs.size() - 1].to_int() + 1)
 		
-		var new_dir = "user://Levels/" + campaign + "/" + level_num + "/"
+		var new_dir = campaign_path + "/" + campaign_num + "/" + level_num + "/"
 		DirAccess.make_dir_absolute(new_dir)
 
 		level_data.name = level_name.text # TODO
@@ -258,7 +258,6 @@ func save_level():
 
 		ResourceSaver.save(new_level, new_dir + "level.tscn")
 		ResourceSaver.save(level_data, new_dir + "data.tres")
-		CampaignManager.add_campaign_level("user://Levels/Default/campaign.json", level_num)
 
 	go_back()
 

@@ -1,0 +1,64 @@
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dck5wvqkfemjm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1fd6g"]
+bg_color = Color(0.231987, 0.506389, 0.686397, 1)
+border_width_left = 20
+border_width_right = 20
+border_color = Color(0.184954, 0.42934, 0.588624, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nivbn"]
+bg_color = Color(0.295055, 0.588776, 0.784708, 1)
+border_width_left = 20
+border_width_right = 20
+border_color = Color(0.294118, 0.588235, 0.784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvnlk"]
+bg_color = Color(0.178525, 0.417367, 0.572622, 1)
+border_width_left = 20
+border_width_right = 20
+border_color = Color(0.180392, 0.415686, 0.572549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hidkq"]
+bg_color = Color(0.148715, 0.361849, 0.499958, 1)
+border_width_left = 20
+border_width_right = 20
+border_color = Color(0.180392, 0.415686, 0.572549, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhdrc"]
+bg_color = Color(0.35, 0.805, 1, 0.686275)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6t1rt"]
+bg_color = Color(0.28, 0.712, 1, 0.764706)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ttjip"]
+content_margin_left = 5.0
+content_margin_top = 10.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+bg_color = Color(0.473573, 0.554604, 0.678053, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ffstt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7chut"]
+draw_center = false
+border_width_top = 10
+border_color = Color(0.263576, 0.361704, 0.433744, 1)
+
+[resource]
+default_base_scale = 2.0
+default_font_size = 30
+Button/styles/focus = SubResource("StyleBoxFlat_1fd6g")
+Button/styles/hover = SubResource("StyleBoxFlat_nivbn")
+Button/styles/normal = SubResource("StyleBoxFlat_pvnlk")
+Button/styles/pressed = SubResource("StyleBoxFlat_hidkq")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_hhdrc")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_6t1rt")
+HSlider/styles/slider = SubResource("StyleBoxFlat_ttjip")
+MarginContainer/constants/margin_bottom = 40
+MarginContainer/constants/margin_left = 40
+MarginContainer/constants/margin_right = 40
+MarginContainer/constants/margin_top = 40
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_ffstt")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_7chut")

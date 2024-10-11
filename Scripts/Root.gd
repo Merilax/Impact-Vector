@@ -1,7 +1,7 @@
 extends Control
 
-@onready var main_menu:Control = $PanelContainer/MarginContainer/MainMenu
-@onready var settings_menu:Control = $PanelContainer/MarginContainer/SettingMenu
+@export var main_menu:Control
+@export var settings_menu:Control
 
 func _ready():
 	main_menu.start_game.connect(play_level)
@@ -9,24 +9,29 @@ func _ready():
 	main_menu.open_settings_menu.connect(open_settings)
 	settings_menu.menu_closed.connect(close_settings)
 
+	$Background.retrigger()
+
 	SaveLoader.new().load_settings()
 	MusicPlayer.set_track_type("MainMenu")
 
-func play_level(campaign, level_num):
+func play_level(campaign_path, campaign_num, level_num):
 	var GameScene:PackedScene = load("res://Scenes/Game/Level.tscn")
 	var game:Node2D = GameScene.instantiate()
 	game.level_num = level_num
-	game.campaign_name = campaign
+	game.campaign_path = campaign_path
+	game.campaign_num = campaign_num
 	add_sibling(game)
 	MusicPlayer.set_track_type("InGame")
 	self.queue_free()
 
-func open_editor(campaign:String = "Default", level_num:String = ""):
+func open_editor(campaign_path:String, campaign_num:String, level_num:String = ""):
 	var LevelEditorScene:PackedScene = load("res://Scenes/Game/LevelEditor.tscn")
 	var editor:LevelEditor = LevelEditorScene.instantiate()
 	add_sibling(editor)
+	editor.campaign_path = campaign_path
+	editor.campaign_num = campaign_num
 	if level_num:
-		editor.load_level(campaign, level_num)
+		editor.load_level(level_num)
 	self.queue_free()
 
 func open_settings():

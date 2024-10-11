@@ -1,19 +1,22 @@
-[gd_scene load_steps=13 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=14 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
 [ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
-[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/MainTheme.tres" id="3_cwvof"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_cwvof"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="5_gh0ej"]
 [ext_resource type="Script" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
-[ext_resource type="LabelSettings" uid="uid://dtxnkyfqv658e" path="res://GDResources/LabelMedium.tres" id="9_5v2rt"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 [ext_resource type="Script" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7pppu"]
+font_size = 40
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("world_border")]
 script = ExtResource("1_vf5nn")
@@ -34,68 +37,112 @@ position = Vector2(766, 1168)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
 shape = SubResource("RectangleShape2D_pborx")
 
+[node name="LevelContentOffset" type="Node2D" parent="."]
+position = Vector2(40, 0)
+
 [node name="Balls" type="Node2D" parent="."]
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="UI" type="Control" parent="UILayer"]
 layout_mode = 3
-anchor_left = 0.776875
+anchor_left = 0.770312
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 theme = ExtResource("3_cwvof")
 metadata/_edit_use_anchors_ = true
 
-[node name="PanelContainer" type="PanelContainer" parent="UILayer/UI"]
+[node name="NinePatchRect2" type="NinePatchRect" parent="UILayer/UI"]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("5_gh0ej")
+region_rect = Rect2(0, 0, 512, 512)
+patch_margin_left = 42
+patch_margin_top = 42
+patch_margin_right = 42
+patch_margin_bottom = 42
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="MarginContainer" parent="UILayer/UI/NinePatchRect2"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI/PanelContainer"]
+[node name="PanelContainer" type="ColorRect" parent="UILayer/UI/NinePatchRect2/BG"]
 layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
 
-[node name="GridContainer" type="GridContainer" parent="UILayer/UI/PanelContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+layout_mode = 2
+offset_right = 441.001
+offset_bottom = 1080.0
+
+[node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ScoreTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="ScoreTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Score"
-label_settings = ExtResource("9_5v2rt")
+label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="ScoreVar" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="ScoreVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
-label_settings = ExtResource("9_5v2rt")
+label_settings = SubResource("LabelSettings_7pppu")
 horizontal_alignment = 2
 script = ExtResource("10_ers3y")
 
-[node name="SpeedTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="SpeedTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Speed"
-label_settings = ExtResource("9_5v2rt")
+label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="SpeedVar" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="SpeedVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "100%"
-label_settings = ExtResource("9_5v2rt")
+label_settings = SubResource("LabelSettings_7pppu")
 horizontal_alignment = 2
 script = ExtResource("10_0egqj")
 
-[node name="LivesTxt" type="Label" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="LivesTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Lives"
-label_settings = ExtResource("9_5v2rt")
+label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/PanelContainer/MarginContainer/GridContainer"]
+[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 alignment = 1
+
+[node name="Control" type="Control" parent="UILayer"]
+layout_mode = 3
+anchor_right = 0.0208125
+anchor_bottom = 0.999593
+offset_right = 0.039999
+offset_bottom = 0.439941
+theme = ExtResource("3_cwvof")
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer2" type="ColorRect" parent="UILayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
 
 [node name="EscapeLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("game_root", "escape_menu", "settings_menu")]
 process_mode = 3
@@ -122,6 +169,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
 
 [node name="EscapeMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("8_ds3nv")]
 layout_mode = 2
@@ -159,6 +210,33 @@ grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="GameOverLayer/UI/CenterContainer"]
 layout_mode = 2
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="GameOverLayer/UI/CenterContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("5_gh0ej")
+region_rect = Rect2(0, 0, 512, 512)
+patch_margin_left = 42
+patch_margin_top = 42
+patch_margin_right = 42
+patch_margin_bottom = 42
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="MarginContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer/NinePatchRect2"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="ColorRect" parent="GameOverLayer/UI/CenterContainer/PanelContainer/NinePatchRect2/BG"]
+layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="GameOverLayer/UI/CenterContainer/PanelContainer"]
 layout_mode = 2

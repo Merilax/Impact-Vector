@@ -1,99 +1,135 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwcxgw014glpw"]
+[gd_scene load_steps=5 format=3 uid="uid://bwcxgw014glpw"]
 
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_3ne4r"]
 [ext_resource type="Script" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="2_q662l"]
 
-[node name="SettingMenu" type="VBoxContainer" node_paths=PackedStringArray("window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
+[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
+theme = ExtResource("1_3ne4r")
 script = ExtResource("1_nb1hl")
-window_mode_setting = NodePath("SettingTabs/Video/MarginContainer/GridContainer/WindowMode Setting")
-resolution_setting = NodePath("SettingTabs/Video/MarginContainer/GridContainer/Resolution Setting")
-borderless_setting = NodePath("SettingTabs/Video/MarginContainer/GridContainer/Borderless Setting")
-vsync_setting = NodePath("SettingTabs/Video/MarginContainer/GridContainer/VSync Setting")
-master_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
-music_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
-sfx_volume_setting = NodePath("SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
-save_button = NodePath("ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
+window_mode_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/WindowMode Setting")
+resolution_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Resolution Setting")
+borderless_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Borderless Setting")
+vsync_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/VSync Setting")
+master_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
+music_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
+sfx_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
+save_button = NodePath("MarginContainer/SettingMenu/ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+theme = ExtResource("1_3ne4r")
+texture = ExtResource("2_q662l")
+region_rect = Rect2(0, 0, 512, 512)
+patch_margin_left = 42
+patch_margin_top = 42
+patch_margin_right = 42
+patch_margin_bottom = 42
+
+[node name="BG" type="MarginContainer" parent="NinePatchRect"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="ColorRect" parent="NinePatchRect/BG"]
+layout_mode = 2
+color = Color(0.168627, 0.192157, 0.219608, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="SettingMenu" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="SettingTabs" type="TabContainer" parent="."]
+[node name="SettingTabs" type="TabContainer" parent="MarginContainer/SettingMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Audio" type="TabBar" parent="SettingTabs"]
+[node name="Audio" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="SettingTabs/Audio"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Audio"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 285.0
 grow_horizontal = 2
 
-[node name="GridContainer" type="GridContainer" parent="SettingTabs/Audio/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="Master Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="Master Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Master volume
 "
 
-[node name="Master Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="Master Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "Master"
 
-[node name="Music Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="Music Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Music volume"
 
-[node name="Music Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="Music Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "Music"
 
-[node name="SFX Volume" type="Label" parent="SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="SFX Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "SFX volume
 "
 
-[node name="SFX Setting" parent="SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="SFX Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 bus_name = "SFX"
 
-[node name="Video" type="TabBar" parent="SettingTabs"]
+[node name="Video" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="SettingTabs/Video"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Video"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 285.0
 grow_horizontal = 2
 
-[node name="GridContainer" type="GridContainer" parent="SettingTabs/Video/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="WindowMode" type="Label" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="WindowMode" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Window mode"
 
-[node name="WindowMode Setting" type="OptionButton" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="WindowMode Setting" type="OptionButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 selected = 0
@@ -102,12 +138,12 @@ popup/item_0/text = "Fullscreen"
 popup/item_1/text = "Windowed"
 popup/item_1/id = 1
 
-[node name="Resolution" type="Label" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Resolution" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Resolution (Window only)"
 
-[node name="Resolution Setting" type="OptionButton" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Resolution Setting" type="OptionButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 selected = 0
@@ -120,35 +156,35 @@ popup/item_2/id = 2
 popup/item_3/text = "1280 x 720"
 popup/item_3/id = 3
 
-[node name="Borderless" type="Label" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Borderless" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Borderless"
 
-[node name="Borderless Setting" type="CheckButton" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Borderless Setting" type="CheckButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VSync" type="Label" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="VSync" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "V-Sync"
 
-[node name="VSync Setting" type="CheckButton" parent="SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="VSync Setting" type="CheckButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ActionBtns" type="PanelContainer" parent="."]
+[node name="ActionBtns" type="PanelContainer" parent="MarginContainer/SettingMenu"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ActionBtns"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/ActionBtns"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ActionBtns/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SettingMenu/ActionBtns/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="SaveAndBack" type="Button" parent="ActionBtns/MarginContainer/HBoxContainer"]
+[node name="SaveAndBack" type="Button" parent="MarginContainer/SettingMenu/ActionBtns/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Save & Back"

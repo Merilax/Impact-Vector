@@ -11,7 +11,7 @@ func _ready() -> void:
 	for FilePath:String in filtered_array:
 		var brick_rect:EditorBrickSample = BrickRect.instantiate()
 		brick_rect.resource_path = "res://Scenes/Game/Bricks/" + FilePath
-		brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/BaseTypes/" + FilePath.trim_suffix(".tscn") + ".png")
+		brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/BaseTypes/" + FilePath.trim_suffix(".remap").trim_suffix(".tscn") + ".png")
 
 		add_child(brick_rect)
 		brick_rect.set_active_res.connect(set_active_res)
