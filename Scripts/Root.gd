@@ -11,7 +11,7 @@ func _ready():
 
 	$Background.retrigger()
 
-	SaveLoader.new().load_settings()
+	SaveLoader.load_settings()
 	MusicPlayer.set_track_type("MainMenu")
 
 func play_level(campaign_path, campaign_num, level_num):

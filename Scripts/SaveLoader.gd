@@ -1,16 +1,11 @@
 class_name SaveLoader
 extends Node
 
-signal loaded_settings()
-signal loaded_gamedata()
-signal saved_settings()
-signal saved_gamedata()
-
-func load_settings() -> SaveSettings:
-	var settings:SaveSettings = load("user://SaveSettings.tres")
-	if not settings:
+static func load_settings() -> SaveSettings:
+	if not FileAccess.file_exists("user://SaveSettings.tres"):
 		print("No settings, creating blank save.")
 		save_settings()
+	var settings:SaveSettings = load("user://SaveSettings.tres")
 	
 	var incomplete_config:bool = false
 
@@ -51,10 +46,9 @@ func load_settings() -> SaveSettings:
 		print("Broken settings, resaving.")
 		save_settings()
 	
-	loaded_settings.emit()
 	return settings
 
-func save_settings() -> bool:
+static func save_settings() -> bool:
 	var settings:SaveSettings = SaveSettings.new()
 
 	settings.vsync = DisplayServer.window_get_vsync_mode()
@@ -64,16 +58,14 @@ func save_settings() -> bool:
 	settings.sfx_volume = AudioServer.get_bus_volume_db(2)
 
 	ResourceSaver.save(settings, "user://SaveSettings.tres")
-	saved_settings.emit()
 	return true
 
-func load_gamedata() -> SaveGameData:
+static func load_gamedata() -> SaveGameData:
 	var game_data:SaveGameData = load("user://SaveGameData.tres")
 
-	loaded_gamedata.emit()
 	return game_data
 
-func save_gamedata(data_node) -> bool:
+static func save_gamedata(data_node) -> bool:
 	var save_game_data:SaveGameData = SaveGameData.new()
 	
 	save_game_data.score = data_node.score
@@ -82,5 +74,4 @@ func save_gamedata(data_node) -> bool:
 	save_game_data.level_path = data_node.level_dir
 
 	ResourceSaver.save(save_game_data, "user://SaveGameData.tres")
-	saved_gamedata.emit()
 	return true

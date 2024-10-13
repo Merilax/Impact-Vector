@@ -34,7 +34,7 @@ func _ready():
 		save_button.pressed.connect(save_and_back)
 
 func refresh():
-	var settings:SaveSettings = SaveLoader.new().load_settings()
+	var settings:SaveSettings = SaveLoader.load_settings()
 
 	if vsync_setting:
 		vsync_setting.set_pressed_no_signal(settings.vsync)
@@ -101,6 +101,6 @@ func on_set_audio_bus_volume(bus:String, volume_percent:float) -> bool:
 		return false
 	
 func save_and_back():
-	SaveLoader.new().save_settings()
+	SaveLoader.save_settings()
 	menu_closed.emit()
 	hide()

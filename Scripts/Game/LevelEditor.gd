@@ -28,6 +28,9 @@ var snap_cell_size:Vector2i = Vector2i(6, 10)
 @export var data_options_ctrl:Control
 @export var data_options_btn:Button
 @export var apply_brick_data_on_select_control:CheckButton
+@export var brick_x_ctrl:SpinBox
+@export var brick_y_ctrl:SpinBox
+@export var brick_rot_ctrl:SpinBox
 @export var brick_health_control:SpinBox
 @export var brick_score_control:SpinBox
 @export var brick_pushable_control:CheckBox
@@ -35,10 +38,6 @@ var snap_cell_size:Vector2i = Vector2i(6, 10)
 # @export var brick_hit_sound:Control
 # @export var brick_kill_sound:Control
 var apply_on_select:bool = false
-var brick_health:int
-var brick_score:int
-var brick_pushable:bool
-var brick_weight:int
 
 @export var brick_container:GridContainer
 @export var texture_container:Control
@@ -54,6 +53,8 @@ var can_place_bricks:bool = false
 var active_brick_sample:Brick
 var active_base_texture_path:String
 var active_texture_path:String
+
+var selected_brick:Brick
 
 var collision_detected:bool
 var illegal_collision_detected:bool
@@ -79,20 +80,15 @@ func _ready():
 	use_snap_control.toggled.connect(func(toggled_on:bool): use_snap = toggled_on)
 	snap_width.value_changed.connect(set_snap_size.bind(0))
 	snap_height.value_changed.connect(set_snap_size.bind(1))
-	use_snap = use_snap_control.button_pressed
 	snap_cell_size = Vector2i(floor(snap_width.value), floor(snap_height.value))
+	use_snap = use_snap_control.button_pressed
 
 	data_options_btn.pressed.connect(show_options.bind("data"))
-	apply_brick_data_on_select_control.toggled.connect(func(toggled_on:bool): apply_on_select = toggled_on)
-	brick_health_control.value_changed.connect(func(value:float): brick_health = floor(value))
-	brick_score_control.value_changed.connect(func(value:float): brick_score = floor(value))
-	brick_pushable_control.toggled.connect(func(toggled_on:bool): brick_pushable = toggled_on)
-	brick_weight_control.value_changed.connect(func(value:float): brick_weight = floor(value))
+	apply_brick_data_on_select_control.toggled.connect(set_apply_on_select)
 	apply_on_select = apply_brick_data_on_select_control.button_pressed
-	brick_health = floor(brick_health_control.value)
-	brick_score = floor(brick_score_control.value)
-	brick_pushable = brick_pushable_control.button_pressed
-	brick_weight = floor(brick_weight_control.value)
+	brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y))
+	brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value))
+	brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value))
 
 func set_tool(type:String):
 	if loading_level or saving_level: return
@@ -118,6 +114,11 @@ func set_tool(type:String):
 			set_active_res()
 
 func _process(_delta):
+	if selected_brick:
+		brick_x_ctrl.call_deferred("set_value_no_signal", selected_brick.position.x)
+		brick_y_ctrl.call_deferred("set_value_no_signal", selected_brick.position.y)
+		brick_rot_ctrl.call_deferred("set_value_no_signal", selected_brick.rotation_degrees)
+
 	if loading_level or saving_level: return
 	if can_place_bricks and active_brick_sample:
 		if use_snap:
@@ -154,6 +155,17 @@ func show_options(what:String):
 func set_snap_size(amount:int, axis:int):
 	snap_cell_size[axis] = amount
 
+func set_apply_on_select(toggled_on:bool):
+	apply_on_select = toggled_on
+	if toggled_on:
+		brick_x_ctrl.editable = false
+		brick_y_ctrl.editable = false
+		brick_rot_ctrl.editable = false
+	else:
+		brick_x_ctrl.editable = true
+		brick_y_ctrl.editable = true
+		brick_rot_ctrl.editable = true
+
 func set_active_res(res_path:String = ""):
 	if res_path.is_empty():
 		active_brick_sample = null
@@ -179,13 +191,19 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			new_brick.set_texture_sprite(active_texture_path)
 			level_content.add_child(new_brick)
 
+			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true)
+			new_brick.editor_hitbox.illegal_collision_freed.connect(func(): illegal_collision_detected = false)
+
 			new_brick.owner = level_content
 			new_brick.global_position = active_brick_sample.global_position
 			
-			new_brick.health_comp.health = brick_health
-			new_brick.score_comp.score = brick_score
-			new_brick.freeze = not brick_pushable
-			new_brick.mass = brick_weight
+			new_brick.health_comp.health = floor(brick_health_control.value)
+			new_brick.score_comp.score = floor(brick_score_control.value)
+			new_brick.freeze = not brick_pushable_control.button_pressed
+			new_brick.mass = brick_weight_control.value
+
+			selected_brick = new_brick
+			refresh_brick_data_controls(selected_brick)
 
 	if current_tool == "select":
 		if input.is_action_pressed("mouse_primary"):
@@ -196,16 +214,17 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			var result = space_state.intersect_point(query)
 			
 			if result.size() > 0:
+				selected_brick = result[0].collider
 				if apply_on_select:
-					result[0].collider.init_health = brick_health
-					result[0].collider.init_score = brick_score
-					result[0].collider.init_freeze = not brick_pushable
-					result[0].collider.init_mass = brick_weight
+					result[0].collider.init_health = brick_health_control.value
+					result[0].collider.init_score = brick_score_control.value
+					result[0].collider.init_freeze = not brick_pushable_control.button_pressed
+					result[0].collider.init_mass = brick_weight_control.value
 					
 					#result[0].collider.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
-					result[0].collider.tween_size(Vector2(0.7, 0.7), 0.1, true)
-				#else:
-					#brick_health = Set controls to existing brick data? Check nulls!
+					result[0].collider.tween_size(Vector2(0.7, 0.7), 0.1, true)	
+				else:
+					refresh_brick_data_controls(selected_brick)
 
 	if current_tool == "paint":
 		if input.is_action_pressed("mouse_primary"):
@@ -233,6 +252,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			var result = space_state.intersect_point(query)
 			
 			if result.size() > 0:
+				selected_brick = null
 				result[0].collider.queue_free()
 
 func on_mouse_enter_level_boundary():
@@ -256,6 +276,41 @@ func on_mouse_leave_level_boundary():
 	if active_brick_sample:
 		active_brick_sample.queue_free()
 		active_brick_sample = null
+
+func refresh_brick_data_controls(brick:Brick):
+	brick_x_ctrl.set_value_no_signal(brick.position.x)
+	brick_y_ctrl.set_value_no_signal(brick.position.y)
+	brick_rot_ctrl.set_value_no_signal(brick.rotation_degrees)
+	brick_health_control.set_value_no_signal(brick.init_health)
+	brick_score_control.set_value_no_signal(brick.init_score)
+	brick_pushable_control.set_pressed_no_signal(not brick.init_freeze)
+	brick_weight_control.set_value_no_signal(brick.init_mass)
+
+func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
+	var rollback:Vector2 = brick.position
+
+	brick.position = Vector2(x, y)
+	print(brick.position)
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	print(brick.position)
+
+	if illegal_collision_detected: # Brick gets stuck because it leaves the wall collision after this function executes, resetting the brick back inside the wall.
+		brick.position = rollback
+		print("err")
+		return false
+	print("ok")
+	return true
+
+func ui_set_brick_rotation(brick:Brick, rot:float) -> bool:
+	var rollback:float = brick.rotation_degrees
+
+	brick.rotation_degrees = rot
+
+	if illegal_collision_detected:
+		brick.rotation_degrees = rollback
+		return false
+	return true
 
 func reset_brick_collision_state():
 	collision_detected = false
