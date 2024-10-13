@@ -162,8 +162,8 @@ func set_apply_on_select(toggled_on:bool):
 		brick_y_ctrl.editable = false
 		brick_rot_ctrl.editable = false
 	else:
-		brick_x_ctrl.editable = true
-		brick_y_ctrl.editable = true
+		#brick_x_ctrl.editable = true # Fix UI move issue first
+		#brick_y_ctrl.editable = true
 		brick_rot_ctrl.editable = true
 
 func set_active_res(res_path:String = ""):
@@ -287,6 +287,7 @@ func refresh_brick_data_controls(brick:Brick):
 	brick_weight_control.set_value_no_signal(brick.init_mass)
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
+	# Needs collision logic rework
 	var rollback:Vector2 = brick.position
 
 	brick.position = Vector2(x, y)

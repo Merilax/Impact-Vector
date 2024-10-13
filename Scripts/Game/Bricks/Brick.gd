@@ -87,11 +87,11 @@ func tween_shader_color(set_color:Color, duration:float, reset_after:bool = fals
 	tweening_shader = true
 	
 	var previous_color = get_shader_color()
-	var tween = get_tree().create_tween()
+	var tween = create_tween()
 	await tween.tween_method(func(value): set_shader_color(value), previous_color, set_color, duration).finished
 
 	if reset_after:
-		tween = get_tree().create_tween()
+		tween = create_tween()
 		await tween.tween_method(func(value): set_shader_color(value), set_color, previous_color, duration).finished
 
 	tweening_shader = false
@@ -102,11 +102,11 @@ func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, for
 	tweening_size = true
 	
 	var previous_scale:Vector2 = scale
-	var tween = get_tree().create_tween()
+	var tween = create_tween()
 	await tween.tween_property(self, "scale", new_scale, duration).finished
 
 	if reset_after:
-		tween = get_tree().create_tween()
+		tween = create_tween()
 		await tween.tween_property(self, "scale", previous_scale, duration).finished
 
 	tweening_size = false

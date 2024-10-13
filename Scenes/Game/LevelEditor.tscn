@@ -421,6 +421,7 @@ layout_mode = 2
 theme = ExtResource("6_if84t")
 max_value = 9999.0
 alignment = 2
+editable = false
 suffix = "px"
 select_all_on_focus = true
 
@@ -435,6 +436,7 @@ layout_mode = 2
 theme = ExtResource("6_if84t")
 max_value = 9999.0
 alignment = 2
+editable = false
 suffix = "px"
 select_all_on_focus = true
 

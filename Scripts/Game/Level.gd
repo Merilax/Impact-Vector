@@ -91,6 +91,7 @@ func _ready():
 
 func spawn_paddle():
 	paddle = PaddleScene.instantiate()
+	paddle.world_border = world_border
 	add_child(paddle)
 	paddle.position = Vector2(1000, 1040)
 
@@ -106,9 +107,9 @@ func spawn_ball(on_paddle:bool, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector
 
 		ball.dir = dir
 		if on_paddle:
-			ball.set_deferred("position", Vector2(paddle.global_position.x, paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)))
 			paddle.add_magnet(true)
-			paddle.call_deferred("receive_ball", ball)
+			paddle.call_deferred("receive_first_ball", ball)
+			#ball.set_deferred("position", Vector2(paddle.global_position.x, paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)))
 		else:
 			ball.set_deferred("global_position", pos)
 			ball.set_deferred("freeze", false)
@@ -237,7 +238,7 @@ func win():
 
 	var stored_speed_mult = speed_mult
 
-	get_tree().create_tween().tween_method(func(speed): change_speed.emit(speed, false), stored_speed_mult, 0, 2.5)
+	create_tween().tween_method(func(speed): change_speed.emit(speed, false), stored_speed_mult, 0, 2.5)
 
 	await get_tree().create_timer(3.5).timeout
 

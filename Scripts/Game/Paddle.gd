@@ -1,9 +1,11 @@
-extends Node2D
+extends CharacterBody2D
 class_name Paddle
 
 @export var hit_sound_comp:AudioStreamPlayer2D
 @export var magnet_sound:AudioStreamPlayer2D
 @export var turrets_comp:TurretsComponent
+
+@export var world_border:WorldBorder
 
 var magnetised:bool = false
 var single_use_magnet:bool = false
@@ -14,6 +16,7 @@ var magnet_power:int = 0 # Decouple
 var active_turrets:bool = false
 
 @onready var hitbox = $'Hitbox'
+
 
 signal spawn_bullet(pos:Vector2, dir:float)
 
@@ -27,15 +30,17 @@ func _ready():
 		turrets_comp.expire.connect(_on_turrets_expire)
 
 func _process(_delta):
-	self.position.x = get_global_mouse_position().x
-	self.position.x = clampf(self.position.x, $"../WorldBorder/WallL".position.x + width/2, $"../WorldBorder/WallR".position.x - width/2)
-
 	if Input.is_action_pressed("mouse_primary"):
 		if magnetised or single_use_magnet:
 			release_magnet()
 
 		if turrets_comp:
 			turrets_comp.fire()
+
+func _physics_process(_delta):
+	self.position.x = get_global_mouse_position().x
+	if world_border:
+		self.position.x = clampf(self.position.x, world_border.wall_left.position.x + width/2, world_border.wall_right.position.x - width/2)
 
 func _on_turrets_fire(pos:Vector2, dir:float):
 	spawn_bullet.emit(pos, dir)
@@ -56,6 +61,17 @@ func calculate_bounce_vector(node) -> Vector2:
 	var calc_y = 1 - abs(calc_x)
 	return Vector2(calc_x, -calc_y).normalized()
 
+func receive_first_ball(ball:Ball):
+	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
+		ball.freeze = true
+		ball.dir = Vector2.ZERO
+		ball.reparent(self)
+		ball.position = Vector2(0, -(get_node("Sprite2D").get_rect().size.y * get_node("Sprite2D").scale.y))
+
+		balls.append(ball)
+		if magnet_sound:
+			magnet_sound.play()
+
 func receive_ball(ball:Ball):
 	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
 		ball.freeze = true
@@ -70,8 +86,8 @@ func receive_ball(ball:Ball):
 
 		if hit_sound_comp: hit_sound_comp.play()
 		
-		await get_tree().create_tween().tween_property($Sprite2D, "position", Vector2(0, 10), 0.1).set_ease(Tween.EASE_OUT).finished
-		get_tree().create_tween().tween_property($Sprite2D, "position", Vector2(0, 0), 0.1).set_ease(Tween.EASE_IN)
+		await create_tween().tween_property($Sprite2D, "position", Vector2(0, 10), 0.1).set_ease(Tween.EASE_OUT).finished
+		create_tween().tween_property($Sprite2D, "position", Vector2(0, 0), 0.1).set_ease(Tween.EASE_IN)
 
 func release_magnet():
 	single_use_magnet = false
