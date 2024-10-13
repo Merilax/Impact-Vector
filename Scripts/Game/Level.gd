@@ -297,7 +297,7 @@ func init_brick(brick):
 				var pickup_comp:PickupComponent = PickupComp.instantiate()
 				brick.add_child(pickup_comp)
 				brick.pickup_comp = pickup_comp
-				brick.pickup_comp.shader_target = brick.get_node("Sprite2D")
+				brick.pickup_comp.shader_target = brick#.get_node("Sprite2D")
 
 				var random_pickup = pickup_list[randi() % pickup_list.size()]
 

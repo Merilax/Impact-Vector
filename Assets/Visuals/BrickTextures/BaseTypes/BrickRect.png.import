@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d4eux75igbqot"
-path="res://.godot/imported/BrickStatic.png-7a7132f482e555ead2b33b863a2f1a73.ctex"
+uid="uid://cr13iuse6mpxu"
+path="res://.godot/imported/BrickRect.png-eee2248af3e502e2c098783e1fee04ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/BaseTypes/BrickStatic.png"
-dest_files=["res://.godot/imported/BrickStatic.png-7a7132f482e555ead2b33b863a2f1a73.ctex"]
+source_file="res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+dest_files=["res://.godot/imported/BrickRect.png-eee2248af3e502e2c098783e1fee04ff.ctex"]
 
 [params]
 

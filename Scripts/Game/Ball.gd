@@ -24,7 +24,7 @@ func _physics_process(delta):
 
 			# Unstuck ball (can't do on X because paddle can bounce the ball vertically)
 			if abs(dir.y) < 0.05:
-				dir.y = randf_range(-0.1, 0.1) # Needs testing
+				dir.y = randf_range(-0.1, 0.1)
 				
 			if collided.has_method('hit'):
 				collided.hit(self)

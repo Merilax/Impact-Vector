@@ -7,4 +7,4 @@ resource_local_to_scene = true
 shader = ExtResource("1_wmlby")
 shader_parameter/from = Color(1, 1, 1, 1)
 shader_parameter/to = Color(1, 1, 1, 1)
-shader_parameter/tolerance = 0.0
+shader_parameter/tolerance = 1.0

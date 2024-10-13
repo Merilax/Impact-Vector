@@ -8,7 +8,7 @@ var BrickRect = preload("res://Scenes/UI/Components/BrickSample.tscn")
 
 @export var shader_color:Color = Color(1, 1, 1)
 
-signal set_active_res_signal(brick_scene:PackedScene)
+signal set_active_res_signal(texture_path:String)
 
 func _ready() -> void:
 	var file_array:PackedStringArray = DirAccess.get_files_at("res://Assets/Visuals/BrickTextures/")
@@ -25,9 +25,9 @@ func _ready() -> void:
 	texture_button.toggled.connect(show_color_picker)
 	color_picker.color_changed.connect(_on_color_changed)
 
-func set_active_res(res):
-	set_active_res_signal.emit(res)
-	texture_button.texture_normal = load(res)
+func set_active_res(res_path):
+	set_active_res_signal.emit(res_path)
+	texture_button.texture_normal = load(res_path)
 
 func show_color_picker(toggled:bool):
 	color_picker.visible = toggled
