@@ -188,7 +188,6 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 			var new_brick:Brick = BrickScene.instantiate()
 			new_brick.set_base_sprite(active_base_texture_path)
-			new_brick.set_texture_sprite(active_texture_path)
 			level_content.add_child(new_brick)
 
 			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true)
@@ -375,8 +374,14 @@ func save_level():
 		level_data.thumbnail = ImageTexture.create_from_image(thumb)
 		level_data.name = level_name.text 
 
-		ResourceSaver.save(new_level, dir + "level.tscn")
-		ResourceSaver.save(level_data, dir + "data.tres")
+		var err := ResourceSaver.save(new_level, dir + "level.tscn")
+		if err != OK:
+			print("Level Scene save error: " + error_string(err))
+			ResourceSaver.save(new_level, dir + "level.tscn")
+		err = ResourceSaver.save(level_data, dir + "data.tres")
+		if err != OK:
+			print("Level data save error: " + error_string(err))
+			ResourceSaver.save(level_data, dir + "data.tres")
 	else:
 		var dirs = DirAccess.open(campaign_path + "/" + campaign_num).get_directories()
 		if dirs.size() == 0:
@@ -390,8 +395,15 @@ func save_level():
 		level_data.name = level_name.text # TODO
 		level_data.thumbnail = ImageTexture.create_from_image(thumb)
 
-		ResourceSaver.save(new_level, new_dir + "level.tscn")
-		ResourceSaver.save(level_data, new_dir + "data.tres")
+		var err := ResourceSaver.save(new_level, new_dir + "level.tscn")
+		if err != OK:
+			print("Level Scene save error: " + error_string(err))
+			ResourceSaver.save(new_level, new_dir + "level.tscn")
+
+		err = ResourceSaver.save(level_data, new_dir + "data.tres")
+		if err != OK:
+			print("Level data save error: " + error_string(err))
+			ResourceSaver.save(level_data, new_dir + "data.tres")
 
 	go_back()
 	#saving_level = false
