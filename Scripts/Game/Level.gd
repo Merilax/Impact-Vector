@@ -285,6 +285,8 @@ func _on_child_entered_tree(node:Node):
 
 func init_brick(brick):
 	if brick.is_in_group('Brick'):
+		brick.setup(false);
+		
 		if brick.has_signal('process_score'):
 			brick.process_score.connect(add_score)
 		if brick.has_signal('brick_destroyed'):

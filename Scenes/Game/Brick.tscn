@@ -12,13 +12,14 @@
 [ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Game/Components/EditorHitboxComp.tscn" id="10_a4cop"]
 
 [node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
-collision_layer = 6
-collision_mask = 0
+collision_layer = 4
+collision_mask = 8
 mass = 5.0
 physics_material_override = ExtResource("1_g5dda")
 can_sleep = false
 freeze = true
 freeze_mode = 1
+contact_monitor = true
 max_contacts_reported = 2
 linear_damp_mode = 1
 linear_damp = 2.0

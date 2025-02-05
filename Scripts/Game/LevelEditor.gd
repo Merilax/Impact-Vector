@@ -35,6 +35,7 @@ var snap_cell_size:Vector2i = Vector2i(6, 10)
 @export var brick_score_control:SpinBox
 @export var brick_pushable_control:CheckBox
 @export var brick_weight_control:SpinBox
+@export var brick_can_collide_control:CheckBox
 # @export var brick_hit_sound:Control
 # @export var brick_kill_sound:Control
 var apply_on_select:bool = false
@@ -140,18 +141,20 @@ func show_options(what:String):
 	match what.to_lower():
 		"snap":
 			if snap_options_ctrl.visible:
-				mode_options.hide()
-				return
-			data_options_ctrl.hide()
-			snap_options_ctrl.show()
-			mode_options.show()
+				snap_options_ctrl.hide();
+				mode_options.hide();
+				return;
+			data_options_ctrl.hide();
+			snap_options_ctrl.show();
+			mode_options.show();
 		"data":
 			if data_options_ctrl.visible:
-				mode_options.hide()
-				return
-			snap_options_ctrl.hide()
-			data_options_ctrl.show()
-			mode_options.show()
+				data_options_ctrl.hide();
+				mode_options.hide();
+				return;
+			snap_options_ctrl.hide();
+			data_options_ctrl.show();
+			mode_options.show();
 
 func set_snap_size(amount:int, axis:int):
 	snap_cell_size[axis] = amount
@@ -173,6 +176,7 @@ func set_active_res(res = null):
 		active_brick_sample = null;
 		selected_texture_path = "";
 		selected_texture_shader = Color(1, 1, 1, 1);
+		texture_container.shader_color = Color(1, 1, 1, 1);
 		return;
 
 	if current_tool == "place":
@@ -183,6 +187,8 @@ func set_active_res(res = null):
 		var brick:Brick = BrickScene.instantiate();
 		var temp_hitbox:Node2D = res.hitbox.instantiate();
 		brick.hitbox = temp_hitbox;
+		brick.add_child(temp_hitbox, true);
+		temp_hitbox.owner = brick;
 		brick.base_texture_path = res.texture_path;
 		brick.setup(true);
 
@@ -224,7 +230,6 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			selected_brick = new_brick
 			refresh_brick_data_controls(selected_brick)
 
-	# Maybe set passive brick to selected?
 	if current_tool == "select":
 		if input.is_action_pressed("mouse_primary"):
 			var space_state = get_world_2d().direct_space_state
@@ -242,6 +247,10 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					result[0].collider.init_score = brick_score_control.value;
 					result[0].collider.init_freeze = not brick_pushable_control.button_pressed;
 					result[0].collider.init_mass = brick_weight_control.value;
+					if brick_can_collide_control.button_pressed:
+						result[0].collider.collision_mask = 12;
+					else:
+						result[0].collider.collision_mask = 8;
 					
 					#result[0].collider.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
 					result[0].collider.tween_size(Vector2(0.7, 0.7), 0.1, true);
@@ -253,9 +262,8 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 	if current_tool == "paint":
 		if input.is_action_pressed("mouse_primary"):
-			print("x")
 			if selected_texture_path.is_empty(): return
-			print("y")
+			
 			var space_state = get_world_2d().direct_space_state
 			var query = PhysicsPointQueryParameters2D.new()
 			query.position = get_global_mouse_position()
@@ -263,7 +271,6 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			var result = space_state.intersect_point(query)
 			
 			if result.size() > 0:
-				print("z")
 				result[0].collider.set_texture_sprite(selected_texture_path);
 				result[0].collider.set_shader_color(texture_container.shader_color, true);
 				selected_texture_shader = texture_container.shader_color;
@@ -315,6 +322,10 @@ func refresh_brick_data_controls(brick:Brick):
 	brick_score_control.set_value_no_signal(brick.init_score)
 	brick_pushable_control.set_pressed_no_signal(not brick.init_freeze)
 	brick_weight_control.set_value_no_signal(brick.init_mass)
+	if brick.collision_mask == 8:
+		brick_can_collide_control.set_value_no_signal(false);
+	elif brick.collision_mask == 12:
+		brick_can_collide_control.set_value_no_signal(true);
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
@@ -361,6 +372,9 @@ func load_level(level_folder:String):
 	$LevelEditor.add_child(loaded_level_content, true)
 	level_content = loaded_level_content
 
+	for brick in level_content.get_children():
+		brick.setup(true);
+
 	level_num = level_folder
 	loading_level = false
 
@@ -381,6 +395,9 @@ func save_level():
 		DirAccess.make_dir_absolute(campaign_path + "/" + campaign_num)
 		level_dir = DirAccess.open(campaign_path + "/" + campaign_num)
 
+	for brick:Brick in level_content.get_children():
+		brick.hitbox.owner = level_content;
+	
 	new_level.pack(level_content)
 
 	mode_options.hide()
@@ -452,8 +469,10 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	#	print(child)
 	#	new_brick.add_child(child.duplicate());
 	var new_brick:Brick = BrickScene.instantiate();
-	new_brick.hitbox = brick.hitbox.duplicate();
-	new_brick.add_child(new_brick.hitbox, true);
+	var new_hitbox = brick.hitbox.duplicate();
+	new_brick.hitbox = new_hitbox;
+	new_brick.add_child(new_hitbox, true);
+	new_hitbox.owner = new_brick;
 	new_brick.base_texture_path = brick.base_texture_path;
 	if selected_texture_path: new_brick.texture_path = selected_texture_path;
 	if selected_texture_shader: new_brick.shader_color = selected_texture_shader;

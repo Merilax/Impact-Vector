@@ -24,7 +24,8 @@ scale = Vector2(1.585, 0.150943)
 texture = ExtResource("1_xdg01")
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_mask = 17
+collision_layer = 2
+collision_mask = 16
 input_pickable = false
 monitorable = false
 
