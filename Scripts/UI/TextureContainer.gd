@@ -1,6 +1,6 @@
 extends Control
 
-var BrickRect = preload("res://Scenes/UI/Components/BrickSample.tscn")
+var BrickRect = preload("uid://c47txkxxgap4t")
 
 @export var texture_grid:GridContainer
 @export var texture_button:TextureButton

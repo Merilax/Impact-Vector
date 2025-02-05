@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-var CampaignBoxScene = preload("res://Scenes/UI/Components/CampaignBox.tscn")
+var CampaignBoxScene = preload("uid://cvlx80hocybuo")
 
 @export var create_campaign_button:Button
 @export var create_campaign_lineedit:LineEdit

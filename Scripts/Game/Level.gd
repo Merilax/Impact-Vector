@@ -38,12 +38,12 @@ var pickup_list:Array = [
 	}
 ]
 
-var BallScene = preload("res://Scenes/Game/Ball.tscn")
-var PaddleScene = preload("res://Scenes/Game/Paddle.tscn")
+var BallScene = preload("uid://dxbg7h6mg1dtd")
+var PaddleScene = preload("uid://bjjlgc7puyxfe")
 
-var PickupComp = preload("res://Scenes/Game/Components/PickupComp.tscn")
-var PickupScene = preload("res://Scenes/Game/Pickup.tscn")
-var BulletScene = preload("res://Scenes/Game/Bullet.tscn")
+var PickupComp = preload("uid://c5ebe7unjhv0x")
+var PickupScene = preload("uid://dydm2dhj7p1nd")
+var BulletScene = preload("uid://dlvm63pvf1dym")
 
 var paddle:Paddle
 
@@ -63,7 +63,7 @@ var ball_stuck_timer:SceneTreeTimer
 @onready var score_counter:Label = $'UILayer'.find_child('ScoreVar')
 @onready var speed_counter:Label = $'UILayer'.find_child('SpeedVar')
 @onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer')
-var BallLifeRect = preload("res://Scenes/UI/BallLifeRect.tscn")
+var BallLifeRect = preload("uid://b5s0bxfmkxjel")
 
 @export var world_border:WorldBorder
 var level_content:Node2D

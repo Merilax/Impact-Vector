@@ -1,7 +1,7 @@
 extends Node2D
 class_name LevelEditor
 
-var BrickScene = preload("res://Scenes/Game/Brick.tscn")
+var BrickScene = preload("uid://dtkn1xk6stg0v")
 
 var saving_level:bool = false
 var loading_level:bool = false
@@ -440,7 +440,7 @@ func save_level():
 	#saving_level = false
 
 func go_back():
-	var MainScene:PackedScene = load("res://Scenes/Root.tscn")
+	var MainScene:PackedScene = load("uid://c0a7y1ep5uibb")
 	var main_scene = MainScene.instantiate()
 	add_sibling(main_scene)
 	queue_free()

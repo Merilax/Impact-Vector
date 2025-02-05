@@ -41,7 +41,7 @@ func close_settings():
 
 func save_and_quit():
 	get_tree().paused = false
-	var MainMenu:PackedScene = load("res://Scenes/Root.tscn")
+	var MainMenu:PackedScene = load("uid://c0a7y1ep5uibb")
 	var main_menu:Control = MainMenu.instantiate()
 
 	game_root.add_sibling(main_menu)

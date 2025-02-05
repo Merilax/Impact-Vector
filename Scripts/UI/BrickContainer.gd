@@ -1,6 +1,6 @@
 extends GridContainer
 
-var BrickRect = preload("res://Scenes/UI/Components/BrickSample.tscn")
+var BrickRect = preload("uid://c47txkxxgap4t")
 var BrickScene = preload("uid://dtkn1xk6stg0v");
 
 signal set_active_res_signal(texture_path:String)

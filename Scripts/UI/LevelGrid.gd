@@ -1,6 +1,6 @@
 extends GridContainer
 
-var LevelBoxScene = preload("res://Scenes/UI/Components/LevelBox.tscn")
+var LevelBoxScene = preload("uid://ct3pryubbc463")
 
 signal play_level(folder_num:String)
 signal edit_level(folder_num:String)
