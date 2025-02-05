@@ -25,18 +25,19 @@ linear_damp = 2.0
 angular_damp_mode = 1
 angular_damp = 5.0
 script = ExtResource("2_sndss")
-base_sprite = NodePath("BaseSprite")
-texture_sprite = NodePath("BaseSprite/TextureSprite")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
 health_comp = NodePath("HealthComp")
 score_comp = NodePath("ScoreComp")
 hit_sound_comp = NodePath("HitSoundComp")
 destroy_sound_comp = NodePath("DestroySoundComp")
 editor_hitbox = NodePath("EditorHitboxComp")
 
-[node name="BaseSprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 clip_children = 1
 
-[node name="TextureSprite" type="Sprite2D" parent="BaseSprite"]
+[node name="TextureSprite" type="Sprite2D" parent="Sprite"]
+visible = false
 material = ExtResource("3_wd6an")
 
 [node name="HealthComp" parent="." instance=ExtResource("5_mnfrv")]

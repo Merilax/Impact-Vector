@@ -8,6 +8,7 @@ radius = 13.0
 
 [node name="Ball" type="CharacterBody2D" groups=["Ball"]]
 collision_mask = 6
+motion_mode = 1
 script = ExtResource("1_8lo0t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

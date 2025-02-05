@@ -50,9 +50,11 @@ var campaign_num:String
 var campaign_path:String
 
 var can_place_bricks:bool = false
+var selected_brick_sample:Brick
 var active_brick_sample:Brick
-var active_base_texture_path:String
-var active_texture_path:String
+var selected_base_texture_path:String
+var selected_texture_path:String
+var selected_texture_shader:Color
 
 var selected_brick:Brick
 
@@ -101,17 +103,14 @@ func set_tool(type:String):
 			current_tool = type.to_lower()
 			brick_container.hide()
 			texture_container.hide()
-			set_active_res()
 		"paint":
 			current_tool = type.to_lower()
 			brick_container.hide()
 			texture_container.show()
-			set_active_res()
 		"erase":
 			current_tool = type.to_lower()
 			brick_container.hide()
 			texture_container.hide()
-			set_active_res()
 
 func _process(_delta):
 	if selected_brick:
@@ -121,18 +120,20 @@ func _process(_delta):
 
 	if loading_level or saving_level: return
 	if can_place_bricks and active_brick_sample:
+		var snap_to_x:float;
+		var snap_to_y:float;
 		if use_snap:
 			@warning_ignore("integer_division")
-			var snap_to_x:float = (floori(get_global_mouse_position().x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2)
+			snap_to_x = (floori(get_global_mouse_position().x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2);
 			@warning_ignore("integer_division")
-			var snap_to_y:float = (floori(get_global_mouse_position().y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2)
-			active_brick_sample.global_position = Vector2(snap_to_x, snap_to_y)
+			snap_to_y = (floori(get_global_mouse_position().y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2);
+			active_brick_sample.global_position = Vector2(snap_to_x, snap_to_y);
 		else:
 			@warning_ignore("integer_division")
-			var snap_to_x:float = floori(get_global_mouse_position().x)
+			snap_to_x = floori(get_global_mouse_position().x);
 			@warning_ignore("integer_division")
-			var snap_to_y:float = floori(get_global_mouse_position().y)
-			active_brick_sample.global_position = Vector2(snap_to_x, snap_to_y)
+			snap_to_y = floori(get_global_mouse_position().y);
+		active_brick_sample.global_position = Vector2(snap_to_x, snap_to_y);
 
 func show_options(what:String):
 	if loading_level or saving_level: return
@@ -166,28 +167,47 @@ func set_apply_on_select(toggled_on:bool):
 		#brick_y_ctrl.editable = true
 		brick_rot_ctrl.editable = true
 
-func set_active_res(res_path:String = ""):
-	if res_path.is_empty():
-		active_brick_sample = null
-		active_base_texture_path = ""
-		active_texture_path = ""
-		return
+func set_active_res(res = null):
+	if res == null:
+		selected_brick_sample = null;
+		active_brick_sample = null;
+		selected_texture_path = "";
+		selected_texture_shader = Color(1, 1, 1, 1);
+		return;
 
-	res_path = res_path.trim_suffix(".remap")
+	if current_tool == "place":
+		if selected_brick_sample:
+			selected_brick_sample.queue_free();
+			selected_brick_sample = null;
+		
+		var brick:Brick = BrickScene.instantiate();
+		var temp_hitbox:Node2D = res.hitbox.instantiate();
+		brick.hitbox = temp_hitbox;
+		brick.base_texture_path = res.texture_path;
+		brick.setup(true);
 
-	if current_tool == "place": active_base_texture_path = res_path
-	if current_tool == "paint": active_texture_path = res_path
+		selected_base_texture_path = res.texture_path;
+		selected_texture_path = "";
+		selected_brick_sample = brick;
+		selected_brick = brick;
+		selected_texture_shader = Color(1, 1, 1, 1);
+
+	if current_tool == "paint":
+		selected_texture_path = res.trim_suffix(".remap");
+		selected_texture_shader = Color(1, 1, 1, 1);
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if loading_level or saving_level: return
 	if current_tool == "place":	
 		if input.is_action_pressed("mouse_primary"):
-			if active_brick_sample == null: return
+			if selected_brick_sample == null or active_brick_sample == null: return
 			if illegal_collision_detected: return
 			if collision_detected and not Input.is_action_pressed('shift'): return
 
-			var new_brick:Brick = BrickScene.instantiate()
-			new_brick.set_base_sprite(active_base_texture_path)
+			var new_brick:Brick
+			if selected_brick: new_brick = duplicate_bug_bypass(selected_brick);
+			else: new_brick = duplicate_bug_bypass(selected_brick_sample);#selected_brick_sample.duplicate();#BrickScene.instantiate()
+			#new_brick.set_base_sprite(selected_texture_path)
 			level_content.add_child(new_brick)
 
 			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true)
@@ -204,6 +224,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			selected_brick = new_brick
 			refresh_brick_data_controls(selected_brick)
 
+	# Maybe set passive brick to selected?
 	if current_tool == "select":
 		if input.is_action_pressed("mouse_primary"):
 			var space_state = get_world_2d().direct_space_state
@@ -213,22 +234,28 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			var result = space_state.intersect_point(query)
 			
 			if result.size() > 0:
-				selected_brick = result[0].collider
+				selected_brick = result[0].collider;
+				selected_brick_sample = duplicate_bug_bypass(result[0].collider); # Make a "Use selected" button instead.
+
 				if apply_on_select:
-					result[0].collider.init_health = brick_health_control.value
-					result[0].collider.init_score = brick_score_control.value
-					result[0].collider.init_freeze = not brick_pushable_control.button_pressed
-					result[0].collider.init_mass = brick_weight_control.value
+					result[0].collider.init_health = brick_health_control.value;
+					result[0].collider.init_score = brick_score_control.value;
+					result[0].collider.init_freeze = not brick_pushable_control.button_pressed;
+					result[0].collider.init_mass = brick_weight_control.value;
 					
 					#result[0].collider.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
-					result[0].collider.tween_size(Vector2(0.7, 0.7), 0.1, true)	
+					result[0].collider.tween_size(Vector2(0.7, 0.7), 0.1, true);
 				else:
-					refresh_brick_data_controls(selected_brick)
+					refresh_brick_data_controls(selected_brick);
+
+				selected_texture_shader = result[0].collider.shader_color;
+				if result[0].collider.texture_path: selected_texture_path = result[0].collider.texture_path;
 
 	if current_tool == "paint":
 		if input.is_action_pressed("mouse_primary"):
-			if active_texture_path.is_empty(): return
-
+			print("x")
+			if selected_texture_path.is_empty(): return
+			print("y")
 			var space_state = get_world_2d().direct_space_state
 			var query = PhysicsPointQueryParameters2D.new()
 			query.position = get_global_mouse_position()
@@ -236,9 +263,10 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			var result = space_state.intersect_point(query)
 			
 			if result.size() > 0:
-				result[0].collider.set_texture_sprite(active_texture_path)
-				result[0].collider.set_shader_color(texture_container.shader_color)
-				result[0].collider.shader_color = texture_container.shader_color
+				print("z")
+				result[0].collider.set_texture_sprite(selected_texture_path);
+				result[0].collider.set_shader_color(texture_container.shader_color, true);
+				selected_texture_shader = texture_container.shader_color;
 		elif input.is_action_pressed("mouse_secondary"):
 			return # hue shift shader here maybe?
 
@@ -258,11 +286,14 @@ func on_mouse_enter_level_boundary():
 	can_place_bricks = true
 
 	if current_tool == "place": 
-		if active_base_texture_path.is_empty(): return
-		active_brick_sample = BrickScene.instantiate()
+		if selected_brick:
+			active_brick_sample = duplicate_bug_bypass(selected_brick);#selected_brick.duplicate();
+		elif selected_brick_sample:
+			active_brick_sample = duplicate_bug_bypass(selected_brick_sample);#selected_brick_sample.duplicate();#BrickScene.instantiate()
+		else: return;
+
 		level_content.add_child(active_brick_sample)
-		active_brick_sample.set_base_sprite(active_base_texture_path)
-		active_brick_sample.set_texture_sprite(active_texture_path)
+		#active_brick_sample.set_base_sprite(selected_base_texture_path)
 
 		active_brick_sample.editor_hitbox.collision_detected.connect(func(): collision_detected = true)
 		active_brick_sample.editor_hitbox.collision_freed.connect(func(): collision_detected = false)
@@ -413,3 +444,18 @@ func go_back():
 	var main_scene = MainScene.instantiate()
 	add_sibling(main_scene)
 	queue_free()
+
+# Use in place of Brick.duplicate() in Godot 4.3, can't duplicate nodes with dynamically added children.
+func duplicate_bug_bypass(brick:Brick) -> Brick:
+	#var new_brick:Brick = brick.duplicate( DUPLICATE_GROUPS | DUPLICATE_SCRIPTS | DUPLICATE_SIGNALS );
+	#for child in brick.get_children():
+	#	print(child)
+	#	new_brick.add_child(child.duplicate());
+	var new_brick:Brick = BrickScene.instantiate();
+	new_brick.hitbox = brick.hitbox.duplicate();
+	new_brick.add_child(new_brick.hitbox, true);
+	new_brick.base_texture_path = brick.base_texture_path;
+	if selected_texture_path: new_brick.texture_path = selected_texture_path;
+	if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
+	new_brick.setup(true);
+	return new_brick;

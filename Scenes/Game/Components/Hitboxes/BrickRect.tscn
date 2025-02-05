@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cwbru36ci2qlu"]
+
+[node name="HitboxComponent" type="CollisionPolygon2D"]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)

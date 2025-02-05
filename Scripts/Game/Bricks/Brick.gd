@@ -3,9 +3,9 @@ class_name Brick
 
 @export var base_texture_path:String # Must be set
 @export var texture_path:String # Must be set
-@export var shader_color:Color = Color(1, 1, 1)
+@export var shader_color:Color = Color(1, 1, 1, 1)
 
-var hitbox:CollisionPolygon2D
+@export var hitbox:Node2D
 @export var base_sprite:Sprite2D
 @export var texture_sprite:Sprite2D
 @export var health_comp:HealthComponent
@@ -24,27 +24,42 @@ signal brick_destroyed()
 @export var init_freeze:bool = true
 @export var init_mass:int = 5
 
+@export var is_editor:bool = true
+
 var tweening_shader:bool = false
 var tweening_size:bool = false
 
-func _ready():
+func setup(as_editable:bool = true):
+	self.visible = true
 	set_base_sprite(base_texture_path)
-		
+
+	freeze = init_freeze
+	mass = init_mass
+
 	if shader_color:
 		texture_sprite.material.set_shader_parameter("to", shader_color)
 
+	is_editor = as_editable;
+	if is_editor: setup_as_editable();
+	else: setup_as_playable();
+
+func setup_as_playable():
+	self.hitbox.disabled = false;
+	if editor_hitbox: editor_hitbox.queue_free();
+
 	if health_comp:
-		if init_health: health_comp.health = init_health
-		health_comp.health_depleted.connect(die.bind())
+		if init_health: health_comp.health = init_health;
+		health_comp.health_depleted.connect(die.bind());
 
 	if score_comp:
-		if init_score: score_comp.score = init_score
-		score_comp.process_score.connect(add_score.bind())
+		if init_score: score_comp.score = init_score;
+		score_comp.process_score.connect(add_score.bind());
 
-	mass = init_mass
-	freeze = init_freeze
+func setup_as_editable():
+	self.editor_hitbox.add_child(self.hitbox.duplicate());
 
 func hit(node):
+	if is_editor: return
 	if node.is_in_group('Ball'):
 		if hit_sound_comp: hit_sound_comp.play()
 		if health_comp: health_comp.damage(node.damage)
@@ -53,6 +68,7 @@ func hit(node):
 		health_comp.damage(node.damage)
 
 func die():
+	if is_editor: return
 	hitbox.disabled = true
 	texture_sprite.hide()
 	if score_comp: score_comp.emit_score()
@@ -74,13 +90,15 @@ func die():
 	self.queue_free()
 
 func add_score(score:int):
+	if is_editor: return
 	process_score.emit(score)
 
 func get_shader_color() -> Color:
 	return texture_sprite.material.get_shader_parameter("to")
 
-func set_shader_color(color:Color):
-	texture_sprite.material.set_shader_parameter("to", color)
+func set_shader_color(color:Color, force:bool = false):
+	texture_sprite.material.set_shader_parameter("to", color);
+	if force: shader_color = color;
 
 func tween_shader_color(set_color:Color, duration:float, reset_after:bool = false, force:bool = false) -> bool:
 	if tweening_shader and not force: return false
@@ -112,47 +130,10 @@ func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, for
 	tweening_size = false
 	return true
 
-# https://github.com/kevinthompson/godot-generate-polygon-from-sprite-tool/blob/main/godot4/sprite_to_collision_polygon.gd
-func _create_collision_polygon():
-	# Assume Sprite2D with texture and StaticBody2D exist
-	var sprite = base_sprite
-
-	# Generate Bitmap from Sprite2D
-	var image = sprite.texture.get_image()
-	var bitmap = BitMap.new()
-	bitmap.create_from_image_alpha(image)
-
-	# Convert Bitmap to Polygons
-	var polys = bitmap.opaque_to_polygons(Rect2(Vector2.ZERO, image.get_size()), 0.1) # Last int dictates accuracy
-	
-	# Create CollisionPolygon2D Nodes from Polygons
-	for poly in polys:
-		var collision_polygon = CollisionPolygon2D.new()
-		collision_polygon.polygon = _center_collision_polygon(poly, sprite)
-		self.add_child(collision_polygon)
-		collision_polygon.set_owner(self)
-		#collision_polygon.position -= sprite.texture.get_size() / 2
-		hitbox = collision_polygon
-
-		var editor_collision_polygon = collision_polygon.duplicate()
-		editor_hitbox.add_child(editor_collision_polygon)
-
-# Fix to _create_collision_polygon() not working right on centered sprites
-func _center_collision_polygon(poly:PackedVector2Array, sprite:Sprite2D):
-	var adjusted_polys = []
-	var regex:RegEx = RegEx.new()
-	regex.compile("\\d+, \\d+")
-	for match in regex.search_all(str(poly)):
-		var x:int = match.get_string().split(", ", false)[0].to_int() - floor(sprite.texture.get_size().x / 2)
-		var y:int = match.get_string().split(", ", false)[1].to_int() - floor(sprite.texture.get_size().y / 2)
-		adjusted_polys.append(Vector2i(x, y))
-	return PackedVector2Array(adjusted_polys)
-
 func set_base_sprite(path:String):
 	if path.is_empty(): return
 	base_sprite.texture = load(path)
 	base_texture_path = path
-	_create_collision_polygon()
 
 	if texture_path: set_texture_sprite(texture_path)
 	else: set_texture_sprite(path)
@@ -162,6 +143,7 @@ func set_texture_sprite(path:String):
 	if base_texture_path.is_empty(): return
 	texture_sprite.texture = load(path)
 	texture_path = path
+	texture_sprite.show();
 
 	var base_x = base_sprite.texture.get_size().x * base_sprite.scale.x
 	var base_y = base_sprite.texture.get_size().y * base_sprite.scale.y

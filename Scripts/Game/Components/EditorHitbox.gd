@@ -17,7 +17,6 @@ func _ready():
 func on_body_entered(body:Node2D):
 	if body == get_parent(): return
 	collisions.append(body)
-
 	if not is_in_wall:
 		if collides_with_illegal_group(body):
 			illegal_collision_detected.emit()

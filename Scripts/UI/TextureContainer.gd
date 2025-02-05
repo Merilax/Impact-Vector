@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 	for FilePath:String in filtered_array:
 		var brick_rect:EditorBrickSample = BrickRect.instantiate()
-		brick_rect.resource_path = "res://Assets/Visuals/BrickTextures/" + FilePath.trim_suffix(".import")
+		brick_rect.resource = "res://Assets/Visuals/BrickTextures/" + FilePath.trim_suffix(".import")
 		brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/" + FilePath.trim_suffix(".import"))
 
 		texture_grid.add_child(brick_rect)
