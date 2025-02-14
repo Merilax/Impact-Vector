@@ -8,7 +8,7 @@
 
 [sub_resource type="Theme" id="Theme_arwi0"]
 
-[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("play_button", "settings_button", "exit_button", "campaign_selector", "level_selector", "level_grid", "back_to_campaigns_button", "create_level_button")]
+[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("continue_button", "settings_button", "exit_button", "campaign_selector", "level_selector", "level_grid", "back_to_campaigns_button", "create_level_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,7 +18,7 @@ theme = ExtResource("1_5op5j")
 split_offset = 400
 dragger_visibility = 1
 script = ExtResource("1_w3h7v")
-play_button = NodePath("PanelContainer/MarginContainer/Control/PlayBtn")
+continue_button = NodePath("PanelContainer/MarginContainer/Control/ContinueBtn")
 settings_button = NodePath("PanelContainer/MarginContainer/Control/SettingBtn")
 exit_button = NodePath("PanelContainer/MarginContainer/Control/QuitBtn")
 campaign_selector = NodePath("PanelContainer2/MarginContainer/Campaigns")
@@ -66,11 +66,11 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="PlayBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
+[node name="ContinueBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 4
-text = "Play"
+text = "Continue"
 metadata/_edit_use_anchors_ = true
 
 [node name="EditorBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]

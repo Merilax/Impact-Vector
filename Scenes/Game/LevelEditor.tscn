@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=22 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
+[ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="2_xjmup"]
 [ext_resource type="Script" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
+[ext_resource type="Script" path="res://Scripts/GridDrawer.gd" id="3_pm5sq"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_t1m56"]
 [ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="4_k5s8c"]
 [ext_resource type="Script" path="res://Scripts/UI/TextureContainer.gd" id="4_lhv3y"]
@@ -14,55 +16,72 @@
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 [ext_resource type="Texture2D" uid="uid://lqkxorxmvytd" path="res://Assets/Visuals/Icons/arrow_selector.svg" id="10_3i04o"]
 [ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="13_ppk2a"]
+[ext_resource type="Script" path="res://Scripts/UI/EscapeEditorLayer.gd" id="15_pqil0"]
+[ext_resource type="PackedScene" uid="uid://cdhcnlm7k2s05" path="res://Scenes/UI/EscapeMenuEditor.tscn" id="16_eyoj6"]
+[ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="17_2beqe"]
+[ext_resource type="PackedScene" uid="uid://4dydipk47clk" path="res://Scenes/UI/HelpMenu.tscn" id="20_yeifv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
-size = Vector2(1434, 943)
+size = Vector2(1437, 940)
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "place_tool", "select_tool", "paint_tool", "erase_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "snap_width", "snap_height", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_container", "texture_container", "level_name", "save_button")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "grid_drawer", "place_tool", "select_tool", "paint_tool", "erase_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_container", "texture_container", "level_name", "save_button")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 level_content = NodePath("LevelEditor/LevelContent")
+grid_drawer = NodePath("LevelEditor/Grid")
 place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
 select_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Select")
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
 erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Erase")
 mode_options = NodePath("EditorUI/Options")
-snap_options_ctrl = NodePath("EditorUI/Options/Snap")
+snap_options_ctrl = NodePath("EditorUI/Options/PanelContainer/Snap")
 snap_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Snap")
-use_snap_control = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer/Snap")
-snap_width = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer2/CellWidth")
-snap_height = NodePath("EditorUI/Options/Snap/HBoxContainer/VBoxContainer2/CellHeight")
-data_options_ctrl = NodePath("EditorUI/Options/Data")
+use_snap_control = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer/Snap")
+show_snap_grid = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer/ShowSnap")
+snap_width = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2/CellWidth")
+snap_height = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2/CellHeight")
+x_offset = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3/XOffset")
+y_offset = NodePath("EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3/YOffset")
+data_options_ctrl = NodePath("EditorUI/Options/PanelContainer/Data")
 data_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Data")
-apply_brick_data_on_select_control = NodePath("EditorUI/Options/Data/VBoxContainer/HBoxContainer2/ApplySelect")
-brick_x_ctrl = NodePath("EditorUI/Options/Data/VBoxContainer/Coords/GridContainer/XPos")
-brick_y_ctrl = NodePath("EditorUI/Options/Data/VBoxContainer/Coords/GridContainer/YPos")
-brick_rot_ctrl = NodePath("EditorUI/Options/Data/VBoxContainer/Coords/GridContainer/Rotation")
-brick_health_control = NodePath("EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer/Hitpoints")
-brick_score_control = NodePath("EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer/Score")
-brick_pushable_control = NodePath("EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2/Pushable")
-brick_weight_control = NodePath("EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2/Weight")
-brick_can_collide_control = NodePath("EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3/Collider")
+apply_brick_data_on_select_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/HBoxContainer2/ApplySelect")
+brick_x_ctrl = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer/XPos")
+brick_y_ctrl = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer/YPos")
+brick_rot_ctrl = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer/Rotation")
+brick_health_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer/Hitpoints")
+brick_score_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer/Score")
+brick_pushable_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2/Pushable")
+brick_weight_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2/Weight")
+brick_can_collide_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3/Collider")
 brick_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/BrickGrid")
 texture_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer")
 level_name = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
 save_button = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/SaveBtn")
 
+[node name="Background" type="Parallax2D" parent="."]
+modulate = Color(0.244776, 0.244776, 0.244776, 1)
+repeat_times = 99
+script = ExtResource("2_xjmup")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+
 [node name="LevelEditor" type="Node2D" parent="."]
-position = Vector2(59, 0)
+position = Vector2(64, 0)
+
+[node name="Grid" type="Node2D" parent="LevelEditor"]
+visible = false
+script = ExtResource("3_pm5sq")
 
 [node name="LevelContent" type="Node2D" parent="LevelEditor"]
 
 [node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
-position = Vector2(-37, 0)
 
 [node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
-position = Vector2(18, 0)
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
-position = Vector2(704, 473.5)
+position = Vector2(719.5, 470)
 shape = SubResource("RectangleShape2D_k1bnw")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
@@ -190,7 +209,7 @@ text = "Save"
 
 [node name="Toolbar" type="PanelContainer" parent="EditorUI"]
 anchors_preset = -1
-anchor_right = 0.0317708
+anchor_right = 0.0333333
 anchor_bottom = 1.0
 grow_vertical = 2
 theme = ExtResource("3_t1m56")
@@ -274,21 +293,34 @@ theme = ExtResource("6_if84t")
 icon = ExtResource("9_1pd6n")
 icon_alignment = 1
 
-[node name="Options" type="PanelContainer" parent="EditorUI"]
-visible = false
+[node name="Options" type="VBoxContainer" parent="EditorUI"]
 anchors_preset = -1
-anchor_left = 0.0317708
-anchor_top = 1.0
-anchor_right = 0.781771
+anchor_left = 0.032
+anchor_top = 0.919
+anchor_right = 0.782
 anchor_bottom = 1.0
-offset_top = -144.0
-grow_horizontal = 2
-grow_vertical = 0
+offset_left = -0.440002
+offset_top = 7.47998
+offset_right = -0.440063
+offset_bottom = 120.0
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
 theme = ExtResource("3_t1m56")
 metadata/_edit_use_anchors_ = true
 
-[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Options"]
+[node name="Label" type="Label" parent="EditorUI/Options"]
 layout_mode = 2
+mouse_filter = 1
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="EditorUI/Options"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Options/PanelContainer"]
+layout_mode = 2
+mouse_filter = 1
 theme = ExtResource("3_t1m56")
 texture = ExtResource("4_k5s8c")
 region_rect = Rect2(0, 0, 512, 469.024)
@@ -296,7 +328,7 @@ patch_margin_left = 42
 patch_margin_top = 42
 patch_margin_right = 42
 
-[node name="BG" type="MarginContainer" parent="EditorUI/Options/NinePatchRect"]
+[node name="BG" type="MarginContainer" parent="EditorUI/Options/PanelContainer/NinePatchRect"]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -309,215 +341,273 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 0
 
-[node name="PanelContainer" type="ColorRect" parent="EditorUI/Options/NinePatchRect/BG"]
+[node name="PanelContainer" type="ColorRect" parent="EditorUI/Options/PanelContainer/NinePatchRect/BG"]
 layout_mode = 2
 color = Color(0.168627, 0.192157, 0.219608, 1)
 
-[node name="Snap" type="MarginContainer" parent="EditorUI/Options"]
-visible = false
+[node name="Snap" type="MarginContainer" parent="EditorUI/Options/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/Snap"]
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Snap"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="VBoxContainer" type="GridContainer" parent="EditorUI/Options/Snap/HBoxContainer"]
+[node name="VBoxContainer" type="GridContainer" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Snap bricks to grid"
 
-[node name="Snap" type="CheckButton" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer"]
+[node name="Snap" type="CheckButton" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 button_pressed = true
 
-[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/Options/Snap/HBoxContainer"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Show grid"
+
+[node name="ShowSnap" type="CheckButton" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="VSeparator" type="VSeparator" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label2" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Snap width"
 
-[node name="CellWidth" type="SpinBox" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
+[node name="CellWidth" type="SpinBox" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 min_value = 1.0
-value = 3.0
+max_value = 999.0
+value = 12.0
 alignment = 2
 update_on_text_changed = true
 suffix = "px"
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Snap height"
 
-[node name="CellHeight" type="SpinBox" parent="EditorUI/Options/Snap/HBoxContainer/VBoxContainer2"]
+[node name="CellHeight" type="SpinBox" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 min_value = 1.0
-value = 5.0
+max_value = 999.0
+value = 20.0
 alignment = 2
 update_on_text_changed = true
 suffix = "px"
 select_all_on_focus = true
 
-[node name="Data" type="MarginContainer" parent="EditorUI/Options"]
+[node name="VSeparator2" type="VSeparator" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer3" type="GridContainer" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "X offset"
+
+[node name="XOffset" type="SpinBox" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 999.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Y offset"
+
+[node name="YOffset" type="SpinBox" parent="EditorUI/Options/PanelContainer/Snap/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 999.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Data" type="MarginContainer" parent="EditorUI/Options/PanelContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Options/Data"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Options/PanelContainer/Data"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 layout_mode = 2
 text = "Data to apply to newly placed bricks:"
 
-[node name="Control" type="HSeparator" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Control" type="HSeparator" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="EditorUI/Options/Data/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "Also apply upon selecting a brick "
+text = "Select tool applies data"
 
-[node name="ApplySelect" type="CheckButton" parent="EditorUI/Options/Data/VBoxContainer/HBoxContainer2"]
+[node name="ApplySelect" type="CheckButton" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 
-[node name="Control2" type="HSeparator" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Control2" type="HSeparator" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="Coords" type="HBoxContainer" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Coords" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="EditorUI/Options/Data/VBoxContainer/Coords"]
+[node name="GridContainer" type="GridContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
 
-[node name="Label" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "X Position"
 
-[node name="XPos" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="XPos" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 max_value = 9999.0
 alignment = 2
 editable = false
 suffix = "px"
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Y Position
 "
 
-[node name="YPos" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="YPos" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 max_value = 9999.0
 alignment = 2
 editable = false
 suffix = "px"
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Rotation
 "
 
-[node name="Rotation" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Coords/GridContainer"]
+[node name="Rotation" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Coords/GridContainer"]
 layout_mode = 2
+mouse_filter = 1
 max_value = 359.0
 alignment = 2
 update_on_text_changed = true
 suffix = "º"
 select_all_on_focus = true
 
-[node name="Control3" type="HSeparator" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Control3" type="HSeparator" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="Stats" type="HBoxContainer" parent="EditorUI/Options/Data/VBoxContainer"]
+[node name="Stats" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="VBoxContainer" type="GridContainer" parent="EditorUI/Options/Data/VBoxContainer/Stats"]
+[node name="VBoxContainer" type="GridContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label2" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer"]
 layout_mode = 2
 text = "Hitpoints"
 
-[node name="Hitpoints" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer"]
+[node name="Hitpoints" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 min_value = 1.0
 value = 1.0
 alignment = 2
 update_on_text_changed = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer"]
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer"]
 layout_mode = 2
 text = "Score"
 
-[node name="Score" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer"]
+[node name="Score" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 min_value = 1.0
 value = 10.0
 alignment = 2
 update_on_text_changed = true
 select_all_on_focus = true
 
-[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/Options/Data/VBoxContainer/Stats"]
+[node name="VSeparator2" type="VSeparator" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="GridContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label2" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2"]
 layout_mode = 2
 text = "Pushable"
 
-[node name="Pushable" type="CheckBox" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2"]
+[node name="Pushable" type="CheckBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 
-[node name="Label3" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2"]
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2"]
 layout_mode = 2
 text = "Brick weight"
 
-[node name="Weight" type="SpinBox" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer2"]
+[node name="Weight" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 min_value = 1.0
 max_value = 10.0
 value = 5.0
@@ -525,37 +615,76 @@ alignment = 2
 update_on_text_changed = true
 select_all_on_focus = true
 
-[node name="VBoxContainer3" type="GridContainer" parent="EditorUI/Options/Data/VBoxContainer/Stats"]
+[node name="VSeparator" type="VSeparator" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer3" type="GridContainer" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 50
 columns = 2
 
-[node name="Label" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 layout_mode = 2
 text = "Can collide"
 
-[node name="Collider" type="CheckBox" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="Collider" type="CheckBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 layout_mode = 2
-theme = ExtResource("6_if84t")
+mouse_filter = 1
 
-[node name="Label2" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 visible = false
 layout_mode = 2
 text = "Hit sound"
 
-[node name="HitSound" type="Control" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="HitSound" type="Control" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 visible = false
 layout_mode = 2
 theme = ExtResource("6_if84t")
 
-[node name="Label3" type="Label" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="Label3" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 visible = false
 layout_mode = 2
 text = "Kill sound"
 
-[node name="DeathSound" type="Control" parent="EditorUI/Options/Data/VBoxContainer/Stats/VBoxContainer3"]
+[node name="DeathSound" type="Control" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 visible = false
 layout_mode = 2
 theme = ExtResource("6_if84t")
+
+[node name="EscapeLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("game_root", "escape_menu", "settings_menu", "help_menu")]
+process_mode = 3
+visible = false
+script = ExtResource("15_pqil0")
+game_root = NodePath("..")
+escape_menu = NodePath("UI/MarginContainer2/EscapeMenu")
+settings_menu = NodePath("UI/MarginContainer2/SettingMenu")
+help_menu = NodePath("UI/MarginContainer2/HelpMenu")
+
+[node name="UI" type="PanelContainer" parent="EscapeLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_t1m56")
+
+[node name="MarginContainer2" type="MarginContainer" parent="EscapeLayer/UI"]
+layout_mode = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 80
+
+[node name="EscapeMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("16_eyoj6")]
+layout_mode = 2
+
+[node name="SettingMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("17_2beqe")]
+visible = false
+layout_mode = 2
+
+[node name="HelpMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("20_yeifv")]
+visible = false
+layout_mode = 2

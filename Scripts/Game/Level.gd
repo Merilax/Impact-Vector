@@ -1,9 +1,13 @@
 extends Node2D
 class_name Game
 
+var current_build_numer:int = 1;
+
 @export var campaign_path:String
 @export var campaign_num:String
 @export var level_num:String
+
+var save_state:SaveGameData;
 
 var pickup_list:Array = [
 	{
@@ -38,42 +42,48 @@ var pickup_list:Array = [
 	}
 ]
 
-var BallScene = preload("uid://dxbg7h6mg1dtd")
-var PaddleScene = preload("uid://bjjlgc7puyxfe")
+var BallScene = preload("uid://dxbg7h6mg1dtd");
+var PaddleScene = preload("uid://bjjlgc7puyxfe");
 
-var PickupComp = preload("uid://c5ebe7unjhv0x")
-var PickupScene = preload("uid://dydm2dhj7p1nd")
-var BulletScene = preload("uid://dlvm63pvf1dym")
+var PickupComp = preload("uid://c5ebe7unjhv0x");
+var PickupScene = preload("uid://dydm2dhj7p1nd");
+var BulletScene = preload("uid://dlvm63pvf1dym");
 
-var paddle:Paddle
+var paddle:Paddle;
 
-var score:int = 0
+var score:int = 0;
+var unsaved_score:int = score;
 
-var lives:int = 3
-var total_lives:int = 3
+var lives:int = 3;
+var total_lives:int = 3;
+var unsaved_lives:int = lives;
+var unsaved_total_lives:int = total_lives;
 
-var brick_count:int = 0
-var ball_count:int = 0
+var brick_count:int = 0;
+var ball_count:int = 0;
 
-var speed_mult:float = 1
+var speed_mult:float = 1;
 
-var can_spawn_balls:bool = true
-var ball_stuck_timer:SceneTreeTimer
+var can_spawn_balls:bool = true;
+var ball_stuck_timer:SceneTreeTimer;
 
-@onready var score_counter:Label = $'UILayer'.find_child('ScoreVar')
-@onready var speed_counter:Label = $'UILayer'.find_child('SpeedVar')
-@onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer')
-var BallLifeRect = preload("uid://b5s0bxfmkxjel")
+@onready var score_counter:Label = $'UILayer'.find_child('ScoreVar');
+@onready var speed_counter:Label = $'UILayer'.find_child('SpeedVar');
+@onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer');
+var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
-@export var world_border:WorldBorder
-var level_content:Node2D
+@export var world_border:WorldBorder;
+var level_content:Node2D;
+@export var background:Parallax2D;
 
-var transitioning_levels:bool = false
+var transitioning_levels:bool = false;
 
-signal game_over_signal(game_won:bool)
-signal change_speed(mult:float, update_counter:bool)
+signal game_over_signal(game_won:bool);
+signal change_speed(mult:float, update_counter:bool);
 
 func _ready():
+	background.retrigger();
+
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	$"DeathZone".body_entered.connect(_on_ball_lost)
 
@@ -82,7 +92,10 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult)
 
-	load_level(campaign_path + "/" + campaign_num + "/" + level_num + "/level.tscn")
+	if save_state:
+		load_gamedata();
+	else:	
+		load_level(campaign_path + "/" + campaign_num + "/" + level_num);
 
 	get_tree().node_added.connect(_on_child_entered_tree)
 
@@ -230,49 +243,58 @@ func _on_spawn_pickup(global_pos:Vector2, type:String, texture:String):
 
 func game_over(game_won:bool):
 	can_spawn_balls = false
-	game_over_signal.emit(game_won)
+	if game_won == true:
+		DirAccess.remove_absolute("user://SaveGameData.tres");
+	game_over_signal.emit(game_won);
 
 func win():
-	transitioning_levels = true
-	can_spawn_balls = false
+	transitioning_levels = true;
+	can_spawn_balls = false;
 
-	var stored_speed_mult = speed_mult
+	var stored_speed_mult = speed_mult;
 
-	create_tween().tween_method(func(speed): change_speed.emit(speed, false), stored_speed_mult, 0, 2.5)
+	create_tween().tween_method(func(speed): change_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
 
-	await get_tree().create_timer(3.5).timeout
+	await get_tree().create_timer(3.5).timeout;
 
-	level_content.queue_free()
+	level_content.queue_free();
 	for ball:Ball in $Balls.get_children():
-		ball.queue_free()
+		ball.queue_free();
 
-	ball_count = 0
+	ball_count = 0;
+	speed_mult = 1; # TODO Add difficulty.
+
+	unsaved_score = score;
+	unsaved_lives = lives;
+	unsaved_total_lives = total_lives;
 	
-	var levels:PackedStringArray = DirAccess.open(campaign_path + "/" + campaign_num).get_directories()
-	var current_idx:int = levels.find(level_num)
+	var levels:PackedStringArray = DirAccess.open(campaign_path + "/" + campaign_num).get_directories();
+	var current_idx:int = levels.find(level_num);
 	
 	if current_idx == -1 or current_idx >= levels.size() - 1:
-		game_over(true)
-		return
+		game_over(true);
+		return;
 
-	var next_level_num:String = levels[current_idx + 1]
+	var next_level_num:String = levels[current_idx + 1];
 
 	if campaign_path.contains("user://") and not FileAccess.file_exists(campaign_path + "/" + campaign_num + "/" + next_level_num + "/level.tscn"):
-		game_over(true)
-		return
+		game_over(true);
+		return;
 	
 	if not load_level(campaign_path + "/" + campaign_num + "/" + next_level_num + "/level.tscn"):
-		game_over(true)
-		return
+		game_over(true);
+		return;
 	
-	level_num = next_level_num
-	transitioning_levels = false
+	level_num = next_level_num;
+	save_gamedata();
+
+	transitioning_levels = false;
 	if is_instance_valid(paddle):
-		paddle.reset_powers()
+		paddle.reset_powers();
 	else:
-		spawn_paddle()
-	can_spawn_balls = true
-	spawn_ball(true)
+		spawn_paddle();
+	can_spawn_balls = true;
+	spawn_ball(true);
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
@@ -311,8 +333,10 @@ func process_pickup(type:String):
 	if transitioning_levels: return
 	match type.to_lower():
 		'speed':
-			speed_mult = clampf(speed_mult + 0.1, 0.7, 1.5)
-			change_speed.emit(speed_mult, true)
+			var previous:float = speed_mult;
+			speed_mult = clampf(speed_mult + 0.1, 0.7, 1.5);
+			change_speed.emit(speed_mult, true);
+			if speed_mult == 1.5 && speed_mult > previous: add_score(1000); # TODO Separate function and SFX
 		'slow':
 			speed_mult = clampf(speed_mult - 0.1, 0.7, 1.5)
 			change_speed.emit(speed_mult, true)
@@ -332,20 +356,60 @@ func process_pickup(type:String):
 					spawn_ball(false, ball.global_position, ball.dir.rotated(PI/8))
 					spawn_ball(false, ball.global_position, ball.dir.rotated(-PI/8))
 
-func load_level(filepath:String) -> bool:
-	if filepath.contains("user://") and not FileAccess.file_exists(filepath): return false
+func load_level(dir:String) -> bool:
+	if dir.contains("user://") and not FileAccess.file_exists(dir): return false
 
-	var level_content_scene = load(filepath)
-	if not level_content_scene: return false
+	var level_data:LevelData = load(dir + "/data.tres");
+	if level_data.build_number != current_build_numer:
+		upgrade_version(level_data.build_number);
 
-	var new_level_content:Node2D = level_content_scene.instantiate()
-	new_level_content.name = "LevelContent"
-	$LevelContentOffset.add_child(new_level_content, true)
-	new_level_content.position = Vector2.ZERO
-	level_content = new_level_content
-	$Background.retrigger() # Might tie to level data in the future
+	var level_content_scene = load(dir + "/level.tscn");
+	if not level_content_scene: return false;
+
+	var new_level_content:Node2D = level_content_scene.instantiate();
+	new_level_content.name = "LevelContent";
+	$LevelContentOffset.add_child(new_level_content, true);
+	new_level_content.position = Vector2.ZERO;
+	level_content = new_level_content;
+	background.retrigger(); # Might tie to level data in the future
 	
 	for brick:Node2D in new_level_content.get_children():
-		init_brick(brick)
+		init_brick(brick);
 
-	return true
+	return true;
+
+func upgrade_version(from_version:int):
+	var data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+
+	match from_version:
+		# Default pre-release
+		1:
+			# ... Fixing code ...
+			data.build_number = current_build_numer;
+			var err = ResourceSaver.save(data, campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+			if err != OK:
+				print("Level data save error: " + error_string(err));
+				ResourceSaver.save(data, campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+
+func save_gamedata():
+	var data:SaveGameData = SaveGameData.new();
+	data.level_path = campaign_path + "/" + campaign_num + "/" + level_num;
+	data.score = unsaved_score;
+	data.lives = unsaved_lives;
+	data.total_lives = unsaved_total_lives;
+	
+	var err = ResourceSaver.save(data, "user://SaveGameData.tres");
+	if err != OK:
+		print("Level data save error: " + error_string(err));
+		ResourceSaver.save(data, "user://SaveGameData.tres");
+
+	return true;
+
+func load_gamedata():
+	load_level(save_state.level_path);
+	score = save_state.score;
+	lives = save_state.lives;
+	total_lives = save_state.total_lives;
+	unsaved_score = score;
+	unsaved_lives = lives;
+	unsaved_total_lives = total_lives;

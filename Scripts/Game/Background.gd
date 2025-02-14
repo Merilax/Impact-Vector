@@ -1,5 +1,7 @@
 extends Parallax2D
 
+@export var in_editor:bool = false;
+
 func _ready():
 	retrigger()
 

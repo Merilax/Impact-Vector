@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dck5wvqkfemjm"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://dck5wvqkfemjm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1fd6g"]
 bg_color = Color(0.231987, 0.506389, 0.686397, 1)
@@ -26,6 +26,34 @@ border_width_right = 20
 border_color = Color(0.180392, 0.415686, 0.572549, 1)
 border_blend = true
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w7w7w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5cgnd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k2qpg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_arudv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yuxk8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hxxty"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1r1wq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5rs37"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y1e2g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fn0ue"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sdxo1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eh7rn"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_oiydr"]
+color = Color(0.611765, 0.611765, 0.611765, 1)
+thickness = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhdrc"]
 bg_color = Color(0.35, 0.805, 1, 0.686275)
 
@@ -46,6 +74,11 @@ draw_center = false
 border_width_top = 10
 border_color = Color(0.263576, 0.361704, 0.433744, 1)
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_1nkll"]
+color = Color(0.61339, 0.61339, 0.61339, 1)
+thickness = 2
+vertical = true
+
 [resource]
 default_base_scale = 2.0
 default_font_size = 30
@@ -53,6 +86,20 @@ Button/styles/focus = SubResource("StyleBoxFlat_1fd6g")
 Button/styles/hover = SubResource("StyleBoxFlat_nivbn")
 Button/styles/normal = SubResource("StyleBoxFlat_pvnlk")
 Button/styles/pressed = SubResource("StyleBoxFlat_hidkq")
+CheckBox/styles/disabled = SubResource("StyleBoxEmpty_w7w7w")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_5cgnd")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_k2qpg")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_arudv")
+CheckBox/styles/normal = SubResource("StyleBoxEmpty_yuxk8")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_hxxty")
+CheckButton/styles/disabled = SubResource("StyleBoxEmpty_1r1wq")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_5rs37")
+CheckButton/styles/hover = SubResource("StyleBoxEmpty_y1e2g")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_fn0ue")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_sdxo1")
+CheckButton/styles/pressed = SubResource("StyleBoxEmpty_eh7rn")
+HSeparator/constants/separation = 10
+HSeparator/styles/separator = SubResource("StyleBoxLine_oiydr")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_hhdrc")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_6t1rt")
 HSlider/styles/slider = SubResource("StyleBoxFlat_ttjip")
@@ -61,4 +108,7 @@ MarginContainer/constants/margin_left = 40
 MarginContainer/constants/margin_right = 40
 MarginContainer/constants/margin_top = 40
 PanelContainer/styles/panel = SubResource("StyleBoxEmpty_ffstt")
+RichTextLabel/font_sizes/normal_font_size = 26
 TabContainer/styles/panel = SubResource("StyleBoxFlat_7chut")
+VSeparator/constants/separation = 10
+VSeparator/styles/separator = SubResource("StyleBoxLine_1nkll")

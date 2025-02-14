@@ -18,9 +18,10 @@ size = Vector2(1702.5, 218)
 [sub_resource type="LabelSettings" id="LabelSettings_7pppu"]
 font_size = 40
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "background")]
 script = ExtResource("1_vf5nn")
 world_border = NodePath("WorldBorder")
+background = NodePath("Background")
 
 [node name="Background" type="Parallax2D" parent="."]
 modulate = Color(0.244776, 0.244776, 0.244776, 1)
@@ -30,6 +31,7 @@ script = ExtResource("2_hdl1t")
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 
 [node name="WorldBorder" parent="." instance=ExtResource("2_b1du0")]
+position = Vector2(40, 0)
 
 [node name="DeathZone" type="Area2D" parent="."]
 position = Vector2(766, 1168)

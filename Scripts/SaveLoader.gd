@@ -3,15 +3,15 @@ extends Node
 
 static func load_settings() -> SaveSettings:
 	if not FileAccess.file_exists("user://SaveSettings.tres"):
-		print("No settings, creating blank save.")
-		save_settings()
-	var settings:SaveSettings = load("user://SaveSettings.tres")
+		print("No settings, creating blank save.");
+		save_settings();
+	var settings:SaveSettings = load("user://SaveSettings.tres");
 	
 	var incomplete_config:bool = false
 
 	# VIDEO
 	if settings.vsync != null:
-		DisplayServer.window_set_vsync_mode(settings.vsync)
+		if DisplayServer.window_get_vsync_mode() != settings.vsync: DisplayServer.window_set_vsync_mode(settings.vsync);
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		incomplete_config = true

@@ -52,12 +52,12 @@ func refresh():
 func set_window_mode(option:int):
 	match option:
 		0:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_MAXIMIZED: DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 		1:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_WINDOWED: DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
-func set_borderless(to_set:bool):
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, to_set)
+func set_borderless(to_set:bool): # Probably won't support this.
+	if DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_BORDERLESS) != to_set: DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, to_set)
 
 func set_resolution(option:int):
 	match option:

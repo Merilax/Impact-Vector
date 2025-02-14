@@ -5,10 +5,12 @@ var BrickScene = preload("uid://dtkn1xk6stg0v")
 
 var saving_level:bool = false
 var loading_level:bool = false
+var current_build_numer:int = 1;
 
 @export var mouse_boundary:Area2D
 @export var world_border:WorldBorder
 @export var level_content:Node2D
+@export var grid_drawer:Node2D
 
 @export var place_tool:Button
 @export var select_tool:Button
@@ -20,10 +22,14 @@ var loading_level:bool = false
 @export var snap_options_ctrl:Control
 @export var snap_options_btn:Button
 @export var use_snap_control:Button
+@export var show_snap_grid:Button
 @export var snap_width:SpinBox
 @export var snap_height:SpinBox
+@export var x_offset:SpinBox
+@export var y_offset:SpinBox
 var use_snap:bool = true
-var snap_cell_size:Vector2i = Vector2i(6, 10)
+var snap_cell_size:Vector2i = Vector2i(6, 10);
+var snap_grid_offset:Vector2i = Vector2i(0, 0);
 
 @export var data_options_ctrl:Control
 @export var data_options_btn:Button
@@ -65,33 +71,44 @@ var illegal_collision_detected:bool
 var current_tool:String = "place"
 
 func _ready():
-	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary)
-	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary)
-	mouse_boundary.input_event.connect(on_mouse_click)
+	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary);
+	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary);
+	mouse_boundary.input_event.connect(on_mouse_click);
 
-	brick_container.set_active_res_signal.connect(set_active_res)
-	texture_container.set_active_res_signal.connect(set_active_res)
+	brick_container.set_active_res_signal.connect(set_active_res);
+	texture_container.set_active_res_signal.connect(set_active_res);
 
-	save_button.pressed.connect(save_level)
+	save_button.pressed.connect(save_level);
 
-	place_tool.pressed.connect(set_tool.bind("place"))
-	select_tool.pressed.connect(set_tool.bind("select"))
-	paint_tool.pressed.connect(set_tool.bind("paint"))
-	erase_tool.pressed.connect(set_tool.bind("erase"))
+	place_tool.pressed.connect(set_tool.bind("place"));
+	select_tool.pressed.connect(set_tool.bind("select"));
+	paint_tool.pressed.connect(set_tool.bind("paint"));
+	erase_tool.pressed.connect(set_tool.bind("erase"));
 
-	snap_options_btn.pressed.connect(show_options.bind("snap"))
-	use_snap_control.toggled.connect(func(toggled_on:bool): use_snap = toggled_on)
-	snap_width.value_changed.connect(set_snap_size.bind(0))
-	snap_height.value_changed.connect(set_snap_size.bind(1))
-	snap_cell_size = Vector2i(floor(snap_width.value), floor(snap_height.value))
-	use_snap = use_snap_control.button_pressed
+	snap_options_btn.pressed.connect(show_options.bind("snap"));
+	use_snap_control.toggled.connect(set_snap);
+	show_snap_grid.toggled.connect(set_snap_visibility);
+	snap_width.value_changed.connect(set_snap_size.bind(0));
+	snap_height.value_changed.connect(set_snap_size.bind(1));
+	x_offset.value_changed.connect(set_snap_grid_offset.bind(0));
+	y_offset.value_changed.connect(set_snap_grid_offset.bind(1));
+	snap_cell_size = Vector2i(floor(snap_width.value), floor(snap_height.value));
+	snap_grid_offset = Vector2i(floor(x_offset.value), floor(y_offset.value));
+	use_snap = use_snap_control.button_pressed;
 
-	data_options_btn.pressed.connect(show_options.bind("data"))
-	apply_brick_data_on_select_control.toggled.connect(set_apply_on_select)
-	apply_on_select = apply_brick_data_on_select_control.button_pressed
-	brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y))
-	brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value))
-	brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value))
+	mode_options.mouse_entered.connect(on_mouse_enter_options);;
+	mode_options.mouse_exited.connect(on_mouse_leave_options);;
+
+	data_options_btn.pressed.connect(show_options.bind("data"));
+	apply_brick_data_on_select_control.toggled.connect(set_apply_on_select);
+	apply_on_select = apply_brick_data_on_select_control.button_pressed;
+	brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
+	brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
+	brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
+
+	grid_drawer.size = mouse_boundary.get_child(0).shape.size;
+	set_snap_size(snap_cell_size.x, 0);
+	set_snap_size(snap_cell_size.y, 1);
 
 func set_tool(type:String):
 	if loading_level or saving_level: return
@@ -125,9 +142,9 @@ func _process(_delta):
 		var snap_to_y:float;
 		if use_snap:
 			@warning_ignore("integer_division")
-			snap_to_x = (floori(get_global_mouse_position().x) / (snap_cell_size.x*2)) * (snap_cell_size.x*2);
+			snap_to_x = (floori(get_global_mouse_position().x) / (snap_cell_size.x)) * (snap_cell_size.x) + 3;
 			@warning_ignore("integer_division")
-			snap_to_y = (floori(get_global_mouse_position().y) / (snap_cell_size.y*2)) * (snap_cell_size.y*2);
+			snap_to_y = (floori(get_global_mouse_position().y) / (snap_cell_size.y)) * (snap_cell_size.y);
 			active_brick_sample.global_position = Vector2(snap_to_x, snap_to_y);
 		else:
 			@warning_ignore("integer_division")
@@ -140,24 +157,29 @@ func show_options(what:String):
 	if loading_level or saving_level: return
 	match what.to_lower():
 		"snap":
-			if snap_options_ctrl.visible:
-				snap_options_ctrl.hide();
-				mode_options.hide();
-				return;
 			data_options_ctrl.hide();
 			snap_options_ctrl.show();
-			mode_options.show();
 		"data":
-			if data_options_ctrl.visible:
-				data_options_ctrl.hide();
-				mode_options.hide();
-				return;
 			snap_options_ctrl.hide();
 			data_options_ctrl.show();
-			mode_options.show();
 
+func set_snap(flag:bool):
+	use_snap = flag;
+
+func set_snap_visibility(flag:bool):
+	grid_drawer.visible = flag;
+	
 func set_snap_size(amount:int, axis:int):
-	snap_cell_size[axis] = amount
+	snap_cell_size[axis] = amount# * 2;
+	if axis == 0: grid_drawer.cell_width = amount# * 2;
+	elif axis == 1: grid_drawer.cell_height = amount# * 2;
+	grid_drawer.queue_redraw();
+
+func set_snap_grid_offset(amount:int, axis:int):
+	snap_grid_offset[axis] = amount# * 2;
+	if axis == 0: grid_drawer.offset_x = amount# * 2;
+	elif axis == 1: grid_drawer.offset_y = amount# * 2;
+	grid_drawer.queue_redraw();
 
 func set_apply_on_select(toggled_on:bool):
 	apply_on_select = toggled_on
@@ -314,6 +336,20 @@ func on_mouse_leave_level_boundary():
 		active_brick_sample.queue_free()
 		active_brick_sample = null
 
+var tween_options:Tween
+func on_mouse_enter_options():
+	var offset:float = mode_options.anchor_bottom * get_viewport_rect().size.y - mode_options.position.y;
+	var target_pos:float = mode_options.position.y - mode_options.size.y + offset;
+
+	if tween_options: tween_options.kill();
+	tween_options = get_tree().create_tween();
+	tween_options.tween_property(mode_options, "position", Vector2(mode_options.position.x, target_pos), 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE);
+	
+func on_mouse_leave_options():
+	if tween_options: tween_options.kill();
+	tween_options = get_tree().create_tween();
+	tween_options.tween_property(mode_options, "position", Vector2(mode_options.position.x, 1000), 0.4).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE);
+
 func refresh_brick_data_controls(brick:Brick):
 	brick_x_ctrl.set_value_no_signal(brick.position.x)
 	brick_y_ctrl.set_value_no_signal(brick.position.y)
@@ -323,9 +359,9 @@ func refresh_brick_data_controls(brick:Brick):
 	brick_pushable_control.set_pressed_no_signal(not brick.init_freeze)
 	brick_weight_control.set_value_no_signal(brick.init_mass)
 	if brick.collision_mask == 8:
-		brick_can_collide_control.set_value_no_signal(false);
+		brick_can_collide_control.set_pressed_no_signal(false);
 	elif brick.collision_mask == 12:
-		brick_can_collide_control.set_value_no_signal(true);
+		brick_can_collide_control.set_pressed_no_signal(true);
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
@@ -380,28 +416,29 @@ func load_level(level_folder:String):
 
 func save_level():
 	if level_name.text.is_empty():
-		level_name.call_deferred("grab_focus")
-		return
-	saving_level = true
+		level_name.call_deferred("grab_focus");
+		return;
+	saving_level = true;
 
-	var new_level:PackedScene = PackedScene.new()
-	var level_dir:DirAccess = DirAccess.open(campaign_path + "/" + campaign_num)
+	var new_level:PackedScene = PackedScene.new();
+	var level_dir:DirAccess = DirAccess.open(campaign_path + "/" + campaign_num);
 
 	for brick in level_content.get_children():
-		brick.owner = level_content
+		brick.owner = level_content;
 
 	if not level_dir:
-		DirAccess.make_dir_absolute(campaign_path + "/")
-		DirAccess.make_dir_absolute(campaign_path + "/" + campaign_num)
-		level_dir = DirAccess.open(campaign_path + "/" + campaign_num)
+		DirAccess.make_dir_absolute(campaign_path + "/");
+		DirAccess.make_dir_absolute(campaign_path + "/" + campaign_num);
+		level_dir = DirAccess.open(campaign_path + "/" + campaign_num);
 
 	for brick:Brick in level_content.get_children():
 		brick.hitbox.owner = level_content;
 	
-	new_level.pack(level_content)
+	new_level.pack(level_content);
 
-	mode_options.hide()
-	await get_tree().create_timer(0.2).timeout # Give the UI time to hide
+	mode_options.hide();
+	set_snap_visibility(false);
+	await get_tree().create_timer(0.25).timeout; # Give the UI time to hide.
 
 	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, $LevelEditor/LevelMouseBoundary/CollisionShape2D.shape.size.y)
 	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
@@ -413,14 +450,17 @@ func save_level():
 	var thumb:Image = Image.new()
 	thumb.load_webp_from_buffer(buffer)
 
-	var level_data:LevelData = LevelData.new()
+	var level_data:LevelData = LevelData.new();
 
 	if level_num:
-		var dir = campaign_path + "/" + campaign_num + "/" + level_num + "/"
+		var dir = campaign_path + "/" + campaign_num + "/" + level_num + "/";
 
-		level_data = load(dir + "data.tres")
-		level_data.thumbnail = ImageTexture.create_from_image(thumb)
+		level_data = load(dir + "data.tres"); # Load existing data.
+		level_data.thumbnail = ImageTexture.create_from_image(thumb);
 		level_data.name = level_name.text 
+		if level_data.build_number != current_build_numer:
+			upgrade_version(level_data.build_number);
+		level_data.build_number = current_build_numer;
 
 		var err := ResourceSaver.save(new_level, dir + "level.tscn")
 		if err != OK:
@@ -431,29 +471,30 @@ func save_level():
 			print("Level data save error: " + error_string(err))
 			ResourceSaver.save(level_data, dir + "data.tres")
 	else:
-		var dirs = DirAccess.open(campaign_path + "/" + campaign_num).get_directories()
+		var dirs = DirAccess.open(campaign_path + "/" + campaign_num).get_directories();
 		if dirs.size() == 0:
-			level_num = "1"
+			level_num = "1";
 		else:
-			level_num = str(dirs[dirs.size() - 1].to_int() + 1)
+			level_num = str(dirs[dirs.size() - 1].to_int() + 1);
 		
-		var new_dir = campaign_path + "/" + campaign_num + "/" + level_num + "/"
-		DirAccess.make_dir_absolute(new_dir)
+		var new_dir = campaign_path + "/" + campaign_num + "/" + level_num + "/";
+		DirAccess.make_dir_absolute(new_dir);
 
-		level_data.name = level_name.text # TODO
-		level_data.thumbnail = ImageTexture.create_from_image(thumb)
+		level_data.name = level_name.text; # TODO
+		level_data.thumbnail = ImageTexture.create_from_image(thumb);
+		level_data.build_number = current_build_numer;
 
-		var err := ResourceSaver.save(new_level, new_dir + "level.tscn")
+		var err := ResourceSaver.save(new_level, new_dir + "level.tscn");
 		if err != OK:
-			print("Level Scene save error: " + error_string(err))
-			ResourceSaver.save(new_level, new_dir + "level.tscn")
+			print("Level Scene save error: " + error_string(err));
+			ResourceSaver.save(new_level, new_dir + "level.tscn");
 
-		err = ResourceSaver.save(level_data, new_dir + "data.tres")
+		err = ResourceSaver.save(level_data, new_dir + "data.tres");
 		if err != OK:
-			print("Level data save error: " + error_string(err))
-			ResourceSaver.save(level_data, new_dir + "data.tres")
+			print("Level data save error: " + error_string(err));
+			ResourceSaver.save(level_data, new_dir + "data.tres");
 
-	go_back()
+	go_back();
 	#saving_level = false
 
 func go_back():
@@ -478,3 +519,8 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
 	new_brick.setup(true);
 	return new_brick;
+
+func upgrade_version(from_version:int):
+	match from_version:
+		1: # Default pre-release.
+			pass;
