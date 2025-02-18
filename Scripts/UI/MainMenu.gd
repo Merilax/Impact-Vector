@@ -55,6 +55,7 @@ func _ready():
 
 	if file_dialog:
 		file_dialog.dir_selected.connect(_on_fd_confirmed);
+		file_dialog.file_selected.connect(_on_fd_confirmed);
 		file_dialog.canceled.connect(_on_fd_canceled);
 
 	# Check for a saved game.
@@ -88,12 +89,12 @@ func delete_campaign(campaign_folder_path:String, campaign_num:String, origin:Co
 	if campaign_folder_path.contains("res://"): return;
 
 	# TODO Warn user
-	for sub_dir in DirAccess.open(campaign_folder_path + "/" + campaign_num).get_directories():
+	for sub_dir in DirAccess.get_directories_at(campaign_folder_path + "/" + campaign_num):
 		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/level.tscn");
 		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/data.tres");
 		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir);
 	
-	DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num);
+	if DirAccess.dir_exists_absolute(campaign_folder_path + "/" + campaign_num): DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num);
 	CampaignManager.remove_campaign(campaign_num);
 	origin.queue_free();
 
@@ -132,6 +133,9 @@ func goto_settings():
 	open_settings_menu.emit();
 
 func import_campaign():
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
+	file_dialog.filters = PackedStringArray(["*.ivc"]);
+
 	file_dialog.show();
 	if file_dialog_path.is_empty(): pass;
 	var ok = FileManager.import_any(file_dialog_path);
@@ -143,6 +147,9 @@ func import_campaign():
 	notification_popup.show();
 
 func import_level():
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
+	file_dialog.filters = PackedStringArray(["*.ivl"]);
+
 	file_dialog.show();
 	if file_dialog_path.is_empty(): pass;
 	var ok = FileManager.import_any(file_dialog_path, campaign_folder);
@@ -154,6 +161,9 @@ func import_level():
 	notification_popup.show();
 
 func export_campaign(from_campaign_folder:String, from_campaign_num:String):
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
+	file_dialog.filters = PackedStringArray();
+
 	file_dialog.show();
 	if file_dialog_path.is_empty(): pass;
 	var ok = FileManager.export_campaign(file_dialog_path, from_campaign_folder + from_campaign_num + '/');
@@ -164,6 +174,9 @@ func export_campaign(from_campaign_folder:String, from_campaign_num:String):
 	notification_popup.show();
 
 func export_level(from_level_num:String):
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
+	file_dialog.filters = PackedStringArray();
+
 	file_dialog.show();
 	if file_dialog_path.is_empty(): pass;
 	var ok = FileManager.export_level(file_dialog_path, campaign_path + campaign_folder + "/" + from_level_num + "/");

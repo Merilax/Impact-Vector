@@ -23,11 +23,31 @@ static func find_next_level(campaign_path:String, level_num:int) -> int:
 	return 0; 
 
 static func validate_campaign(path:String) -> bool:
-	if path.substr(path.length()-1) != '/': path += '/';
-	if not DirAccess.dir_exists_absolute(path): return false;
-	if not DirAccess.dir_exists_absolute(path + "/1/"): return false; # Must contain at least one level.
-	if not validate_level(path + "/1/"): return false;
-	
+	if not path.contains(".ivc"): return false;
+
+	var zip:ZIPReader = ZIPReader.new();
+	if zip.open(path) != OK: return false;
+
+	if not zip.file_exists("campaign.json"): return false;
+
+	var data:String = zip.read_file("campaign.json").get_string_from_utf8();
+	var campaign:Dictionary = JSON.parse_string(data);
+
+	zip.close();
+	if not campaign or campaign.size() == 0 or not campaign.name or campaign.name.is_empty(): return false;
+
+	return true;
+
+static func validate_level(path:String) -> bool:
+	if not path.contains(".ivl"): return false;
+
+	var zip:ZIPReader = ZIPReader.new();
+	if zip.open(path) != OK: return false;
+
+	if not zip.file_exists("level.tscn"): return false;
+	if not zip.file_exists("data.tres"): return false;
+	zip.close();
+
 	return true;
 
 static func add_campaign(name:String) -> int:
@@ -74,15 +94,3 @@ static func remove_campaign(dir_num:String):
 	var writer:FileAccess = FileAccess.open("user://Levels/campaigns.json", FileAccess.WRITE);
 	writer.store_line(JSON.stringify(campaigns));
 	writer.close();
-
-static func validate_level(path:String) -> bool:
-	if path.substr(path.length()-1) != '/': path += '/';
-	if not DirAccess.dir_exists_absolute(path): return false;
-	if not FileAccess.file_exists(path + "level.tscn"): return false;
-	if not FileAccess.file_exists(path + "data.tres"): return false;
-	var data:LevelData = load(path + "data.tres");
-
-	if not data.name or data.name.is_empty(): return false;
-	if not data.build_number or data.build_number == 0: return false;
-
-	return true;

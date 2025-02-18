@@ -1,6 +1,21 @@
 extends Node
 class_name FileManager
 
+static func clear_temp(folder:String = ""):
+	if folder == "res://": return;
+	if folder == "user://": return;
+	if folder == "user://Levels": return;
+	if not DirAccess.dir_exists_absolute(folder): return;
+	# Clear all files
+	for file in DirAccess.get_files_at(folder):
+		DirAccess.remove_absolute(folder + "/" + file);
+
+	# Continue deeper into the folder tree.
+	for subfolder:String in DirAccess.get_directories_at(folder):
+		clear_temp(folder + '/' + subfolder);
+
+	DirAccess.remove_absolute(folder);
+
 static func add_level(campaign_num:String, level:PackedScene, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> bool:
 	CampaignManager.check_integrity();
 
@@ -45,17 +60,35 @@ static func replace_level(path:String, level:PackedScene, level_data:LevelData) 
 	return true;
 
 static func import_any(from:String, campaign_num:String = "") -> bool:
-	if from.substr(from.length()-1) != '/': from += '/';
-
 	if CampaignManager.validate_campaign(from): import_campaign(from);
 	elif CampaignManager.validate_level(from): import_level(from, campaign_num);
 	else: return false;
 
 	return true;
 
-static func import_level(from:String, campaign_num:String, level_num:String = "1") -> bool:
+static func import_level(from:String, campaign_num:String, level_num:String = "1", clear_temp_after:bool = true, extract:bool = true) -> bool:
 	CampaignManager.check_integrity();
-	if from.substr(from.length()-1) != '/': from += '/';
+	if clear_temp_after:
+		clear_temp("user://Temp/");
+		DirAccess.make_dir_absolute("user://Temp/");
+	
+	if extract:
+		var writer:FileAccess;
+		var zip:ZIPReader = ZIPReader.new();
+		if not CampaignManager.validate_level(from): return false;
+		if zip.open(from) != OK: return false;
+
+		var level:PackedByteArray = zip.read_file("level.tscn");
+		writer = FileAccess.open("user://Temp/level.tscn", FileAccess.WRITE);
+		writer.store_buffer(level);
+		writer.close();
+
+		var level_data:PackedByteArray = zip.read_file("data.tres");
+		writer = FileAccess.open("user://Temp/data.tres", FileAccess.WRITE);
+		writer.store_buffer(level_data);
+		writer.close();
+
+		from = "user://Temp/";
 
 	var dirs:PackedStringArray = DirAccess.get_directories_at("user://Levels/" + campaign_num);
 	if dirs.size() > 0:
@@ -63,15 +96,14 @@ static func import_level(from:String, campaign_num:String, level_num:String = "1
 
 	var to_path:String = "user://Levels/" + campaign_num + "/" + level_num + "/";
 
-	if not CampaignManager.validate_level(from): return false;
 	if DirAccess.make_dir_absolute(to_path) != OK: return false;
-
 	DirAccess.copy_absolute(from + "level.tscn", to_path + "level.tscn");
 	DirAccess.copy_absolute(from + "data.tres", to_path + "data.tres");
 
+	if clear_temp_after: clear_temp("user://Temp/");
 	return true;
 
-static func export_level(from:String, to:String) -> bool:
+static func export_level(to:String, from:String) -> bool:
 	CampaignManager.check_integrity();
 	if from.substr(from.length()-1) != '/': from += '/';
 	if to.substr(to.length()-1) != '/': to += '/';
@@ -84,27 +116,52 @@ static func export_level(from:String, to:String) -> bool:
 
 	var data:LevelData = load(from + "data.tres");
 	var foldername:String = data.name.validate_filename() + ' ' + str(randi() % 99999999 + 1); # Purely to reduce the chance of two filenames being the same, should the user not clean up afterwards.
-	var to_copy:String = to + "/" + foldername + "/";
-	if DirAccess.make_dir_absolute(to_copy) != OK: return false;
-	DirAccess.copy_absolute(from + "level.tscn", to_copy + "level.tscn");
-	DirAccess.copy_absolute(from + "data.tres", to_copy + "data.tres");
+	var to_copy:String = to + "/" + foldername;
+
+	var zip:ZIPPacker = ZIPPacker.new();
+	if zip.open(to_copy + ".ivl") != OK: return false
+	zip.start_file("level.tscn");
+	zip.write_file(FileAccess.get_file_as_bytes(from + "level.tscn"));
+	zip.close_file();
+	zip.start_file("data.tres");
+	zip.write_file(FileAccess.get_file_as_bytes(from + "data.tres"));
+	zip.close_file();
+	zip.close();
 
 	return true;
 
 static func import_campaign(from:String) -> bool:
 	CampaignManager.check_integrity();
-	if from.substr(from.length()-1) != '/': from += '/';
-	var data:String = FileAccess.get_file_as_string(from + "campaign.json");
+	clear_temp("user://Temp/");
+	DirAccess.make_dir_absolute("user://Temp/");
+	
+	var zip:ZIPReader = ZIPReader.new();
+	if zip.open(from) != OK: return false;
+	var data:String = zip.read_file("campaign.json").get_string_from_utf8();
 	var campaign:Dictionary = JSON.parse_string(data);
 
 	if not campaign or campaign.size() == 0 or not campaign.name or campaign.name.is_empty(): return false;
 
 	var campaign_num:int = CampaignManager.add_campaign(campaign.name);
-	var i:int = 1;
-	for level_path:String in DirAccess.get_directories_at(from):
-		import_level(from + level_path, str(campaign_num), str(i));
-		i+=1;
+	
+	for i in range(1, campaign.level_count + 1):
+		
+		DirAccess.make_dir_absolute("user://Temp/" + str(i));
+		var writer:FileAccess;
 
+		var level:PackedByteArray = zip.read_file("Levels/" + str(i) + "/level.tscn");
+		writer = FileAccess.open("user://Temp/" + str(i) + "/level.tscn", FileAccess.WRITE);
+		writer.store_buffer(level);
+		writer.close();
+
+		var level_data:PackedByteArray = zip.read_file("Levels/" + str(i) + "/data.tres");
+		writer = FileAccess.open("user://Temp/" + str(i) + "/data.tres", FileAccess.WRITE);
+		writer.store_buffer(level_data);
+		writer.close();
+
+		if not import_level("user://Temp/" + str(i) + "/", str(campaign_num), str(i), false, false): return false;
+
+	clear_temp("user://Temp/");
 	return true;
 
 static func export_campaign(to:String, from:String) -> bool:
@@ -121,17 +178,24 @@ static func export_campaign(to:String, from:String) -> bool:
 	var data = campaigns[campaign_num];
 
 	var foldername:String = data.name.validate_filename() + ' ' + str(randi() % 99999999 + 1); # Purely to reduce the chance of two filenames being the same, should the user not clean up afterwards.
-	if DirAccess.make_dir_absolute(to + foldername) != OK: return false;
-	var to_copy:String = to + foldername + "/";
-	var writer:FileAccess = FileAccess.open(to_copy + "campaign.json", FileAccess.WRITE);
-	writer.store_line(JSON.stringify({"name": data.name}));
-	writer.close();
+	var to_copy:String = to + foldername;
+
+	var zip:ZIPPacker = ZIPPacker.new();
+	if zip.open(to_copy + ".ivc") != OK: return false
 
 	var i:int = 1;
 	for level_path in DirAccess.get_directories_at(from):
-		DirAccess.make_dir_absolute(to_copy + str(i));
-		DirAccess.copy_absolute(from + level_path + "/level.tscn", to_copy + str(i) + "/level.tscn");
-		DirAccess.copy_absolute(from + level_path + "/data.tres", to_copy + str(i) + "/data.tres");
+		zip.start_file("Levels/" + str(i) + "/level.tscn");
+		zip.write_file(FileAccess.get_file_as_bytes(from + level_path + "/level.tscn"));
+		zip.close_file();
+		zip.start_file("Levels/" + str(i) + "/data.tres");
+		zip.write_file(FileAccess.get_file_as_bytes(from + level_path + "/data.tres"));
+		zip.close_file();
 		i += 1;
+	
+	zip.start_file("campaign.json");
+	zip.write_file(JSON.stringify({"name": data.name, "level_count": i-1}).to_utf8_buffer());
+	zip.close_file();
+	zip.close();
 
 	return true;
