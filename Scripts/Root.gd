@@ -28,9 +28,9 @@ func play_level(campaign_path, campaign_num, level_num, savedata):
 func open_editor(campaign_path:String, campaign_num:String, level_num:String = ""):
 	var LevelEditorScene:PackedScene = load("uid://bhtapwwblyog3");
 	var editor:LevelEditor = LevelEditorScene.instantiate();
-	add_sibling(editor);
 	editor.campaign_path = campaign_path;
 	editor.campaign_num = campaign_num;
+	add_sibling(editor);
 	if level_num:
 		editor.load_level(level_num);
 	self.queue_free();

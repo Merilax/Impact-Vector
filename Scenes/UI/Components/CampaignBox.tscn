@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvlx80hocybuo"]
+[gd_scene load_steps=6 format=3 uid="uid://cvlx80hocybuo"]
 
 [ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="1_impo0"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/CampaignBox.gd" id="1_o4srm"]
 [ext_resource type="Texture2D" uid="uid://b1kaq6gowgf4o" path="res://Assets/Visuals/Icons/edit.svg" id="2_awirr"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_ye3xb"]
+[ext_resource type="Texture2D" uid="uid://ct8o5ehhnkdw6" path="res://Assets/Visuals/Icons/upload.svg" id="4_c6cpe"]
 
-[node name="CampaignBox" type="MarginContainer" node_paths=PackedStringArray("select_button", "edit_button", "delete_button", "name_label", "name_lineedit")]
+[node name="CampaignBox" type="MarginContainer" node_paths=PackedStringArray("select_button", "edit_button", "export_button", "delete_button", "name_label", "name_lineedit")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 56.0
@@ -13,6 +14,7 @@ grow_horizontal = 2
 script = ExtResource("1_o4srm")
 select_button = NodePath("HBoxContainer/Buttons/Select")
 edit_button = NodePath("HBoxContainer/Buttons/Rename")
+export_button = NodePath("HBoxContainer/Buttons/Export")
 delete_button = NodePath("HBoxContainer/Buttons/Delete")
 name_label = NodePath("HBoxContainer/Name")
 name_lineedit = NodePath("HBoxContainer/LineEdit")
@@ -46,6 +48,10 @@ icon = ExtResource("1_impo0")
 [node name="Rename" type="Button" parent="HBoxContainer/Buttons"]
 layout_mode = 2
 icon = ExtResource("2_awirr")
+
+[node name="Export" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+icon = ExtResource("4_c6cpe")
 
 [node name="Delete" type="Button" parent="HBoxContainer/Buttons"]
 layout_mode = 2

@@ -19,6 +19,12 @@ static func check_integrity():
 		writer.store_line(JSON.stringify(campaigns))
 		writer.close()
 
+static func find_next_level(campaign_path:String, level_num:int) -> int:
+	for dir_name:String in DirAccess.get_directories_at(campaign_path):
+		if dir_name.to_int() > level_num:
+			return dir_name.to_int();
+	return 0; 
+
 static func add_campaign(name:String):
 	check_integrity()
 	var dir_name:int = 1

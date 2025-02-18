@@ -94,8 +94,8 @@ func _ready():
 
 	if save_state:
 		load_gamedata();
-	else:	
-		load_level(campaign_path + "/" + campaign_num + "/" + level_num);
+	else:
+		load_level(campaign_path + campaign_num + "/" + level_num + "/");
 
 	get_tree().node_added.connect(_on_child_entered_tree)
 
@@ -268,20 +268,17 @@ func win():
 	unsaved_lives = lives;
 	unsaved_total_lives = total_lives;
 	
-	var levels:PackedStringArray = DirAccess.open(campaign_path + "/" + campaign_num).get_directories();
-	var current_idx:int = levels.find(level_num);
+	var next_level_num:String = "0";
 	
-	if current_idx == -1 or current_idx >= levels.size() - 1:
+	if campaign_path.contains("res://"):
+		next_level_num = str(BaseCampaignManager.find_next_level(campaign_path + campaign_num + '/', level_num.to_int()));
+	else: next_level_num = str(CampaignManager.find_next_level(campaign_path + campaign_num , level_num.to_int()));
+	print(next_level_num);
+	if next_level_num == "0":
 		game_over(true);
 		return;
-
-	var next_level_num:String = levels[current_idx + 1];
-
-	if campaign_path.contains("user://") and not FileAccess.file_exists(campaign_path + "/" + campaign_num + "/" + next_level_num + "/level.tscn"):
-		game_over(true);
-		return;
-	
-	if not load_level(campaign_path + "/" + campaign_num + "/" + next_level_num + "/level.tscn"):
+	print(campaign_path + campaign_num + "/" + next_level_num + "/");
+	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.tscn") or not load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
 		game_over(true);
 		return;
 	
@@ -357,13 +354,14 @@ func process_pickup(type:String):
 					spawn_ball(false, ball.global_position, ball.dir.rotated(-PI/8))
 
 func load_level(dir:String) -> bool:
-	if dir.contains("user://") and not FileAccess.file_exists(dir): return false
+	if not DirAccess.dir_exists_absolute(dir): return false
 
-	var level_data:LevelData = load(dir + "/data.tres");
+	var level_data:LevelData = load(dir + "data.tres");
+	if not level_data: return false;
 	if level_data.build_number != current_build_numer:
 		upgrade_version(level_data.build_number);
 
-	var level_content_scene = load(dir + "/level.tscn");
+	var level_content_scene = load(dir + "level.tscn");
 	if not level_content_scene: return false;
 
 	var new_level_content:Node2D = level_content_scene.instantiate();
@@ -371,6 +369,7 @@ func load_level(dir:String) -> bool:
 	$LevelContentOffset.add_child(new_level_content, true);
 	new_level_content.position = Vector2.ZERO;
 	level_content = new_level_content;
+
 	background.retrigger(); # Might tie to level data in the future
 	
 	for brick:Node2D in new_level_content.get_children():
@@ -379,17 +378,17 @@ func load_level(dir:String) -> bool:
 	return true;
 
 func upgrade_version(from_version:int):
-	var data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+	var data:LevelData = load(campaign_path + campaign_num + "/" + level_num + "/data.tres");
 
 	match from_version:
 		# Default pre-release
 		1:
 			# ... Fixing code ...
 			data.build_number = current_build_numer;
-			var err = ResourceSaver.save(data, campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+			var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
 			if err != OK:
 				print("Level data save error: " + error_string(err));
-				ResourceSaver.save(data, campaign_path + "/" + campaign_num + "/" + level_num + "/data.tres");
+				ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
 
 func save_gamedata():
 	var data:SaveGameData = SaveGameData.new();

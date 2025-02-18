@@ -8,7 +8,7 @@
 
 [sub_resource type="Theme" id="Theme_arwi0"]
 
-[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("continue_button", "settings_button", "exit_button", "campaign_selector", "level_selector", "level_grid", "back_to_campaigns_button", "create_level_button")]
+[node name="MainMenu" type="HSplitContainer" node_paths=PackedStringArray("continue_button", "settings_button", "exit_button", "campaign_selector", "level_selector", "level_grid", "back_to_campaigns_button", "create_level_button", "import_campaign_button", "import_level_button", "file_dialog", "notification_popup")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,20 +18,24 @@ theme = ExtResource("1_5op5j")
 split_offset = 400
 dragger_visibility = 1
 script = ExtResource("1_w3h7v")
-continue_button = NodePath("PanelContainer/MarginContainer/Control/ContinueBtn")
-settings_button = NodePath("PanelContainer/MarginContainer/Control/SettingBtn")
-exit_button = NodePath("PanelContainer/MarginContainer/Control/QuitBtn")
-campaign_selector = NodePath("PanelContainer2/MarginContainer/Campaigns")
-level_selector = NodePath("PanelContainer2/MarginContainer/CampaignLevels")
-level_grid = NodePath("PanelContainer2/MarginContainer/CampaignLevels/LevelGrid")
-back_to_campaigns_button = NodePath("PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer/BackToCampaigns")
-create_level_button = NodePath("PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer/CreateLevelButton")
+continue_button = NodePath("Left/MarginContainer/Control/ContinueBtn")
+settings_button = NodePath("Left/MarginContainer/Control/SettingBtn")
+exit_button = NodePath("Left/MarginContainer/Control/QuitBtn")
+campaign_selector = NodePath("Right/MarginContainer/Campaigns")
+level_selector = NodePath("Right/MarginContainer/CampaignLevels")
+level_grid = NodePath("Right/MarginContainer/CampaignLevels/LevelGrid")
+back_to_campaigns_button = NodePath("Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer/BackToCampaigns")
+create_level_button = NodePath("Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer/CreateLevelButton")
+import_campaign_button = NodePath("Right/MarginContainer/Campaigns/MarginContainer/HBoxContainer/ImportCampaign")
+import_level_button = NodePath("Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer/ImportLevel")
+file_dialog = NodePath("FileDialog")
+notification_popup = NodePath("Popup")
 metadata/_edit_use_anchors_ = true
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Left" type="PanelContainer" parent="."]
 layout_mode = 2
 
-[node name="NinePatchRect" type="NinePatchRect" parent="PanelContainer"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Left"]
 layout_mode = 2
 texture = ExtResource("3_2ljtg")
 region_rect = Rect2(0, 0, 512, 512)
@@ -40,7 +44,7 @@ patch_margin_top = 42
 patch_margin_right = 42
 patch_margin_bottom = 42
 
-[node name="BG" type="MarginContainer" parent="PanelContainer/NinePatchRect"]
+[node name="BG" type="MarginContainer" parent="Left/NinePatchRect"]
 modulate = Color(1, 1, 1, 0.784314)
 show_behind_parent = true
 layout_mode = 1
@@ -54,47 +58,47 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PanelContainer" type="ColorRect" parent="PanelContainer/NinePatchRect/BG"]
+[node name="PanelContainer" type="ColorRect" parent="Left/NinePatchRect/BG"]
 modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 2
 color = Color(0.168627, 0.192157, 0.219608, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Left"]
 layout_mode = 2
 
-[node name="Control" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="Control" type="VBoxContainer" parent="Left/MarginContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="ContinueBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
+[node name="ContinueBtn" type="Button" parent="Left/MarginContainer/Control"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 4
 text = "Continue"
 metadata/_edit_use_anchors_ = true
 
-[node name="EditorBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
+[node name="EditorBtn" type="Button" parent="Left/MarginContainer/Control"]
 visible = false
 layout_mode = 2
 text = "Level editor"
 
-[node name="SettingBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
+[node name="SettingBtn" type="Button" parent="Left/MarginContainer/Control"]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Settings
 "
 metadata/_edit_use_anchors_ = true
 
-[node name="QuitBtn" type="Button" parent="PanelContainer/MarginContainer/Control"]
+[node name="QuitBtn" type="Button" parent="Left/MarginContainer/Control"]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Quit"
 metadata/_edit_use_anchors_ = true
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
+[node name="Right" type="PanelContainer" parent="."]
 layout_mode = 2
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="PanelContainer2"]
+[node name="NinePatchRect2" type="NinePatchRect" parent="Right"]
 layout_mode = 2
 texture = ExtResource("3_2ljtg")
 region_rect = Rect2(0, 0, 512, 512)
@@ -103,7 +107,7 @@ patch_margin_top = 42
 patch_margin_right = 42
 patch_margin_bottom = 42
 
-[node name="BG" type="MarginContainer" parent="PanelContainer2/NinePatchRect2"]
+[node name="BG" type="MarginContainer" parent="Right/NinePatchRect2"]
 modulate = Color(1, 1, 1, 0.784314)
 show_behind_parent = true
 layout_mode = 1
@@ -117,49 +121,54 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PanelContainer" type="ColorRect" parent="PanelContainer2/NinePatchRect2/BG"]
+[node name="PanelContainer" type="ColorRect" parent="Right/NinePatchRect2/BG"]
 modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 2
 color = Color(0.168627, 0.192157, 0.219608, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Right"]
 layout_mode = 2
 
-[node name="CampaignLevels" type="VBoxContainer" parent="PanelContainer2/MarginContainer"]
+[node name="CampaignLevels" type="VBoxContainer" parent="Right/MarginContainer"]
 visible = false
 layout_mode = 2
 
-[node name="LevelGrid" type="GridContainer" parent="PanelContainer2/MarginContainer/CampaignLevels"]
+[node name="LevelGrid" type="GridContainer" parent="Right/MarginContainer/CampaignLevels"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_arwi0")
 columns = 4
 script = ExtResource("3_boaon")
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/MarginContainer/CampaignLevels"]
+[node name="PanelContainer" type="PanelContainer" parent="Right/MarginContainer/CampaignLevels"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/MarginContainer/CampaignLevels/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Right/MarginContainer/CampaignLevels/PanelContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="BackToCampaigns" type="Button" parent="PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="BackToCampaigns" type="Button" parent="Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Change campaign"
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CreateLevelButton" type="Button" parent="PanelContainer2/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ImportLevel" type="Button" parent="Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Import"
+
+[node name="CreateLevelButton" type="Button" parent="Right/MarginContainer/CampaignLevels/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Create level"
 
-[node name="Campaigns" type="VBoxContainer" parent="PanelContainer2/MarginContainer" node_paths=PackedStringArray("create_campaign_button", "create_campaign_lineedit", "base_campaigns_box", "custom_campaigns_box")]
+[node name="Campaigns" type="VBoxContainer" parent="Right/MarginContainer" node_paths=PackedStringArray("create_campaign_button", "create_campaign_lineedit", "base_campaigns_box", "custom_campaigns_box")]
 layout_mode = 2
 script = ExtResource("4_m387s")
 create_campaign_button = NodePath("MarginContainer/HBoxContainer/CreateCampaign")
@@ -167,33 +176,37 @@ create_campaign_lineedit = NodePath("MarginContainer/HBoxContainer/LineEdit")
 base_campaigns_box = NodePath("MarginContainer2/BaseCampaigns")
 custom_campaigns_box = NodePath("MarginContainer2/CustomCampaigns")
 
-[node name="MarginContainer2" type="VBoxContainer" parent="PanelContainer2/MarginContainer/Campaigns"]
+[node name="MarginContainer2" type="VBoxContainer" parent="Right/MarginContainer/Campaigns"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer2"]
+[node name="Label" type="Label" parent="Right/MarginContainer/Campaigns/MarginContainer2"]
 layout_mode = 2
 text = "Base campaigns"
 
-[node name="BaseCampaigns" type="VBoxContainer" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer2"]
+[node name="BaseCampaigns" type="VBoxContainer" parent="Right/MarginContainer/Campaigns/MarginContainer2"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer2"]
+[node name="Label2" type="Label" parent="Right/MarginContainer/Campaigns/MarginContainer2"]
 layout_mode = 2
 text = "Custom campaigns"
 
-[node name="CustomCampaigns" type="VBoxContainer" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer2"]
+[node name="CustomCampaigns" type="VBoxContainer" parent="Right/MarginContainer/Campaigns/MarginContainer2"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/MarginContainer/Campaigns"]
+[node name="MarginContainer" type="MarginContainer" parent="Right/MarginContainer/Campaigns"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Right/MarginContainer/Campaigns/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer/HBoxContainer"]
+[node name="ImportCampaign" type="Button" parent="Right/MarginContainer/Campaigns/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Import"
+
+[node name="LineEdit" type="LineEdit" parent="Right/MarginContainer/Campaigns/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Campaign name"
@@ -203,6 +216,25 @@ context_menu_enabled = false
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="CreateCampaign" type="Button" parent="PanelContainer2/MarginContainer/Campaigns/MarginContainer/HBoxContainer"]
+[node name="CreateCampaign" type="Button" parent="Right/MarginContainer/Campaigns/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Create campaign"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 4
+size = Vector2i(1216, 751)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+root_subfolder = "/"
+use_native_dialog = true
+
+[node name="Popup" type="AcceptDialog" parent="."]
+title = ""
+initial_position = 4
+size = Vector2i(332, 155)
+borderless = true
+popup_window = true
+dialog_text = "Unknown error.
+You just love to see it."

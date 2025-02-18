@@ -421,15 +421,9 @@ func save_level():
 	saving_level = true;
 
 	var new_level:PackedScene = PackedScene.new();
-	var level_dir:DirAccess = DirAccess.open(campaign_path + "/" + campaign_num);
 
 	for brick in level_content.get_children():
 		brick.owner = level_content;
-
-	if not level_dir:
-		DirAccess.make_dir_absolute(campaign_path + "/");
-		DirAccess.make_dir_absolute(campaign_path + "/" + campaign_num);
-		level_dir = DirAccess.open(campaign_path + "/" + campaign_num);
 
 	for brick:Brick in level_content.get_children():
 		brick.hitbox.owner = level_content;
@@ -461,38 +455,14 @@ func save_level():
 		if level_data.build_number != current_build_numer:
 			upgrade_version(level_data.build_number);
 		level_data.build_number = current_build_numer;
-
-		var err := ResourceSaver.save(new_level, dir + "level.tscn")
-		if err != OK:
-			print("Level Scene save error: " + error_string(err))
-			ResourceSaver.save(new_level, dir + "level.tscn")
-		err = ResourceSaver.save(level_data, dir + "data.tres")
-		if err != OK:
-			print("Level data save error: " + error_string(err))
-			ResourceSaver.save(level_data, dir + "data.tres")
-	else:
-		var dirs = DirAccess.open(campaign_path + "/" + campaign_num).get_directories();
-		if dirs.size() == 0:
-			level_num = "1";
-		else:
-			level_num = str(dirs[dirs.size() - 1].to_int() + 1);
 		
-		var new_dir = campaign_path + "/" + campaign_num + "/" + level_num + "/";
-		DirAccess.make_dir_absolute(new_dir);
-
-		level_data.name = level_name.text; # TODO
+		FileManager.add_level(campaign_num, new_level, level_data, true, level_num);
+	else:
+		level_data.name = level_name.text;
 		level_data.thumbnail = ImageTexture.create_from_image(thumb);
 		level_data.build_number = current_build_numer;
 
-		var err := ResourceSaver.save(new_level, new_dir + "level.tscn");
-		if err != OK:
-			print("Level Scene save error: " + error_string(err));
-			ResourceSaver.save(new_level, new_dir + "level.tscn");
-
-		err = ResourceSaver.save(level_data, new_dir + "data.tres");
-		if err != OK:
-			print("Level data save error: " + error_string(err));
-			ResourceSaver.save(level_data, new_dir + "data.tres");
+		FileManager.add_level(campaign_num, new_level, level_data);
 
 	go_back();
 	#saving_level = false

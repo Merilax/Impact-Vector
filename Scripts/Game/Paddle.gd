@@ -40,7 +40,7 @@ func _process(_delta):
 func _physics_process(_delta):
 	self.position.x = get_global_mouse_position().x
 	if world_border:
-		self.position.x = clampf(self.position.x, world_border.wall_left.position.x + width/2, world_border.wall_right.position.x - width/2)
+		self.position.x = clampf(self.position.x, world_border.wall_left.global_position.x + width/2, world_border.wall_right.global_position.x - width/2)
 
 func _on_turrets_fire(pos:Vector2, dir:float):
 	spawn_bullet.emit(pos, dir)
