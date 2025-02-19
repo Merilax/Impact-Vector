@@ -16,7 +16,7 @@ var magnet_power:int = 0 # Decouple
 var active_turrets:bool = false
 
 @onready var hitbox = $'Hitbox'
-
+@onready var sprite:Sprite2D = $Sprite2D;
 
 signal spawn_bullet(pos:Vector2, dir:float)
 
@@ -63,31 +63,31 @@ func calculate_bounce_vector(node) -> Vector2:
 
 func receive_first_ball(ball:Ball):
 	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
-		ball.freeze = true
-		ball.dir = Vector2.ZERO
-		ball.reparent(self)
-		ball.position = Vector2(0, -(get_node("Sprite2D").get_rect().size.y * get_node("Sprite2D").scale.y))
+		ball.freeze = true;
+		ball.dir = Vector2.ZERO;
+		ball.reparent(self);
+		ball.position = Vector2(0, -((sprite.get_rect().size.y * sprite.scale.y) / 2) - sprite.position.y);
 
-		balls.append(ball)
-		if magnet_sound:
-			magnet_sound.play()
+		balls.append(ball);
+		#if magnet_sound:
+			#magnet_sound.play()
 
 func receive_ball(ball:Ball):
 	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
-		ball.freeze = true
-		ball.dir = Vector2.ZERO
-		ball.reparent(self)
+		ball.freeze = true;
+		ball.dir = Vector2.ZERO;
+		ball.reparent(self);
 
-		balls.append(ball)
+		balls.append(ball);
 		if magnet_sound:
-			magnet_sound.play()
+			magnet_sound.play();
 	else:
-		ball.dir = calculate_bounce_vector(ball)
+		ball.dir = calculate_bounce_vector(ball);
 
-		if hit_sound_comp: hit_sound_comp.play()
+		if hit_sound_comp: hit_sound_comp.play();
 		
-		await create_tween().tween_property($Sprite2D, "position", Vector2(0, 10), 0.1).set_ease(Tween.EASE_OUT).finished
-		create_tween().tween_property($Sprite2D, "position", Vector2(0, 0), 0.1).set_ease(Tween.EASE_IN)
+		await create_tween().tween_property($Sprite2D, "position", Vector2(0, 10), 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE).finished;
+		create_tween().tween_property($Sprite2D, "position", Vector2(0, 0), 0.1).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE);
 
 func release_magnet():
 	single_use_magnet = false
@@ -97,14 +97,15 @@ func release_magnet():
 		ball.freeze = false
 	balls.clear()
 
-func add_magnet(single_use:bool = false):
+func add_magnet(single_use:bool = false) -> int:
 	if magnetised:
-		magnet_power += 1
+		magnet_power += 1;
 	else:
-		reset_powers()
-		if single_use: single_use_magnet = true
-		else: magnetised = true
-		magnet_power = 1
+		reset_powers();
+		if single_use: single_use_magnet = true;
+		else: magnetised = true;
+		magnet_power = 1;
+	return magnet_power;
 
 func activate_turrets():
 	if magnetised or single_use_magnet:

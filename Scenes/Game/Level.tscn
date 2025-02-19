@@ -1,13 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=21 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
 [ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
+[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="3_7wyew"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_cwvof"]
+[ext_resource type="AudioStream" uid="uid://sum5oktk1vyr" path="res://Assets/Audio/SFX/bfh1_metal_falling_03.ogg" id="5_8ipbu"]
 [ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="5_gh0ej"]
 [ext_resource type="Script" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
+[ext_resource type="Texture2D" uid="uid://dy4cere4ncoq3" path="res://Assets/Visuals/ProgressBar8Over.png" id="8_113j4"]
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
+[ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/ProgressBar8.png" id="9_k042e"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 [ext_resource type="Script" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
@@ -15,13 +19,40 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
 
+[sub_resource type="Curve" id="Curve_nhk3j"]
+max_value = 3.0
+_data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(1, 0), -7.4359, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0g6rt"]
+curve = SubResource("Curve_nhk3j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ncp33"]
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 400, 0)
+scale_over_velocity_max = 1000.0
+scale_over_velocity_curve = SubResource("CurveTexture_0g6rt")
+color = Color(1, 0.843137, 0.12549, 1)
+hue_variation_min = -0.1
+hue_variation_max = 0.12
+
 [sub_resource type="LabelSettings" id="LabelSettings_7pppu"]
 font_size = 40
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "background")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "background", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
 world_border = NodePath("WorldBorder")
 background = NodePath("Background")
+speed_meter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter/ProgressBar")
+magnet_meter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter/ProgressBar")
+arm_horizontal = NodePath("ConstructorArm/Horizontal")
+arm_vertical = NodePath("ConstructorArm/Vertical")
+arm_placer = NodePath("ConstructorArm/Nucleus")
+arm_placer_sound = NodePath("ConstructorArm/PlaceSound")
 
 [node name="Background" type="Parallax2D" parent="."]
 modulate = Color(0.244776, 0.244776, 0.244776, 1)
@@ -43,6 +74,43 @@ shape = SubResource("RectangleShape2D_pborx")
 position = Vector2(40, 0)
 
 [node name="Balls" type="Node2D" parent="."]
+
+[node name="ConstructorArm" type="Node2D" parent="."]
+
+[node name="Horizontal" type="Sprite2D" parent="ConstructorArm"]
+position = Vector2(758, -10.0002)
+scale = Vector2(11.438, 0.14)
+texture = ExtResource("3_7wyew")
+
+[node name="Vertical" type="Sprite2D" parent="ConstructorArm"]
+position = Vector2(-11, 540)
+scale = Vector2(0.14, 8.438)
+texture = ExtResource("3_7wyew")
+
+[node name="Nucleus" type="Sprite2D" parent="ConstructorArm"]
+position = Vector2(-71, -68)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_7wyew")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ConstructorArm/Nucleus"]
+show_behind_parent = true
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_ncp33")
+lifetime = 0.5
+one_shot = true
+speed_scale = 3.5
+explosiveness = 0.8
+fixed_fps = 60
+trail_enabled = true
+trail_lifetime = 0.04
+trail_sections = 4
+
+[node name="PlaceSound" type="AudioStreamPlayer" parent="ConstructorArm"]
+stream = ExtResource("5_8ipbu")
+volume_db = -9.0
+pitch_scale = 0.8
+bus = &"SFX"
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -89,16 +157,20 @@ layout_mode = 2
 offset_right = 441.001
 offset_bottom = 1080.0
 
-[node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/UI/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ScoreTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="ScoreTxt" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Score"
 label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="ScoreVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="ScoreVar" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
@@ -106,27 +178,77 @@ label_settings = SubResource("LabelSettings_7pppu")
 horizontal_alignment = 2
 script = ExtResource("10_ers3y")
 
-[node name="SpeedTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="SpeedTxt" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
+visible = false
 layout_mode = 2
 text = "Speed"
 label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="SpeedVar" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="SpeedVar" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
+visible = false
 layout_mode = 2
 text = "100%"
 label_settings = SubResource("LabelSettings_7pppu")
 horizontal_alignment = 2
 script = ExtResource("10_0egqj")
 
-[node name="LivesTxt" type="Label" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="LivesTxt" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Lives"
 label_settings = SubResource("LabelSettings_7pppu")
 
-[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/GridContainer"]
+[node name="LivesContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpeedMeter" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
+layout_mode = 2
+text = "S"
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
+custom_minimum_size = Vector2(50, 256)
+layout_mode = 2
+max_value = 8.0
+value = 3.0
+rounded = true
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_left = 8
+stretch_margin_top = 8
+stretch_margin_right = 8
+stretch_margin_bottom = 8
+texture_over = ExtResource("8_113j4")
+texture_progress = ExtResource("9_k042e")
+tint_progress = Color(0, 0.670588, 0, 1)
+
+[node name="MagnetMeter" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter"]
+layout_mode = 2
+text = "M	"
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter"]
+custom_minimum_size = Vector2(50, 256)
+layout_mode = 2
+max_value = 8.0
+rounded = true
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_left = 8
+stretch_margin_top = 8
+stretch_margin_right = 8
+stretch_margin_bottom = 8
+texture_over = ExtResource("8_113j4")
+texture_progress = ExtResource("9_k042e")
+tint_progress = Color(0, 0.670588, 0, 1)
 
 [node name="Control" type="Control" parent="UILayer"]
 layout_mode = 3

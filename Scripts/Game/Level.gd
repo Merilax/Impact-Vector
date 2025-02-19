@@ -63,6 +63,7 @@ var brick_count:int = 0;
 var ball_count:int = 0;
 
 var speed_mult:float = 1;
+var visual_speed_mult:int = 3;
 
 var can_spawn_balls:bool = true;
 var ball_stuck_timer:SceneTreeTimer;
@@ -75,6 +76,14 @@ var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 @export var world_border:WorldBorder;
 var level_content:Node2D;
 @export var background:Parallax2D;
+
+@export var speed_meter:TextureProgressBar;
+@export var magnet_meter:TextureProgressBar;
+
+@export var arm_horizontal:Node2D;
+@export var arm_vertical:Node2D;
+@export var arm_placer:Node2D;
+@export var arm_placer_sound:AudioStreamPlayer;
 
 var transitioning_levels:bool = false;
 
@@ -95,7 +104,7 @@ func _ready():
 	if save_state:
 		load_gamedata();
 	else:
-		load_level(campaign_path + campaign_num + "/" + level_num + "/");
+		await load_level(campaign_path + campaign_num + "/" + level_num + "/");
 
 	get_tree().node_added.connect(_on_child_entered_tree)
 
@@ -149,7 +158,7 @@ func _on_ball_lost(node:Node2D):
 
 		if ball_count <= 0:
 			lives -= 1
-			if is_instance_valid(paddle): paddle.die()
+			kill_paddle();
 
 			if lives >= 3:
 				var livesVar = life_counter.get_node("LivesVar")
@@ -176,8 +185,7 @@ func _on_ball_lost(node:Node2D):
 					spawn_paddle()
 
 				spawn_ball(true)
-				speed_mult = 1
-				change_speed.emit(speed_mult, true) # Reset speed
+				reset_speed_mult();
 
 func spawn_bullet(pos:Vector2, dir:float):
 	var bullet:Bullet = BulletScene.instantiate()
@@ -278,7 +286,7 @@ func win():
 		game_over(true);
 		return;
 	print(campaign_path + campaign_num + "/" + next_level_num + "/");
-	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.tscn") or not load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
+	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.tscn") or not await load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
 		game_over(true);
 		return;
 	
@@ -302,9 +310,10 @@ func _on_child_entered_tree(node:Node):
 	if node.is_in_group('PickUp'):
 		node.trigger_pickup.connect(process_pickup)
 
-func init_brick(brick):
+func init_brick(brick, set_hidden:bool = false):
 	if brick.is_in_group('Brick'):
 		brick.setup(false);
+		if set_hidden: brick.hide();
 		
 		if brick.has_signal('process_score'):
 			brick.process_score.connect(add_score)
@@ -326,23 +335,36 @@ func init_brick(brick):
 				brick.pickup_comp.pickup_type = random_pickup.type
 				brick.pickup_comp.pickup_sprite = random_pickup.texture
 
+func kill_paddle():
+	if is_instance_valid(paddle):
+		paddle.die();
+		magnet_meter.value = 0;
+
+func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
+	var duration = (arm_placer.global_position - pos).length() / 2000;
+	create_tween().tween_property(arm_horizontal, "global_position:y", pos.y, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	create_tween().tween_property(arm_vertical, "global_position:x", pos.x, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await create_tween().tween_property(arm_placer, "global_position", pos, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).finished;
+	arm_placer.get_node("GPUParticles2D").restart();
+	if play_sound and arm_placer_sound: arm_placer_sound.play();
+	await get_tree().create_timer(.04).timeout;
+	return true;
+
 func process_pickup(type:String):
 	if transitioning_levels: return
+	# TODO SFX each
 	match type.to_lower():
 		'speed':
-			var previous:float = speed_mult;
-			speed_mult = clampf(speed_mult + 0.1, 0.7, 1.5);
-			change_speed.emit(speed_mult, true);
-			if speed_mult == 1.5 && speed_mult > previous: add_score(1000); # TODO Separate function and SFX
+			add_speed_mult(true);
 		'slow':
-			speed_mult = clampf(speed_mult - 0.1, 0.7, 1.5)
-			change_speed.emit(speed_mult, true)
+			add_speed_mult(false);
 		"magnet":
-			if is_instance_valid(paddle): paddle.add_magnet()
+			add_magnet();
 		"turrets":
-			if is_instance_valid(paddle): paddle.activate_turrets()
+			if is_instance_valid(paddle): paddle.activate_turrets();
+			if magnet_meter: magnet_meter.value = 0;
 		"death":
-			if is_instance_valid(paddle): paddle.die()
+			kill_paddle();
 		"triple":
 			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
 				if ball.lost: continue
@@ -352,6 +374,32 @@ func process_pickup(type:String):
 				else:	
 					spawn_ball(false, ball.global_position, ball.dir.rotated(PI/8))
 					spawn_ball(false, ball.global_position, ball.dir.rotated(-PI/8))
+
+func add_speed_mult(add:bool = true):
+	var previous:float = speed_mult;
+	var amount:float = .1;
+	var visual_amount:int = 1; 
+	if not add:
+		amount = -amount;
+		visual_amount = -visual_amount;
+
+	speed_mult = clampf(speed_mult + amount, 0.7, 1.5);
+	visual_speed_mult = clampi(visual_speed_mult + visual_amount, 0, 8); # TODO Split into two meters, 1,5 green, 0,-3 red, neutral difficulty at 1
+	change_speed.emit(speed_mult, true);
+	if speed_mult == 1.5 && speed_mult > previous: add_score(1000);
+
+	if speed_meter: speed_meter.value = visual_speed_mult;
+
+func reset_speed_mult(): # TODO Add difficulty
+	speed_mult = 1;
+	visual_speed_mult = 3;
+	if speed_meter: speed_meter.value = visual_speed_mult;
+	change_speed.emit(speed_mult, true) # Reset speed
+
+func add_magnet():
+	if is_instance_valid(paddle):
+		var power:int = paddle.add_magnet();
+		if magnet_meter: magnet_meter.value = power;
 
 func load_level(dir:String) -> bool:
 	if not DirAccess.dir_exists_absolute(dir): return false
@@ -371,9 +419,16 @@ func load_level(dir:String) -> bool:
 	level_content = new_level_content;
 
 	background.retrigger(); # Might tie to level data in the future
-	
+	await position_arm(Vector2(-50, -50), false);
+
 	for brick:Node2D in new_level_content.get_children():
-		init_brick(brick);
+		init_brick(brick, true);
+		#call_deferred("position_arm", brick.global_position);
+		await position_arm(brick.global_position);
+		brick.show();
+
+	await position_arm(Vector2(-50, -50), false);
+	await get_tree().create_timer(.5).timeout;
 
 	return true;
 
@@ -405,7 +460,7 @@ func save_gamedata():
 	return true;
 
 func load_gamedata():
-	load_level(save_state.level_path);
+	await load_level(save_state.level_path);
 	score = save_state.score;
 	lives = save_state.lives;
 	total_lives = save_state.total_lives;

@@ -36,6 +36,7 @@ editor_hitbox = NodePath("EditorHitboxComp")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 clip_children = 1
+scale = Vector2(0.5, 0.5)
 
 [node name="TextureSprite" type="Sprite2D" parent="Sprite"]
 visible = false

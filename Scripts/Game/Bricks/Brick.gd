@@ -145,10 +145,10 @@ func set_texture_sprite(path:String):
 	texture_path = path
 	texture_sprite.show();
 
-	var base_x = base_sprite.texture.get_size().x * base_sprite.scale.x
-	var base_y = base_sprite.texture.get_size().y * base_sprite.scale.y
-	var textured_x = texture_sprite.texture.get_size().x * texture_sprite.scale.x
-	var textured_y = texture_sprite.texture.get_size().y * texture_sprite.scale.y
+	var base_x = base_sprite.texture.get_size().x #* base_sprite.scale.x
+	var base_y = base_sprite.texture.get_size().y #* base_sprite.scale.y
+	var textured_x = texture_sprite.texture.get_size().x #* texture_sprite.scale.x
+	var textured_y = texture_sprite.texture.get_size().y #* texture_sprite.scale.y
 
 	# Scale texture sprite to base sprite, covered, keeping aspect ratio
 	# Scale up
