@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=24 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
@@ -11,10 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
 [ext_resource type="Texture2D" uid="uid://dy4cere4ncoq3" path="res://Assets/Visuals/ProgressBar8Over.png" id="8_113j4"]
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
+[ext_resource type="LabelSettings" uid="uid://bapuh2nmt5m28" path="res://GDResources/Themes/Header.tres" id="8_lfrfq"]
 [ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/ProgressBar8.png" id="9_k042e"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 [ext_resource type="Script" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
+[ext_resource type="Texture2D" uid="uid://b2ufqhunhh27l" path="res://Assets/Visuals/Pickups/PickupSpeed.png" id="10_qm7ro"]
+[ext_resource type="Texture2D" uid="uid://dil2gntnddaec" path="res://Assets/Visuals/Pickups/PickupMagnet.png" id="13_ac123"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
@@ -43,8 +46,13 @@ hue_variation_max = 0.12
 [sub_resource type="LabelSettings" id="LabelSettings_7pppu"]
 font_size = 40
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "background", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "world_border", "background", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
+notification_window = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/Notifs")
+notification_window_timer = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/Timer")
+score_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
+speed_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/SpeedVar")
+life_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
 world_border = NodePath("WorldBorder")
 background = NodePath("Background")
 speed_meter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter/ProgressBar")
@@ -161,6 +169,31 @@ offset_bottom = 1080.0
 layout_mode = 2
 alignment = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Notifications" type="RichTextLabel" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+fit_content = true
+scroll_active = false
+
+[node name="Timer" type="Timer" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer"]
+wait_time = 4.0
+one_shot = true
+
+[node name="Notifs" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
+size_flags_vertical = 1
+label_settings = ExtResource("8_lfrfq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
 [node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
@@ -208,9 +241,16 @@ layout_mode = 2
 [node name="SpeedMeter" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
+[node name="Label2" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
+visible = false
 layout_mode = 2
-text = "S"
+text = "G"
+
+[node name="Label" type="TextureRect" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
+layout_mode = 2
+texture = ExtResource("10_qm7ro")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="ProgressBar" type="TextureProgressBar" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter"]
 custom_minimum_size = Vector2(50, 256)
@@ -226,14 +266,16 @@ stretch_margin_right = 8
 stretch_margin_bottom = 8
 texture_over = ExtResource("8_113j4")
 texture_progress = ExtResource("9_k042e")
-tint_progress = Color(0, 0.670588, 0, 1)
+tint_progress = Color(0, 0.754301, 7.70092e-07, 1)
 
 [node name="MagnetMeter" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter"]
+[node name="Label" type="TextureRect" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter"]
 layout_mode = 2
-text = "M	"
+texture = ExtResource("13_ac123")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="ProgressBar" type="TextureProgressBar" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter"]
 custom_minimum_size = Vector2(50, 256)
@@ -248,7 +290,30 @@ stretch_margin_right = 8
 stretch_margin_bottom = 8
 texture_over = ExtResource("8_113j4")
 texture_progress = ExtResource("9_k042e")
-tint_progress = Color(0, 0.670588, 0, 1)
+tint_progress = Color(0, 0.752941, 0, 1)
+
+[node name="BulletMeter" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/BulletMeter"]
+layout_mode = 2
+text = "G"
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/BulletMeter"]
+custom_minimum_size = Vector2(50, 256)
+layout_mode = 2
+max_value = 12.0
+rounded = true
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_left = 8
+stretch_margin_top = 8
+stretch_margin_right = 8
+stretch_margin_bottom = 8
+texture_over = ExtResource("8_113j4")
+texture_progress = ExtResource("9_k042e")
+tint_progress = Color(0, 0.752941, 0, 1)
 
 [node name="Control" type="Control" parent="UILayer"]
 layout_mode = 3

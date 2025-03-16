@@ -1,7 +1,7 @@
 extends Node2D
 class_name Game
 
-var current_build_numer:int = 1;
+var current_build_number:int = 2;
 
 @export var campaign_path:String
 @export var campaign_num:String
@@ -68,13 +68,18 @@ var visual_speed_mult:int = 3;
 var can_spawn_balls:bool = true;
 var ball_stuck_timer:SceneTreeTimer;
 
-@onready var score_counter:Label = $'UILayer'.find_child('ScoreVar');
-@onready var speed_counter:Label = $'UILayer'.find_child('SpeedVar');
-@onready var life_counter:HBoxContainer = $'UILayer'.find_child('LivesContainer');
+@export var notification_window:Label;
+@export var notification_window_timer:Timer;
+@export var score_counter:Label;
+@export var speed_counter:Label;
+@export var life_counter:HBoxContainer;
 var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
 @export var world_border:WorldBorder;
 var level_content:Node2D;
+var level_content_bricks:Node2D;
+var level_content_paths:Node2D;
+var level_content_path_visuals:Node2D;
 @export var background:Parallax2D;
 
 @export var speed_meter:TextureProgressBar;
@@ -95,6 +100,9 @@ func _ready():
 
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	$"DeathZone".body_entered.connect(_on_ball_lost)
+
+	if notification_window_timer:
+		notification_window_timer.timeout.connect(func(): notification_window.text = "");
 
 	for life in lives:
 		life_counter.add_child(BallLifeRect.instantiate())
@@ -223,8 +231,8 @@ func add_score(amount:int):
 	score += amount
 
 	@warning_ignore("integer_division")
-	if floori(previous / 1000) < floori(score / 1000):
-		add_life()
+	if floori(previous / 10000) < floori(score / 10000):
+		add_life(); # Extra life every 10000 score.
 
 func _on_brick_destroyed():
 	brick_count -= 1
@@ -248,6 +256,11 @@ func _on_spawn_pickup(global_pos:Vector2, type:String, texture:String):
 	pickup.get_node("Sprite2D").texture = load(texture)
 	level_content.add_child(pickup)
 	pickup.global_position = global_pos
+
+func notify(text:String):
+	#notification_window_timer.stop();
+	notification_window.text = text;
+	notification_window_timer.start();
 
 func game_over(game_won:bool):
 	can_spawn_balls = false
@@ -335,6 +348,15 @@ func init_brick(brick, set_hidden:bool = false):
 				brick.pickup_comp.pickup_type = random_pickup.type
 				brick.pickup_comp.pickup_sprite = random_pickup.texture
 
+func init_path(path, time, returning:bool = true):
+	var line:PathFollow2D = path.get_child(0);
+
+	var tween:Tween = get_tree().create_tween();
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT);
+	tween.tween_property(line, "progress_ratio", 1, time).from(0).set_loops();
+	if returning:
+		tween.tween_property(line, "progress_ratio", 0, time).from(1);
+
 func kill_paddle():
 	if is_instance_valid(paddle):
 		paddle.die();
@@ -355,17 +377,29 @@ func process_pickup(type:String):
 	# TODO SFX each
 	match type.to_lower():
 		'speed':
+			notify("SPEED UP\n\n200 POINTS");
+			add_score(200);
 			add_speed_mult(true);
 		'slow':
+			notify("SPEED DOWN\n\n100 POINTS");
+			add_score(100);
 			add_speed_mult(false);
 		"magnet":
+			notify("MAGNET STRENGTH UP\n\n200 POINTS");
+			add_score(200);
 			add_magnet();
 		"turrets":
+			notify("RELOAD GUNS\n\n200 POINTS");
+			add_score(200);
 			if is_instance_valid(paddle): paddle.activate_turrets();
 			if magnet_meter: magnet_meter.value = 0;
 		"death":
+			notify("QUESTIONABLE\nLIFE CHOICES\n\n2000 POINTS");
+			add_score(2000);
 			kill_paddle();
 		"triple":
+			notify("TRIPLE BALLS\n\n100 POINTS");
+			add_score(100);
 			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
 				if ball.lost: continue
 				if ball.get_parent() == paddle:
@@ -386,7 +420,9 @@ func add_speed_mult(add:bool = true):
 	speed_mult = clampf(speed_mult + amount, 0.7, 1.5);
 	visual_speed_mult = clampi(visual_speed_mult + visual_amount, 0, 8); # TODO Split into two meters, 1,5 green, 0,-3 red, neutral difficulty at 1
 	change_speed.emit(speed_mult, true);
-	if speed_mult == 1.5 && speed_mult > previous: add_score(1000);
+	if speed_mult == 1.5 && speed_mult > previous:
+		add_score(800);
+		notify("SENSATIONAL!\nMAX SPEED\n\n1000 POINTS");
 
 	if speed_meter: speed_meter.value = visual_speed_mult;
 
@@ -406,8 +442,7 @@ func load_level(dir:String) -> bool:
 
 	var level_data:LevelData = load(dir + "data.tres");
 	if not level_data: return false;
-	if level_data.build_number != current_build_numer:
-		upgrade_version(level_data.build_number);
+	
 
 	var level_content_scene = load(dir + "level.tscn");
 	if not level_content_scene: return false;
@@ -417,33 +452,81 @@ func load_level(dir:String) -> bool:
 	$LevelContentOffset.add_child(new_level_content, true);
 	new_level_content.position = Vector2.ZERO;
 	level_content = new_level_content;
+	
+	if level_data.build_number != current_build_number:
+		upgrade_version(level_data);
+
+	level_content_bricks = level_content.find_child("Bricks");
+	level_content_paths = level_content.find_child("BrickPaths").find_child("Paths");
+	level_content_path_visuals = level_content.find_child("BrickPaths").find_child("Visuals");
+	level_content_path_visuals.hide();
 
 	background.retrigger(); # Might tie to level data in the future
 	await position_arm(Vector2(-50, -50), false);
 
-	for brick:Node2D in new_level_content.get_children():
+	for brick:Node2D in get_tree().get_nodes_in_group("Brick"):
 		init_brick(brick, true);
 		#call_deferred("position_arm", brick.global_position);
 		await position_arm(brick.global_position);
 		brick.show();
-
+	
+	for path:Path2D in level_content_paths.get_children():
+		init_path(path, 2, true); # Parametrize time, parametrize looping
+	
 	await position_arm(Vector2(-50, -50), false);
 	await get_tree().create_timer(.5).timeout;
 
 	return true;
 
-func upgrade_version(from_version:int):
-	var data:LevelData = load(campaign_path + campaign_num + "/" + level_num + "/data.tres");
+func upgrade_version(data:LevelData):
+	var from_version:int = data.build_number;
+	if from_version >= current_build_number:
+		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+		if err != OK:
+			print("Level data save error: " + error_string(err));
+			ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+
+		var modified_level_content:PackedScene = PackedScene.new();
+		modified_level_content.pack(level_content);
+		err = ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
+		if err != OK:
+			print("Level scene save error: " + error_string(err));
+			ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
+		return;
 
 	match from_version:
 		# Default pre-release
 		1:
-			# ... Fixing code ...
-			data.build_number = current_build_numer;
-			var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
-			if err != OK:
-				print("Level data save error: " + error_string(err));
-				ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+			# Add Bricks container and reparent bricks from LevelContent
+			var new_level_content_bricks := Node2D.new();
+			new_level_content_bricks.name = "Bricks";
+			level_content.add_child(new_level_content_bricks, true);
+			new_level_content_bricks.owner = level_content;
+
+			for node:Node2D in level_content.get_children():
+				if node.is_in_group("Brick"):
+					node.reparent(new_level_content_bricks);
+
+			# Add BrickPaths container
+			var new_level_content_brick_paths := Node2D.new();
+			new_level_content_brick_paths.name = "BrickPaths";
+			level_content.add_child(new_level_content_brick_paths, true);
+			new_level_content_brick_paths.owner = level_content;
+
+			# Add Paths container
+			var new_level_content_paths := Node2D.new();
+			new_level_content_paths.name = "Paths";
+			new_level_content_brick_paths.add_child(new_level_content_paths, true);
+			new_level_content_paths.owner = level_content;
+
+			# Add Visuals container
+			var new_level_content_path_visuals := Node2D.new();
+			new_level_content_path_visuals.name = "Visuals";
+			new_level_content_brick_paths.add_child(new_level_content_path_visuals, true);
+			new_level_content_path_visuals.owner = level_content;
+			
+	data.build_number += 1;
+	upgrade_version(data);
 
 func save_gamedata():
 	var data:SaveGameData = SaveGameData.new();

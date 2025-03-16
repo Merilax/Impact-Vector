@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=23 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 [ext_resource type="Texture2D" uid="uid://lqkxorxmvytd" path="res://Assets/Visuals/Icons/arrow_selector.svg" id="10_3i04o"]
 [ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="13_ppk2a"]
+[ext_resource type="Texture2D" uid="uid://dygfcocq1apxy" path="res://Assets/Visuals/Icons/path.svg" id="15_gi63o"]
 [ext_resource type="Script" path="res://Scripts/UI/EscapeEditorLayer.gd" id="15_pqil0"]
 [ext_resource type="PackedScene" uid="uid://cdhcnlm7k2s05" path="res://Scenes/UI/EscapeMenuEditor.tscn" id="16_eyoj6"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="17_2beqe"]
@@ -24,16 +25,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1437, 940)
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "grid_drawer", "place_tool", "select_tool", "paint_tool", "erase_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_container", "texture_container", "level_name", "save_button")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "level_content_bricks", "grid_drawer", "level_content_paths", "level_content_path_visuals", "selector", "place_tool", "select_tool", "paint_tool", "erase_tool", "path_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "path_options_ctrl", "path_options_btn", "path_number", "path_speed", "create_path_button", "delete_path_button", "brick_container", "texture_container", "level_name", "save_button")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 level_content = NodePath("LevelEditor/LevelContent")
+level_content_bricks = NodePath("LevelEditor/LevelContent/Bricks")
 grid_drawer = NodePath("LevelEditor/Grid")
+level_content_paths = NodePath("LevelEditor/LevelContent/BrickPaths/Paths")
+level_content_path_visuals = NodePath("LevelEditor/LevelContent/BrickPaths/Visuals")
+selector = NodePath("EditorUI/Selector")
 place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
 select_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Select")
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
 erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Erase")
+path_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Path")
 mode_options = NodePath("EditorUI/Options")
 snap_options_ctrl = NodePath("EditorUI/Options/PanelContainer/Snap")
 snap_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Snap")
@@ -54,6 +60,13 @@ brick_score_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContain
 brick_pushable_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2/Pushable")
 brick_weight_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer2/Weight")
 brick_can_collide_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3/Collider")
+brick_path_group_control = NodePath("EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3/PathGroup")
+path_options_ctrl = NodePath("EditorUI/Options/PanelContainer/Path")
+path_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Path")
+path_number = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/PathNumber")
+path_speed = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2/HBoxContainer/PathSpeed")
+create_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/CreatePath")
+delete_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/DeletePath")
 brick_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/BrickGrid")
 texture_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer")
 level_name = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
@@ -69,20 +82,28 @@ script = ExtResource("2_xjmup")
 [node name="LevelEditor" type="Node2D" parent="."]
 position = Vector2(64, 0)
 
-[node name="Grid" type="Node2D" parent="LevelEditor"]
-visible = false
-script = ExtResource("3_pm5sq")
-
-[node name="LevelContent" type="Node2D" parent="LevelEditor"]
-
-[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
-
 [node name="LevelMouseBoundary" type="Area2D" parent="LevelEditor"]
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LevelEditor/LevelMouseBoundary"]
 position = Vector2(719.5, 470)
 shape = SubResource("RectangleShape2D_k1bnw")
+
+[node name="WorldBorder" parent="LevelEditor" instance=ExtResource("1_tjbma")]
+
+[node name="Grid" type="Node2D" parent="LevelEditor"]
+visible = false
+script = ExtResource("3_pm5sq")
+
+[node name="LevelContent" type="Node2D" parent="LevelEditor"]
+
+[node name="Bricks" type="Node2D" parent="LevelEditor/LevelContent"]
+
+[node name="BrickPaths" type="Node2D" parent="LevelEditor/LevelContent"]
+
+[node name="Paths" type="Node2D" parent="LevelEditor/LevelContent/BrickPaths"]
+
+[node name="Visuals" type="Node2D" parent="LevelEditor/LevelContent/BrickPaths"]
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 
@@ -95,6 +116,7 @@ anchor_bottom = 1.0
 offset_left = 0.159912
 grow_horizontal = 0
 grow_vertical = 2
+size_flags_horizontal = 8
 theme = ExtResource("3_t1m56")
 metadata/_edit_use_anchors_ = true
 
@@ -268,7 +290,16 @@ theme = ExtResource("6_if84t")
 icon = ExtResource("7_evgdw")
 icon_alignment = 1
 
-[node name="Container" type="Control" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
+[node name="Path" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Erase tool"
+theme = ExtResource("6_if84t")
+icon = ExtResource("15_gi63o")
+icon_alignment = 1
+
+[node name="Separator" type="Control" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -296,17 +327,17 @@ icon_alignment = 1
 [node name="Options" type="VBoxContainer" parent="EditorUI"]
 anchors_preset = -1
 anchor_left = 0.032
-anchor_top = 0.919
+anchor_top = 0.922
 anchor_right = 0.782
 anchor_bottom = 1.0
 offset_left = -0.440002
-offset_top = 7.47998
-offset_right = -0.440063
-offset_bottom = 120.0
+offset_top = 0.239929
+offset_right = -0.440186
+offset_bottom = 119.48
+size_flags_vertical = 0
 mouse_filter = 0
 mouse_force_pass_scroll_events = false
 theme = ExtResource("3_t1m56")
-metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="EditorUI/Options"]
 layout_mode = 2
@@ -315,7 +346,7 @@ horizontal_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="EditorUI/Options"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 mouse_filter = 1
 
 [node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Options/PanelContainer"]
@@ -634,6 +665,19 @@ text = "Can collide"
 layout_mode = 2
 mouse_filter = 1
 
+[node name="Label4" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
+layout_mode = 2
+text = "Path group"
+
+[node name="PathGroup" type="SpinBox" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
 [node name="Label2" type="Label" parent="EditorUI/Options/PanelContainer/Data/VBoxContainer/Stats/VBoxContainer3"]
 visible = false
 layout_mode = 2
@@ -653,6 +697,68 @@ text = "Kill sound"
 visible = false
 layout_mode = 2
 theme = ExtResource("6_if84t")
+
+[node name="Path" type="MarginContainer" parent="EditorUI/Options/PanelContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Path"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Selected path:"
+
+[node name="CreatePath" type="Button" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 1
+theme = ExtResource("6_if84t")
+icon = ExtResource("6_7hwva")
+
+[node name="DeletePath" type="Button" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+theme = ExtResource("6_if84t")
+icon = ExtResource("7_evgdw")
+
+[node name="PathNumber" type="SpinBox" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="VSeparator" type="VSeparator" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path speed:"
+
+[node name="PathSpeed" type="SpinBox" parent="EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+alignment = 2
 
 [node name="EscapeLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("game_root", "escape_menu", "settings_menu", "help_menu")]
 process_mode = 3

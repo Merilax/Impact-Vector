@@ -1,33 +1,34 @@
 extends RigidBody2D
 class_name Brick
 
-@export var base_texture_path:String # Must be set
-@export var texture_path:String # Must be set
-@export var shader_color:Color = Color(1, 1, 1, 1)
+@export var base_texture_path:String; # Must be set
+@export var texture_path:String; # Must be set
+@export var shader_color:Color = Color(1, 1, 1, 1);
 
-@export var hitbox:Node2D
-@export var base_sprite:Sprite2D
-@export var texture_sprite:Sprite2D
-@export var health_comp:HealthComponent
-@export var score_comp:ScoreComponent
-@export var hit_sound_comp:AudioStreamPlayer2D
-@export var destroy_sound_comp:AudioStreamPlayer2D
-@export var pickup_comp:PickupComponent
-@export var editor_hitbox:EditorHitboxComponent
+@export var hitbox:Node2D;
+@export var base_sprite:Sprite2D;
+@export var texture_sprite:Sprite2D;
+@export var health_comp:HealthComponent;
+@export var score_comp:ScoreComponent;
+@export var hit_sound_comp:AudioStreamPlayer2D;
+@export var destroy_sound_comp:AudioStreamPlayer2D;
+@export var pickup_comp:PickupComponent;
+@export var editor_hitbox:EditorHitboxComponent;
 
-signal process_score(score:int)
-signal spawn_pickup(global_position:Vector2, type:String, texture:String)
-signal brick_destroyed()
+signal process_score(score:int);
+signal spawn_pickup(global_position:Vector2, type:String, texture:String);
+signal brick_destroyed();
 
-@export var init_health:int = 1
-@export var init_score:int = 10
-@export var init_freeze:bool = true
-@export var init_mass:int = 5
+@export var init_health:int = 1;
+@export var init_score:int = 10;
+@export var init_freeze:bool = true;
+@export var init_mass:int = 5;
+@export var path_group:int = -1;
 
-@export var is_editor:bool = true
+@export var is_editor:bool = true;
 
-var tweening_shader:bool = false
-var tweening_size:bool = false
+var tweening_shader:bool = false;
+var tweening_size:bool = false;
 
 func setup(as_editable:bool = true):
 	self.visible = true

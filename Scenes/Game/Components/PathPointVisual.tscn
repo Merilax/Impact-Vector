@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkbhsiv24h3ro"]
+
+[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="1_6lcj5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eecio"]
+size = Vector2(28, 28)
+
+[node name="StaticBody2D" type="StaticBody2D" groups=["PathPointVisual"]]
+disable_mode = 1
+collision_layer = 2048
+collision_mask = 0
+metadata/point_idx = 0
+
+[node name="PathPointVisual" type="Sprite2D" parent="."]
+scale = Vector2(0.21875, 0.21875)
+texture = ExtResource("1_6lcj5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_eecio")

@@ -35,3 +35,7 @@ func show_color_picker(toggled:bool):
 func _on_color_changed(color:Color):
 	texture_button.material.set_shader_parameter("to", color)
 	shader_color = color
+
+func _on_root_control_sort_children():
+	for brick_rect:EditorBrickSample in texture_grid.get_children():
+		brick_rect.texture_rect.custom_minimum_size.x = texture_grid.size.x / texture_grid.columns;

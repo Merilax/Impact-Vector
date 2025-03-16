@@ -34,3 +34,7 @@ func _ready() -> void:
 
 func set_active_res(res_path):
 	set_active_res_signal.emit(res_path)
+
+func _on_root_control_sort_children():
+	for brick_rect:EditorBrickSample in self.get_children():
+		brick_rect.texture_rect.custom_minimum_size.x = self.size.x / self.columns;

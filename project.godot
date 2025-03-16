@@ -55,6 +55,8 @@ PickUp=""
 Brick=""
 Wall=""
 Bullet=""
+PathPointVisual=""
+PathLineVisual=""
 
 [input]
 

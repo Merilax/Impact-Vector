@@ -12,7 +12,9 @@ radius = 31.0161
 
 [node name="LevelContent" type="Node2D"]
 
-[node name="@RigidBody2D@103" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="Bricks" type="Node2D" parent="."]
+
+[node name="@RigidBody2D@103" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1405, 740)
 collision_layer = 4
 collision_mask = 8
@@ -43,12 +45,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@103" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@103" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@105" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@105" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1333, 740)
 collision_layer = 4
 collision_mask = 8
@@ -79,12 +82,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@105" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@105" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@106" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@106" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1261, 740)
 collision_layer = 4
 collision_mask = 8
@@ -115,12 +119,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@106" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@106" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@107" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@107" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1189, 740)
 collision_layer = 4
 collision_mask = 8
@@ -151,12 +156,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@107" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@107" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@108" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@108" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1117, 740)
 collision_layer = 4
 collision_mask = 8
@@ -187,12 +193,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@108" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@108" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@109" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@109" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1045, 740)
 collision_layer = 4
 collision_mask = 8
@@ -223,12 +230,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@109" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@109" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@110" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@110" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(973, 740)
 collision_layer = 4
 collision_mask = 8
@@ -259,12 +267,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@110" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@110" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@111" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@111" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(901, 740)
 collision_layer = 4
 collision_mask = 8
@@ -295,12 +304,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@111" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@111" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@112" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@112" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(829, 740)
 collision_layer = 4
 collision_mask = 8
@@ -331,12 +341,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@112" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@112" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@113" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@113" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(757, 740)
 collision_layer = 4
 collision_mask = 8
@@ -367,12 +378,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@113" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@113" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@114" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@114" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(685, 740)
 collision_layer = 4
 collision_mask = 8
@@ -403,12 +415,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@114" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@114" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@115" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@115" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(613, 740)
 collision_layer = 4
 collision_mask = 8
@@ -439,12 +452,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@115" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@115" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@116" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@116" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(541, 740)
 collision_layer = 4
 collision_mask = 8
@@ -475,12 +489,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@116" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@116" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@117" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@117" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 740)
 collision_layer = 4
 collision_mask = 8
@@ -511,12 +526,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@117" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@117" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@118" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@118" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 740)
 collision_layer = 4
 collision_mask = 8
@@ -547,12 +563,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@118" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@118" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@119" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@119" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 740)
 collision_layer = 4
 collision_mask = 8
@@ -583,12 +600,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@119" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@119" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@120" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@120" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 740)
 collision_layer = 4
 collision_mask = 8
@@ -619,12 +637,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@120" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@120" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@121" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@121" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(181, 740)
 collision_layer = 4
 collision_mask = 8
@@ -655,12 +674,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@121" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@121" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@122" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@122" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(109, 740)
 collision_layer = 4
 collision_mask = 8
@@ -691,12 +711,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@122" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@122" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@123" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@123" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(37, 740)
 collision_layer = 4
 collision_mask = 8
@@ -727,12 +748,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@123" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@123" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@124" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@124" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(37, 700)
 collision_layer = 4
 collision_mask = 8
@@ -763,12 +785,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@124" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@124" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@125" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@125" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(109, 700)
 collision_layer = 4
 collision_mask = 8
@@ -799,12 +822,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@125" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@125" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@126" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@126" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(181, 700)
 collision_layer = 4
 collision_mask = 8
@@ -835,12 +859,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@126" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@126" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@127" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@127" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 700)
 collision_layer = 4
 collision_mask = 8
@@ -871,12 +896,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@127" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@127" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@128" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@128" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 700)
 collision_layer = 4
 collision_mask = 8
@@ -907,12 +933,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@128" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@128" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@129" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@129" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 700)
 collision_layer = 4
 collision_mask = 8
@@ -943,12 +970,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@129" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@129" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@130" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@130" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 700)
 collision_layer = 4
 collision_mask = 8
@@ -979,12 +1007,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@130" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@130" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@131" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@131" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(541, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1015,12 +1044,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@131" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@131" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@132" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@132" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(613, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1051,12 +1081,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@132" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@132" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@133" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@133" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(685, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1087,12 +1118,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@133" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@133" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@134" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@134" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(757, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1123,12 +1155,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@134" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@134" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@135" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@135" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(829, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1159,12 +1192,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@135" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@135" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@136" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@136" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(901, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1195,12 +1229,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@136" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@136" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@137" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@137" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(973, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1231,12 +1266,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@137" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@137" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@138" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@138" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1045, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1267,12 +1303,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@138" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@138" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@139" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@139" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1117, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1303,12 +1340,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@139" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@139" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@140" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@140" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1189, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1339,12 +1377,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@140" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@140" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@141" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@141" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1261, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1375,12 +1414,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@141" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@141" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@142" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@142" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1333, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1411,12 +1451,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@142" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@142" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@143" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@143" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1405, 700)
 collision_layer = 4
 collision_mask = 8
@@ -1447,12 +1488,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@143" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@143" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@144" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@144" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1405, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1483,12 +1525,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@144" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@144" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@148" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@148" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1333, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1519,12 +1562,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@148" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@148" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@149" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@149" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1261, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1555,12 +1599,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@149" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@149" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@150" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@150" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1189, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1591,12 +1636,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@150" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@150" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@151" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@151" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1117, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1627,12 +1673,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@151" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@151" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@152" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@152" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1045, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1663,12 +1710,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@152" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@152" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@153" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@153" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(973, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1699,12 +1747,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@153" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@153" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@154" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@154" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(901, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1735,12 +1784,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@154" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@154" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@155" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@155" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(829, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1771,12 +1821,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@155" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@155" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@156" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@156" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(757, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1807,12 +1858,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@156" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@156" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@157" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@157" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(685, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1843,12 +1895,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@157" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@157" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@158" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@158" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(613, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1879,12 +1932,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@158" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@158" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@159" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@159" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(541, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1915,12 +1969,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@159" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@159" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@160" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@160" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1951,12 +2006,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@160" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@160" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@161" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@161" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 660)
 collision_layer = 4
 collision_mask = 8
@@ -1987,12 +2043,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@161" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@161" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@162" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@162" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 660)
 collision_layer = 4
 collision_mask = 8
@@ -2023,12 +2080,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@162" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@162" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@163" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@163" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 660)
 collision_layer = 4
 collision_mask = 8
@@ -2059,12 +2117,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@163" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@163" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@164" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@164" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(181, 660)
 collision_layer = 4
 collision_mask = 8
@@ -2095,12 +2154,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@164" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@164" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@165" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@165" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(109, 660)
 collision_layer = 4
 collision_mask = 8
@@ -2131,12 +2191,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@165" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@165" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@166" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@166" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(37, 660)
 collision_layer = 4
 collision_mask = 8
@@ -2167,12 +2228,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@166" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@166" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@167" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@167" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(145, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2203,12 +2265,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@167" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@167" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@172" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@172" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(217, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2239,12 +2302,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@172" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@172" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@173" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@173" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(289, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2275,12 +2339,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@173" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@173" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@174" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@174" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(361, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2311,12 +2376,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@174" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@174" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@175" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@175" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(433, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2347,12 +2413,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@175" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@175" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@176" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@176" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(505, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2383,12 +2450,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@176" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@176" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@177" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@177" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(577, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2419,12 +2487,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@177" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@177" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@178" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@178" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(649, 620)
 collision_layer = 4
 collision_mask = 8
@@ -2455,12 +2524,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@178" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@178" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@179" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@179" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(181, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2491,12 +2561,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@179" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@179" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@180" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@180" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2527,12 +2598,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@180" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@180" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@181" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@181" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2563,12 +2635,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@181" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@181" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@182" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@182" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2599,12 +2672,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@182" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@182" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@183" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@183" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2635,12 +2709,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@183" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@183" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@184" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@184" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(541, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2671,12 +2746,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@184" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@184" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@185" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@185" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(613, 580)
 collision_layer = 4
 collision_mask = 8
@@ -2707,12 +2783,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@185" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@185" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@186" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@186" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(577, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2743,12 +2820,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@186" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@186" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@187" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@187" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(505, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2779,12 +2857,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@187" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@187" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@188" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@188" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(433, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2815,12 +2894,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@188" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@188" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@189" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@189" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(361, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2851,12 +2931,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@189" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@189" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@190" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@190" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(289, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2887,12 +2968,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@190" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@190" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@191" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@191" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(217, 540)
 collision_layer = 4
 collision_mask = 8
@@ -2923,12 +3005,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@191" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@191" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@192" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@192" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 500)
 collision_layer = 4
 collision_mask = 8
@@ -2959,12 +3042,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@192" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@192" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@193" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@193" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 500)
 collision_layer = 4
 collision_mask = 8
@@ -2995,12 +3079,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@193" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@193" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@194" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@194" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 500)
 collision_layer = 4
 collision_mask = 8
@@ -3031,12 +3116,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@194" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@194" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@195" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@195" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 500)
 collision_layer = 4
 collision_mask = 8
@@ -3067,12 +3153,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@195" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@195" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@196" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@196" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(541, 500)
 collision_layer = 4
 collision_mask = 8
@@ -3103,12 +3190,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@196" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@196" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@197" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@197" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(505, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3139,12 +3227,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@197" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@197" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@198" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@198" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(433, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3175,12 +3264,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@198" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@198" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@199" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@199" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(361, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3211,12 +3301,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@199" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@199" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@200" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@200" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(289, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3247,12 +3338,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@200" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@200" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@201" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@201" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(325, 420)
 collision_layer = 4
 collision_mask = 8
@@ -3283,12 +3375,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@201" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@201" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@202" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@202" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 420)
 collision_layer = 4
 collision_mask = 8
@@ -3319,12 +3412,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@202" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@202" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@203" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@203" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(469, 420)
 collision_layer = 4
 collision_mask = 8
@@ -3355,12 +3449,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@203" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@203" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@204" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@204" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(433, 380)
 collision_layer = 4
 collision_mask = 8
@@ -3391,12 +3486,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@204" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@204" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@205" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@205" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(361, 380)
 collision_layer = 4
 collision_mask = 8
@@ -3427,12 +3523,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@205" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@205" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@206" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@206" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(397, 340)
 collision_layer = 4
 collision_mask = 8
@@ -3463,12 +3560,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@206" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@206" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@213" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@213" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1111, 620)
 collision_layer = 4
 collision_mask = 8
@@ -3499,12 +3597,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@213" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@213" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@214" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@214" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1111, 580)
 collision_layer = 4
 collision_mask = 8
@@ -3535,12 +3634,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@214" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@214" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@215" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@215" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1117, 540)
 collision_layer = 4
 collision_mask = 8
@@ -3571,12 +3671,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@215" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@215" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@216" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@216" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1117, 500)
 collision_layer = 4
 collision_mask = 8
@@ -3607,12 +3708,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@216" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@216" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@217" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@217" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1129, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3643,12 +3745,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@217" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@217" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@218" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@218" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1147, 420)
 collision_layer = 4
 collision_mask = 8
@@ -3679,12 +3782,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@218" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@218" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@221" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@221" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1201, 440)
 collision_layer = 4
 collision_mask = 8
@@ -3715,12 +3819,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@221" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@221" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@225" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@225" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1267, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3751,12 +3856,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@225" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@225" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@226" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@226" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1207, 400)
 collision_layer = 4
 collision_mask = 8
@@ -3787,12 +3893,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@226" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@226" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@227" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@227" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1279, 400)
 collision_layer = 4
 collision_mask = 8
@@ -3823,12 +3930,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@227" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@227" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@228" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@228" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1093, 420)
 collision_layer = 4
 collision_mask = 8
@@ -3859,12 +3967,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@228" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@228" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@229" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@229" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1045, 460)
 collision_layer = 4
 collision_mask = 8
@@ -3895,12 +4004,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@229" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@229" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@230" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@230" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1129, 380)
 collision_layer = 4
 collision_mask = 8
@@ -3931,12 +4041,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@230" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@230" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@231" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@231" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1057, 370)
 collision_layer = 4
 collision_mask = 8
@@ -3967,12 +4078,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@231" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@231" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@232" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@232" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1171, 340)
 collision_layer = 4
 collision_mask = 8
@@ -4003,12 +4115,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@232" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@232" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@233" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@233" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(883, 170)
 collision_layer = 4
 collision_mask = 12
@@ -4039,12 +4152,13 @@ init_health = 4
 init_score = 100
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionShape2D" parent="@RigidBody2D@233" instance=ExtResource("6_wbofy")]
+[node name="HitboxComponent" type="CollisionShape2D" parent="Bricks/@RigidBody2D@233" instance=ExtResource("6_wbofy")]
 shape = SubResource("CircleShape2D_gd1tl")
 
-[node name="@RigidBody2D@236" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@236" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(913, 230)
 collision_layer = 4
 collision_mask = 8
@@ -4075,12 +4189,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@236" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@236" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@237" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@237" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(853, 230)
 collision_layer = 4
 collision_mask = 12
@@ -4111,12 +4226,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@237" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@237" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@238" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@238" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(853, 110)
 collision_layer = 4
 collision_mask = 12
@@ -4147,12 +4263,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@238" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@238" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@239" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@239" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(913, 110)
 collision_layer = 4
 collision_mask = 12
@@ -4183,12 +4300,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@239" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@239" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@240" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@240" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(949, 150)
 collision_layer = 4
 collision_mask = 12
@@ -4219,12 +4337,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@240" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@240" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@241" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@241" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(949, 190)
 collision_layer = 4
 collision_mask = 12
@@ -4255,12 +4374,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@241" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@241" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@242" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@242" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(817, 190)
 collision_layer = 4
 collision_mask = 12
@@ -4291,12 +4411,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@242" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@242" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@243" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@243" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(817, 150)
 collision_layer = 4
 collision_mask = 12
@@ -4327,12 +4448,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@243" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@243" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@244" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@244" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(985, 130)
 collision_layer = 4
 collision_mask = 12
@@ -4363,12 +4485,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@244" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@244" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@245" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@245" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(985, 210)
 collision_layer = 4
 collision_mask = 12
@@ -4399,12 +4522,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@245" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@245" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@246" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@246" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(931, 270)
 collision_layer = 4
 collision_mask = 8
@@ -4435,12 +4559,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@246" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@246" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@247" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@247" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(835, 270)
 collision_layer = 4
 collision_mask = 12
@@ -4471,12 +4596,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@247" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@247" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@248" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@248" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(781, 210)
 collision_layer = 4
 collision_mask = 12
@@ -4507,12 +4633,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@248" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@248" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@249" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@249" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(781, 130)
 collision_layer = 4
 collision_mask = 12
@@ -4543,12 +4670,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@249" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@249" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@250" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@250" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(835, 70)
 collision_layer = 4
 collision_mask = 12
@@ -4579,12 +4707,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@250" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@250" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@251" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@251" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(931, 70)
 collision_layer = 4
 collision_mask = 12
@@ -4615,12 +4744,13 @@ init_health = 2
 init_score = 20
 init_freeze = false
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@251" instance=ExtResource("5_68o8s")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@251" instance=ExtResource("5_68o8s")]
 polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
 
-[node name="@RigidBody2D@253" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@253" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(133, 160)
 collision_layer = 4
 collision_mask = 8
@@ -4651,12 +4781,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@253" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@253" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@254" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@254" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(169, 200)
 collision_layer = 4
 collision_mask = 8
@@ -4687,12 +4818,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@254" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@254" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@255" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@255" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(205, 160)
 collision_layer = 4
 collision_mask = 8
@@ -4723,12 +4855,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@255" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@255" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@256" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@256" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(277, 160)
 collision_layer = 4
 collision_mask = 8
@@ -4759,12 +4892,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@256" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@256" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@257" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@257" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(253, 120)
 collision_layer = 4
 collision_mask = 8
@@ -4795,12 +4929,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@257" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@257" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@258" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@258" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1159, 140)
 collision_layer = 4
 collision_mask = 8
@@ -4831,12 +4966,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@258" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@258" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@259" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@259" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1195, 180)
 collision_layer = 4
 collision_mask = 8
@@ -4867,12 +5003,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@259" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@259" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@260" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@260" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1231, 140)
 collision_layer = 4
 collision_mask = 8
@@ -4903,12 +5040,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@260" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@260" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@261" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@261" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(1267, 180)
 collision_layer = 4
 collision_mask = 8
@@ -4939,12 +5077,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@261" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@261" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@262" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@262" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(565, 200)
 collision_layer = 4
 collision_mask = 8
@@ -4975,12 +5114,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@262" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@262" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@263" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@263" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(631, 200)
 collision_layer = 4
 collision_mask = 8
@@ -5011,12 +5151,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@263" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@263" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@264" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@264" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(595, 160)
 collision_layer = 4
 collision_mask = 8
@@ -5047,12 +5188,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@264" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@264" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@265" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@265" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(661, 160)
 collision_layer = 4
 collision_mask = 8
@@ -5083,12 +5225,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@265" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@265" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@266" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@266" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(697, 200)
 collision_layer = 4
 collision_mask = 8
@@ -5119,12 +5262,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@266" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@266" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@267" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@267" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(595, 240)
 collision_layer = 4
 collision_mask = 8
@@ -5155,12 +5299,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@267" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@267" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@268" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@268" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(529, 240)
 collision_layer = 4
 collision_mask = 8
@@ -5191,12 +5336,13 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@268" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@268" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
 
-[node name="@RigidBody2D@269" type="RigidBody2D" parent="." node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
+[node name="@RigidBody2D@269" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_sv8hc")]
 position = Vector2(499, 200)
 collision_layer = 4
 collision_mask = 8
@@ -5227,7 +5373,14 @@ init_health = 1
 init_score = 10
 init_freeze = true
 init_mass = 5
+path_group = -1
 is_editor = true
 
-[node name="HitboxComponent" type="CollisionPolygon2D" parent="@RigidBody2D@269" instance=ExtResource("4_sey2j")]
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/@RigidBody2D@269" instance=ExtResource("4_sey2j")]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickPaths" type="Node2D" parent="."]
+
+[node name="Paths" type="Node2D" parent="BrickPaths"]
+
+[node name="Visuals" type="Node2D" parent="BrickPaths"]

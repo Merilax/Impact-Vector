@@ -2,24 +2,30 @@
 
 [ext_resource type="Script" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_eycb0"]
 
-[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("texture_rect")]
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_horizontal = 3
+[node name="BrickSample" type="PanelContainer" node_paths=PackedStringArray("texture_rect")]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("2_eycb0")
-texture_rect = NodePath("MarginContainer/BrickRect")
+texture_rect = NodePath("MarginContainer/TextureRect")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="BrickRect" type="TextureRect" parent="MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-stretch_mode = 2
+expand_mode = 5
+stretch_mode = 5
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
