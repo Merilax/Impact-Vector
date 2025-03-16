@@ -351,9 +351,8 @@ func init_brick(brick, set_hidden:bool = false):
 func init_path(path, time, returning:bool = true):
 	var line:PathFollow2D = path.get_child(0);
 
-	var tween:Tween = get_tree().create_tween();
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT);
-	tween.tween_property(line, "progress_ratio", 1, time).from(0).set_loops();
+	var tween:Tween = get_tree().create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT).set_loops();
+	tween.tween_property(line, "progress_ratio", 1, time).from(0);
 	if returning:
 		tween.tween_property(line, "progress_ratio", 0, time).from(1);
 
