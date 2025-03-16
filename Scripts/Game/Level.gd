@@ -294,11 +294,11 @@ func win():
 	if campaign_path.contains("res://"):
 		next_level_num = str(BaseCampaignManager.find_next_level(campaign_path + campaign_num + '/', level_num.to_int()));
 	else: next_level_num = str(CampaignManager.find_next_level(campaign_path + campaign_num , level_num.to_int()));
-	print(next_level_num);
+	
 	if next_level_num == "0":
 		game_over(true);
 		return;
-	print(campaign_path + campaign_num + "/" + next_level_num + "/");
+		
 	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.tscn") or not await load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
 		game_over(true);
 		return;
@@ -352,6 +352,7 @@ func init_path(path, time, returning:bool = true):
 	var line:PathFollow2D = path.get_child(0);
 
 	var tween:Tween = get_tree().create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT).set_loops();
+	tween.bind_node(line);
 	tween.tween_property(line, "progress_ratio", 1, time).from(0);
 	if returning:
 		tween.tween_property(line, "progress_ratio", 0, time).from(1);
