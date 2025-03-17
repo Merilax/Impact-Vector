@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bwcxgw014glpw"]
+[gd_scene load_steps=6 format=3 uid="uid://bwcxgw014glpw"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_3ne4r"]
 [ext_resource type="Script" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
 [ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="2_q662l"]
+[ext_resource type="PackedScene" uid="uid://g4vmyu75g0f8" path="res://Scenes/UI/Components/RangeSetting.tscn" id="4_217fq"]
 
-[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
+[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("arm_speed_setting", "window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,6 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_3ne4r")
 script = ExtResource("1_nb1hl")
+arm_speed_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer/ArmSpeedSetting")
 window_mode_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/WindowMode Setting")
 resolution_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Resolution Setting")
 borderless_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Borderless Setting")
@@ -62,9 +64,46 @@ layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Audio" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
+[node name="Game" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Game"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="ArmSpeed" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Level construction speed"
+
+[node name="ArmSpeedSetting" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer" instance=ExtResource("4_217fq")]
+layout_mode = 2
+max_value = 200.0
+min_value = 25.0
+
+[node name="test" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer"]
+visible = false
+layout_mode = 2
+text = "Arm speed"
+
+[node name="testSetting" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer" instance=ExtResource("4_217fq")]
+visible = false
+layout_mode = 2
+
+[node name="Audio" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Audio"]
 layout_mode = 1
@@ -86,7 +125,6 @@ text = "Master volume
 
 [node name="Master Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
-bus_name = "Master"
 
 [node name="Music Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
@@ -94,7 +132,6 @@ text = "Music volume"
 
 [node name="Music Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
-bus_name = "Music"
 
 [node name="SFX Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
@@ -103,12 +140,11 @@ text = "SFX volume
 
 [node name="SFX Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
-bus_name = "SFX"
 
 [node name="Video" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Video"]
 layout_mode = 1

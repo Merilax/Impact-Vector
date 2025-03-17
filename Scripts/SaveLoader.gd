@@ -9,6 +9,14 @@ static func load_settings() -> SaveSettings:
 	
 	var incomplete_config:bool = false
 
+	# GAME
+	if settings.arm_speed_multiplier != null:
+		GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
+	else:
+		settings.arm_speed_multiplier = 1;
+		GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
+		incomplete_config = true
+
 	# VIDEO
 	if settings.vsync != null:
 		if DisplayServer.window_get_vsync_mode() != settings.vsync: DisplayServer.window_set_vsync_mode(settings.vsync);
@@ -49,16 +57,18 @@ static func load_settings() -> SaveSettings:
 	return settings
 
 static func save_settings() -> bool:
-	var settings:SaveSettings = SaveSettings.new()
+	var settings:SaveSettings = SaveSettings.new();
 
-	settings.vsync = DisplayServer.window_get_vsync_mode()
+	settings.arm_speed_multiplier = GlobalVars.arm_speed_multiplier;
 
-	settings.master_volume = AudioServer.get_bus_volume_db(0)
-	settings.music_volume = AudioServer.get_bus_volume_db(1)
-	settings.sfx_volume = AudioServer.get_bus_volume_db(2)
+	settings.vsync = DisplayServer.window_get_vsync_mode();
 
-	ResourceSaver.save(settings, "user://SaveSettings.tres")
-	return true
+	settings.master_volume = AudioServer.get_bus_volume_db(0);
+	settings.music_volume = AudioServer.get_bus_volume_db(1);
+	settings.sfx_volume = AudioServer.get_bus_volume_db(2);
+
+	ResourceSaver.save(settings, "user://SaveSettings.tres");
+	return true;
 
 static func load_gamedata() -> SaveGameData:
 	var game_data:SaveGameData = load("user://SaveGameData.tres")

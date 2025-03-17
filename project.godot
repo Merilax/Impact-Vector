@@ -23,6 +23,7 @@ buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
 [autoload]
 
 MusicPlayer="*res://Scenes/MusicPlayer.tscn"
+GlobalVars="*res://Scripts/GlobalVars.gd"
 
 [display]
 

@@ -17,12 +17,43 @@ platform_on_leave = 2
 script = ExtResource("1_7bdbb")
 hit_sound_comp = NodePath("HitSoundComp")
 magnet_sound = NodePath("MagnetSound")
-turrets_comp = NodePath("TurretsComp")
+turrets_comp = NodePath("Sprite2D/TurretsComp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 6.5)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_futbw")
+
+[node name="TurretsComp" type="Node2D" parent="Sprite2D"]
+visible = false
+position = Vector2(0, -13)
+scale = Vector2(2, 2)
+script = ExtResource("6_hmvgb")
+ammo = null
+reload = null
+
+[node name="GunL" type="Sprite2D" parent="Sprite2D/TurretsComp"]
+position = Vector2(-100, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_bfeil")
+
+[node name="GunR" type="Sprite2D" parent="Sprite2D/TurretsComp"]
+position = Vector2(100, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_bfeil")
+
+[node name="MuzzlePos" type="Node2D" parent="Sprite2D/TurretsComp"]
+
+[node name="Marker2D" type="Marker2D" parent="Sprite2D/TurretsComp/MuzzlePos"]
+position = Vector2(-100, -15)
+
+[node name="Marker2D2" type="Marker2D" parent="Sprite2D/TurretsComp/MuzzlePos"]
+position = Vector2(100, -15)
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="Sprite2D/TurretsComp"]
+stream = ExtResource("8_mdpqr")
+volume_db = -2.0
+bus = &"SFX"
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -46,32 +77,3 @@ stream = ExtResource("4_yd0vt")
 
 [node name="MagnetSound" parent="." instance=ExtResource("3_8j1ci")]
 stream = ExtResource("5_nu7io")
-
-[node name="TurretsComp" type="Node2D" parent="."]
-visible = false
-script = ExtResource("6_hmvgb")
-ammo = null
-reload = null
-
-[node name="GunL" type="Sprite2D" parent="TurretsComp"]
-position = Vector2(-100, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_bfeil")
-
-[node name="GunR" type="Sprite2D" parent="TurretsComp"]
-position = Vector2(100, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_bfeil")
-
-[node name="MuzzlePos" type="Node2D" parent="TurretsComp"]
-
-[node name="Marker2D" type="Marker2D" parent="TurretsComp/MuzzlePos"]
-position = Vector2(-100, -15)
-
-[node name="Marker2D2" type="Marker2D" parent="TurretsComp/MuzzlePos"]
-position = Vector2(100, -15)
-
-[node name="FireSound" type="AudioStreamPlayer2D" parent="TurretsComp"]
-stream = ExtResource("8_mdpqr")
-volume_db = -2.0
-bus = &"SFX"

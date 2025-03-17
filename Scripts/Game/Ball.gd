@@ -5,15 +5,15 @@ var lost:bool = false
 var freeze:bool = true
 var dir:Vector2 = Vector2.ZERO
 @export var damage :float = 1
-@export var speed :float = 800
+@export var speed :float = 750
 @export var speed_mult :float = 1
 
 #signal reset_stuck_timer(free_timer:bool)
 
 func _physics_process(delta):
-	var motion:Vector2 = dir.normalized() * speed * speed_mult
 	if self.freeze == true:
 		return
+	var motion:Vector2 = dir.normalized() * speed * speed_mult
 	
 	var collision = move_and_collide(motion * delta)
 

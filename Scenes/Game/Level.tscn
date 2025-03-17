@@ -46,14 +46,16 @@ hue_variation_max = 0.12
 [sub_resource type="LabelSettings" id="LabelSettings_7pppu"]
 font_size = 40
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "world_border", "background", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_text_window", "notification_score_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "world_border", "ball_container", "background", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
-notification_window = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/Notifs")
+notification_text_window = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/Notifs")
+notification_score_window = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/ScoreNotifs")
 notification_window_timer = NodePath("UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/Timer")
 score_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
 speed_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/SpeedVar")
 life_counter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
 world_border = NodePath("WorldBorder")
+ball_container = NodePath("Balls")
 background = NodePath("Background")
 speed_meter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/SpeedMeter/ProgressBar")
 magnet_meter = NodePath("UILayer/UI/MarginContainer/VBoxContainer/HBoxContainer/MagnetMeter/ProgressBar")
@@ -184,14 +186,27 @@ scroll_active = false
 wait_time = 4.0
 one_shot = true
 
-[node name="Notifs" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Notifs" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="ScoreNotifs" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 1
 label_settings = ExtResource("8_lfrfq")
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 2
+autowrap_mode = 3
 clip_text = true
 
 [node name="GridContainer" type="GridContainer" parent="UILayer/UI/MarginContainer/VBoxContainer"]

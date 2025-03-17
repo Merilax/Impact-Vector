@@ -68,7 +68,8 @@ var visual_speed_mult:int = 3;
 var can_spawn_balls:bool = true;
 var ball_stuck_timer:SceneTreeTimer;
 
-@export var notification_window:Label;
+@export var notification_text_window:Label;
+@export var notification_score_window:Label;
 @export var notification_window_timer:Timer;
 @export var score_counter:Label;
 @export var speed_counter:Label;
@@ -76,6 +77,7 @@ var ball_stuck_timer:SceneTreeTimer;
 var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
 @export var world_border:WorldBorder;
+@export var ball_container:Node2D;
 var level_content:Node2D;
 var level_content_bricks:Node2D;
 var level_content_paths:Node2D;
@@ -91,18 +93,20 @@ var level_content_path_visuals:Node2D;
 @export var arm_placer_sound:AudioStreamPlayer;
 
 var transitioning_levels:bool = false;
+var skip_animations:bool = false;
 
 signal game_over_signal(game_won:bool);
 signal change_speed(mult:float, update_counter:bool);
 
 func _ready():
+	transitioning_levels = true;
 	background.retrigger();
 
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	$"DeathZone".body_entered.connect(_on_ball_lost)
 
 	if notification_window_timer:
-		notification_window_timer.timeout.connect(func(): notification_window.text = "");
+		notification_window_timer.timeout.connect(func(): notification_text_window.text = ""; notification_score_window.text = "");
 
 	for life in lives:
 		life_counter.add_child(BallLifeRect.instantiate())
@@ -116,33 +120,44 @@ func _ready():
 
 	get_tree().node_added.connect(_on_child_entered_tree)
 
-	spawn_paddle()
+	transitioning_levels = false;
+	await spawn_paddle();
 	spawn_ball(true)
 
-func spawn_paddle():
-	paddle = PaddleScene.instantiate()
-	paddle.world_border = world_border
-	add_child(paddle)
-	paddle.position = Vector2(1000, 1040)
+func _process(_delta):
+	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
+		skip_animations = true;
+
+func spawn_paddle() -> bool:
+	paddle = PaddleScene.instantiate();
+	paddle.world_border = world_border;
+	paddle.ball_container = ball_container;
+	add_child(paddle);
+	paddle.global_position = Vector2(750, 1150);
+	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 1.5).finished;
+	DisplayServer.warp_mouse(Vector2i(750, 1040));
 
 	if paddle.has_signal("spawn_bullet"):
-		paddle.spawn_bullet.connect(spawn_bullet)
+		paddle.spawn_bullet.connect(spawn_bullet);
+
+	paddle.follow_mouse = true;
+	return true;
 
 func spawn_ball(on_paddle:bool, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true):
 	if not can_spawn_balls:
-		return
+		return;
 	else:
-		var ball:Ball = BallScene.instantiate()
-		$Balls.call_deferred("add_child", ball)
+		var ball:Ball = BallScene.instantiate();
+		ball_container.call_deferred("add_child", ball);
 
-		ball.dir = dir
+		ball.dir = dir;
 		if on_paddle:
-			paddle.add_magnet(true)
-			paddle.call_deferred("receive_first_ball", ball)
+			paddle.add_magnet(true);
+			paddle.call_deferred("receive_ball", ball, true);
 			#ball.set_deferred("position", Vector2(paddle.global_position.x, paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)))
 		else:
-			ball.set_deferred("global_position", pos)
-			ball.set_deferred("freeze", false)
+			ball.set_deferred("global_position", pos);
+			ball.set_deferred("freeze", false);
 
 		#ball.reset_stuck_timer.connect(_on_ball_reset_stuck_timer)
 
@@ -190,7 +205,7 @@ func _on_ball_lost(node:Node2D):
 				await get_tree().create_timer(1).timeout
 				get_tree().call_group("PickUp", "queue_free")
 				if not paddle:
-					spawn_paddle()
+					await spawn_paddle()
 
 				spawn_ball(true)
 				reset_speed_mult();
@@ -257,9 +272,10 @@ func _on_spawn_pickup(global_pos:Vector2, type:String, texture:String):
 	level_content.add_child(pickup)
 	pickup.global_position = global_pos
 
-func notify(text:String):
+func notify(display_text:String, display_score:String):
 	#notification_window_timer.stop();
-	notification_window.text = text;
+	notification_text_window.text = display_text;
+	notification_score_window.text = display_score;
 	notification_window_timer.start();
 
 func game_over(game_won:bool):
@@ -279,8 +295,9 @@ func win():
 	await get_tree().create_timer(3.5).timeout;
 
 	level_content.queue_free();
-	for ball:Ball in $Balls.get_children():
-		ball.queue_free();
+	get_tree().call_group("Ball", "queue_free");
+	get_tree().call_group("PickUp", "queue_free");
+	get_tree().call_group("Brick", "queue_free");
 
 	ball_count = 0;
 	speed_mult = 1; # TODO Add difficulty.
@@ -307,10 +324,11 @@ func win():
 	save_gamedata();
 
 	transitioning_levels = false;
+	skip_animations = false;
 	if is_instance_valid(paddle):
 		paddle.reset_powers();
 	else:
-		spawn_paddle();
+		await spawn_paddle();
 	can_spawn_balls = true;
 	spawn_ball(true);
 
@@ -362,11 +380,23 @@ func kill_paddle():
 		paddle.die();
 		magnet_meter.value = 0;
 
+var arm_tweener:Tween;
 func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
-	var duration = (arm_placer.global_position - pos).length() / 2000;
-	create_tween().tween_property(arm_horizontal, "global_position:y", pos.y, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	create_tween().tween_property(arm_vertical, "global_position:x", pos.x, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	await create_tween().tween_property(arm_placer, "global_position", pos, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).finished;
+	if skip_animations:
+		if arm_tweener: arm_tweener.kill();
+		arm_horizontal.global_position.y = -50;
+		arm_vertical.global_position.x = -50;
+		arm_placer.global_position = Vector2(-50, -50);
+		return true;
+	
+	var duration = (arm_placer.global_position - pos).length() / 2000 / GlobalVars.arm_speed_multiplier;
+	arm_tweener = arm_placer.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT);
+	arm_tweener.tween_property(arm_horizontal, "global_position:y", pos.y, duration)
+	arm_tweener.set_parallel();
+	arm_tweener.tween_property(arm_vertical, "global_position:x", pos.x, duration);
+	arm_tweener.set_parallel();
+	arm_tweener.tween_property(arm_placer, "global_position", pos, duration);
+	await arm_tweener.finished;
 	arm_placer.get_node("GPUParticles2D").restart();
 	if play_sound and arm_placer_sound: arm_placer_sound.play();
 	await get_tree().create_timer(.04).timeout;
@@ -377,28 +407,28 @@ func process_pickup(type:String):
 	# TODO SFX each
 	match type.to_lower():
 		'speed':
-			notify("SPEED UP\n\n200 POINTS");
+			notify("SPEED UP", "200 POINTS");
 			add_score(200);
 			add_speed_mult(true);
 		'slow':
-			notify("SPEED DOWN\n\n100 POINTS");
+			notify("SPEED DOWN", "100 POINTS");
 			add_score(100);
 			add_speed_mult(false);
 		"magnet":
-			notify("MAGNET STRENGTH UP\n\n200 POINTS");
+			notify("MAGNET STRENGTH UP", "200 POINTS");
 			add_score(200);
 			add_magnet();
 		"turrets":
-			notify("RELOAD GUNS\n\n200 POINTS");
+			notify("RELOAD GUNS", "200 POINTS");
 			add_score(200);
 			if is_instance_valid(paddle): paddle.activate_turrets();
 			if magnet_meter: magnet_meter.value = 0;
 		"death":
-			notify("QUESTIONABLE\nLIFE CHOICES\n\n2000 POINTS");
+			notify("QUESTIONABLE\nLIFE CHOICES", "2000 POINTS");
 			add_score(2000);
 			kill_paddle();
 		"triple":
-			notify("TRIPLE BALLS\n\n100 POINTS");
+			notify("TRIPLE BALLS", "100 POINTS");
 			add_score(100);
 			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
 				if ball.lost: continue
@@ -422,7 +452,7 @@ func add_speed_mult(add:bool = true):
 	change_speed.emit(speed_mult, true);
 	if speed_mult == 1.5 && speed_mult > previous:
 		add_score(800);
-		notify("SENSATIONAL!\nMAX SPEED\n\n1000 POINTS");
+		notify("SENSATIONAL!\nMAX SPEED", "1000 POINTS"); # 200 speedup + 800 bonus
 
 	if speed_meter: speed_meter.value = visual_speed_mult;
 
@@ -443,7 +473,6 @@ func load_level(dir:String) -> bool:
 	var level_data:LevelData = load(dir + "data.tres");
 	if not level_data: return false;
 	
-
 	var level_content_scene = load(dir + "level.tscn");
 	if not level_content_scene: return false;
 

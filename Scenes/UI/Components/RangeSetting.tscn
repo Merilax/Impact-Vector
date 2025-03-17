@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://g4vmyu75g0f8"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Components/RangeSetting.gd" id="1_hu7sd"]
+
+[node name="Range Setting" type="HBoxContainer" node_paths=PackedStringArray("range_slider", "range_value_label")]
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+script = ExtResource("1_hu7sd")
+range_slider = NodePath("SetVar")
+range_value_label = NodePath("VarLabel")
+
+[node name="SetVar" type="HSlider" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+rounded = true
+scrollable = false
+tick_count = 11
+
+[node name="VarLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+text = "100%
+"
+horizontal_alignment = 2
+
+[connection signal="drag_ended" from="SetVar" to="." method="_on_drag_ended"]
+[connection signal="value_changed" from="SetVar" to="." method="_on_value_changed"]
