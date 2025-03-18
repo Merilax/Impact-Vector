@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://c0a7y1ep5uibb"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_38jol"]
-[ext_resource type="Script" path="res://Scripts/Root.gd" id="2_804u4"]
+[ext_resource type="Script" uid="uid://b46juxqg8j83u" path="res://Scripts/Root.gd" id="2_804u4"]
 [ext_resource type="PackedScene" uid="uid://cc5tfydv0irtm" path="res://Scenes/UI/MainMenu.tscn" id="2_efd84"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="3_ccy8d"]
-[ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="3_h8u3s"]
+[ext_resource type="Script" uid="uid://brelqqqwuka1w" path="res://Scripts/Game/Background.gd" id="3_h8u3s"]
 
 [node name="MainGUI" type="Control" node_paths=PackedStringArray("main_menu", "settings_menu")]
 layout_mode = 3

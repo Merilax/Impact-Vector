@@ -8,7 +8,7 @@ signal value_changed(value:float)
 
 func _on_value_changed(value:float) -> void:
 	if range_value_label:
-		range_value_label.text = str(value) + '%'
+		range_value_label.text = str(roundi(value)) + '%'
 
 func _on_drag_ended(value_changed_flag:bool) -> void:
 	if value_changed_flag:

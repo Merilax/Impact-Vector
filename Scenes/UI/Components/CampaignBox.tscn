@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cvlx80hocybuo"]
 
 [ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="1_impo0"]
-[ext_resource type="Script" path="res://Scripts/UI/Components/CampaignBox.gd" id="1_o4srm"]
+[ext_resource type="Script" uid="uid://cefg3ygj1iuku" path="res://Scripts/UI/Components/CampaignBox.gd" id="1_o4srm"]
 [ext_resource type="Texture2D" uid="uid://b1kaq6gowgf4o" path="res://Assets/Visuals/Icons/edit.svg" id="2_awirr"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_ye3xb"]
 [ext_resource type="Texture2D" uid="uid://ct8o5ehhnkdw6" path="res://Assets/Visuals/Icons/upload.svg" id="4_c6cpe"]

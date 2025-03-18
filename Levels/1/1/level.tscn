@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://cw60ckebn7d43"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Game/Brick.tscn" id="1_sv8hc"]
-[ext_resource type="PhysicsMaterial" path="res://GDResources/Wall.tres" id="2_u3t3k"]
-[ext_resource type="Script" path="res://Scripts/Game/Bricks/Brick.gd" id="3_f4ran"]
-[ext_resource type="PackedScene" path="res://Scenes/Game/Components/Hitboxes/BrickRect.tscn" id="4_sey2j"]
-[ext_resource type="PackedScene" path="res://Scenes/Game/Components/Hitboxes/BrickSqr.tscn" id="5_68o8s"]
-[ext_resource type="PackedScene" path="res://Scenes/Game/Components/Hitboxes/BrickCircle.tscn" id="6_wbofy"]
+[ext_resource type="PackedScene" uid="uid://dtkn1xk6stg0v" path="res://Scenes/Game/Brick.tscn" id="1_sv8hc"]
+[ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="2_u3t3k"]
+[ext_resource type="Script" uid="uid://vcqvg3lp5gj2" path="res://Scripts/Game/Bricks/Brick.gd" id="3_f4ran"]
+[ext_resource type="PackedScene" uid="uid://cwbru36ci2qlu" path="res://Scenes/Game/Components/Hitboxes/BrickRect.tscn" id="4_sey2j"]
+[ext_resource type="PackedScene" uid="uid://dx7r116k1fowt" path="res://Scenes/Game/Components/Hitboxes/BrickSqr.tscn" id="5_68o8s"]
+[ext_resource type="PackedScene" uid="uid://cibl1y6ywet2g" path="res://Scenes/Game/Components/Hitboxes/BrickCircle.tscn" id="6_wbofy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gd1tl"]
 radius = 31.0161

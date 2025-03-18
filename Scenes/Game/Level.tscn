@@ -1,21 +1,21 @@
 [gd_scene load_steps=24 format=3 uid="uid://la6hglf0tura"]
 
-[ext_resource type="Script" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
+[ext_resource type="Script" uid="uid://dqpio87sxu3i2" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
-[ext_resource type="Script" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
+[ext_resource type="Script" uid="uid://brelqqqwuka1w" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
 [ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="3_7wyew"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_cwvof"]
 [ext_resource type="AudioStream" uid="uid://sum5oktk1vyr" path="res://Assets/Audio/SFX/bfh1_metal_falling_03.ogg" id="5_8ipbu"]
 [ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="5_gh0ej"]
-[ext_resource type="Script" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
+[ext_resource type="Script" uid="uid://c40p5l8qchcrt" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
 [ext_resource type="Texture2D" uid="uid://dy4cere4ncoq3" path="res://Assets/Visuals/ProgressBar8Over.png" id="8_113j4"]
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
 [ext_resource type="LabelSettings" uid="uid://bapuh2nmt5m28" path="res://GDResources/Themes/Header.tres" id="8_lfrfq"]
 [ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/ProgressBar8.png" id="9_k042e"]
-[ext_resource type="Script" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
-[ext_resource type="Script" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
-[ext_resource type="Script" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
+[ext_resource type="Script" uid="uid://rvpsmndsm2rd" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
+[ext_resource type="Script" uid="uid://cusba52gpuwal" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
+[ext_resource type="Script" uid="uid://qmyt0gym44nx" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
 [ext_resource type="Texture2D" uid="uid://b2ufqhunhh27l" path="res://Assets/Visuals/Pickups/PickupSpeed.png" id="10_qm7ro"]
 [ext_resource type="Texture2D" uid="uid://dil2gntnddaec" path="res://Assets/Visuals/Pickups/PickupMagnet.png" id="13_ac123"]
 
@@ -23,7 +23,7 @@
 size = Vector2(1702.5, 218)
 
 [sub_resource type="Curve" id="Curve_nhk3j"]
-max_value = 3.0
+_limits = [0.0, 3.0, 0.0, 1.0]
 _data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(1, 0), -7.4359, 0.0, 0, 0]
 point_count = 2
 
@@ -106,7 +106,6 @@ texture = ExtResource("3_7wyew")
 show_behind_parent = true
 emitting = false
 amount = 20
-process_material = SubResource("ParticleProcessMaterial_ncp33")
 lifetime = 0.5
 one_shot = true
 speed_scale = 3.5
@@ -115,6 +114,7 @@ fixed_fps = 60
 trail_enabled = true
 trail_lifetime = 0.04
 trail_sections = 4
+process_material = SubResource("ParticleProcessMaterial_ncp33")
 
 [node name="PlaceSound" type="AudioStreamPlayer" parent="ConstructorArm"]
 stream = ExtResource("5_8ipbu")

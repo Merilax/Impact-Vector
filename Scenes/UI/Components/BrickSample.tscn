@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c47txkxxgap4t"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_eycb0"]
+[ext_resource type="Script" uid="uid://baej7tkynp0r5" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_eycb0"]
 
 [node name="BrickSample" type="PanelContainer" node_paths=PackedStringArray("texture_rect")]
 offset_left = 10.0

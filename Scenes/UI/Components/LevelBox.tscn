@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ct3pryubbc463"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_h4eun"]
-[ext_resource type="Script" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
+[ext_resource type="Script" uid="uid://c5s63162qq8j3" path="res://Scripts/UI/Components/LevelBox.gd" id="2_83bsj"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_fskvx"]
 [ext_resource type="Texture2D" uid="uid://b63i76ahl58im" path="res://Assets/Visuals/Icons/play.svg" id="3_sk3lv"]
 [ext_resource type="Texture2D" uid="uid://b1kaq6gowgf4o" path="res://Assets/Visuals/Icons/edit.svg" id="4_voodn"]

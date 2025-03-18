@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://bjjlgc7puyxfe"]
 
-[ext_resource type="Script" path="res://Scripts/Game/Paddle.gd" id="1_7bdbb"]
+[ext_resource type="Script" uid="uid://bkdtbht80pap3" path="res://Scripts/Game/Paddle.gd" id="1_7bdbb"]
 [ext_resource type="Texture2D" uid="uid://dvwwmabobipqu" path="res://Assets/Visuals/Paddle.png" id="2_futbw"]
 [ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Game/Components/HitSoundComp.tscn" id="3_8j1ci"]
 [ext_resource type="AudioStream" uid="uid://bd4eq5v6sj2g3" path="res://Assets/Audio/SFX/bfh1_hit_08.ogg" id="4_yd0vt"]
 [ext_resource type="AudioStream" uid="uid://d0a8nfaxxfi12" path="res://Assets/Audio/SFX/bfh1_metal_falling_04.ogg" id="5_nu7io"]
 [ext_resource type="Texture2D" uid="uid://dhobb8nxuhatk" path="res://Assets/Visuals/Minigun_.png" id="6_bfeil"]
-[ext_resource type="Script" path="res://Scripts/Game/Components/TurretsComp.gd" id="6_hmvgb"]
+[ext_resource type="Script" uid="uid://bhc3dsstgbkhm" path="res://Scripts/Game/Components/TurretsComp.gd" id="6_hmvgb"]
 [ext_resource type="AudioStream" uid="uid://c42a22fl3ld2h" path="res://Assets/Audio/SFX/gunfire.ogg" id="8_mdpqr"]
 
 [node name="Paddle" type="CharacterBody2D" node_paths=PackedStringArray("hit_sound_comp", "magnet_sound", "turrets_comp") groups=["Paddle"]]

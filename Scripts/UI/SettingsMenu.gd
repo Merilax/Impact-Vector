@@ -49,7 +49,7 @@ func refresh():
 		sfx_volume_setting.range_slider.value = volume_percent;
 
 func on_set_arm_speed(value:float):
-	GlobalVars.arm_speed_multiplier = value / 100;
+	GlobalVars.arm_speed_multiplier = round(value) / 100;
 
 func set_window_mode(option:int):
 	match option:
@@ -78,10 +78,10 @@ func set_vsync(to_enable:bool):
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
-func on_set_audio_bus_volume(bus:String, volume_percent:float) -> bool:
-	var slider_range = 100  
-	var db_range = 30
-	var volume_db = ((volume_percent * db_range) / slider_range) - 30
+func on_set_audio_bus_volume(volume_percent:float, bus:String) -> bool:
+	var slider_range:float = 100  
+	var db_range:float = 30
+	var volume_db = ((round(volume_percent) * db_range) / slider_range) - 30
 	
 	var bus_idx:int = -1
 	match bus.to_lower():

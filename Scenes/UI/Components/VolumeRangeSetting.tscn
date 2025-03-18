@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c72ch5oksy083"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Components/VolumeRangeSetting.gd" id="1_ta0rd"]
+[ext_resource type="Script" uid="uid://dfhioyunsvn0r" path="res://Scripts/UI/Components/VolumeRangeSetting.gd" id="1_ta0rd"]
 
 [node name="Volume Setting" type="HBoxContainer" node_paths=PackedStringArray("range_slider", "range_value_label")]
 size_flags_horizontal = 3
@@ -21,8 +21,7 @@ tick_count = 11
 [node name="VarLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
-text = "100%
-"
+text = "100%"
 horizontal_alignment = 2
 
 [connection signal="drag_ended" from="SetVar" to="." method="_on_drag_ended"]

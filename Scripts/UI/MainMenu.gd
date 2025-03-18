@@ -23,6 +23,7 @@ var file_dialog_path:String;
 signal start_game(campaign_path:String, campaign_folder:String, level_num:String, savedata:SaveGameData);
 signal open_editor(campaign_path:String, campaign_folder:String, level_num:String);
 signal open_settings_menu();
+signal fd_processed();
 
 func _ready():
 	if campaign_selector:
@@ -135,64 +136,70 @@ func goto_settings():
 func import_campaign():
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
 	file_dialog.filters = PackedStringArray(["*.ivc"]);
-
 	file_dialog.show();
-	if file_dialog_path.is_empty(): pass;
+	await self.fd_processed;
+
+	if file_dialog_path.is_empty(): return;
 	var ok = FileManager.import_any(file_dialog_path);
 	campaign_selector.refresh();
 	if ok:
 		notification_popup.dialog_text = "Campaign imported successfuly.";
 	else:
-		notification_popup.dialog_text = "An error ocurred.";
+		notification_popup.dialog_text = "An error ocurred while importing a campaign.";
 	notification_popup.show();
 
 func import_level():
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
 	file_dialog.filters = PackedStringArray(["*.ivl"]);
-
 	file_dialog.show();
-	if file_dialog_path.is_empty(): pass;
+	await self.fd_processed;
+
+	if file_dialog_path.is_empty(): return;
 	var ok = FileManager.import_any(file_dialog_path, campaign_folder);
 	level_grid.refresh();
 	if ok:
 		notification_popup.dialog_text = "Level imported successfuly.";
 	else:
-		notification_popup.dialog_text = "An error ocurred.";
+		notification_popup.dialog_text = "An error ocurred while importing a level.";
 	notification_popup.show();
 
 func export_campaign(from_campaign_folder:String, from_campaign_num:String):
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
 	file_dialog.filters = PackedStringArray();
-
 	file_dialog.show();
-	if file_dialog_path.is_empty(): pass;
+	await self.fd_processed;
+
+	if file_dialog_path.is_empty(): return;
 	var ok = FileManager.export_campaign(file_dialog_path, from_campaign_folder + from_campaign_num + '/');
 	if ok:
 		notification_popup.dialog_text = "Campaign exported successfuly.";
 	else:
-		notification_popup.dialog_text = "An error ocurred.";
+		notification_popup.dialog_text = "An error ocurred while exporting a campaign.";
 	notification_popup.show();
 
 func export_level(from_level_num:String):
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
 	file_dialog.filters = PackedStringArray();
-
 	file_dialog.show();
-	if file_dialog_path.is_empty(): pass;
+	await self.fd_processed;
+
+	if file_dialog_path.is_empty(): return;
 	var ok = FileManager.export_level(file_dialog_path, campaign_path + campaign_folder + "/" + from_level_num + "/");
 	if ok:
 		notification_popup.dialog_text = "Level exported successfuly.";
 	else:
-		notification_popup.dialog_text = "An error ocurred.";
+		notification_popup.dialog_text = "An error ocurred while exporting a level.";
 	notification_popup.show();
 
 func _on_fd_confirmed(path:String):
 	file_dialog.hide();
 	file_dialog_path = path;
+	fd_processed.emit();
 
 func _on_fd_canceled():
 	file_dialog.hide();
 	file_dialog_path = "";
+	fd_processed.emit();
 
 func quit():
 	get_tree().quit();
