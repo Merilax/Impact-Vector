@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy4cere4ncoq3"
-path="res://.godot/imported/ProgressBar8Over.png-831396d05145907c08bf3c9672a32973.ctex"
+uid="uid://bud74anigwk7n"
+path="res://.godot/imported/PipeH.png-db1db23a45db02243efa1a5a0fbccc11.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/ProgressBar8Over.png"
-dest_files=["res://.godot/imported/ProgressBar8Over.png-831396d05145907c08bf3c9672a32973.ctex"]
+source_file="res://Assets/Visuals/PipeH.png"
+dest_files=["res://.godot/imported/PipeH.png-db1db23a45db02243efa1a5a0fbccc11.ctex"]
 
 [params]
 

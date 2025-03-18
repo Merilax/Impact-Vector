@@ -9,8 +9,14 @@ shader_type canvas_item;
 uniform vec4 from : source_color;
 uniform vec4 to : source_color;
 uniform float tolerance: hint_range(0.0, 1.0);
+uniform float brightness : hint_range(-1, 1) = 0;
 
-
+mat4 brightnessMatrix( float _brightness ){
+    return mat4( vec4(1, 0, 0, 0),
+                 vec4(0, 1, 0, 0),
+                 vec4(0, 0, 1, 0),
+                 vec4(_brightness, _brightness, _brightness, 1));
+}
 
 // Color space conversion from https://godotshaders.com/shader/color-range-swap/
 vec3 rgb2hsv(vec3 c)
@@ -37,20 +43,20 @@ void fragment()
 {
 	// we usually want more granularity the closer we are to the original color
 	float _tol = tolerance * tolerance;
-	
+
 	vec4 tex = texture(TEXTURE, UV);
 	vec3 source_hsv = rgb2hsv(tex.rgb);
 	vec3 initial_hsv = rgb2hsv(from.rgb);
 	vec3 hsv_shift = rgb2hsv(to.rgb) - initial_hsv;
-	
+
 	float hue = initial_hsv.r;
-	
+
 	// the .r here represents HUE, .g is SATURATION, .b is LUMINANCE
 	if (hue - source_hsv.r >= -_tol && hue - source_hsv.r <= +_tol)
 	{
 		vec3 final_hsv = source_hsv + hsv_shift;
 		tex.rgb = hsv2rgb(final_hsv);
 	}
-	
-	COLOR = tex;
+
+	COLOR = tex * brightnessMatrix( brightness );
 }

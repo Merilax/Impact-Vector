@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_5op5j"]
 [ext_resource type="Script" uid="uid://nupw2ynobk2x" path="res://Scripts/UI/MainMenu.gd" id="1_w3h7v"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="3_2ljtg"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="3_2ljtg"]
 [ext_resource type="Script" uid="uid://1rns30v4ko2q" path="res://Scripts/UI/LevelGrid.gd" id="3_boaon"]
 [ext_resource type="Script" uid="uid://c4hxjafxj8635" path="res://Scripts/UI/Campaigns.gd" id="4_m387s"]
 

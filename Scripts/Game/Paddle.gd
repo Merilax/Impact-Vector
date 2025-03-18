@@ -18,10 +18,9 @@ var magnet_power:int = 0 # Decouple
 
 var active_turrets:bool = false
 
-var original_sprite_position:Vector2;
-
 @onready var hitbox:Area2D = $'Hitbox'
 @onready var sprite:Sprite2D = $Sprite2D;
+var original_sprite_position:Vector2;
 
 signal spawn_bullet(pos:Vector2, dir:float)
 
@@ -73,9 +72,10 @@ func receive_ball(ball:Ball, centered:bool = false):
 	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
 		ball.freeze = true;
 		ball.dir = Vector2.ZERO;
-		ball.reparent(self);
+		ball.reparent(sprite);
+		ball.on_paddle = true;
 		# ball.position.y = ;
-		ball.position.y = -((sprite.get_rect().size.y * sprite.scale.y) / 2) - original_sprite_position.y;
+		ball.position.y = -((sprite.get_rect().size.y * sprite.scale.y) / 2) - ((ball.sprite.get_rect().size.y * ball.sprite.scale.y));# - original_sprite_position.y
 		if centered: ball.position.x = 0;
 
 		balls.append(ball);
@@ -91,12 +91,13 @@ func receive_ball(ball:Ball, centered:bool = false):
 		tween.set_ease(Tween.EASE_IN).tween_property(sprite, "position:y", 0, 0.1);
 
 func release_magnet():
-	single_use_magnet = false
+	single_use_magnet = false;
 	for ball:Ball in balls:
-		ball.call_deferred("reparent", ball_container)
-		ball.dir = calculate_bounce_vector(ball)
-		ball.freeze = false
-	balls.clear()
+		ball.on_paddle = false;
+		ball.call_deferred("reparent", ball_container);
+		ball.dir = calculate_bounce_vector(ball);
+		ball.freeze = false;
+	balls.clear();
 
 func add_magnet(single_use:bool = false) -> int:
 	if magnetised:

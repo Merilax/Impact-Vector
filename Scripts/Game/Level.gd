@@ -13,34 +13,41 @@ var pickup_list:Array = [
 	{
 		"type": "slow",
 		"name": "Speed Down",
-		"texture": "res://Assets/Visuals/Pickups/PickupSlow.png"
+		"texture": "uid://caxekbaxpxgvy",
+		"weight": 10
 	},
 	{
 		"type": "speed",
 		"name": "Speed Up",
-		"texture": "res://Assets/Visuals/Pickups/PickupSpeed.png"
+		"texture": "uid://b2ufqhunhh27l",
+		"weight": 10
 	},
 	{
 		"type": "turrets",
 		"name": "Turrets",
-		"texture": "res://Assets/Visuals/Pickups/PickupGun.png"
+		"texture": "uid://bsp8gm0swv3kh",
+		"weight": 6
 	},
 	{
 		"type": "magnet",
 		"name": "Magnet",
-		"texture": "res://Assets/Visuals/Pickups/PickupMagnet.png"
+		"texture": "uid://dil2gntnddaec",
+		"weight": 6
 	},
 	{
 		"type": "death",
 		"name": "Death",
-		"texture": "res://Assets/Visuals/Pickups/PickupDeath.png"
+		"texture": "uid://bvc6p2do3llr4",
+		"weight": 2
 	},
 	{
 		"type": "triple",
 		"name": "Triple balls",
-		"texture": "res://Assets/Visuals/Pickups/PickupTriple.png"
+		"texture": "uid://ci00dwenehe35",
+		"weight": 6
 	}
 ]
+var total_pickup_weight:int = 0;
 
 var BallScene = preload("uid://dxbg7h6mg1dtd");
 var PaddleScene = preload("uid://bjjlgc7puyxfe");
@@ -113,6 +120,9 @@ func _ready():
 
 	change_speed.connect(speed_counter.set_mult)
 
+	for i in range(0, pickup_list.size()):
+		total_pickup_weight += pickup_list[i].weight;
+
 	if save_state:
 		load_gamedata();
 	else:
@@ -122,19 +132,25 @@ func _ready():
 
 	transitioning_levels = false;
 	await spawn_paddle();
-	spawn_ball(true)
+	spawn_ball(true, true)
 
 func _process(_delta):
 	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
+
+	
+	if paddle and (DisplayServer.mouse_get_position().x < world_border.wall_left.global_position.x + (paddle.width / 2)):
+		DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
+	if paddle and (DisplayServer.mouse_get_position().x > world_border.wall_right.global_position.x - (paddle.width / 2)):
+		DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
 
 func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
 	paddle.world_border = world_border;
 	paddle.ball_container = ball_container;
 	add_child(paddle);
-	paddle.global_position = Vector2(750, 1150);
-	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 1.5).finished;
+	paddle.global_position = Vector2(750, 1120);
+	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 1).finished;
 	DisplayServer.warp_mouse(Vector2i(750, 1040));
 
 	if paddle.has_signal("spawn_bullet"):
@@ -143,17 +159,19 @@ func spawn_paddle() -> bool:
 	paddle.follow_mouse = true;
 	return true;
 
-func spawn_ball(on_paddle:bool, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true):
-	if not can_spawn_balls:
-		return;
+func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true):
+	if not can_spawn_balls: return;
+	if ball_count >= 100: return;
 	else:
 		var ball:Ball = BallScene.instantiate();
 		ball_container.call_deferred("add_child", ball);
 
 		ball.dir = dir;
 		if on_paddle:
-			paddle.add_magnet(true);
-			paddle.call_deferred("receive_ball", ball, true);
+			if centered:
+				paddle.add_magnet(true);
+			ball.set_deferred("global_position", pos);
+			paddle.call_deferred("receive_ball", ball, centered);
 			#ball.set_deferred("position", Vector2(paddle.global_position.x, paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)))
 		else:
 			ball.set_deferred("global_position", pos);
@@ -207,7 +225,7 @@ func _on_ball_lost(node:Node2D):
 				if not paddle:
 					await spawn_paddle()
 
-				spawn_ball(true)
+				spawn_ball(true, true);
 				reset_speed_mult();
 
 func spawn_bullet(pos:Vector2, dir:float):
@@ -330,7 +348,7 @@ func win():
 	else:
 		await spawn_paddle();
 	can_spawn_balls = true;
-	spawn_ball(true);
+	spawn_ball(true, true);
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
@@ -354,17 +372,21 @@ func init_brick(brick, set_hidden:bool = false):
 			brick.spawn_pickup.connect(_on_spawn_pickup)
 
 		if brick.is_in_group('Destructible'):
-			brick_count += 1
+			brick_count += 1;
 			if randi() % 101 <= 20: # Pickup spawn %
-				var pickup_comp:PickupComponent = PickupComp.instantiate()
-				brick.add_child(pickup_comp)
-				brick.pickup_comp = pickup_comp
-				brick.pickup_comp.shader_target = brick#.get_node("Sprite2D")
+				var pickup_comp:PickupComponent = PickupComp.instantiate();
+				brick.add_child(pickup_comp);
+				brick.pickup_comp = pickup_comp;
+				brick.pickup_comp.shader_target = brick;
 
-				var random_pickup = pickup_list[randi() % pickup_list.size()]
-
-				brick.pickup_comp.pickup_type = random_pickup.type
-				brick.pickup_comp.pickup_sprite = random_pickup.texture
+				var random_weight = randi() % total_pickup_weight + 1;
+				var weight_sum:int = 0;
+				for i in range(0, pickup_list.size()):
+					weight_sum += pickup_list[i].weight;
+					if random_weight <= weight_sum:
+						brick.pickup_comp.pickup_type = pickup_list[i].type;
+						brick.pickup_comp.pickup_sprite = pickup_list[i].texture;
+						break;
 
 func init_path(path, time, returning:bool = true):
 	var line:PathFollow2D = path.get_child(0);
@@ -384,9 +406,9 @@ var arm_tweener:Tween;
 func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
 	if skip_animations:
 		if arm_tweener: arm_tweener.kill();
-		arm_horizontal.global_position.y = -50;
-		arm_vertical.global_position.x = -50;
-		arm_placer.global_position = Vector2(-50, -50);
+		arm_horizontal.global_position.y = -100;
+		arm_vertical.global_position.x = -100;
+		arm_placer.global_position = Vector2(-100, -100);
 		return true;
 	
 	var duration = (arm_placer.global_position - pos).length() / 2000 / GlobalVars.arm_speed_multiplier;
@@ -431,13 +453,13 @@ func process_pickup(type:String):
 			notify("TRIPLE BALLS", "100 POINTS");
 			add_score(100);
 			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
-				if ball.lost: continue
-				if ball.get_parent() == paddle:
-					spawn_ball(false, ball.global_position - Vector2(0, 1), Vector2.UP.rotated(PI/8))
-					spawn_ball(false, ball.global_position - Vector2(0, 1), Vector2.UP.rotated(-PI/8))
+				if ball.lost: continue;
+				if ball.on_paddle:
+					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(PI/8));
+					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(-PI/8));
 				else:	
-					spawn_ball(false, ball.global_position, ball.dir.rotated(PI/8))
-					spawn_ball(false, ball.global_position, ball.dir.rotated(-PI/8))
+					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8));
+					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8));
 
 func add_speed_mult(add:bool = true):
 	var previous:float = speed_mult;
@@ -491,18 +513,19 @@ func load_level(dir:String) -> bool:
 	level_content_path_visuals.hide();
 
 	background.retrigger(); # Might tie to level data in the future
-	await position_arm(Vector2(-50, -50), false);
+	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece
 
-	for brick:Node2D in get_tree().get_nodes_in_group("Brick"):
+	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		init_brick(brick, true);
-		#call_deferred("position_arm", brick.global_position);
+	
+	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
 		brick.show();
 	
 	for path:Path2D in level_content_paths.get_children():
 		init_path(path, 2, true); # Parametrize time, parametrize looping
 	
-	await position_arm(Vector2(-50, -50), false);
+	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;
 
 	return true;

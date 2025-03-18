@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_3ne4r"]
 [ext_resource type="Script" uid="uid://c2fjdn101chcp" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="2_q662l"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="2_q662l"]
 [ext_resource type="PackedScene" uid="uid://g4vmyu75g0f8" path="res://Scenes/UI/Components/RangeSetting.tscn" id="4_217fq"]
 
 [node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("arm_speed_setting", "window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]

@@ -1,12 +1,15 @@
 extends CharacterBody2D
 class_name Ball
 
-var lost:bool = false
-var freeze:bool = true
-var dir:Vector2 = Vector2.ZERO
-@export var damage :float = 1
-@export var speed :float = 750
-@export var speed_mult :float = 1
+var lost:bool = false;
+var on_paddle:bool = false;
+var freeze:bool = true;
+var dir:Vector2 = Vector2.ZERO;
+@export var damage :float = 1;
+@export var speed :float = 750;
+@export var speed_mult :float = 1;
+@export var sprite:Sprite2D;
+@export var collision_shape:CollisionShape2D;
 
 #signal reset_stuck_timer(free_timer:bool)
 
@@ -15,7 +18,7 @@ func _physics_process(delta):
 		return
 	var motion:Vector2 = dir.normalized() * speed * speed_mult
 	
-	var collision = move_and_collide(motion * delta)
+	var collision = move_and_collide(motion * delta);
 
 	if collision:
 		var collided = collision.get_collider()

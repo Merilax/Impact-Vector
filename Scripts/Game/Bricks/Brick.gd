@@ -56,6 +56,10 @@ func setup_as_playable():
 		if init_score: score_comp.score = init_score;
 		score_comp.process_score.connect(add_score.bind());
 
+	await get_tree().create_timer(randf_range(0, 1)).timeout;
+	#tween_shader_shift_by(Color(-.1, -.1, -.1, 0), .3, true, true, 0, 1.5);
+	tween_brightness(-.2, .3, true, true, 0, 0.5);
+
 func setup_as_editable():
 	self.editor_hitbox.add_child(self.hitbox.duplicate());
 
@@ -94,27 +98,47 @@ func add_score(score:int):
 	if is_editor: return
 	process_score.emit(score)
 
-func get_shader_color() -> Color:
+func set_shader_brightness(value:float):
+	value = clampf(value, -1, 1);
+	texture_sprite.material.set_shader_parameter("brightness", value);
+
+func get_shader_brightness() -> float:
+	return texture_sprite.material.get_shader_parameter("brightness");
+
+func get_shader_texture_color() -> Color:
 	return texture_sprite.material.get_shader_parameter("to")
 
-func set_shader_color(color:Color, force:bool = false):
+func set_texture_shader_color(color:Color, force:bool = false):
 	texture_sprite.material.set_shader_parameter("to", color);
 	if force: shader_color = color;
 
-func tween_shader_color(set_color:Color, duration:float, reset_after:bool = false, force:bool = false) -> bool:
-	if tweening_shader and not force: return false
-	tweening_shader = true
-	
-	var previous_color = get_shader_color()
-	var tween = create_tween()
-	await tween.tween_method(func(value): set_shader_color(value), previous_color, set_color, duration).finished
-
+func tween_brightness(brightness:float, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
+	var tween:Tween = create_tween();
+	var previous_brightness:float = get_shader_brightness();
+	if looping: tween.set_loops();
+	tween.tween_method(func(value): set_shader_brightness(value), previous_brightness, brightness, duration).set_delay(loop_delay);
 	if reset_after:
-		tween = create_tween()
-		await tween.tween_method(func(value): set_shader_color(value), set_color, previous_color, duration).finished
+		tween.tween_method(func(value): set_shader_brightness(value), brightness, previous_brightness, duration).set_delay(step_delay);
 
-	tweening_shader = false
-	return true
+func tween_shader_shift_by(set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
+	var previous_color:Color = shader_color.clamp();
+	var target_color:Color = shader_color + set_color;
+	target_color = target_color.clamp();
+	var tween:Tween = create_tween();
+	if looping: tween.set_loops();
+	#tween.tween_method(func(value): set_base_shader_color(value), previous_color, target_color, duration).set_delay(loop_delay);
+	tween.tween_property(self, "shader_color", target_color, duration).set_delay(loop_delay);
+	if reset_after:
+		#tween.tween_method(func(value): set_base_shader_color(value), target_color, previous_color, duration).set_delay(step_delay);
+		tween.tween_property(self, "shader_color", previous_color, duration).set_delay(step_delay);
+
+func tween_shader_color(set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
+	var previous_color:Color = shader_color.clamp();#get_shader_texture_color();
+	var tween:Tween = create_tween();
+	if looping: tween.set_loops();
+	tween.tween_method(func(value): set_texture_shader_color(value), previous_color, set_color, duration).set_delay(loop_delay);
+	if reset_after:
+		tween.tween_method(func(value): set_texture_shader_color(value), set_color, previous_color, duration).set_delay(step_delay);
 
 func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, force:bool = false) -> bool:
 	if tweening_size and not force: return false

@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_t7gjp"]
 [ext_resource type="Script" uid="uid://ol4upq0krfh3" path="res://Scripts/UI/PaginatorMenu.gd" id="2_g2kb5"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="3_ghage"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="3_ghage"]
 [ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="4_0o6ap"]
 [ext_resource type="Theme" uid="uid://djque73k4bqty" path="res://GDResources/Themes/HelpMenu.tres" id="4_v3jtb"]
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="5_u2aok"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="9_xoy47"]
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="10_pwxuv"]
 [ext_resource type="Texture2D" uid="uid://dygfcocq1apxy" path="res://Assets/Visuals/Icons/path.svg" id="10_q74m3"]
-[ext_resource type="Texture2D" uid="uid://cl8vb05s3lk5w" path="res://Assets/Visuals/help1.png" id="12_did41"]
+[ext_resource type="Texture2D" uid="uid://cl8vb05s3lk5w" path="res://Assets/Visuals/UI/help1.png" id="12_did41"]
 [ext_resource type="LabelSettings" uid="uid://bapuh2nmt5m28" path="res://GDResources/Themes/Header.tres" id="12_wb27d"]
 [ext_resource type="LabelSettings" uid="uid://l3ti20r3p8tt" path="res://GDResources/Themes/TextMedium.tres" id="13_gv65v"]
 

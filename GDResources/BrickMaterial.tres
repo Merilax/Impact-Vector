@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://docw4l0sx722e"]
 
-[ext_resource type="Shader" path="res://GDResources/BrickShader.gdshader" id="1_wmlby"]
+[ext_resource type="Shader" uid="uid://c8dyvwjdjv8je" path="res://GDResources/BrickShader.gdshader" id="1_wmlby"]
 
 [resource]
 resource_local_to_scene = true
@@ -8,3 +8,4 @@ shader = ExtResource("1_wmlby")
 shader_parameter/from = Color(1, 1, 1, 1)
 shader_parameter/to = Color(1, 1, 1, 1)
 shader_parameter/tolerance = 1.0
+shader_parameter/brightness = 0.0

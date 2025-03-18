@@ -45,6 +45,10 @@ project/assembly_name="Impact Vector"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/sprite-shader-mixer/plugin.cfg")
+
 [global_group]
 
 Paddle=""
@@ -84,6 +88,7 @@ escape={
 
 [physics]
 
+3d/physics_engine="Dummy"
 2d/default_gravity=0.0
 2d/default_gravity_vector=Vector2(0, 0)
 2d/default_linear_damp=0.0

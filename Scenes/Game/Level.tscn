@@ -1,18 +1,20 @@
-[gd_scene load_steps=24 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=26 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" uid="uid://dqpio87sxu3i2" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
 [ext_resource type="Script" uid="uid://brelqqqwuka1w" path="res://Scripts/Game/Background.gd" id="2_hdl1t"]
-[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="3_7wyew"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_cwvof"]
+[ext_resource type="Texture2D" uid="uid://bud74anigwk7n" path="res://Assets/Visuals/PipeH.png" id="4_0q1sm"]
 [ext_resource type="AudioStream" uid="uid://sum5oktk1vyr" path="res://Assets/Audio/SFX/bfh1_metal_falling_03.ogg" id="5_8ipbu"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="5_gh0ej"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="5_gh0ej"]
+[ext_resource type="Texture2D" uid="uid://bm8s7agc45ilo" path="res://Assets/Visuals/PipeV.png" id="5_i4nkc"]
+[ext_resource type="Texture2D" uid="uid://copiy3wahqpvd" path="res://Assets/Visuals/ArmCentre.png" id="6_0q1sm"]
 [ext_resource type="Script" uid="uid://c40p5l8qchcrt" path="res://Scripts/UI/EscapeLayer.gd" id="7_1osje"]
 [ext_resource type="PackedScene" uid="uid://bwcxgw014glpw" path="res://Scenes/UI/SettingsMenu.tscn" id="7_aufso"]
-[ext_resource type="Texture2D" uid="uid://dy4cere4ncoq3" path="res://Assets/Visuals/ProgressBar8Over.png" id="8_113j4"]
+[ext_resource type="Texture2D" uid="uid://dy4cere4ncoq3" path="res://Assets/Visuals/UI/ProgressBar8Over.png" id="8_113j4"]
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
 [ext_resource type="LabelSettings" uid="uid://bapuh2nmt5m28" path="res://GDResources/Themes/Header.tres" id="8_lfrfq"]
-[ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/ProgressBar8.png" id="9_k042e"]
+[ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/UI/ProgressBar8.png" id="9_k042e"]
 [ext_resource type="Script" uid="uid://rvpsmndsm2rd" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Script" uid="uid://cusba52gpuwal" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 [ext_resource type="Script" uid="uid://qmyt0gym44nx" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
@@ -88,19 +90,19 @@ position = Vector2(40, 0)
 [node name="ConstructorArm" type="Node2D" parent="."]
 
 [node name="Horizontal" type="Sprite2D" parent="ConstructorArm"]
-position = Vector2(758, -10.0002)
-scale = Vector2(11.438, 0.14)
-texture = ExtResource("3_7wyew")
+position = Vector2(961, -68)
+scale = Vector2(1, 0.6)
+texture = ExtResource("4_0q1sm")
 
 [node name="Vertical" type="Sprite2D" parent="ConstructorArm"]
-position = Vector2(-11, 540)
-scale = Vector2(0.14, 8.438)
-texture = ExtResource("3_7wyew")
+position = Vector2(-86, 540)
+scale = Vector2(0.6, 1)
+texture = ExtResource("5_i4nkc")
 
 [node name="Nucleus" type="Sprite2D" parent="ConstructorArm"]
 position = Vector2(-71, -68)
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_7wyew")
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("6_0q1sm")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="ConstructorArm/Nucleus"]
 show_behind_parent = true

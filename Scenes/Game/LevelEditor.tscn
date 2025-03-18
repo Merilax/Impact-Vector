@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://siyig5enaxu2" path="res://Scripts/UI/BrickContainer.gd" id="2_ylr5r"]
 [ext_resource type="Script" uid="uid://cc2ipbcxqs5r4" path="res://Scripts/GridDrawer.gd" id="3_pm5sq"]
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="3_t1m56"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UIBox.png" id="4_k5s8c"]
+[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="4_k5s8c"]
 [ext_resource type="Script" uid="uid://c7jlbqiq1ajub" path="res://Scripts/UI/TextureContainer.gd" id="4_lhv3y"]
 [ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="5_fw0bt"]
 [ext_resource type="Texture2D" uid="uid://cxyyyoeudto8h" path="res://Assets/Visuals/Icons/brush.svg" id="5_k43gj"]
