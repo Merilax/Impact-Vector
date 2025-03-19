@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=25 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" uid="uid://dikwglkg781iq" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="6_7hwva"]
 [ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="6_if84t"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="7_evgdw"]
+[ext_resource type="Texture2D" uid="uid://blto1cna1p7rl" path="res://Assets/Visuals/UI/SideR.PNG" id="7_r56k3"]
+[ext_resource type="Texture2D" uid="uid://b7he2fbpqpjbg" path="res://Assets/Visuals/UI/SideRCover.PNG" id="8_tgr68"]
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 [ext_resource type="Texture2D" uid="uid://lqkxorxmvytd" path="res://Assets/Visuals/Icons/arrow_selector.svg" id="10_3i04o"]
 [ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="13_ppk2a"]
@@ -34,7 +36,7 @@ level_content_bricks = NodePath("LevelEditor/LevelContent/Bricks")
 grid_drawer = NodePath("LevelEditor/Grid")
 level_content_paths = NodePath("LevelEditor/LevelContent/BrickPaths/Paths")
 level_content_path_visuals = NodePath("LevelEditor/LevelContent/BrickPaths/Visuals")
-selector = NodePath("EditorUI/Selector")
+selector = NodePath("EditorUI/SideBarR/Selector")
 place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
 select_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Select")
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
@@ -67,10 +69,10 @@ path_number = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxC
 path_speed = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2/HBoxContainer/PathSpeed")
 create_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/CreatePath")
 delete_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/DeletePath")
-brick_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/BrickGrid")
-texture_container = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer")
-level_name = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
-save_button = NodePath("EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer/SaveBtn")
+brick_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/BrickGrid")
+texture_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer")
+level_name = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/LineEdit")
+save_button = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/SaveBtn")
 
 [node name="Background" type="Parallax2D" parent="."]
 modulate = Color(0.244776, 0.244776, 0.244776, 1)
@@ -107,21 +109,25 @@ script = ExtResource("3_pm5sq")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 
-[node name="Selector" type="PanelContainer" parent="EditorUI"]
+[node name="SideBarR" type="Control" parent="EditorUI"]
 custom_minimum_size = Vector2(0, 200)
-anchors_preset = -1
+layout_mode = 3
 anchor_left = 0.781688
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 0.159912
+offset_right = 1344.0
+offset_bottom = 3240.0
 grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 8
 theme = ExtResource("3_t1m56")
 metadata/_edit_use_anchors_ = true
 
-[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/Selector"]
+[node name="NinePatchRect" type="NinePatchRect" parent="EditorUI/SideBarR"]
 layout_mode = 2
+offset_right = 418.999
+offset_bottom = 1080.0
 theme = ExtResource("3_t1m56")
 texture = ExtResource("4_k5s8c")
 region_rect = Rect2(0, 0, 512, 512)
@@ -130,7 +136,7 @@ patch_margin_top = 42
 patch_margin_right = 42
 patch_margin_bottom = 42
 
-[node name="BG" type="MarginContainer" parent="EditorUI/Selector/NinePatchRect"]
+[node name="BG" type="MarginContainer" parent="EditorUI/SideBarR/NinePatchRect"]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -143,17 +149,35 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PanelContainer" type="ColorRect" parent="EditorUI/Selector/NinePatchRect/BG"]
+[node name="PanelContainer" type="ColorRect" parent="EditorUI/SideBarR/NinePatchRect/BG"]
 layout_mode = 2
 color = Color(0.168627, 0.192157, 0.219608, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector"]
+[node name="SideR" type="TextureRect" parent="EditorUI/SideBarR"]
+layout_mode = 2
+offset_right = 1763.0
+offset_bottom = 4320.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_r56k3")
+
+[node name="SideRCover" type="TextureRect" parent="EditorUI/SideBarR"]
+layout_mode = 2
+offset_left = 294.999
+offset_right = 788.999
+offset_bottom = 4320.0
+grow_horizontal = 0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_tgr68")
+
+[node name="Selector" type="MarginContainer" parent="EditorUI/SideBarR"]
+layout_mode = 2
+offset_right = 419.0
+offset_bottom = 1080.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SideBarR/Selector"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 0
@@ -162,12 +186,12 @@ theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="BrickGrid" type="GridContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="BrickGrid" type="GridContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer"]
 layout_mode = 2
 columns = 4
 script = ExtResource("2_ylr5r")
 
-[node name="TextureContainer" type="Control" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_grid", "texture_button", "color_picker")]
+[node name="TextureContainer" type="Control" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_grid", "texture_button", "color_picker")]
 visible = false
 layout_mode = 2
 script = ExtResource("4_lhv3y")
@@ -175,7 +199,7 @@ texture_grid = NodePath("VBoxContainer/TextureGrid")
 texture_button = NodePath("VBoxContainer/MarginContainer/VBoxContainer/TextureButton")
 color_picker = NodePath("VBoxContainer/MarginContainer/VBoxContainer/ColorPicker")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -183,20 +207,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureGrid" type="GridContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+[node name="TextureGrid" type="GridContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 columns = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="ColorPicker" type="ColorPicker" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ColorPicker" type="ColorPicker" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 edit_alpha = false
@@ -208,24 +232,24 @@ sliders_visible = false
 hex_visible = false
 presets_visible = false
 
-[node name="TextureButton" type="TextureButton" parent="EditorUI/Selector/MarginContainer/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 material = ExtResource("5_fw0bt")
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 toggle_mode = true
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/Selector/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Level name"
 max_length = 50
 context_menu_enabled = false
 middle_mouse_paste_enabled = false
 
-[node name="SaveBtn" type="Button" parent="EditorUI/Selector/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="SaveBtn" type="Button" parent="EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Save"
 
