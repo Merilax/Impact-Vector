@@ -90,6 +90,7 @@ var level_content_bricks:Node2D;
 var level_content_paths:Node2D;
 var level_content_path_visuals:Node2D;
 @export var background:Parallax2D;
+@export var escape_layer:EscapeLayer;
 
 @export var speed_meter:TextureProgressBar;
 @export var magnet_meter:TextureProgressBar;
@@ -101,6 +102,7 @@ var level_content_path_visuals:Node2D;
 
 var transitioning_levels:bool = false;
 var skip_animations:bool = false;
+var tabbed_out:bool = false;
 
 signal game_over_signal(game_won:bool);
 signal change_speed(mult:float, update_counter:bool);
@@ -108,6 +110,10 @@ signal change_speed(mult:float, update_counter:bool);
 func _ready():
 	transitioning_levels = true;
 	background.retrigger();
+
+	get_window().focus_exited.connect(func(): tabbed_out = true);
+	get_window().focus_entered.connect(func(): tabbed_out = false);
+	tabbed_out = get_window().has_focus();
 
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	$"DeathZone".body_entered.connect(_on_ball_lost)
@@ -132,17 +138,19 @@ func _ready():
 
 	transitioning_levels = false;
 	await spawn_paddle();
-	spawn_ball(true, true)
+	spawn_ball(true, true);
+
+	Logger.write(str("Ready."), "Level");
 
 func _process(_delta):
 	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
 
-	
-	if paddle and (DisplayServer.mouse_get_position().x < world_border.wall_left.global_position.x + (paddle.width / 2)):
-		DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
-	if paddle and (DisplayServer.mouse_get_position().x > world_border.wall_right.global_position.x - (paddle.width / 2)):
-		DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
+	if paddle and not tabbed_out: # Odd bug, no clue why, but the mouse does not get clamped if it moves out while escaped (EscapeLayer).
+		if (DisplayServer.mouse_get_position().x < world_border.wall_left.global_position.x + (paddle.width / 2)):
+			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
+		if (DisplayServer.mouse_get_position().x > world_border.wall_right.global_position.x - (paddle.width / 2)):
+			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
 
 func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
@@ -297,12 +305,15 @@ func notify(display_text:String, display_score:String):
 	notification_window_timer.start();
 
 func game_over(game_won:bool):
+	escape_layer.forbid_unescape = true;
+	Logger.write(str("Game over."), "Level");
 	can_spawn_balls = false
 	if game_won == true:
 		DirAccess.remove_absolute("user://SaveGameData.tres");
 	game_over_signal.emit(game_won);
 
 func win():
+	Logger.write(str("Transitioning levels."), "Level");
 	transitioning_levels = true;
 	can_spawn_balls = false;
 
@@ -338,6 +349,8 @@ func win():
 		game_over(true);
 		return;
 	
+	Logger.write(str("Next level found: ", next_level_num), "Level");
+
 	level_num = next_level_num;
 	save_gamedata();
 
@@ -490,6 +503,7 @@ func add_magnet():
 		if magnet_meter: magnet_meter.value = power;
 
 func load_level(dir:String) -> bool:
+	Logger.write(str("Loading level at ", dir), "Level");
 	if not DirAccess.dir_exists_absolute(dir): return false
 
 	var level_data:LevelData = load(dir + "data.tres");
@@ -505,6 +519,7 @@ func load_level(dir:String) -> bool:
 	level_content = new_level_content;
 	
 	if level_data.build_number != current_build_number:
+		Logger.write(str("Upgrading level from version ", level_data.build_number), "Level");
 		upgrade_version(level_data);
 
 	level_content_bricks = level_content.find_child("Bricks");
@@ -515,6 +530,7 @@ func load_level(dir:String) -> bool:
 	background.retrigger(); # Might tie to level data in the future
 	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece
 
+	Logger.write(str("Initializing Bricks."), "Level");
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		init_brick(brick, true);
 	
@@ -522,12 +538,14 @@ func load_level(dir:String) -> bool:
 		await position_arm(brick.global_position);
 		brick.show();
 	
+	Logger.write(str("Initializing Paths."), "Level");
 	for path:Path2D in level_content_paths.get_children():
 		init_path(path, 2, true); # Parametrize time, parametrize looping
 	
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;
 
+	Logger.write(str("Level finished loading."), "Level");
 	return true;
 
 func upgrade_version(data:LevelData):
@@ -578,9 +596,11 @@ func upgrade_version(data:LevelData):
 			new_level_content_path_visuals.owner = level_content;
 			
 	data.build_number += 1;
+	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "Level");
 	upgrade_version(data);
 
 func save_gamedata():
+	Logger.write(str("Saving game in progress to storage."), "Level");
 	var data:SaveGameData = SaveGameData.new();
 	data.level_path = campaign_path + "/" + campaign_num + "/" + level_num;
 	data.score = unsaved_score;
@@ -589,12 +609,13 @@ func save_gamedata():
 	
 	var err = ResourceSaver.save(data, "user://SaveGameData.tres");
 	if err != OK:
-		print("Level data save error: " + error_string(err));
+		Logger.write("Level data save error: " + error_string(err), "Level");
 		ResourceSaver.save(data, "user://SaveGameData.tres");
 
 	return true;
 
 func load_gamedata():
+	Logger.write(str("Loading game in progress from storage."), "Level");
 	await load_level(save_state.level_path);
 	score = save_state.score;
 	lives = save_state.lives;

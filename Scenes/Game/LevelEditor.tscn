@@ -27,7 +27,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1437, 940)
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "level_content_bricks", "grid_drawer", "level_content_paths", "level_content_path_visuals", "selector", "place_tool", "select_tool", "paint_tool", "erase_tool", "path_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "path_options_ctrl", "path_options_btn", "path_number", "path_speed", "create_path_button", "delete_path_button", "brick_container", "texture_container", "level_name", "save_button")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "level_content_bricks", "grid_drawer", "level_content_paths", "level_content_path_visuals", "selector", "brick_container", "texture_container", "level_name", "save_button", "place_tool", "select_tool", "paint_tool", "erase_tool", "path_tool", "mode_options", "snap_options_ctrl", "snap_options_btn", "use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset", "data_options_ctrl", "data_options_btn", "apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "path_options_ctrl", "path_options_btn", "path_number", "path_speed", "create_path_button", "delete_path_button")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
@@ -37,6 +37,10 @@ grid_drawer = NodePath("LevelEditor/Grid")
 level_content_paths = NodePath("LevelEditor/LevelContent/BrickPaths/Paths")
 level_content_path_visuals = NodePath("LevelEditor/LevelContent/BrickPaths/Visuals")
 selector = NodePath("EditorUI/SideBarR/Selector")
+brick_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/BrickGrid")
+texture_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer")
+level_name = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/LineEdit")
+save_button = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/SaveBtn")
 place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
 select_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Select")
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
@@ -69,10 +73,6 @@ path_number = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxC
 path_speed = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer2/HBoxContainer/PathSpeed")
 create_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/CreatePath")
 delete_path_button = NodePath("EditorUI/Options/PanelContainer/Path/HBoxContainer/VBoxContainer/HBoxContainer/DeletePath")
-brick_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/BrickGrid")
-texture_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/TextureContainer")
-level_name = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/LineEdit")
-save_button = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/SaveBtn")
 
 [node name="Background" type="Parallax2D" parent="."]
 modulate = Color(0.244776, 0.244776, 0.244776, 1)

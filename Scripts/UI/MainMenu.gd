@@ -63,6 +63,9 @@ func _ready():
 	if FileAccess.file_exists("user://SaveGameData.tres"):
 		continue_button.show();
 
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
+	Logger.write("Ready.", "MainMenu");
+
 func to_campaign_selector():
 	level_selector.hide();
 	campaign_selector.show();
@@ -100,9 +103,11 @@ func delete_campaign(campaign_folder_path:String, campaign_num:String, origin:Co
 	origin.queue_free();
 
 func create_level():
+	Logger.write("Creating new level.", "MainMenu");
 	open_editor.emit(campaign_path, campaign_folder);
 
 func continue_game():
+	Logger.write("Continuing existing game.", "MainMenu");
 	var save_state:SaveGameData = load("user://SaveGameData.tres");
 	
 	var regex = RegEx.new();
@@ -114,6 +119,7 @@ func continue_game():
 	play_level(paths[2].get_string(), save_state);
 
 func play_level(level_num:String, savedata:SaveGameData = null):
+	Logger.write("Playing level: " + level_num, "MainMenu");
 	if campaign_path.contains("res://"):
 		start_game.emit(campaign_path, campaign_folder, level_num, savedata);
 	else:
@@ -121,11 +127,13 @@ func play_level(level_num:String, savedata:SaveGameData = null):
 			start_game.emit(campaign_path, campaign_folder, level_num, savedata);
 
 func edit_level(level_num:String):
+	Logger.write("Editign level: " + level_num, "MainMenu");
 	if FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn"):
 		open_editor.emit(campaign_path, campaign_folder, level_num);
 
 func delete_level(level_num:String, origin:Control):
-	origin.queue_free()
+	Logger.write("Deletign level: " + level_num, "MainMenu");
+	origin.queue_free();
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn");
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/data.tres");
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num);
@@ -202,4 +210,6 @@ func _on_fd_canceled():
 	fd_processed.emit();
 
 func quit():
+	Logger.write(str("Quitting game @ ", Time.get_datetime_string_from_system(false, true)));
+	Logger.flush();
 	get_tree().quit();

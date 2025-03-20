@@ -1,9 +1,12 @@
 extends CanvasLayer
+class_name EscapeLayer
 
 @export var game_root:Game
 
 @export var escape_menu:Control
 @export var settings_menu:Control
+
+var forbid_unescape:bool = false;
 
 func _ready():
 	if escape_menu:
@@ -14,21 +17,23 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("escape"):
-		close_settings()
+		close_settings();
 
 		if visible == false:
-			show()
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			get_tree().paused = true
+			show();
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
+			get_tree().paused = true;
 		else:
-			hide()
-			Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
-			get_tree().paused = false
+			if forbid_unescape: return;
+			hide();
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+			get_tree().paused = false;
 		
 func return_to_game():
-	hide()
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
-	get_tree().paused = false
+	hide();
+	if forbid_unescape: return;
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+	get_tree().paused = false;
 
 func open_settings():
 	escape_menu.hide()

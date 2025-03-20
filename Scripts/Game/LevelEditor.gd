@@ -9,6 +9,7 @@ var saving_level:bool = false
 var loading_level:bool = false
 var current_build_number:int = 2;
 
+@export_group("Nodes")
 @export var mouse_boundary:Area2D;
 @export var world_border:WorldBorder;
 @export var level_content:Node2D;
@@ -17,8 +18,14 @@ var current_build_number:int = 2;
 @export var level_content_paths:Node2D;
 @export var level_content_path_visuals:Node2D;
 
+@export_group("Controls")
 @export var selector:Container;
+@export var brick_container:GridContainer;
+@export var texture_container:Control;
+@export var level_name:LineEdit;
+@export var save_button:Button;
 
+@export_group("Tool buttons")
 @export var place_tool:Button;
 @export var select_tool:Button;
 @export var paint_tool:Button;
@@ -27,6 +34,7 @@ var current_build_number:int = 2;
 
 @export var mode_options:Control;
 
+@export_group("Snap controls")
 @export var snap_options_ctrl:Control;
 @export var snap_options_btn:Button;
 @export var use_snap_control:Button;
@@ -39,6 +47,7 @@ var use_snap:bool = true;
 var snap_cell_size:Vector2i = Vector2i(6, 10);
 var snap_grid_offset:Vector2i = Vector2i(0, 0);
 
+@export_group("Data controls")
 @export var data_options_ctrl:Control;
 @export var data_options_btn:Button;
 @export var apply_brick_data_on_select_control:CheckButton;
@@ -55,6 +64,7 @@ var snap_grid_offset:Vector2i = Vector2i(0, 0);
 # @export var brick_kill_sound:Control;
 var apply_on_select:bool = false;
 
+@export_group("Path controls")
 @export var path_options_ctrl:Control;
 @export var path_options_btn:Button;
 @export var path_number:SpinBox;
@@ -62,11 +72,6 @@ var apply_on_select:bool = false;
 @export var create_path_button:Button;
 @export var delete_path_button:Button;
 
-@export var brick_container:GridContainer;
-@export var texture_container:Control;
-
-@export var level_name:LineEdit;
-@export var save_button:Button;
 
 var level_num:String = "";
 var campaign_num:String;
@@ -143,6 +148,8 @@ func _ready():
 	grid_drawer.size = mouse_boundary.get_child(0).shape.size;
 	set_snap_size(snap_cell_size.x, 0);
 	set_snap_size(snap_cell_size.y, 1);
+
+	Logger.write(str("Ready."), "LevelEditor");
 
 func set_tool(type:String):
 	if loading_level or saving_level: return
@@ -638,6 +645,7 @@ func reset_brick_collision_state():
 	illegal_collision_detected = false
 
 func load_level(level_folder:String):
+	Logger.write(str("Loading level from ", level_folder), "LevelEditor");
 	loading_level = true
 	var Level:PackedScene = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.tscn")
 	var loaded_level_content = Level.instantiate()
@@ -654,6 +662,7 @@ func load_level(level_folder:String):
 	level_content_paths = level_content.find_child("BrickPaths").find_child("Paths");
 	level_content_path_visuals = level_content.find_child("BrickPaths").find_child("Visuals");
 
+	Logger.write(str("Initializing Bricks."), "LevelEditor");
 	for brick in level_content_bricks.get_children():
 		brick.setup(true);
 
@@ -664,6 +673,7 @@ func save_level():
 	if level_name.text.is_empty():
 		level_name.call_deferred("grab_focus");
 		return;
+	Logger.write(str("Saving level."), "LevelEditor");
 	saving_level = true;
 
 	var new_level:PackedScene = PackedScene.new();
@@ -676,6 +686,7 @@ func save_level():
 		brick.owner = level_content;
 		brick.hitbox.owner = level_content;
 	
+	Logger.write(str("Packing Scene."), "LevelEditor");
 	new_level.pack(level_content);
 
 	level_content_path_visuals.hide();
@@ -696,6 +707,7 @@ func save_level():
 	var level_data:LevelData = LevelData.new();
 
 	if level_num:
+		Logger.write(str("Replacing level ", level_num), "LevelEditor");
 		var dir = campaign_path + "/" + campaign_num + "/" + level_num + "/";
 
 		level_data = load(dir + "data.tres"); # Load existing data.
@@ -717,6 +729,7 @@ func save_level():
 	#saving_level = false
 
 func go_back():
+	Logger.write(str("Exiting editor."), "LevelEditor");
 	var MainScene:PackedScene = load("uid://c0a7y1ep5uibb")
 	var main_scene = MainScene.instantiate()
 	add_sibling(main_scene)
@@ -741,40 +754,50 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 
 func upgrade_version(data:LevelData):
 	var from_version:int = data.build_number;
-	if from_version >= current_build_number: return;
+	if from_version >= current_build_number:
+		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+		if err != OK:
+			print("Level data save error: " + error_string(err));
+			ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+
+		var modified_level_content:PackedScene = PackedScene.new();
+		modified_level_content.pack(level_content);
+		err = ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
+		if err != OK:
+			print("Level scene save error: " + error_string(err));
+			ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
+		return;
 
 	match from_version:
 		# Default pre-release
 		1:
-			pass; # This version shouldn't exist. 
-		2:
 			# Add Bricks container and reparent bricks from LevelContent
 			var new_level_content_bricks := Node2D.new();
-			new_level_content_bricks.add_child(level_content);
+			new_level_content_bricks.name = "Bricks";
+			level_content.add_child(new_level_content_bricks, true);
 			new_level_content_bricks.owner = level_content;
 
-			for brick:Brick in level_content.get_children():
-				brick.reparent(new_level_content_bricks);
+			for node:Brick in get_tree().get_nodes_in_group("Brick"):
+				node.reparent(new_level_content_bricks);
 
 			# Add BrickPaths container
 			var new_level_content_brick_paths := Node2D.new();
-			new_level_content_brick_paths.add_child(level_content);
+			new_level_content_brick_paths.name = "BrickPaths";
+			level_content.add_child(new_level_content_brick_paths, true);
 			new_level_content_brick_paths.owner = level_content;
 
 			# Add Paths container
 			var new_level_content_paths := Node2D.new();
-			new_level_content_paths.add_child(new_level_content_brick_paths);
+			new_level_content_paths.name = "Paths";
+			new_level_content_brick_paths.add_child(new_level_content_paths, true);
 			new_level_content_paths.owner = level_content;
 
 			# Add Visuals container
 			var new_level_content_path_visuals := Node2D.new();
-			new_level_content_path_visuals.add_child(new_level_content_brick_paths);
+			new_level_content_path_visuals.name = "Visuals";
+			new_level_content_brick_paths.add_child(new_level_content_path_visuals, true);
 			new_level_content_path_visuals.owner = level_content;
 			
 	data.build_number += 1;
-	var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
-	if err != OK:
-		print("Level data save error: " + error_string(err));
-		ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
-	else:
-		upgrade_version(data);
+	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
+	upgrade_version(data);

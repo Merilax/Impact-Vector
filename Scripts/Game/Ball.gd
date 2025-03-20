@@ -6,7 +6,7 @@ var on_paddle:bool = false;
 var freeze:bool = true;
 var dir:Vector2 = Vector2.ZERO;
 @export var damage :float = 1;
-@export var speed :float = 750;
+@export var speed :float = 700;
 @export var speed_mult :float = 1;
 @export var sprite:Sprite2D;
 @export var collision_shape:CollisionShape2D;

@@ -24,6 +24,7 @@ buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
 
 MusicPlayer="*res://Scenes/MusicPlayer.tscn"
 GlobalVars="*res://Scripts/GlobalVars.gd"
+Logger="*res://Scripts/Logger.gd"
 
 [display]
 
@@ -32,7 +33,6 @@ window/size/viewport_height=1080
 window/size/mode=3
 window/size/resizable=false
 window/stretch/mode="viewport"
-window/stretch/scale_mode="integer"
 window/vsync/vsync_mode=0
 window/ios/allow_high_refresh_rate=false
 
@@ -47,7 +47,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/sprite-shader-mixer/plugin.cfg")
+enabled=PackedStringArray()
 
 [global_group]
 

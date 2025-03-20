@@ -14,7 +14,11 @@ func _ready():
 	SaveLoader.load_settings();
 	MusicPlayer.set_track_type("MainMenu");
 
+	Logger.write("Impact Vector ready.", "Root");
+
 func play_level(campaign_path, campaign_num, level_num, savedata):
+	Logger.write(str("Instantiating Level: ", campaign_path, campaign_num, "/", level_num), "Root");
+
 	var GameScene:PackedScene = load("uid://la6hglf0tura");
 	var game:Game = GameScene.instantiate();
 	game.level_num = level_num;
@@ -25,7 +29,11 @@ func play_level(campaign_path, campaign_num, level_num, savedata):
 	MusicPlayer.set_track_type("InGame");
 	self.queue_free();
 
+	Logger.write("Finished loading Level.", "Root");
+
 func open_editor(campaign_path:String, campaign_num:String, level_num:String = ""):
+	Logger.write(str("Instantiating LevelEditor: ", campaign_path, campaign_num, level_num), "Root");
+
 	var LevelEditorScene:PackedScene = load("uid://bhtapwwblyog3");
 	var editor:LevelEditor = LevelEditorScene.instantiate();
 	editor.campaign_path = campaign_path;
@@ -34,6 +42,8 @@ func open_editor(campaign_path:String, campaign_num:String, level_num:String = "
 	if level_num:
 		editor.load_level(level_num);
 	self.queue_free();
+
+	Logger.write(str("Finished laoding LevelEditor: ", campaign_path, campaign_num, level_num), "Root");
 
 func open_settings():
 	main_menu.hide();
