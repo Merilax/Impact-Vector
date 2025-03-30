@@ -8,6 +8,8 @@ class_name EscapeLayer
 
 var forbid_unescape:bool = false;
 
+signal menu_closed();
+
 func _ready():
 	if escape_menu:
 		escape_menu.close_escape.connect(return_to_game)
@@ -33,6 +35,7 @@ func return_to_game():
 	hide();
 	if forbid_unescape: return;
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+	menu_closed.emit();
 	get_tree().paused = false;
 
 func open_settings():

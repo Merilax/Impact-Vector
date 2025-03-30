@@ -207,6 +207,10 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="ColorRect" type="ColorRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.6)
+
 [node name="Timer" type="Timer" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox"]
 wait_time = 4.0
 one_shot = true

@@ -1,0 +1,119 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk1flyauof5sk"]
+
+[ext_resource type="Script" uid="uid://ceuc68tpthge7" path="res://Scripts/UI/Components/EditorSnapSettings.gd" id="1_ov2he"]
+
+[node name="Snap" type="VBoxContainer" node_paths=PackedStringArray("use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset")]
+visible = false
+theme_override_constants/separation = 50
+script = ExtResource("1_ov2he")
+use_snap_control = NodePath("VBoxContainer/Snap")
+show_snap_grid = NodePath("VBoxContainer/ShowSnap")
+snap_width = NodePath("VBoxContainer2/CellWidth")
+snap_height = NodePath("VBoxContainer2/CellHeight")
+x_offset = NodePath("VBoxContainer3/XOffset")
+y_offset = NodePath("VBoxContainer3/YOffset")
+
+[node name="VBoxContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Snap bricks to grid"
+
+[node name="Snap" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+button_pressed = true
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Show grid"
+
+[node name="ShowSnap" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="VSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Snap width"
+
+[node name="CellWidth" type="SpinBox" parent="VBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 999.0
+value = 12.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Snap height"
+
+[node name="CellHeight" type="SpinBox" parent="VBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 999.0
+value = 20.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true
+
+[node name="VSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer3" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X offset"
+
+[node name="XOffset" type="SpinBox" parent="VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 999.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Y offset"
+
+[node name="YOffset" type="SpinBox" parent="VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 999.0
+alignment = 2
+update_on_text_changed = true
+suffix = "px"
+select_all_on_focus = true

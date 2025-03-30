@@ -1,0 +1,205 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3wgp1cr6li5f"]
+
+[ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="1_meml4"]
+[ext_resource type="Script" uid="uid://b10ek5vcmgo2d" path="res://Scripts/UI/Components/EditorDataSettings.gd" id="1_wx2ps"]
+
+[node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control")]
+visible = false
+script = ExtResource("1_wx2ps")
+apply_brick_data_on_select_control = NodePath("HBoxContainer2/ApplySelect")
+brick_x_ctrl = NodePath("Coords/GridContainer/XPos")
+brick_y_ctrl = NodePath("Coords/GridContainer/YPos")
+brick_rot_ctrl = NodePath("Coords/GridContainer/Rotation")
+brick_health_control = NodePath("Stats/VBoxContainer/Hitpoints")
+brick_score_control = NodePath("Stats/VBoxContainer/Score")
+brick_pushable_control = NodePath("Stats/VBoxContainer/Pushable")
+brick_weight_control = NodePath("Stats/VBoxContainer/Weight")
+brick_can_collide_control = NodePath("Stats/VBoxContainer/Collider")
+brick_path_group_control = NodePath("Stats/VBoxContainer3/PathGroup")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Selecting a brick applies data instead:"
+autowrap_mode = 3
+
+[node name="ApplySelect" type="CheckButton" parent="HBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Control2" type="HSeparator" parent="."]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Coords" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Coords"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label" type="Label" parent="Coords/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X Position"
+
+[node name="XPos" type="SpinBox" parent="Coords/GridContainer"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 9999.0
+alignment = 2
+editable = false
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="Coords/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Y Position"
+
+[node name="YPos" type="SpinBox" parent="Coords/GridContainer"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 9999.0
+alignment = 2
+editable = false
+suffix = "px"
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="Coords/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rotation"
+
+[node name="Rotation" type="SpinBox" parent="Coords/GridContainer"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 359.0
+alignment = 2
+update_on_text_changed = true
+suffix = "º"
+select_all_on_focus = true
+
+[node name="Control3" type="HSeparator" parent="."]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Stats" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="GridContainer" parent="Stats"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label2" type="Label" parent="Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hitpoints"
+
+[node name="Hitpoints" type="SpinBox" parent="Stats/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+value = 1.0
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Score"
+
+[node name="Score" type="SpinBox" parent="Stats/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+value = 10.0
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label4" type="Label" parent="Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pushable"
+
+[node name="Pushable" type="CheckBox" parent="Stats/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Can collide"
+
+[node name="Collider" type="CheckBox" parent="Stats/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Label5" type="Label" parent="Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Brick weight"
+
+[node name="Weight" type="SpinBox" parent="Stats/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="VBoxContainer3" type="GridContainer" parent="Stats"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 50
+columns = 2
+
+[node name="Label4" type="Label" parent="Stats/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path group"
+
+[node name="PathGroup" type="SpinBox" parent="Stats/VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="Stats/VBoxContainer3"]
+visible = false
+layout_mode = 2
+text = "Hit sound"
+
+[node name="HitSound" type="Control" parent="Stats/VBoxContainer3"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_meml4")
+
+[node name="Label3" type="Label" parent="Stats/VBoxContainer3"]
+visible = false
+layout_mode = 2
+text = "Kill sound"
+
+[node name="DeathSound" type="Control" parent="Stats/VBoxContainer3"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_meml4")

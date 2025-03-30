@@ -20,57 +20,30 @@ var current_build_number:int = 2;
 
 @export_group("Controls")
 @export var selector:Container;
-@export var brick_container:GridContainer;
-@export var texture_container:Control;
 @export var level_name:LineEdit;
 @export var save_button:Button;
 
 @export_group("Tool buttons")
 @export var place_tool:Button;
-@export var select_tool:Button;
 @export var paint_tool:Button;
+@export var select_tool:Button;
 @export var erase_tool:Button;
 @export var path_tool:Button;
+@export var snap_options_btn:Button;
+#@export var data_options_btn:Button;
 
 @export var mode_options:Control;
 
-@export_group("Snap controls")
-@export var snap_options_ctrl:Control;
-@export var snap_options_btn:Button;
-@export var use_snap_control:Button;
-@export var show_snap_grid:Button;
-@export var snap_width:SpinBox;
-@export var snap_height:SpinBox;
-@export var x_offset:SpinBox;
-@export var y_offset:SpinBox;
+@export_group("Setting controls")
+@export var brick_container:GridContainer;
+@export var texture_container:Control;
 var use_snap:bool = true;
 var snap_cell_size:Vector2i = Vector2i(6, 10);
 var snap_grid_offset:Vector2i = Vector2i(0, 0);
-
-@export_group("Data controls")
-@export var data_options_ctrl:Control;
-@export var data_options_btn:Button;
-@export var apply_brick_data_on_select_control:CheckButton;
-@export var brick_x_ctrl:SpinBox;
-@export var brick_y_ctrl:SpinBox;
-@export var brick_rot_ctrl:SpinBox;
-@export var brick_health_control:SpinBox;
-@export var brick_score_control:SpinBox;
-@export var brick_pushable_control:CheckBox;
-@export var brick_weight_control:SpinBox;
-@export var brick_can_collide_control:CheckBox;
-@export var brick_path_group_control:SpinBox;
-# @export var brick_hit_sound:Control;
-# @export var brick_kill_sound:Control;
+@export var data_options_ctrl:EditorDataSettings;
 var apply_on_select:bool = false;
-
-@export_group("Path controls")
-@export var path_options_ctrl:Control;
-@export var path_options_btn:Button;
-@export var path_number:SpinBox;
-@export var path_speed:SpinBox;
-@export var create_path_button:Button;
-@export var delete_path_button:Button;
+@export var path_options_ctrl:EditorPathSettings;
+@export var snap_options_ctrl:EditorSnapSettings;
 
 
 var level_num:String = "";
@@ -118,32 +91,30 @@ func _ready():
 	erase_tool.pressed.connect(set_tool.bind("erase"));
 	path_tool.pressed.connect(set_tool.bind("path"));
 
-	snap_options_btn.pressed.connect(show_options.bind("snap"));
-	use_snap_control.toggled.connect(set_snap);
-	show_snap_grid.toggled.connect(set_snap_visibility);
-	snap_width.value_changed.connect(set_snap_size.bind(0));
-	snap_height.value_changed.connect(set_snap_size.bind(1));
-	x_offset.value_changed.connect(set_snap_grid_offset.bind(0));
-	y_offset.value_changed.connect(set_snap_grid_offset.bind(1));
-	snap_cell_size = Vector2i(floor(snap_width.value), floor(snap_height.value));
-	snap_grid_offset = Vector2i(floor(x_offset.value), floor(y_offset.value));
-	use_snap = use_snap_control.button_pressed;
+	snap_options_btn.pressed.connect(set_tool.bind("snap"));
+	snap_options_ctrl.use_snap_control.toggled.connect(set_snap);
+	snap_options_ctrl.show_snap_grid.toggled.connect(set_snap_visibility);
+	snap_options_ctrl.snap_width.value_changed.connect(set_snap_size.bind(0));
+	snap_options_ctrl.snap_height.value_changed.connect(set_snap_size.bind(1));
+	snap_options_ctrl.x_offset.value_changed.connect(set_snap_grid_offset.bind(0));
+	snap_options_ctrl.y_offset.value_changed.connect(set_snap_grid_offset.bind(1));
+	snap_cell_size = Vector2i(floor(snap_options_ctrl.snap_width.value), floor(snap_options_ctrl.snap_height.value));
+	snap_grid_offset = Vector2i(floor(snap_options_ctrl.x_offset.value), floor(snap_options_ctrl.y_offset.value));
+	use_snap = snap_options_ctrl.use_snap_control.button_pressed;
 
-	mode_options.mouse_entered.connect(on_mouse_enter_options);
-	mode_options.mouse_exited.connect(on_mouse_leave_options);
+	#mode_options.mouse_entered.connect(on_mouse_enter_options);
+	#mode_options.mouse_exited.connect(on_mouse_leave_options);
 
-	data_options_btn.pressed.connect(show_options.bind("data"));
-	apply_brick_data_on_select_control.toggled.connect(set_apply_on_select);
-	apply_on_select = apply_brick_data_on_select_control.button_pressed;
-	brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
-	brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
-	brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
-	brick_path_group_control.value_changed.connect(on_select_path_group.bind(-1));
+	data_options_ctrl.apply_brick_data_on_select_control.toggled.connect(set_apply_on_select);
+	apply_on_select = data_options_ctrl.apply_brick_data_on_select_control.button_pressed;
+	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
+	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
+	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
+	data_options_ctrl.brick_path_group_control.value_changed.connect(on_select_path_group.bind(-1));
 
-	path_options_btn.pressed.connect(show_options.bind("path"));
-	create_path_button.pressed.connect(on_create_path);
-	delete_path_button.pressed.connect(on_delete_path);
-	path_number.value_changed.connect(on_select_path.bind(-1));
+	path_options_ctrl.create_path_button.pressed.connect(on_create_path);
+	path_options_ctrl.delete_path_button.pressed.connect(on_delete_path);
+	path_options_ctrl.path_number.value_changed.connect(on_select_path.bind(-1));
 
 	grid_drawer.size = mouse_boundary.get_child(0).shape.size;
 	set_snap_size(snap_cell_size.x, 0);
@@ -152,42 +123,42 @@ func _ready():
 	Logger.write(str("Ready."), "LevelEditor");
 
 func set_tool(type:String):
-	if loading_level or saving_level: return
+	if loading_level or saving_level: return;
+	if type not in ["place", "select", "paint", "erase", "path", "snap"]: return;
+
+	if type in ["place", "select", "paint", "erase", "path"]:
+		current_tool = type.to_lower();
+
+	brick_container.hide();
+	texture_container.hide();
+	data_options_ctrl.hide();
+	path_options_ctrl.hide();
+	snap_options_ctrl.hide();
+
 	match type.to_lower():
 		"place":
-			current_tool = type.to_lower();
 			brick_container.show();
-			texture_container.hide();
 			on_select_path(-1);
 		"select":
-			current_tool = type.to_lower();
-			brick_container.hide();
-			texture_container.hide();
-			show_options("data");
+			data_options_ctrl.show();
 			on_select_path(-1);
 			get_tree().call_group("PathLineVisual", "show");
 		"paint":
-			current_tool = type.to_lower();
-			brick_container.hide();
 			texture_container.show();
 			on_select_path(-1);
 		"erase":
-			current_tool = type.to_lower();
-			brick_container.hide();
-			texture_container.hide();
 			on_select_path(-1);
 		"path":
-			current_tool = type.to_lower();
-			brick_container.hide();
-			texture_container.hide();
-			on_select_path(path_number.value, -1);
-			show_options("path");
+			on_select_path(path_options_ctrl.path_number.value, -1);
+			path_options_ctrl.show();
+		"snap":
+			snap_options_ctrl.show();
 
 func _process(_delta):
 	if selected_brick:
-		brick_x_ctrl.call_deferred("set_value_no_signal", selected_brick.position.x);
-		brick_y_ctrl.call_deferred("set_value_no_signal", selected_brick.position.y);
-		brick_rot_ctrl.call_deferred("set_value_no_signal", selected_brick.rotation_degrees);
+		data_options_ctrl.brick_x_ctrl.call_deferred("set_value_no_signal", selected_brick.position.x);
+		data_options_ctrl.brick_y_ctrl.call_deferred("set_value_no_signal", selected_brick.position.y);
+		data_options_ctrl.brick_rot_ctrl.call_deferred("set_value_no_signal", selected_brick.rotation_degrees);
 
 	if loading_level or saving_level: return
 	if can_place_bricks and active_brick_sample:
@@ -203,25 +174,6 @@ func _process(_delta):
 		var idx:int = dragged_point.get_meta("point_idx");
 		selected_path.curve.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
 		selected_line.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
-
-func show_options(what:String):
-	if loading_level or saving_level: return
-	match what.to_lower():
-		"snap":
-			data_options_ctrl.hide();
-			path_options_ctrl.hide();
-			mode_options.size.y = 0;
-			snap_options_ctrl.show();
-		"data":
-			snap_options_ctrl.hide();
-			path_options_ctrl.hide();
-			mode_options.size.y = 0;
-			data_options_ctrl.show();
-		"path":
-			snap_options_ctrl.hide();
-			data_options_ctrl.hide();
-			mode_options.size.y = 0;
-			path_options_ctrl.show();
 
 func set_snap(flag:bool):
 	use_snap = flag;
@@ -244,13 +196,13 @@ func set_snap_grid_offset(amount:int, axis:int):
 func set_apply_on_select(toggled_on:bool):
 	apply_on_select = toggled_on
 	if toggled_on:
-		brick_x_ctrl.editable = false
-		brick_y_ctrl.editable = false
-		brick_rot_ctrl.editable = false
+		data_options_ctrl.brick_x_ctrl.editable = false
+		data_options_ctrl.brick_y_ctrl.editable = false
+		data_options_ctrl.brick_rot_ctrl.editable = false
 	else:
-		#brick_x_ctrl.editable = true # Fix UI move issue first
-		#brick_y_ctrl.editable = true
-		brick_rot_ctrl.editable = true
+		#data_options_ctrl.brick_x_ctrl.editable = true # Fix UI move issue first
+		#data_options_ctrl.brick_y_ctrl.editable = true
+		data_options_ctrl.brick_rot_ctrl.editable = true
 
 func set_active_res(res = null):
 	if res == null:
@@ -306,29 +258,29 @@ func on_create_path():
 
 	brick_paths_sprites.append([]);
 
-	path_number.max_value += 1;
-	brick_path_group_control.max_value += 1;
-	path_number.set_value_no_signal(brick_paths.size());
+	path_options_ctrl.path_number.max_value += 1;
+	data_options_ctrl.brick_path_group_control.max_value += 1;
+	path_options_ctrl.path_number.set_value_no_signal(brick_paths.size());
 
 	on_select_path(brick_paths.size() - 1);
 
 func on_delete_path():
 	if brick_paths.size() == 0: return;
-	var idx = floor(path_number.value) - 1;
+	var idx = floor(path_options_ctrl.path_number.value) - 1;
 	if idx < 0: return;
 
 	for point in brick_paths_sprites[idx]: point.queue_free();
 	brick_paths_sprites.remove_at(idx);
 	brick_paths_followers.remove_at(idx);
-	path_number.set_value_no_signal(idx);
+	path_options_ctrl.path_number.set_value_no_signal(idx);
 
 	reallocate_path_groups(idx);
 
-	path_number.max_value -= 1;
-	brick_path_group_control.max_value -= 1;
+	path_options_ctrl.path_number.max_value -= 1;
+	data_options_ctrl.brick_path_group_control.max_value -= 1;
 
-	if path_number.value <= 0: on_select_path(-1);
-	else: on_select_path(path_number.value, -1);
+	if path_options_ctrl.path_number.value <= 0: on_select_path(-1);
+	else: on_select_path(path_options_ctrl.path_number.value, -1);
 
 	brick_paths[idx].queue_free();
 	brick_paths.remove_at(idx);
@@ -404,29 +356,29 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if current_tool == "place":
 
 		if input.is_action_pressed("mouse_primary"):
-			if selected_brick_sample == null or active_brick_sample == null: return
-			if illegal_collision_detected: return
-			if collision_detected and not Input.is_action_pressed('shift'): return
+			if selected_brick_sample == null or active_brick_sample == null: return;
+			if illegal_collision_detected: return;
+			if collision_detected and not Input.is_action_pressed('shift'): return;
 
 			var new_brick:Brick
 			if selected_brick: new_brick = duplicate_bug_bypass(selected_brick);
-			else: new_brick = duplicate_bug_bypass(selected_brick_sample);#selected_brick_sample.duplicate();#BrickScene.instantiate()
-			#new_brick.set_base_sprite(selected_texture_path)
+			else: new_brick = duplicate_bug_bypass(selected_brick_sample);#selected_brick_sample.duplicate();#BrickScene.instantiate();
+			#new_brick.set_base_sprite(selected_texture_path);
 			level_content_bricks.add_child(new_brick);
 
-			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true)
-			new_brick.editor_hitbox.illegal_collision_freed.connect(func(): illegal_collision_detected = false)
+			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true);
+			new_brick.editor_hitbox.illegal_collision_freed.connect(func(): illegal_collision_detected = false);
 
-			new_brick.owner = level_content
-			new_brick.global_position = active_brick_sample.global_position
+			new_brick.owner = level_content;
+			new_brick.global_position = active_brick_sample.global_position;
 			
-			new_brick.health_comp.health = floor(brick_health_control.value)
-			new_brick.score_comp.score = floor(brick_score_control.value)
-			new_brick.freeze = not brick_pushable_control.button_pressed
-			new_brick.mass = brick_weight_control.value
+			new_brick.health_comp.health = floor(data_options_ctrl.brick_health_control.value);
+			new_brick.score_comp.score = floor(data_options_ctrl.brick_score_control.value);
+			new_brick.freeze = not data_options_ctrl.brick_pushable_control.button_pressed;
+			new_brick.mass = data_options_ctrl.brick_weight_control.value;
 
-			selected_brick = new_brick
-			refresh_brick_data_controls(selected_brick)
+			selected_brick = new_brick;
+			refresh_brick_data_controls(selected_brick);
 		return;
 
 	if current_tool == "select":
@@ -442,13 +394,13 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				selected_brick_sample = duplicate_bug_bypass(selected_brick); # Make a "Use selected" button instead.
 
 				if apply_on_select:
-					selected_brick.init_health = floor(brick_health_control.value);
-					selected_brick.init_score = floor(brick_score_control.value);
-					selected_brick.init_freeze = not brick_pushable_control.button_pressed;
-					selected_brick.init_mass = floor(brick_weight_control.value);
-					selected_brick.path_group = floor(brick_path_group_control.value) - 1;
-					on_select_path_group(floor(brick_path_group_control.value) - 1, 0, true);
-					if brick_can_collide_control.button_pressed:
+					selected_brick.init_health = floor(data_options_ctrl.brick_health_control.value);
+					selected_brick.init_score = floor(data_options_ctrl.brick_score_control.value);
+					selected_brick.init_freeze = not data_options_ctrl.brick_pushable_control.button_pressed;
+					selected_brick.init_mass = floor(data_options_ctrl.brick_weight_control.value);
+					selected_brick.path_group = floor(data_options_ctrl.brick_path_group_control.value) - 1;
+					on_select_path_group(floor(data_options_ctrl.brick_path_group_control.value) - 1, 0, true);
+					if data_options_ctrl.brick_can_collide_control.button_pressed:
 						selected_brick.collision_mask = 12;
 					else:
 						selected_brick.collision_mask = 8;
@@ -515,7 +467,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 				var point:Node2D = PathPointVisual.instantiate();
 				point.set_meta("point_idx", selected_path.curve.point_count - 1);
-				brick_paths_sprites[path_number.value - 1].append(point);
+				brick_paths_sprites[path_options_ctrl.path_number.value - 1].append(point);
 				level_content_path_visuals.add_child(point);
 				point.global_position = mouse_pos;
 				point.owner = level_content;	
@@ -533,9 +485,9 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				var remove_idx:int = result[0].collider.get_meta("point_idx");
 				
 				for i:int in range(remove_idx + 1, selected_path.curve.point_count):
-					brick_paths_sprites[path_number.value - 1][i].set_meta("point_idx", i - 1);
+					brick_paths_sprites[path_options_ctrl.path_number.value - 1][i].set_meta("point_idx", i - 1);
 					
-				brick_paths_sprites[path_number.value - 1].remove_at(remove_idx);
+				brick_paths_sprites[path_options_ctrl.path_number.value - 1].remove_at(remove_idx);
 				selected_path.curve.remove_point(remove_idx);
 				selected_line.remove_point(remove_idx);
 				result[0].collider.queue_free();
@@ -600,18 +552,18 @@ func get_mouse_position_snapped() -> Vector2:
 	return Vector2(snap_to_x, snap_to_y);
 
 func refresh_brick_data_controls(brick:Brick):
-	brick_x_ctrl.set_value_no_signal(brick.position.x);
-	brick_y_ctrl.set_value_no_signal(brick.position.y);
-	brick_rot_ctrl.set_value_no_signal(brick.rotation_degrees);
-	brick_health_control.set_value_no_signal(brick.init_health);
-	brick_score_control.set_value_no_signal(brick.init_score);
-	brick_pushable_control.set_pressed_no_signal(not brick.init_freeze);
-	brick_weight_control.set_value_no_signal(brick.init_mass);
-	brick_path_group_control.set_value_no_signal(brick.path_group + 1);
+	data_options_ctrl.brick_x_ctrl.set_value_no_signal(brick.position.x);
+	data_options_ctrl.brick_y_ctrl.set_value_no_signal(brick.position.y);
+	data_options_ctrl.brick_rot_ctrl.set_value_no_signal(brick.rotation_degrees);
+	data_options_ctrl.brick_health_control.set_value_no_signal(brick.init_health);
+	data_options_ctrl.brick_score_control.set_value_no_signal(brick.init_score);
+	data_options_ctrl.brick_pushable_control.set_pressed_no_signal(not brick.init_freeze);
+	data_options_ctrl.brick_weight_control.set_value_no_signal(brick.init_mass);
+	data_options_ctrl.brick_path_group_control.set_value_no_signal(brick.path_group + 1);
 	if brick.collision_mask == 8:
-		brick_can_collide_control.set_pressed_no_signal(false);
+		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(false);
 	elif brick.collision_mask == 12:
-		brick_can_collide_control.set_pressed_no_signal(true);
+		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
@@ -690,7 +642,7 @@ func save_level():
 	new_level.pack(level_content);
 
 	level_content_path_visuals.hide();
-	mode_options.hide();
+	#mode_options.hide();
 	set_snap_visibility(false);
 	await get_tree().create_timer(0.25).timeout; # Give the UI time to hide.
 

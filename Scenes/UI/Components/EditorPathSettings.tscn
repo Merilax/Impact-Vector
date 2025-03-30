@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlo0wejwxqii0"]
+
+[ext_resource type="Script" uid="uid://c1ykdsekov41t" path="res://Scripts/UI/Components/EditorPathSettings.gd" id="1_8ww4a"]
+[ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="1_qekrq"]
+[ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="2_8ww4a"]
+[ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_3j4ph"]
+
+[node name="Path" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "create_path_button", "delete_path_button")]
+visible = false
+script = ExtResource("1_8ww4a")
+path_number = NodePath("HBoxContainer2/PathNumber")
+path_speed = NodePath("HBoxContainer/PathSpeed")
+create_path_button = NodePath("HBoxContainer2/CreatePath")
+delete_path_button = NodePath("HBoxContainer2/DeletePath")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Selected path:"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PathNumber" type="SpinBox" parent="HBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Control" type="Control" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreatePath" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 1
+theme = ExtResource("1_qekrq")
+icon = ExtResource("2_8ww4a")
+
+[node name="DeletePath" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+theme = ExtResource("1_qekrq")
+icon = ExtResource("3_3j4ph")
+
+[node name="VSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path speed"
+
+[node name="PathSpeed" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+alignment = 2

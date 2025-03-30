@@ -3,9 +3,9 @@ class_name Game
 
 var current_build_number:int = 2;
 
-@export var campaign_path:String
-@export var campaign_num:String
-@export var level_num:String
+var campaign_path:String
+var campaign_num:String
+var level_num:String
 
 var save_state:SaveGameData;
 
@@ -115,16 +115,18 @@ func _ready():
 	get_window().focus_entered.connect(func(): tabbed_out = false);
 	tabbed_out = get_window().has_focus();
 
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
-	$"DeathZone".body_entered.connect(_on_ball_lost)
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+	$"DeathZone".body_entered.connect(_on_ball_lost);
+
+	escape_layer.menu_closed.connect(func(): if paddle: DisplayServer.warp_mouse(paddle.global_position)); # Hacky
 
 	if notification_window_timer:
 		notification_window_timer.timeout.connect(func(): notification_text_window.text = ""; notification_score_window.text = "");
 
 	for life in lives:
-		life_counter.add_child(BallLifeRect.instantiate())
+		life_counter.add_child(BallLifeRect.instantiate());
 
-	change_speed.connect(speed_counter.set_mult)
+	change_speed.connect(speed_counter.set_mult);
 
 	for i in range(0, pickup_list.size()):
 		total_pickup_weight += pickup_list[i].weight;
@@ -134,7 +136,7 @@ func _ready():
 	else:
 		await load_level(campaign_path + campaign_num + "/" + level_num + "/");
 
-	get_tree().node_added.connect(_on_child_entered_tree)
+	get_tree().node_added.connect(_on_child_entered_tree);
 
 	transitioning_levels = false;
 	await spawn_paddle();
@@ -146,7 +148,7 @@ func _process(_delta):
 	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
 
-	if paddle and not tabbed_out: # Odd bug, no clue why, but the mouse does not get clamped if it moves out while escaped (EscapeLayer).
+	if paddle and not tabbed_out: # Odd bug, no clue why, but the mouse does not get clamped back to the paddle if it moves out while escaped and resuming game (EscapeLayer).
 		if (DisplayServer.mouse_get_position().x < world_border.wall_left.global_position.x + (paddle.width / 2)):
 			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
 		if (DisplayServer.mouse_get_position().x > world_border.wall_right.global_position.x - (paddle.width / 2)):
@@ -305,11 +307,12 @@ func notify(display_text:String, display_score:String):
 	notification_window_timer.start();
 
 func game_over(game_won:bool):
-	escape_layer.forbid_unescape = true;
+	escape_layer.forbid_unescape = true; # Don't let the Escape key do anything anymore, it's over. 
 	Logger.write(str("Game over."), "Level");
 	can_spawn_balls = false
 	if game_won == true:
 		DirAccess.remove_absolute("user://SaveGameData.tres");
+		Logger.write(str("Deleted game in progress data."), "Level");
 	game_over_signal.emit(game_won);
 
 func win():
