@@ -179,6 +179,7 @@ func _process(_delta):
 		dragged_point.global_position = get_mouse_position_snapped();
 		selected_path.curve.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
 		selected_path.line.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
+		selected_path.transformer.position = Vector2.ZERO;
 
 func set_snap(flag:bool):
 	use_snap = flag;
@@ -254,6 +255,7 @@ func on_create_path():
 	remote_offset.owner = level_content;
 
 	path.transform_target = remote_offset;
+	# path.transformer.remote_path = path.transformer.get_path_to(path.transform_target); # Taken care of in Path.ready(), but can be uncommented to move bric groups in editor. Potentially useful?
 
 	path_options_ctrl.path_number.max_value += 1;
 	data_options_ctrl.brick_path_group_control.max_value += 1;
@@ -439,8 +441,9 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				var point:Node2D = PathPointVisual.instantiate();
 				point.set_meta("point_idx", selected_path.curve.point_count - 1);
 				selected_path.points_node.add_child(point);
+				selected_path.transformer.position = Vector2.ZERO;
 				point.global_position = mouse_pos;
-				point.owner = level_content;	
+				point.owner = level_content;
 			return;			
 
 		# Delete point
@@ -627,6 +630,7 @@ func save_level():
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		brick.hitbox.owner = level_content;
 	on_select_path(brick_paths.size() - 1);
+	
 	
 	Logger.write(str("Packing Scene."), "LevelEditor");
 	new_level.pack(level_content);
