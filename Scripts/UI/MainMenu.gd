@@ -127,12 +127,12 @@ func play_level(level_num:String, savedata:SaveGameData = null):
 			start_game.emit(campaign_path, campaign_folder, level_num, savedata);
 
 func edit_level(level_num:String):
-	Logger.write("Editign level: " + level_num, "MainMenu");
+	Logger.write("Editing level: " + level_num, "MainMenu");
 	if FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn"):
 		open_editor.emit(campaign_path, campaign_folder, level_num);
 
 func delete_level(level_num:String, origin:Control):
-	Logger.write("Deletign level: " + level_num, "MainMenu");
+	Logger.write("Deleting level: " + level_num, "MainMenu");
 	origin.queue_free();
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn");
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/data.tres");

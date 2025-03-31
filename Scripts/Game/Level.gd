@@ -88,7 +88,6 @@ var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 var level_content:Node2D;
 var level_content_bricks:Node2D;
 var level_content_paths:Node2D;
-var level_content_path_visuals:Node2D;
 @export var background:Parallax2D;
 @export var escape_layer:EscapeLayer;
 
@@ -148,11 +147,12 @@ func _process(_delta):
 	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
 
-	if paddle and not tabbed_out: # Odd bug, no clue why, but the mouse does not get clamped back to the paddle if it moves out while escaped and resuming game (EscapeLayer).
-		if (DisplayServer.mouse_get_position().x < world_border.wall_left.global_position.x + (paddle.width / 2)):
-			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
-		if (DisplayServer.mouse_get_position().x > world_border.wall_right.global_position.x - (paddle.width / 2)):
-			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , DisplayServer.mouse_get_position().y));
+	if paddle and not tabbed_out:
+		var mouse_pos = get_viewport().get_mouse_position();
+		if (mouse_pos.x < world_border.wall_left.global_position.x + (paddle.width / 2)):
+			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , mouse_pos.y));
+		if (mouse_pos.x > world_border.wall_right.global_position.x - (paddle.width / 2)):
+			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , mouse_pos.y));
 
 func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
@@ -404,14 +404,11 @@ func init_brick(brick, set_hidden:bool = false):
 						brick.pickup_comp.pickup_sprite = pickup_list[i].texture;
 						break;
 
-func init_path(path, time, returning:bool = true):
-	var line:PathFollow2D = path.get_child(0);
-
-	var tween:Tween = get_tree().create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT).set_loops();
-	tween.bind_node(line);
-	tween.tween_property(line, "progress_ratio", 1, time).from(0);
-	if returning:
-		tween.tween_property(line, "progress_ratio", 0, time).from(1);
+func init_path(path:BrickPath):
+	var tween:Tween = path.follower.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT).set_loops();
+	tween.tween_property(path.follower, "progress_ratio", 1, path.speed / 100).from(0);
+	if not path.looped: # Back & forth
+		tween.tween_property(path.follower, "progress_ratio", 0, path.speed / 100).from(1);
 
 func kill_paddle():
 	if is_instance_valid(paddle):
@@ -526,9 +523,9 @@ func load_level(dir:String) -> bool:
 		upgrade_version(level_data);
 
 	level_content_bricks = level_content.find_child("Bricks");
-	level_content_paths = level_content.find_child("BrickPaths").find_child("Paths");
-	level_content_path_visuals = level_content.find_child("BrickPaths").find_child("Visuals");
-	level_content_path_visuals.hide();
+	level_content_paths = level_content.find_child("Paths");
+	get_tree().call_group("PathLineVisual", "hide");
+	get_tree().call_group("PathPointVisual", "hide");
 
 	background.retrigger(); # Might tie to level data in the future
 	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece
@@ -542,8 +539,8 @@ func load_level(dir:String) -> bool:
 		brick.show();
 	
 	Logger.write(str("Initializing Paths."), "Level");
-	for path:Path2D in level_content_paths.get_children():
-		init_path(path, 2, true); # Parametrize time, parametrize looping
+	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
+		init_path(path);
 	
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;
@@ -576,30 +573,17 @@ func upgrade_version(data:LevelData):
 			level_content.add_child(new_level_content_bricks, true);
 			new_level_content_bricks.owner = level_content;
 
-			for node:Node2D in level_content.get_children():
-				if node.is_in_group("Brick"):
-					node.reparent(new_level_content_bricks);
-
-			# Add BrickPaths container
-			var new_level_content_brick_paths := Node2D.new();
-			new_level_content_brick_paths.name = "BrickPaths";
-			level_content.add_child(new_level_content_brick_paths, true);
-			new_level_content_brick_paths.owner = level_content;
+			for node:Brick in get_tree().get_nodes_in_group("Brick"):
+				node.reparent(new_level_content_bricks);
 
 			# Add Paths container
 			var new_level_content_paths := Node2D.new();
 			new_level_content_paths.name = "Paths";
-			new_level_content_brick_paths.add_child(new_level_content_paths, true);
+			level_content.add_child(new_level_content_paths, true);
 			new_level_content_paths.owner = level_content;
-
-			# Add Visuals container
-			var new_level_content_path_visuals := Node2D.new();
-			new_level_content_path_visuals.name = "Visuals";
-			new_level_content_brick_paths.add_child(new_level_content_path_visuals, true);
-			new_level_content_path_visuals.owner = level_content;
 			
 	data.build_number += 1;
-	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "Level");
+	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
 	upgrade_version(data);
 
 func save_gamedata():

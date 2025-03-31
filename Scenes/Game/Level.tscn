@@ -65,7 +65,7 @@ notification_window_timer = NodePath("UILayer/SidebarR/MarginContainer/VBoxConta
 score_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
 speed_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/SpeedVar")
 life_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
-world_border = NodePath("WorldBorder")
+world_border = NodePath("LevelContentOffset/WorldBorder")
 ball_container = NodePath("Balls")
 background = NodePath("Background")
 escape_layer = NodePath("EscapeLayer")
@@ -83,9 +83,6 @@ script = ExtResource("2_hdl1t")
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 
-[node name="WorldBorder" parent="." instance=ExtResource("2_b1du0")]
-position = Vector2(40, 0)
-
 [node name="DeathZone" type="Area2D" parent="."]
 position = Vector2(766, 1168)
 
@@ -93,7 +90,9 @@ position = Vector2(766, 1168)
 shape = SubResource("RectangleShape2D_pborx")
 
 [node name="LevelContentOffset" type="Node2D" parent="."]
-position = Vector2(40, 0)
+position = Vector2(42, 0)
+
+[node name="WorldBorder" parent="LevelContentOffset" instance=ExtResource("2_b1du0")]
 
 [node name="Balls" type="Node2D" parent="."]
 

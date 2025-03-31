@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dtkn1xk6stg0v"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
-[ext_resource type="Script" uid="uid://vcqvg3lp5gj2" path="res://Scripts/Game/Bricks/Brick.gd" id="2_sndss"]
+[ext_resource type="Script" uid="uid://lka5qbnsai4d" path="res://Scripts/Game/Brick.gd" id="2_yncpm"]
 [ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="3_wd6an"]
 [ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_o56l3"]
 [ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Game/Components/HealthComp.tscn" id="5_mnfrv"]
@@ -25,7 +25,7 @@ linear_damp_mode = 1
 linear_damp = 2.0
 angular_damp_mode = 1
 angular_damp = 5.0
-script = ExtResource("2_sndss")
+script = ExtResource("2_yncpm")
 base_sprite = NodePath("Sprite")
 texture_sprite = NodePath("Sprite/TextureSprite")
 health_comp = NodePath("HealthComp")

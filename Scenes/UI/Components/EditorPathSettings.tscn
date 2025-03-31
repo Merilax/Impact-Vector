@@ -5,11 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="2_8ww4a"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_3j4ph"]
 
-[node name="Path" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "create_path_button", "delete_path_button")]
+[node name="Path" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "path_looped", "create_path_button", "delete_path_button")]
 visible = false
+offset_right = 194.0
+offset_bottom = 144.0
 script = ExtResource("1_8ww4a")
 path_number = NodePath("HBoxContainer2/PathNumber")
 path_speed = NodePath("HBoxContainer/PathSpeed")
+path_looped = NodePath("HBoxContainer/PathLooped")
 create_path_button = NodePath("HBoxContainer2/CreatePath")
 delete_path_button = NodePath("HBoxContainer2/DeletePath")
 
@@ -64,4 +67,17 @@ text = "Path speed"
 [node name="PathSpeed" type="SpinBox" parent="HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
+max_value = 500.0
+value = 250.0
+rounded = true
 alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path looped"
+
+[node name="PathLooped" type="CheckBox" parent="HBoxContainer"]
+layout_mode = 2

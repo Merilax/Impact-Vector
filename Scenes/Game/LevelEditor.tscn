@@ -33,15 +33,14 @@ size = Vector2(1437, 940)
 [sub_resource type="Theme" id="Theme_r56k3"]
 default_font_size = 26
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "level_content", "level_content_bricks", "grid_drawer", "level_content_paths", "level_content_path_visuals", "selector", "level_name", "save_button", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "grid_drawer", "level_content", "level_content_bricks", "level_content_paths", "selector", "level_name", "save_button", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl")]
 script = ExtResource("1_ur272")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
+grid_drawer = NodePath("LevelEditor/Grid")
 level_content = NodePath("LevelEditor/LevelContent")
 level_content_bricks = NodePath("LevelEditor/LevelContent/Bricks")
-grid_drawer = NodePath("LevelEditor/Grid")
-level_content_paths = NodePath("LevelEditor/LevelContent/BrickPaths/Paths")
-level_content_path_visuals = NodePath("LevelEditor/LevelContent/BrickPaths/Visuals")
+level_content_paths = NodePath("LevelEditor/LevelContent/Paths")
 selector = NodePath("EditorUI/SideBarR/Selector")
 level_name = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/LineEdit")
 save_button = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/SaveBtn")
@@ -84,11 +83,7 @@ script = ExtResource("3_pm5sq")
 
 [node name="Bricks" type="Node2D" parent="LevelEditor/LevelContent"]
 
-[node name="BrickPaths" type="Node2D" parent="LevelEditor/LevelContent"]
-
-[node name="Paths" type="Node2D" parent="LevelEditor/LevelContent/BrickPaths"]
-
-[node name="Visuals" type="Node2D" parent="LevelEditor/LevelContent/BrickPaths"]
+[node name="Paths" type="Node2D" parent="LevelEditor/LevelContent"]
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 

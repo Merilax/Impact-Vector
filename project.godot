@@ -62,6 +62,7 @@ Wall=""
 Bullet=""
 PathPointVisual=""
 PathLineVisual=""
+Path=""
 
 [input]
 

@@ -29,6 +29,7 @@ func _process(_delta):
 			if forbid_unescape: return;
 			hide();
 			Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+			menu_closed.emit();
 			get_tree().paused = false;
 		
 func return_to_game():
@@ -36,6 +37,7 @@ func return_to_game():
 	if forbid_unescape: return;
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
 	menu_closed.emit();
+	#DisplayServer.warp_mouse(game_root.paddle.global_position);
 	get_tree().paused = false;
 
 func open_settings():

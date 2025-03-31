@@ -32,7 +32,7 @@ func play_level(campaign_path, campaign_num, level_num, savedata):
 	Logger.write("Finished loading Level.", "Root");
 
 func open_editor(campaign_path:String, campaign_num:String, level_num:String = ""):
-	Logger.write(str("Instantiating LevelEditor: ", campaign_path, campaign_num, level_num), "Root");
+	Logger.write(str("Instantiating LevelEditor: ", campaign_path, campaign_num, "/", level_num), "Root");
 
 	var LevelEditorScene:PackedScene = load("uid://bhtapwwblyog3");
 	var editor:LevelEditor = LevelEditorScene.instantiate();
@@ -43,7 +43,7 @@ func open_editor(campaign_path:String, campaign_num:String, level_num:String = "
 		editor.load_level(level_num);
 	self.queue_free();
 
-	Logger.write(str("Finished laoding LevelEditor: ", campaign_path, campaign_num, level_num), "Root");
+	Logger.write(str("Finished loading LevelEditor: ", campaign_path, campaign_num, "/", level_num), "Root");
 
 func open_settings():
 	main_menu.hide();

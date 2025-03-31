@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmtfn8g03wdp8"]
+
+[ext_resource type="Script" uid="uid://crvgnxifcrgnh" path="res://Scripts/Game/Path.gd" id="1_jkl7x"]
+
+[sub_resource type="Curve2D" id="Curve2D_ifem0"]
+
+[node name="Path2D" type="Path2D" node_paths=PackedStringArray("follower", "transformer", "line", "points_node") groups=["Path"]]
+curve = SubResource("Curve2D_ifem0")
+script = ExtResource("1_jkl7x")
+follower = NodePath("PathFollow2D")
+transformer = NodePath("PathFollow2D/RemoteTransform2D")
+line = NodePath("Visuals/Line2D")
+points_node = NodePath("Visuals/Points")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotates = false
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
+update_rotation = false
+update_scale = false
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Points" type="Node2D" parent="Visuals"]
+
+[node name="Line2D" type="Line2D" parent="Visuals" groups=["PathLineVisual"]]

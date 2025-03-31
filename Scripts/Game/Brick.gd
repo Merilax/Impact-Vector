@@ -21,7 +21,7 @@ signal brick_destroyed();
 
 @export var init_health:int = 1;
 @export var init_score:int = 10;
-@export var init_freeze:bool = true;
+@export var init_pushable:bool = false;
 @export var init_mass:int = 5;
 @export var path_group:int = -1;
 
@@ -31,14 +31,14 @@ var tweening_shader:bool = false;
 var tweening_size:bool = false;
 
 func setup(as_editable:bool = true):
-	self.visible = true
-	set_base_sprite(base_texture_path)
+	self.visible = true;
+	set_base_sprite(base_texture_path);
 
-	freeze = init_freeze
-	mass = init_mass
+	freeze = not init_pushable;
+	mass = init_mass;
 
 	if shader_color:
-		texture_sprite.material.set_shader_parameter("to", shader_color)
+		texture_sprite.material.set_shader_parameter("to", shader_color);
 
 	is_editor = as_editable;
 	if is_editor: setup_as_editable();

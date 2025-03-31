@@ -2,6 +2,7 @@ extends Node2D
 class_name LevelEditor
 
 var BrickScene = preload("uid://dtkn1xk6stg0v");
+var BrickPathScene = preload("uid://cmtfn8g03wdp8");
 var GodotIcon = preload("uid://dj47yk43bh08r");
 var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 
@@ -12,11 +13,11 @@ var current_build_number:int = 2;
 @export_group("Nodes")
 @export var mouse_boundary:Area2D;
 @export var world_border:WorldBorder;
+@export var grid_drawer:Node2D;
 @export var level_content:Node2D;
 @export var level_content_bricks:Node2D;
-@export var grid_drawer:Node2D;
 @export var level_content_paths:Node2D;
-@export var level_content_path_visuals:Node2D;
+# @export var level_content_path_visuals:Node2D;
 
 @export_group("Controls")
 @export var selector:Container;
@@ -49,11 +50,7 @@ var apply_on_select:bool = false;
 var level_num:String = "";
 var campaign_num:String;
 var campaign_path:String;
-var brick_paths:Array = [];
-var brick_paths_followers:Array = [];
-var brick_paths_lines:Array = [];
-var brick_paths_sprites:Array = [];
-var brick_paths_transformers:Dictionary = {};
+var brick_paths:Array[BrickPath] = [];
 
 var can_place_bricks:bool = false;
 var selected_brick_sample:Brick;
@@ -63,8 +60,7 @@ var selected_texture_path:String;
 var selected_texture_shader:Color;
 
 var selected_brick:Brick
-var selected_path:Path2D;
-var selected_line:Line2D;
+var selected_path:BrickPath;
 var dragged_point:Node2D;
 
 var collision_detected:bool
@@ -110,11 +106,18 @@ func _ready():
 	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
 	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
 	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
+	data_options_ctrl.brick_health_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_health = value);
+	data_options_ctrl.brick_score_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_score = value);
+	data_options_ctrl.brick_pushable_control.pressed.connect(func(): if selected_brick: set_brick_can_be_pushed(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed));
+	data_options_ctrl.brick_weight_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_mass = value);
+	data_options_ctrl.brick_can_collide_control.pressed.connect(func(): if selected_brick: set_brick_sollision(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed));
 	data_options_ctrl.brick_path_group_control.value_changed.connect(on_select_path_group.bind(-1));
 
 	path_options_ctrl.create_path_button.pressed.connect(on_create_path);
 	path_options_ctrl.delete_path_button.pressed.connect(on_delete_path);
 	path_options_ctrl.path_number.value_changed.connect(on_select_path.bind(-1));
+	path_options_ctrl.path_speed.value_changed.connect(func(value): if selected_path: selected_path.speed = value);
+	path_options_ctrl.path_looped.pressed.connect(func(): if selected_path: selected_path.looped = path_options_ctrl.path_looped.button_pressed);
 
 	grid_drawer.size = mouse_boundary.get_child(0).shape.size;
 	set_snap_size(snap_cell_size.x, 0);
@@ -134,6 +137,8 @@ func set_tool(type:String):
 	data_options_ctrl.hide();
 	path_options_ctrl.hide();
 	snap_options_ctrl.hide();
+	get_tree().call_group("PathPointVisual", "hide");
+	get_tree().call_group("PathLineVisual", "hide");
 
 	match type.to_lower():
 		"place":
@@ -168,12 +173,12 @@ func _process(_delta):
 		#Input.set_custom_mouse_cursor(null, Input.CURSOR_ARROW);
 		release_drag_point();
 
-	if dragged_point and can_place_bricks and selected_path and selected_line:
+	if dragged_point and can_place_bricks and selected_path:
 		#Input.set_custom_mouse_cursor(null, Input.CURSOR_DRAG); Doesn't work, not a priority.
-		dragged_point.global_position = get_mouse_position_snapped();
 		var idx:int = dragged_point.get_meta("point_idx");
+		dragged_point.global_position = get_mouse_position_snapped();
 		selected_path.curve.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
-		selected_line.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
+		selected_path.line.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
 
 func set_snap(flag:bool):
 	use_snap = flag;
@@ -220,9 +225,9 @@ func set_active_res(res = null):
 		
 		var brick:Brick = BrickScene.instantiate();
 		var temp_hitbox:Node2D = res.hitbox.instantiate();
-		brick.hitbox = temp_hitbox;
 		brick.add_child(temp_hitbox, true);
 		temp_hitbox.owner = brick;
+		brick.hitbox = temp_hitbox;
 		brick.base_texture_path = res.texture_path;
 		brick.setup(true);
 
@@ -237,26 +242,18 @@ func set_active_res(res = null):
 		selected_texture_shader = Color(1, 1, 1, 1);
 
 func on_create_path():
-	var path := Path2D.new();
-	path.curve = Curve2D.new();
-	brick_paths.append(path);
+	var path:BrickPath = BrickPathScene.instantiate();
 	level_content_paths.add_child(path);
 	path.owner = level_content;
+	brick_paths.append(path);
 
-	var path_follow := PathFollow2D.new();
-	path_follow.rotates = false;
-	path_follow.loop = false; # TODO parametrize
-	brick_paths_followers.append(path_follow);
-	path.add_child(path_follow);
-	path_follow.owner = level_content;
+	var remote_offset := Node2D.new();
+	remote_offset.name = str("RemoteOffsetPath", brick_paths.size() - 1);
+	level_content_bricks.add_child(remote_offset, true);
+	remote_offset.global_position = path.transformer.global_position;
+	remote_offset.owner = level_content;
 
-	var line := Line2D.new();
-	line.add_to_group("PathLineVisual");
-	brick_paths_lines.append(line);
-	level_content_path_visuals.add_child(line);
-	line.owner = level_content;
-
-	brick_paths_sprites.append([]);
+	path.transform_target = remote_offset;
 
 	path_options_ctrl.path_number.max_value += 1;
 	data_options_ctrl.brick_path_group_control.max_value += 1;
@@ -266,12 +263,10 @@ func on_create_path():
 
 func on_delete_path():
 	if brick_paths.size() == 0: return;
+	if not selected_path: return;
 	var idx = floor(path_options_ctrl.path_number.value) - 1;
 	if idx < 0: return;
 
-	for point in brick_paths_sprites[idx]: point.queue_free();
-	brick_paths_sprites.remove_at(idx);
-	brick_paths_followers.remove_at(idx);
 	path_options_ctrl.path_number.set_value_no_signal(idx);
 
 	reallocate_path_groups(idx);
@@ -282,10 +277,9 @@ func on_delete_path():
 	if path_options_ctrl.path_number.value <= 0: on_select_path(-1);
 	else: on_select_path(path_options_ctrl.path_number.value, -1);
 
+	brick_paths[idx].transform_target.queue_free();
 	brick_paths[idx].queue_free();
 	brick_paths.remove_at(idx);
-	brick_paths_lines[idx].queue_free();
-	brick_paths_lines.remove_at(idx);
 
 func on_select_path(value:float, offset:int = 0):
 	var idx:int = floor(value + offset);
@@ -295,26 +289,24 @@ func on_select_path(value:float, offset:int = 0):
 
 	if idx < 0:
 		selected_path = null;
-		selected_line = null;
 		return;
 
 	selected_path = brick_paths[idx];
-	selected_line = brick_paths_lines[idx];
-	brick_paths_lines[idx].show();
-	for point in brick_paths_sprites[idx]:
-		point.show();
+	selected_path.line.show();
+	selected_path.points_node.show();
+
+	path_options_ctrl.path_speed.set_value_no_signal(selected_path.get_meta("path_speed", 250));
+	path_options_ctrl.path_looped.set_pressed_no_signal(selected_path.get_meta("path_looped", false));
 
 func reallocate_path_groups(deleted_idx:int):
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
+		if brick.path_group < deleted_idx: continue;
 		if brick.path_group == deleted_idx:
 			brick.path_group = -1;
 			brick.reparent(level_content_bricks);
-			var transformer:RemoteTransform2D = brick_paths_transformers.find_key(brick);
-			if transformer:
-				brick_paths_transformers.erase(transformer);
-				transformer.queue_free();
 		if brick.path_group > deleted_idx:
 			brick.path_group -= 1;
+			brick.reparent(level_content_bricks.find_child(str("RemoteOffsetPath", brick.path_group)));
 
 func release_drag_point():
 	if not dragged_point or not selected_path: return;
@@ -326,30 +318,13 @@ func on_select_path_group(value:float, offset:int = 0, force_select:bool = false
 	# Enabling apply on select and then changing the path group SpinBox
 	# would trigger this method on the currently selected brick, so it must be filtered.
 	if apply_on_select and not force_select: return;
+	if not selected_brick: return;
 
-	if idx < 0 and selected_brick:
-		var to_remove:RemoteTransform2D = brick_paths_transformers.find_key(selected_brick);
-		brick_paths_transformers.erase(to_remove);
-		to_remove.get_child(0).get_child(0).reparent(level_content_bricks); # Get offset node and then the Brick inside it.
-		to_remove.queue_free();
-		return;
+	selected_brick.reparent(level_content_bricks);
 
-	var remote_transform := RemoteTransform2D.new();
-	brick_paths_followers[idx].add_child(remote_transform);
-	remote_transform.global_position = get_mouse_position_snapped();
-	remote_transform.update_scale = false;
-	remote_transform.update_rotation = false;
-	remote_transform.owner = level_content;
-
-	var remote_offset:Node2D = Node2D.new();
-	remote_transform.add_child(remote_offset);
-	remote_offset.owner = level_content;
-	brick_paths_transformers[remote_transform] = remote_offset;
-
-	remote_transform.remote_path = get_path_to(selected_brick);
-
-	selected_brick.reparent(remote_offset);
-	selected_brick.path_group = idx; # TODO remove previous transform !!!
+	if value >= 0:
+		selected_brick.reparent(brick_paths[idx].transform_target);
+		selected_brick.path_group = idx;
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if loading_level or saving_level: return
@@ -362,9 +337,8 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 			var new_brick:Brick
 			if selected_brick: new_brick = duplicate_bug_bypass(selected_brick);
-			else: new_brick = duplicate_bug_bypass(selected_brick_sample);#selected_brick_sample.duplicate();#BrickScene.instantiate();
-			#new_brick.set_base_sprite(selected_texture_path);
-			level_content_bricks.add_child(new_brick);
+			else: new_brick = duplicate_bug_bypass(selected_brick_sample);
+			level_content_bricks.add_child(new_brick, true);
 
 			new_brick.editor_hitbox.illegal_collision_detected.connect(func(): illegal_collision_detected = true);
 			new_brick.editor_hitbox.illegal_collision_freed.connect(func(): illegal_collision_detected = false);
@@ -396,14 +370,11 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				if apply_on_select:
 					selected_brick.init_health = floor(data_options_ctrl.brick_health_control.value);
 					selected_brick.init_score = floor(data_options_ctrl.brick_score_control.value);
-					selected_brick.init_freeze = not data_options_ctrl.brick_pushable_control.button_pressed;
+					set_brick_can_be_pushed(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
 					selected_brick.init_mass = floor(data_options_ctrl.brick_weight_control.value);
 					selected_brick.path_group = floor(data_options_ctrl.brick_path_group_control.value) - 1;
 					on_select_path_group(floor(data_options_ctrl.brick_path_group_control.value) - 1, 0, true);
-					if data_options_ctrl.brick_can_collide_control.button_pressed:
-						selected_brick.collision_mask = 12;
-					else:
-						selected_brick.collision_mask = 8;
+					set_brick_sollision(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
 					
 					#selected_brick.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
 					selected_brick.tween_size(Vector2(0.7, 0.7), 0.1, true);
@@ -463,12 +434,11 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				# Add point
 				var mouse_pos:Vector2 = get_mouse_position_snapped();
 				selected_path.curve.add_point(mouse_pos - level_content.global_position);
-				selected_line.add_point(mouse_pos - level_content.global_position);
+				selected_path.line.add_point(mouse_pos - level_content.global_position);
 
 				var point:Node2D = PathPointVisual.instantiate();
 				point.set_meta("point_idx", selected_path.curve.point_count - 1);
-				brick_paths_sprites[path_options_ctrl.path_number.value - 1].append(point);
-				level_content_path_visuals.add_child(point);
+				selected_path.points_node.add_child(point);
 				point.global_position = mouse_pos;
 				point.owner = level_content;	
 			return;			
@@ -484,12 +454,14 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			if result.size() > 0:
 				var remove_idx:int = result[0].collider.get_meta("point_idx");
 				
-				for i:int in range(remove_idx + 1, selected_path.curve.point_count):
-					brick_paths_sprites[path_options_ctrl.path_number.value - 1][i].set_meta("point_idx", i - 1);
-					
-				brick_paths_sprites[path_options_ctrl.path_number.value - 1].remove_at(remove_idx);
+				for point:Sprite2D in selected_path.points_node.get_children():
+					if point.get_meta("point_idx") <= remove_idx:
+						point.queue_free();
+						continue;
+					point.set_meta("point_idx", point.get_meta("point_idx") - 1);
+				
 				selected_path.curve.remove_point(remove_idx);
-				selected_line.remove_point(remove_idx);
+				selected_path.line.remove_point(remove_idx);
 				result[0].collider.queue_free();
 
 				if selected_path.curve.point_count == 0:
@@ -557,7 +529,11 @@ func refresh_brick_data_controls(brick:Brick):
 	data_options_ctrl.brick_rot_ctrl.set_value_no_signal(brick.rotation_degrees);
 	data_options_ctrl.brick_health_control.set_value_no_signal(brick.init_health);
 	data_options_ctrl.brick_score_control.set_value_no_signal(brick.init_score);
-	data_options_ctrl.brick_pushable_control.set_pressed_no_signal(not brick.init_freeze);
+	data_options_ctrl.brick_pushable_control.set_pressed_no_signal(brick.init_pushable);
+	if brick.init_pushable:
+		data_options_ctrl.brick_path_group_control.editable = false;
+	else:
+		data_options_ctrl.brick_path_group_control.editable = true;
 	data_options_ctrl.brick_weight_control.set_value_no_signal(brick.init_mass);
 	data_options_ctrl.brick_path_group_control.set_value_no_signal(brick.path_group + 1);
 	if brick.collision_mask == 8:
@@ -592,6 +568,19 @@ func ui_set_brick_rotation(brick:Brick, rot:float) -> bool:
 		return false
 	return true
 
+func set_brick_can_be_pushed(brick:Brick, can_be_pushed:bool):
+	brick.init_pushable = can_be_pushed;
+	if can_be_pushed == true:
+		on_select_path_group(-1);
+		data_options_ctrl.brick_path_group_control.set_value_no_signal(0);
+		data_options_ctrl.brick_path_group_control.editable = false;
+	else:
+		data_options_ctrl.brick_path_group_control.editable = true;
+
+func set_brick_sollision(brick:Brick, can_collide:bool):
+	if can_collide: brick.collision_mask = 12;
+	else: brick.collision_mask = 8;
+
 func reset_brick_collision_state():
 	collision_detected = false
 	illegal_collision_detected = false
@@ -611,12 +600,15 @@ func load_level(level_folder:String):
 	$LevelEditor.add_child(loaded_level_content, true);
 	level_content = loaded_level_content;
 	level_content_bricks = level_content.find_child("Bricks");
-	level_content_paths = level_content.find_child("BrickPaths").find_child("Paths");
-	level_content_path_visuals = level_content.find_child("BrickPaths").find_child("Visuals");
+	level_content_paths = level_content.find_child("Paths");
 
 	Logger.write(str("Initializing Bricks."), "LevelEditor");
-	for brick in level_content_bricks.get_children():
+	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		brick.setup(true);
+
+	Logger.write(str("Initializing Paths."), "LevelEditor");
+	for path:BrickPath in level_content_paths.get_children():
+		brick_paths.append(path);
 
 	level_num = level_folder
 	loading_level = false
@@ -631,17 +623,16 @@ func save_level():
 	var new_level:PackedScene = PackedScene.new();
 
 	level_content_bricks.owner = level_content;
-	level_content.find_child("BrickPaths").owner = level_content;
 	level_content_paths.owner = level_content;
-	level_content_path_visuals.owner = level_content;
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
-		brick.owner = level_content;
 		brick.hitbox.owner = level_content;
+	on_select_path(brick_paths.size() - 1);
 	
 	Logger.write(str("Packing Scene."), "LevelEditor");
 	new_level.pack(level_content);
 
-	level_content_path_visuals.hide();
+	get_tree().call_group("PathLineVisual", "hide");
+	get_tree().call_group("PathPointVisual", "hide");
 	#mode_options.hide();
 	set_snap_visibility(false);
 	await get_tree().create_timer(0.25).timeout; # Give the UI time to hide.
@@ -695,9 +686,9 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	#	new_brick.add_child(child.duplicate());
 	var new_brick:Brick = BrickScene.instantiate();
 	var new_hitbox = brick.hitbox.duplicate();
-	new_brick.hitbox = new_hitbox;
 	new_brick.add_child(new_hitbox, true);
 	new_hitbox.owner = new_brick;
+	new_brick.hitbox = new_hitbox;
 	new_brick.base_texture_path = brick.base_texture_path;
 	if selected_texture_path: new_brick.texture_path = selected_texture_path;
 	if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
@@ -732,23 +723,11 @@ func upgrade_version(data:LevelData):
 			for node:Brick in get_tree().get_nodes_in_group("Brick"):
 				node.reparent(new_level_content_bricks);
 
-			# Add BrickPaths container
-			var new_level_content_brick_paths := Node2D.new();
-			new_level_content_brick_paths.name = "BrickPaths";
-			level_content.add_child(new_level_content_brick_paths, true);
-			new_level_content_brick_paths.owner = level_content;
-
 			# Add Paths container
 			var new_level_content_paths := Node2D.new();
 			new_level_content_paths.name = "Paths";
-			new_level_content_brick_paths.add_child(new_level_content_paths, true);
+			level_content.add_child(new_level_content_paths, true);
 			new_level_content_paths.owner = level_content;
-
-			# Add Visuals container
-			var new_level_content_path_visuals := Node2D.new();
-			new_level_content_path_visuals.name = "Visuals";
-			new_level_content_brick_paths.add_child(new_level_content_path_visuals, true);
-			new_level_content_path_visuals.owner = level_content;
 			
 	data.build_number += 1;
 	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
