@@ -1,39 +1,42 @@
 extends CharacterBody2D
 class_name Paddle
 
-@export var hit_sound_comp:AudioStreamPlayer2D
-@export var magnet_sound:AudioStreamPlayer2D
-@export var turrets_comp:TurretsComponent
+@export var hit_sound_comp:AudioStreamPlayer2D;
+@export var magnet_sound:AudioStreamPlayer2D;
+@export var turrets_comp:TurretsComponent;
 
-@export var world_border:WorldBorder
-@export var ball_container:Node2D
+@export var world_border:WorldBorder;
+@export var ball_container:Node2D;
 
 var follow_mouse:bool = false;
 
-var magnetised:bool = false
-var single_use_magnet:bool = false
-var width:float = 0
-var balls:Array = []
-var magnet_power:int = 0 # Decouple 
+var magnetised:bool = false;
+var single_use_magnet:bool = false;
+var width:float = 0;
+var balls:Array = [];
+var magnet_power:int = 0; 
+var size_level:int = 0;
 
-var active_turrets:bool = false
+var active_turrets:bool = false;
 
-@onready var hitbox:Area2D = $'Hitbox'
+@onready var pickup_area:Area2D = $PickupArea;
+@onready var pickup_hitbox:CollisionPolygon2D = $'PickupArea/PickupHitbox';
+@onready var hitbox:CollisionPolygon2D = $Hitbox;
 @onready var sprite:Sprite2D = $Sprite2D;
 var original_sprite_position:Vector2;
 
-signal spawn_bullet(pos:Vector2, dir:float)
+signal spawn_bullet(pos:Vector2, dir:float);
 
 func _ready():
-	hitbox.body_entered.connect(_on_body_entered_hitbox)
-	hitbox.area_entered.connect(_on_area_entered_hitbox)
-	width = sprite.get_rect().size.x * sprite.scale.x
+	pickup_area.body_entered.connect(_on_body_entered_pickup_area);
+	pickup_area.area_entered.connect(_on_area_entered_pickup_area);
+	width = sprite.get_rect().size.x * sprite.scale.x;
 
 	original_sprite_position = sprite.position;
 
 	if turrets_comp:
-		turrets_comp.spawn_bullet.connect(_on_turrets_fire)
-		turrets_comp.expire.connect(_on_turrets_expire)
+		turrets_comp.spawn_bullet.connect(_on_turrets_fire);
+		turrets_comp.expire.connect(_on_turrets_expire);
 
 func _process(_delta):
 	if Input.is_action_pressed("mouse_primary"):
@@ -55,10 +58,10 @@ func _on_turrets_fire(pos:Vector2, dir:float):
 func _on_turrets_expire():
 	active_turrets = false
 
-func _on_body_entered_hitbox(_node:Node2D):
+func _on_body_entered_pickup_area(_node:Node2D):
 	pass
 		
-func _on_area_entered_hitbox(node:Area2D):
+func _on_area_entered_pickup_area(node:Area2D):
 	if node.is_in_group('PickUp'):
 		node.send_signal()
 
@@ -108,6 +111,34 @@ func add_magnet(single_use:bool = false) -> int:
 		else: magnetised = true;
 		magnet_power = 1;
 	return magnet_power;
+
+func adjust_size(expand:bool) -> void:
+	var sprite_scale_amount:float = 0;
+	var hitbox_amount:Vector2 = Vector2(1, 1);
+
+	if expand:
+		if size_level >= 3: return;
+		sprite_scale_amount = 1.1;
+		hitbox_amount = Vector2(1.1, 1);
+		size_level += 1;
+	else:
+		if size_level <= -3: return;
+		sprite_scale_amount = 0.9;
+		hitbox_amount = Vector2(0.9, 1);
+		size_level -= 1;
+
+	sprite.scale.x *= sprite_scale_amount;
+	width = sprite.get_rect().size.x * sprite.scale.x;
+
+	var mod_hitbox:PackedVector2Array = hitbox.polygon.duplicate();
+	for i:int in range(0, mod_hitbox.size()):
+		mod_hitbox[i] *= hitbox_amount;
+	hitbox.set_deferred("polygon", mod_hitbox);
+
+	var mod_pickup_hitbox:PackedVector2Array = pickup_hitbox.polygon.duplicate();
+	for i:int in range(0, mod_pickup_hitbox.size()):
+		mod_pickup_hitbox[i] *= hitbox_amount;
+	pickup_hitbox.set_deferred("polygon", mod_pickup_hitbox);
 
 func activate_turrets():
 	if magnetised or single_use_magnet:

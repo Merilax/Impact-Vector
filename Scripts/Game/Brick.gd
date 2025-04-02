@@ -64,13 +64,13 @@ func setup_as_editable():
 	self.editor_hitbox.add_child(self.hitbox.duplicate());
 
 func hit(node):
-	if is_editor: return
+	if is_editor: return;
 	if node.is_in_group('Ball'):
-		if hit_sound_comp: hit_sound_comp.play()
-		if health_comp: health_comp.damage(node.damage)
+		if hit_sound_comp: hit_sound_comp.play();
+		if health_comp: health_comp.damage(node.damage);
 		
 	if node.is_in_group('Bullet'):
-		health_comp.damage(node.damage)
+		health_comp.damage(node.damage);
 
 func die():
 	if is_editor: return

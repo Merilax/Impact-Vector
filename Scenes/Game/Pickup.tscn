@@ -5,7 +5,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ofbn4"]
 radius = 33.0
 
-[node name="PickupSlow" type="Area2D" groups=["PickUp"]]
+[node name="Pickup" type="Area2D" groups=["PickUp"]]
 collision_layer = 16
 collision_mask = 0
 input_pickable = false

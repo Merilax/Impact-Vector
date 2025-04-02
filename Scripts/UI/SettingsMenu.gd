@@ -39,12 +39,15 @@ func refresh():
 	if vsync_setting: vsync_setting.set_pressed_no_signal(settings.vsync);
 
 	if master_volume_setting:
+		@warning_ignore("integer_division")
 		var volume_percent = ((settings.master_volume * 100) / 30) + 100;
 		master_volume_setting.range_slider.value = volume_percent;
 	if music_volume_setting:
+		@warning_ignore("integer_division")
 		var volume_percent = ((settings.music_volume * 100) / 30) + 100;
 		music_volume_setting.range_slider.value = volume_percent;
 	if sfx_volume_setting:
+		@warning_ignore("integer_division")
 		var volume_percent = ((settings.sfx_volume * 100) / 30) + 100;
 		sfx_volume_setting.range_slider.value = volume_percent;
 

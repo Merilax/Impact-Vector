@@ -11,6 +11,7 @@ range_slider = NodePath("SetVar")
 range_value_label = NodePath("VarLabel")
 
 [node name="SetVar" type="HSlider" parent="."]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4

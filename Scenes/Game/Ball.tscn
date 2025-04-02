@@ -6,17 +6,17 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_pudvg"]
 radius = 13.0
 
-[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision") groups=["Ball"]]
+[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape") groups=["Ball"]]
 collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_8lo0t")
 sprite = NodePath("Sprite2D")
-collision = NodePath("CollisionShape2D")
+collision_shape = NodePath("CollisionShape2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.3, 1.7)
 scale = Vector2(0.165371, 0.165371)
 texture = ExtResource("2_ls637")
+offset = Vector2(1.6, 10.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_pudvg")

@@ -9,7 +9,8 @@ var level_num:String
 
 var save_state:SaveGameData;
 
-var pickup_list:Array = [
+# Higher weight = More spawns.
+var pickup_list:Array = [ 
 	{
 		"type": "slow",
 		"name": "Speed Down",
@@ -45,6 +46,30 @@ var pickup_list:Array = [
 		"name": "Triple balls",
 		"texture": "uid://ci00dwenehe35",
 		"weight": 6
+	},
+	{
+		"type": "small",
+		"name": "Smaller balls",
+		"texture": "uid://bx32kafyc2ca6",
+		"weight": 6
+	},
+	{
+		"type": "big",
+		"name": "Larger balls",
+		"texture": "uid://cvg4excj60cr3",
+		"weight": 6
+	},
+	{
+		"type": "narrow",
+		"name": "Shrink paddle",
+		"texture": "uid://1sfr7xkm72ia",
+		"weight": 10
+	},
+	{
+		"type": "wide",
+		"name": "Expand paddle",
+		"texture": "uid://be6sue13o1ueb",
+		"weight": 10
 	}
 ]
 var total_pickup_weight:int = 0;
@@ -69,8 +94,9 @@ var unsaved_total_lives:int = total_lives;
 var brick_count:int = 0;
 var ball_count:int = 0;
 
-var speed_mult:float = 1;
+var ball_speed_mult:float = 1;
 var visual_speed_mult:int = 3;
+var ball_size_level:int = 0;
 
 var can_spawn_balls:bool = true;
 var ball_stuck_timer:SceneTreeTimer;
@@ -104,7 +130,8 @@ var skip_animations:bool = false;
 var tabbed_out:bool = false;
 
 signal game_over_signal(game_won:bool);
-signal change_speed(mult:float, update_counter:bool);
+signal change_ball_speed(mult:float, update_counter:bool);
+signal change_ball_size(level:int);
 
 func _ready():
 	transitioning_levels = true;
@@ -125,7 +152,7 @@ func _ready():
 	for life in lives:
 		life_counter.add_child(BallLifeRect.instantiate());
 
-	change_speed.connect(speed_counter.set_mult);
+	change_ball_speed.connect(speed_counter.set_mult);
 
 	for i in range(0, pickup_list.size()):
 		total_pickup_weight += pickup_list[i].weight;
@@ -189,54 +216,56 @@ func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZER
 
 		#ball.reset_stuck_timer.connect(_on_ball_reset_stuck_timer)
 
-		ball.speed_mult = speed_mult
+		ball.speed_mult = ball_speed_mult
 		if add_to_count:
 			ball_count += 1
 
 func _on_ball_lost(node:Node2D):
 	if node.is_in_group("Pickup"):
-		await get_tree().create_timer(3).timeout
+		await get_tree().create_timer(3).timeout;
 		if node:
-			node.queue_free()
+			node.queue_free();
 	
 	if node.is_in_group('Ball'):
-		node.lost = true
-		node.collision_mask = 0 # Let the ball visibly get lost, eventually dying off-screen
+		node.lost = true;
+		node.collision_mask = 0; # Let the ball visibly get lost, eventually dying off-screen
 
-		if transitioning_levels: return
+		if transitioning_levels: return;
 
-		ball_count -= 1
+		ball_count -= 1;
 
 		if ball_count <= 0:
-			lives -= 1
+			lives -= 1;
 			kill_paddle();
 
 			if lives >= 3:
-				var livesVar = life_counter.get_node("LivesVar")
+				var livesVar = life_counter.get_node("LivesVar");
 				if lives == 3:
-					livesVar.queue_free()
-					life_counter.add_child(BallLifeRect.instantiate())
-					life_counter.add_child(BallLifeRect.instantiate())
+					livesVar.queue_free();
+					life_counter.add_child(BallLifeRect.instantiate());
+					life_counter.add_child(BallLifeRect.instantiate());
 				else:
-					livesVar.text = ' x ' + str(lives)
+					livesVar.text = ' x ' + str(lives);
 			else:
-				life_counter.get_child(0).queue_free()
+				life_counter.get_child(0).queue_free();
 			
-			await get_tree().create_timer(1).timeout
-			node.die()
+			await get_tree().create_timer(1).timeout;
+			node.die();
 
 			if lives <= 0:
-				await get_tree().create_timer(2).timeout
-				get_tree().call_group("PickUp", "queue_free")
-				game_over(false)
+				await get_tree().create_timer(2).timeout;
+				get_tree().call_group("PickUp", "queue_free");
+				game_over(false);
 			else:
-				await get_tree().create_timer(1).timeout
-				get_tree().call_group("PickUp", "queue_free")
+				await get_tree().create_timer(1).timeout;
+				get_tree().call_group("PickUp", "queue_free");
 				if not paddle:
-					await spawn_paddle()
+					await spawn_paddle();
 
 				spawn_ball(true, true);
 				reset_speed_mult();
+				ball_size_level = 0;
+				change_ball_size.emit(ball_size_level);
 
 func spawn_bullet(pos:Vector2, dir:float):
 	var bullet:Bullet = BulletScene.instantiate()
@@ -320,9 +349,9 @@ func win():
 	transitioning_levels = true;
 	can_spawn_balls = false;
 
-	var stored_speed_mult = speed_mult;
+	var stored_speed_mult = ball_speed_mult;
 
-	create_tween().tween_method(func(speed): change_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
+	create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
 
 	await get_tree().create_timer(3.5).timeout;
 
@@ -332,7 +361,10 @@ func win():
 	get_tree().call_group("Brick", "queue_free");
 
 	ball_count = 0;
-	speed_mult = 1; # TODO Add difficulty.
+	ball_speed_mult = 1; # TODO Add difficulty.
+	reset_speed_mult();
+	ball_size_level = 0;
+	change_ball_size.emit(ball_size_level);
 
 	unsaved_score = score;
 	unsaved_lives = lives;
@@ -368,9 +400,12 @@ func win():
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
-		change_speed.emit(speed_mult, false)
-		if not self.is_connected('change_speed', node.set_speed):
-			change_speed.connect(node.set_speed)
+		change_ball_speed.emit(ball_speed_mult, false);
+		change_ball_size.emit(ball_size_level);
+		if not self.is_connected('change_ball_speed', node.set_speed):
+			change_ball_speed.connect(node.set_speed);
+		if not self.is_connected('change_ball_size', node.set_size):
+			change_ball_size.connect(node.set_size);
 
 	if node.is_in_group('PickUp'):
 		node.trigger_pickup.connect(process_pickup)
@@ -438,7 +473,8 @@ func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
 	return true;
 
 func process_pickup(type:String):
-	if transitioning_levels: return
+	if transitioning_levels: return;
+	if not is_instance_valid(paddle): return;
 	# TODO SFX each
 	match type.to_lower():
 		'speed':
@@ -456,7 +492,7 @@ func process_pickup(type:String):
 		"turrets":
 			notify("RELOAD GUNS", "200 POINTS");
 			add_score(200);
-			if is_instance_valid(paddle): paddle.activate_turrets();
+			paddle.activate_turrets();
 			if magnet_meter: magnet_meter.value = 0;
 		"death":
 			notify("QUESTIONABLE\nLIFE CHOICES", "2000 POINTS");
@@ -473,29 +509,54 @@ func process_pickup(type:String):
 				else:	
 					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8));
 					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8));
+		"wide":
+			notify("WIDER PADDLE", "100 POINTS");
+			add_score(100);
+			paddle.adjust_size(true);
+		"narrow":
+			notify("NARROW PADDLE", "200 POINTS");
+			add_score(200);
+			paddle.adjust_size(false);
+		"big":
+			notify("BIGGER BALLS", "100 POINTS");
+			add_score(100);
+			add_size_level(true);
+		"small":
+			notify("SMALLER BALLS", "250 POINTS");
+			add_score(250);
+			add_size_level(false);
 
 func add_speed_mult(add:bool = true):
-	var previous:float = speed_mult;
+	var previous:float = ball_speed_mult;
 	var amount:float = .1;
 	var visual_amount:int = 1; 
 	if not add:
 		amount = -amount;
 		visual_amount = -visual_amount;
 
-	speed_mult = clampf(speed_mult + amount, 0.7, 1.5);
+	ball_speed_mult = clampf(ball_speed_mult + amount, 0.7, 1.5);
 	visual_speed_mult = clampi(visual_speed_mult + visual_amount, 0, 8); # TODO Split into two meters, 1,5 green, 0,-3 red, neutral difficulty at 1
-	change_speed.emit(speed_mult, true);
-	if speed_mult == 1.5 && speed_mult > previous:
+	change_ball_speed.emit(ball_speed_mult, true);
+	if ball_speed_mult == 1.5 && ball_speed_mult > previous:
 		add_score(800);
 		notify("SENSATIONAL!\nMAX SPEED", "1000 POINTS"); # 200 speedup + 800 bonus
 
 	if speed_meter: speed_meter.value = visual_speed_mult;
 
+func add_size_level(add:bool = true):
+	var amount:int = 1;
+
+	if not add:
+		amount = -amount;
+	
+	ball_size_level = clampi(ball_size_level + amount, -2, 2);
+	change_ball_size.emit(ball_size_level);
+
 func reset_speed_mult(): # TODO Add difficulty
-	speed_mult = 1;
+	ball_speed_mult = 1;
 	visual_speed_mult = 3;
 	if speed_meter: speed_meter.value = visual_speed_mult;
-	change_speed.emit(speed_mult, true) # Reset speed
+	change_ball_speed.emit(ball_speed_mult, true) # Reset speed
 
 func add_magnet():
 	if is_instance_valid(paddle):

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://dck5wvqkfemjm"]
+[gd_resource type="Theme" load_steps=26 format=3 uid="uid://dck5wvqkfemjm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1fd6g"]
 bg_color = Color(0.231987, 0.506389, 0.686397, 1)
@@ -46,7 +46,7 @@ border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fn0ue"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sdxo1"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ece8h"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eh7rn"]
 
@@ -56,16 +56,68 @@ thickness = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhdrc"]
 bg_color = Color(0.35, 0.805, 1, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6t1rt"]
-bg_color = Color(0.28, 0.712, 1, 0.764706)
+bg_color = Color(0.716013, 0.875432, 1, 0.764706)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ttjip"]
 content_margin_left = 5.0
 content_margin_top = 10.0
 content_margin_right = 5.0
 content_margin_bottom = 10.0
-bg_color = Color(0.473573, 0.554604, 0.678053, 1)
+bg_color = Color(0.0156863, 0.12549, 0.196078, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ece8h"]
+bg_color = Color(0.0141817, 0.124064, 0.197686, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_size = 1
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qjiw3"]
+bg_color = Color(0.00413361, 0.0485949, 0.0891161, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ffstt"]
 
@@ -96,13 +148,15 @@ CheckButton/styles/disabled = SubResource("StyleBoxEmpty_1r1wq")
 CheckButton/styles/focus = SubResource("StyleBoxEmpty_5rs37")
 CheckButton/styles/hover = SubResource("StyleBoxEmpty_y1e2g")
 CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_fn0ue")
-CheckButton/styles/normal = SubResource("StyleBoxEmpty_sdxo1")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_ece8h")
 CheckButton/styles/pressed = SubResource("StyleBoxEmpty_eh7rn")
 HSeparator/constants/separation = 10
 HSeparator/styles/separator = SubResource("StyleBoxLine_oiydr")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_hhdrc")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_6t1rt")
 HSlider/styles/slider = SubResource("StyleBoxFlat_ttjip")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_ece8h")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_qjiw3")
 MarginContainer/constants/margin_bottom = 40
 MarginContainer/constants/margin_left = 40
 MarginContainer/constants/margin_right = 40

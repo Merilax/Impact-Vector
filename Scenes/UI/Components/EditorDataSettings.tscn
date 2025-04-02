@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3wgp1cr6li5f"]
+[gd_scene load_steps=8 format=3 uid="uid://c3wgp1cr6li5f"]
 
 [ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="1_meml4"]
 [ext_resource type="Script" uid="uid://b10ek5vcmgo2d" path="res://Scripts/UI/Components/EditorDataSettings.gd" id="1_wx2ps"]
+[ext_resource type="Texture2D" uid="uid://bxtj8nkgjk52r" path="res://Assets/Visuals/UI/ToggleButtonUnchecked.png" id="2_kti22"]
+[ext_resource type="Texture2D" uid="uid://cnq1cqtbxu6n1" path="res://Assets/Visuals/UI/ToggleButtonChecked.png" id="3_uyul6"]
+[ext_resource type="Texture2D" uid="uid://8xd1wdtawfjx" path="res://Assets/Visuals/UI/ToggleButtonBase.png" id="4_cx10j"]
+[ext_resource type="Texture2D" uid="uid://bla8o38kuix0l" path="res://Assets/Visuals/UI/CheckButtonUnchecked.png" id="5_cx10j"]
+[ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_s6636"]
 
 [node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control")]
 visible = false
 script = ExtResource("1_wx2ps")
-apply_brick_data_on_select_control = NodePath("HBoxContainer2/ApplySelect")
+apply_brick_data_on_select_control = NodePath("HBoxContainer2/ApplySelect2")
 brick_x_ctrl = NodePath("Coords/GridContainer/XPos")
 brick_y_ctrl = NodePath("Coords/GridContainer/YPos")
 brick_rot_ctrl = NodePath("Coords/GridContainer/Rotation")
@@ -27,9 +32,17 @@ size_flags_horizontal = 3
 text = "Selecting a brick applies data instead:"
 autowrap_mode = 3
 
-[node name="ApplySelect" type="CheckButton" parent="HBoxContainer2"]
+[node name="ApplySelect2" type="TextureButton" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(40, 26)
 layout_mode = 2
-mouse_filter = 1
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("2_kti22")
+texture_pressed = ExtResource("3_uyul6")
+texture_disabled = ExtResource("4_cx10j")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Control2" type="HSeparator" parent="."]
 custom_minimum_size = Vector2(0, 20)
@@ -135,18 +148,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Pushable"
 
-[node name="Pushable" type="CheckBox" parent="Stats/VBoxContainer"]
+[node name="Pushable" type="TextureButton" parent="Stats/VBoxContainer"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
 mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_cx10j")
+texture_pressed = ExtResource("6_s6636")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="Stats/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Can collide"
 
-[node name="Collider" type="CheckBox" parent="Stats/VBoxContainer"]
+[node name="Collider" type="TextureButton" parent="Stats/VBoxContainer"]
+custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
 mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_cx10j")
+texture_pressed = ExtResource("6_s6636")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Label5" type="Label" parent="Stats/VBoxContainer"]
 layout_mode = 2

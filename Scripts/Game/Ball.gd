@@ -10,8 +10,15 @@ var dir:Vector2 = Vector2.ZERO;
 @export var speed_mult :float = 1;
 @export var sprite:Sprite2D;
 @export var collision_shape:CollisionShape2D;
+var size_level:int = 0;
 
 #signal reset_stuck_timer(free_timer:bool)
+var original_sprite_scale:Vector2;
+var original_hitbox_radius:float;
+
+func _ready():
+	original_sprite_scale = sprite.scale;
+	original_hitbox_radius = collision_shape.shape.radius;
 
 func _physics_process(delta):
 	if self.freeze == true:
@@ -42,8 +49,23 @@ func _physics_process(delta):
 			#reset_stuck_timer.emit(true)
 
 func die():
-	lost = true
-	queue_free()
+	lost = true;
+	queue_free();
 
 func set_speed(mult:float, _change_label:bool = false):
-	speed_mult = mult
+	speed_mult = mult;
+
+func set_size(level:int) -> void:
+	if size_level < -2 or size_level > 2: return;
+	if level == size_level: return;
+	size_level = level;
+
+	match size_level:
+		-2: damage = 0.5;
+		-1: damage = 1; # Don't want to punish the player too much.
+		0: damage = 1;
+		1: damage = 1.5;
+		2: damage = 2;
+
+	sprite.scale = original_sprite_scale * (1 + (0.2 * size_level));
+	collision_shape.shape.set_deferred("radius", original_hitbox_radius * (1 + (0.2 * size_level)));

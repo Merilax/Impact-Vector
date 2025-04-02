@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dk1flyauof5sk"]
+[gd_scene load_steps=5 format=3 uid="uid://dk1flyauof5sk"]
 
 [ext_resource type="Script" uid="uid://ceuc68tpthge7" path="res://Scripts/UI/Components/EditorSnapSettings.gd" id="1_ov2he"]
+[ext_resource type="Texture2D" uid="uid://bxtj8nkgjk52r" path="res://Assets/Visuals/UI/ToggleButtonUnchecked.png" id="2_mr0xb"]
+[ext_resource type="Texture2D" uid="uid://cnq1cqtbxu6n1" path="res://Assets/Visuals/UI/ToggleButtonChecked.png" id="3_odga4"]
+[ext_resource type="Texture2D" uid="uid://8xd1wdtawfjx" path="res://Assets/Visuals/UI/ToggleButtonBase.png" id="4_t37br"]
 
 [node name="Snap" type="VBoxContainer" node_paths=PackedStringArray("use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset")]
 visible = false
@@ -24,19 +27,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Snap bricks to grid"
 
-[node name="Snap" type="CheckButton" parent="VBoxContainer"]
+[node name="Snap" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(40, 26)
 layout_mode = 2
-mouse_filter = 1
-button_pressed = true
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("2_mr0xb")
+texture_pressed = ExtResource("3_odga4")
+texture_disabled = ExtResource("4_t37br")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show grid"
 
-[node name="ShowSnap" type="CheckButton" parent="VBoxContainer"]
+[node name="ShowSnap" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(40, 26)
 layout_mode = 2
-mouse_filter = 1
+size_flags_horizontal = 0
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("2_mr0xb")
+texture_pressed = ExtResource("3_odga4")
+texture_disabled = ExtResource("4_t37br")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="VSeparator" type="HSeparator" parent="."]
 layout_mode = 2

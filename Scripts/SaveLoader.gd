@@ -13,7 +13,7 @@ static func load_settings() -> SaveSettings:
 		incomplete_config = true;
 
 	# GAME
-	if settings.arm_speed_multiplier != null:
+	if settings.arm_speed_multiplier != null and settings.arm_speed_multiplier != 0:
 		GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
 	else:
 		settings.arm_speed_multiplier = 1;
