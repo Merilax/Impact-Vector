@@ -5,12 +5,12 @@ var lost:bool = false;
 var on_paddle:bool = false;
 var freeze:bool = true;
 var dir:Vector2 = Vector2.ZERO;
-@export var damage :float = 1;
-@export var speed :float = 700;
-@export var speed_mult :float = 1;
+var damage :float = 1;
+var speed :float = 700;
+var speed_mult :float = 1;
+var size_level:int = 0;
 @export var sprite:Sprite2D;
 @export var collision_shape:CollisionShape2D;
-var size_level:int = 0;
 
 #signal reset_stuck_timer(free_timer:bool)
 var original_sprite_scale:Vector2;

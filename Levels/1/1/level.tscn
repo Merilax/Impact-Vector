@@ -290,6 +290,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@134" instance=ExtResource("4_sey2j")]
 
@@ -301,6 +302,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@135" instance=ExtResource("4_sey2j")]
 
@@ -312,6 +314,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@136" instance=ExtResource("4_sey2j")]
 
@@ -323,6 +326,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@137" instance=ExtResource("4_sey2j")]
 
@@ -433,6 +437,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@152" instance=ExtResource("4_sey2j")]
 
@@ -444,6 +449,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@153" instance=ExtResource("4_sey2j")]
 
@@ -455,6 +461,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@154" instance=ExtResource("4_sey2j")]
 
@@ -466,6 +473,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@155" instance=ExtResource("4_sey2j")]
 
@@ -477,6 +485,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@156" instance=ExtResource("4_sey2j")]
 
@@ -488,6 +497,7 @@ shader_color = Color(0.36777, 0.850044, 0.914063, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@157" instance=ExtResource("4_sey2j")]
 
@@ -1040,6 +1050,7 @@ shader_color = Color(1, 0.984497, 0.00781584, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 4
 init_score = 100
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@233" instance=ExtResource("6_wbofy")]
 shape = SubResource("CircleShape2D_gd1tl")
@@ -1050,6 +1061,7 @@ base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
 texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
 shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@236" instance=ExtResource("5_68o8s")]
 
@@ -1062,6 +1074,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@237" instance=ExtResource("5_68o8s")]
 
@@ -1074,6 +1087,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@238" instance=ExtResource("5_68o8s")]
 
@@ -1086,6 +1100,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@239" instance=ExtResource("5_68o8s")]
 
@@ -1098,6 +1113,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@240" instance=ExtResource("5_68o8s")]
 
@@ -1110,6 +1126,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@241" instance=ExtResource("5_68o8s")]
 
@@ -1122,6 +1139,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@242" instance=ExtResource("5_68o8s")]
 
@@ -1134,6 +1152,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@243" instance=ExtResource("5_68o8s")]
 
@@ -1146,6 +1165,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@244" instance=ExtResource("5_68o8s")]
 
@@ -1158,6 +1178,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@245" instance=ExtResource("5_68o8s")]
 
@@ -1167,6 +1188,7 @@ base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
 texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
 shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@246" instance=ExtResource("5_68o8s")]
 
@@ -1179,6 +1201,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@247" instance=ExtResource("5_68o8s")]
 
@@ -1191,6 +1214,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@248" instance=ExtResource("5_68o8s")]
 
@@ -1203,6 +1227,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@249" instance=ExtResource("5_68o8s")]
 
@@ -1215,6 +1240,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@250" instance=ExtResource("5_68o8s")]
 
@@ -1227,6 +1253,7 @@ shader_color = Color(0.984375, 0.968994, 3.28571e-06, 1)
 hitbox = NodePath("HitboxComponent")
 init_health = 2
 init_score = 20
+init_pushable = true
 
 [node name="HitboxComponent" parent="Bricks/@RigidBody2D@251" instance=ExtResource("5_68o8s")]
 

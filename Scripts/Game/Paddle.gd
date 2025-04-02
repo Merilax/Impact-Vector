@@ -4,9 +4,10 @@ class_name Paddle
 @export var hit_sound_comp:AudioStreamPlayer2D;
 @export var magnet_sound:AudioStreamPlayer2D;
 @export var turrets_comp:TurretsComponent;
-
-@export var world_border:WorldBorder;
 @export var ball_container:Node2D;
+
+@export var target_ball_container:Node2D;
+@export var world_border:WorldBorder;
 
 var follow_mouse:bool = false;
 
@@ -24,6 +25,9 @@ var active_turrets:bool = false;
 @onready var hitbox:CollisionPolygon2D = $Hitbox;
 @onready var sprite:Sprite2D = $Sprite2D;
 var original_sprite_position:Vector2;
+var original_sprite_scale:Vector2;
+var original_hitbox_polygon:PackedVector2Array;
+var original_pickup_hitbox_polygon:PackedVector2Array;
 
 signal spawn_bullet(pos:Vector2, dir:float);
 
@@ -33,6 +37,9 @@ func _ready():
 	width = sprite.get_rect().size.x * sprite.scale.x;
 
 	original_sprite_position = sprite.position;
+	original_sprite_scale = sprite.scale;
+	original_hitbox_polygon = hitbox.polygon;
+	original_pickup_hitbox_polygon = pickup_hitbox.polygon;
 
 	if turrets_comp:
 		turrets_comp.spawn_bullet.connect(_on_turrets_fire);
@@ -75,10 +82,10 @@ func receive_ball(ball:Ball, centered:bool = false):
 	if (magnetised or single_use_magnet) and balls.size() < magnet_power:
 		ball.freeze = true;
 		ball.dir = Vector2.ZERO;
-		ball.reparent(sprite);
+		ball.reparent(ball_container);
 		ball.on_paddle = true;
-		# ball.position.y = ;
-		ball.position.y = -((sprite.get_rect().size.y * sprite.scale.y) / 2) - ((ball.sprite.get_rect().size.y * ball.sprite.scale.y));# - original_sprite_position.y
+		#ball.position.y = -((sprite.get_rect().size.y * sprite.scale.y) / 2) - ((ball.sprite.get_rect().size.y * ball.sprite.scale.y));# - original_sprite_position.y
+		ball.position.y = - (sprite.get_rect().size.y * sprite.scale.y) - (ball.sprite.get_rect().size.y * ball.sprite.scale.y);
 		if centered: ball.position.x = 0;
 
 		balls.append(ball);
@@ -93,11 +100,15 @@ func receive_ball(ball:Ball, centered:bool = false):
 		tween.set_ease(Tween.EASE_OUT).tween_property(sprite, "position:y", 10, 0.1);
 		tween.set_ease(Tween.EASE_IN).tween_property(sprite, "position:y", 0, 0.1);
 
+func reposition_magnetised_balls():
+	for ball:Ball in balls:
+		ball.position.y = - (sprite.get_rect().size.y * sprite.scale.y) - (ball.sprite.get_rect().size.y * ball.sprite.scale.y);
+
 func release_magnet():
 	single_use_magnet = false;
 	for ball:Ball in balls:
 		ball.on_paddle = false;
-		ball.call_deferred("reparent", ball_container);
+		ball.call_deferred("reparent", target_ball_container);
 		ball.dir = calculate_bounce_vector(ball);
 		ball.freeze = false;
 	balls.clear();
@@ -113,31 +124,28 @@ func add_magnet(single_use:bool = false) -> int:
 	return magnet_power;
 
 func adjust_size(expand:bool) -> void:
-	var sprite_scale_amount:float = 0;
-	var hitbox_amount:Vector2 = Vector2(1, 1);
-
 	if expand:
 		if size_level >= 3: return;
-		sprite_scale_amount = 1.1;
-		hitbox_amount = Vector2(1.1, 1);
 		size_level += 1;
+		for ball:Ball in balls:
+			ball.position.x *= 1.2;
 	else:
 		if size_level <= -3: return;
-		sprite_scale_amount = 0.9;
-		hitbox_amount = Vector2(0.9, 1);
 		size_level -= 1;
+		for ball:Ball in balls:
+			ball.position.x *= 0.8;
 
-	sprite.scale.x *= sprite_scale_amount;
+	sprite.scale.x = original_sprite_scale.x * (1 + (0.2 * size_level));
 	width = sprite.get_rect().size.x * sprite.scale.x;
 
-	var mod_hitbox:PackedVector2Array = hitbox.polygon.duplicate();
+	var mod_hitbox:PackedVector2Array = original_hitbox_polygon.duplicate();
 	for i:int in range(0, mod_hitbox.size()):
-		mod_hitbox[i] *= hitbox_amount;
+		mod_hitbox[i] = original_hitbox_polygon[i] * (1 + (0.2 * size_level));
 	hitbox.set_deferred("polygon", mod_hitbox);
 
-	var mod_pickup_hitbox:PackedVector2Array = pickup_hitbox.polygon.duplicate();
+	var mod_pickup_hitbox:PackedVector2Array = original_pickup_hitbox_polygon.duplicate();
 	for i:int in range(0, mod_pickup_hitbox.size()):
-		mod_pickup_hitbox[i] *= hitbox_amount;
+		mod_pickup_hitbox[i] = original_pickup_hitbox_polygon[i] * (1 + (0.2 * size_level));
 	pickup_hitbox.set_deferred("polygon", mod_pickup_hitbox);
 
 func activate_turrets():

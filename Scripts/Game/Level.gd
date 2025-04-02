@@ -13,15 +13,39 @@ var save_state:SaveGameData;
 var pickup_list:Array = [ 
 	{
 		"type": "slow",
-		"name": "Speed Down",
+		"name": "Speed down",
 		"texture": "uid://caxekbaxpxgvy",
 		"weight": 10
 	},
 	{
 		"type": "speed",
-		"name": "Speed Up",
+		"name": "Speed up",
 		"texture": "uid://b2ufqhunhh27l",
 		"weight": 10
+	},
+	{
+		"type": "narrow",
+		"name": "Smaller paddle",
+		"texture": "uid://1sfr7xkm72ia",
+		"weight": 10
+	},
+	{
+		"type": "wide",
+		"name": "Bigger paddle",
+		"texture": "uid://be6sue13o1ueb",
+		"weight": 10
+	},
+	{
+		"type": "small",
+		"name": "Smaller balls",
+		"texture": "uid://bx32kafyc2ca6",
+		"weight": 8
+	},
+	{
+		"type": "big",
+		"name": "Larger balls",
+		"texture": "uid://cvg4excj60cr3",
+		"weight": 8
 	},
 	{
 		"type": "turrets",
@@ -36,41 +60,17 @@ var pickup_list:Array = [
 		"weight": 6
 	},
 	{
-		"type": "death",
-		"name": "Death",
-		"texture": "uid://bvc6p2do3llr4",
-		"weight": 2
-	},
-	{
 		"type": "triple",
 		"name": "Triple balls",
 		"texture": "uid://ci00dwenehe35",
 		"weight": 6
 	},
 	{
-		"type": "small",
-		"name": "Smaller balls",
-		"texture": "uid://bx32kafyc2ca6",
-		"weight": 6
+		"type": "death",
+		"name": "Death",
+		"texture": "uid://bvc6p2do3llr4",
+		"weight": 2
 	},
-	{
-		"type": "big",
-		"name": "Larger balls",
-		"texture": "uid://cvg4excj60cr3",
-		"weight": 6
-	},
-	{
-		"type": "narrow",
-		"name": "Shrink paddle",
-		"texture": "uid://1sfr7xkm72ia",
-		"weight": 10
-	},
-	{
-		"type": "wide",
-		"name": "Expand paddle",
-		"texture": "uid://be6sue13o1ueb",
-		"weight": 10
-	}
 ]
 var total_pickup_weight:int = 0;
 
@@ -139,7 +139,7 @@ func _ready():
 
 	get_window().focus_exited.connect(func(): tabbed_out = true);
 	get_window().focus_entered.connect(func(): tabbed_out = false);
-	tabbed_out = get_window().has_focus();
+	tabbed_out = not get_window().has_focus();
 
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
 	$"DeathZone".body_entered.connect(_on_ball_lost);
@@ -175,7 +175,7 @@ func _process(_delta):
 		skip_animations = true;
 
 	if paddle and not tabbed_out:
-		var mouse_pos = get_viewport().get_mouse_position();
+		var mouse_pos = DisplayServer.mouse_get_position();
 		if (mouse_pos.x < world_border.wall_left.global_position.x + (paddle.width / 2)):
 			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , mouse_pos.y));
 		if (mouse_pos.x > world_border.wall_right.global_position.x - (paddle.width / 2)):
@@ -184,7 +184,7 @@ func _process(_delta):
 func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
 	paddle.world_border = world_border;
-	paddle.ball_container = ball_container;
+	paddle.target_ball_container = ball_container;
 	add_child(paddle);
 	paddle.global_position = Vector2(750, 1120);
 	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 1).finished;
@@ -266,6 +266,7 @@ func _on_ball_lost(node:Node2D):
 				reset_speed_mult();
 				ball_size_level = 0;
 				change_ball_size.emit(ball_size_level);
+				if paddle: paddle.reposition_magnetised_balls();
 
 func spawn_bullet(pos:Vector2, dir:float):
 	var bullet:Bullet = BulletScene.instantiate()
@@ -365,6 +366,7 @@ func win():
 	reset_speed_mult();
 	ball_size_level = 0;
 	change_ball_size.emit(ball_size_level);
+	if paddle: paddle.reposition_magnetised_balls();
 
 	unsaved_score = score;
 	unsaved_lives = lives;
@@ -402,6 +404,7 @@ func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
 		change_ball_speed.emit(ball_speed_mult, false);
 		change_ball_size.emit(ball_size_level);
+		if paddle: paddle.reposition_magnetised_balls();
 		if not self.is_connected('change_ball_speed', node.set_speed):
 			change_ball_speed.connect(node.set_speed);
 		if not self.is_connected('change_ball_size', node.set_size):
@@ -478,7 +481,7 @@ func process_pickup(type:String):
 	# TODO SFX each
 	match type.to_lower():
 		'speed':
-			notify("SPEED UP", "200 POINTS");
+			notify("SPEED UP", "250 POINTS");
 			add_score(200);
 			add_speed_mult(true);
 		'slow':
@@ -499,7 +502,7 @@ func process_pickup(type:String):
 			add_score(2000);
 			kill_paddle();
 		"triple":
-			notify("TRIPLE BALLS", "100 POINTS");
+			notify("TRIPLE BALLS", "200 POINTS");
 			add_score(100);
 			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
 				if ball.lost: continue;
@@ -510,11 +513,11 @@ func process_pickup(type:String):
 					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8));
 					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8));
 		"wide":
-			notify("WIDER PADDLE", "100 POINTS");
+			notify("BIGGER PADDLE", "100 POINTS");
 			add_score(100);
 			paddle.adjust_size(true);
 		"narrow":
-			notify("NARROW PADDLE", "200 POINTS");
+			notify("SMALLER PADDLE", "250 POINTS");
 			add_score(200);
 			paddle.adjust_size(false);
 		"big":
@@ -551,6 +554,7 @@ func add_size_level(add:bool = true):
 	
 	ball_size_level = clampi(ball_size_level + amount, -2, 2);
 	change_ball_size.emit(ball_size_level);
+	if paddle: paddle.reposition_magnetised_balls();
 
 func reset_speed_mult(): # TODO Add difficulty
 	ball_speed_mult = 1;
