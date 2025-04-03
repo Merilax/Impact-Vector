@@ -105,7 +105,7 @@ func set_shader_brightness(value:float):
 func get_shader_brightness() -> float:
 	return texture_sprite.material.get_shader_parameter("brightness");
 
-func get_shader_texture_color() -> Color:
+func get_texture_shader_color() -> Color:
 	return texture_sprite.material.get_shader_parameter("to")
 
 func set_texture_shader_color(color:Color, force:bool = false):
@@ -133,7 +133,7 @@ func tween_shader_shift_by(set_color:Color, duration:float, reset_after:bool = f
 		tween.tween_property(self, "shader_color", previous_color, duration).set_delay(step_delay);
 
 func tween_shader_color(set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
-	var previous_color:Color = shader_color.clamp();#get_shader_texture_color();
+	var previous_color:Color = shader_color.clamp();#get_texture_shader_color();
 	var tween:Tween = create_tween();
 	if looping: tween.set_loops();
 	tween.tween_method(func(value): set_texture_shader_color(value), previous_color, set_color, duration).set_delay(loop_delay);

@@ -33,8 +33,9 @@ size = Vector2(1437, 940)
 [sub_resource type="Theme" id="Theme_r56k3"]
 default_font_size = 26
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("mouse_boundary", "world_border", "grid_drawer", "level_content", "level_content_bricks", "level_content_paths", "selector", "level_name", "save_button", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("notification_popup", "mouse_boundary", "world_border", "grid_drawer", "level_content", "level_content_bricks", "level_content_paths", "selector", "level_name", "save_button", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl")]
 script = ExtResource("1_ur272")
+notification_popup = NodePath("Popup")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 grid_drawer = NodePath("LevelEditor/Grid")
@@ -807,3 +808,14 @@ layout_mode = 2
 [node name="HelpMenu" parent="EscapeLayer/UI/MarginContainer2" instance=ExtResource("20_yeifv")]
 visible = false
 layout_mode = 2
+
+[node name="Popup" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = ""
+initial_position = 4
+size = Vector2i(332, 155)
+borderless = true
+popup_window = true
+theme = ExtResource("3_t1m56")
+dialog_text = "Unknown error.
+You just love to see it."

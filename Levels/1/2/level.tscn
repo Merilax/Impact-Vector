@@ -1,0 +1,3698 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Game/Brick.tscn" id="1_x15ws"]
+[ext_resource type="PhysicsMaterial" path="res://GDResources/Wall.tres" id="2_88x5v"]
+[ext_resource type="Script" path="res://Scripts/Game/Brick.gd" id="3_6sifu"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Components/Hitboxes/BrickRect.tscn" id="4_s3lth"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/Components/Hitboxes/BrickSqr.tscn" id="5_sbs03"]
+[ext_resource type="PackedScene" path="res://Scenes/Game/BrickPath.tscn" id="6_6sifu"]
+[ext_resource type="Script" path="res://Scripts/Game/Path.gd" id="7_s3lth"]
+
+[sub_resource type="Curve2D" id="Curve2D_sbs03"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 444, 520, 0, 0, 0, 0, 516, 520, 0, 0, 0, 0, 612, 500, 0, 0, 0, 0, 660, 460, 0, 0, 0, 0, 732, 400, 0, 0, 0, 0, 804, 340, 0, 0, 0, 0, 852, 300, 0, 0, 0, 0, 900, 260, 0, 0, 0, 0, 972, 240, 0, 0, 0, 0, 1056, 220, 0, 0, 0, 0, 1140, 220, 0, 0, 0, 0, 1224, 240, 0, 0, 0, 0, 1284, 280, 0, 0, 0, 0, 1308, 340, 0, 0, 0, 0, 1296, 400, 0, 0, 0, 0, 1236, 460, 0, 0, 0, 0, 1164, 480, 0, 0, 0, 0, 1044, 480, 0, 0, 0, 0, 936, 480, 0, 0, 0, 0, 864, 460, 0, 0, 0, 0, 792, 420, 0, 0, 0, 0, 696, 320, 0, 0, 0, 0, 576, 220, 0, 0, 0, 0, 480, 180, 0, 0, 0, 0, 336, 180, 0, 0, 0, 0, 216, 180, 0, 0, 0, 0, 132, 200, 0, 0, 0, 0, 72, 260, 0, 0, 0, 0, 48, 300, 0, 0, 0, 0, 36, 360, 0, 0, 0, 0, 60, 460, 0, 0, 0, 0, 108, 500, 0, 0, 0, 0, 168, 520, 0, 0, 0, 0, 240, 520, 0, 0, 0, 0, 324, 520, 0, 0, 0, 0, 444, 520)
+}
+point_count = 36
+
+[sub_resource type="Curve2D" id="Curve2D_12mo6"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 420, 460, 0, 0, 0, 0, 552, 460, 0, 0, 0, 0, 648, 420, 0, 0, 0, 0, 756, 360, 0, 0, 0, 0, 840, 280, 0, 0, 0, 0, 900, 220, 0, 0, 0, 0, 996, 180, 0, 0, 0, 0, 1092, 180, 0, 0, 0, 0, 1212, 180, 0, 0, 0, 0, 1308, 220, 0, 0, 0, 0, 1344, 260, 0, 0, 0, 0, 1368, 320, 0, 0, 0, 0, 1368, 400, 0, 0, 0, 0, 1344, 440, 0, 0, 0, 0, 1284, 500, 0, 0, 0, 0, 1176, 520, 0, 0, 0, 0, 1044, 540, 0, 0, 0, 0, 900, 520, 0, 0, 0, 0, 780, 480, 0, 0, 0, 0, 684, 440, 0, 0, 0, 0, 612, 360, 0, 0, 0, 0, 552, 280, 0, 0, 0, 0, 468, 200, 0, 0, 0, 0, 348, 180, 0, 0, 0, 0, 204, 180, 0, 0, 0, 0, 96, 220, 0, 0, 0, 0, 48, 300, 0, 0, 0, 0, 48, 400, 0, 0, 0, 0, 108, 480, 0, 0, 0, 0, 192, 500, 0, 0, 0, 0, 276, 480, 0, 0, 0, 0, 360, 460, 0, 0, 0, 0, 420, 460)
+}
+point_count = 33
+
+[sub_resource type="Curve2D" id="Curve2D_dusfn"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 384, 560, 0, 0, 0, 0, 516, 540, 0, 0, 0, 0, 636, 500, 0, 0, 0, 0, 720, 440, 0, 0, 0, 0, 756, 340, 0, 0, 0, 0, 804, 240, 0, 0, 0, 0, 888, 180, 0, 0, 0, 0, 972, 160, 0, 0, 0, 0, 1056, 140, 0, 0, 0, 0, 1176, 140, 0, 0, 0, 0, 1236, 200, 0, 0, 0, 0, 1272, 260, 0, 0, 0, 0, 1284, 340, 0, 0, 0, 0, 1272, 400, 0, 0, 0, 0, 1188, 500, 0, 0, 0, 0, 1116, 520, 0, 0, 0, 0, 996, 520, 0, 0, 0, 0, 900, 480, 0, 0, 0, 0, 828, 400, 0, 0, 0, 0, 744, 260, 0, 0, 0, 0, 660, 180, 0, 0, 0, 0, 564, 140, 0, 0, 0, 0, 444, 140, 0, 0, 0, 0, 324, 140, 0, 0, 0, 0, 192, 180, 0, 0, 0, 0, 132, 240, 0, 0, 0, 0, 108, 300, 0, 0, 0, 0, 108, 360, 0, 0, 0, 0, 144, 460, 0, 0, 0, 0, 180, 500, 0, 0, 0, 0, 264, 540, 0, 0, 0, 0, 384, 560)
+}
+point_count = 32
+
+[node name="LevelContent" type="Node2D"]
+
+[node name="Bricks" type="Node2D" parent="."]
+
+[node name="BrickRigid" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(36, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid2" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(108, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid2" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid3" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(180, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid3" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid4" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(252, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid4" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid5" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(324, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid5" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid6" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(396, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid6" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid7" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(468, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid7" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid8" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(540, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid8" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid9" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(612, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid9" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid10" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(684, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid10" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid11" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(756, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid11" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid12" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(828, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid12" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid13" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(900, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid13" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid14" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(972, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid14" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid15" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1044, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid15" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid16" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1116, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid16" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid17" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1188, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid17" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid18" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1260, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid18" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid19" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1332, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid19" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid20" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1404, 680)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid20" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid21" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1404, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid21" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid22" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1332, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid22" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid23" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1260, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid23" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid24" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1188, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid24" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid25" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1116, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid25" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid26" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1044, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid26" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid27" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(972, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid27" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid28" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(900, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid28" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid29" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(828, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid29" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid30" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(756, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid30" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid31" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(684, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid31" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid32" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(612, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid32" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid33" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(540, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid33" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid34" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(468, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid34" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid35" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(396, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid35" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid36" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(324, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid36" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid37" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(252, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid37" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid38" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(180, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid38" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid39" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(108, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid39" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid40" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(36, 640)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid40" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid41" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(216, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid41" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid42" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(180, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid42" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid43" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(216, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid43" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid44" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(252, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid44" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid45" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(324, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid45" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid46" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(396, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid46" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid47" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(468, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid47" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid48" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(540, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid48" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid49" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(288, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid49" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid50" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(360, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid50" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid51" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(432, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid51" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid52" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(504, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid52" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid53" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(288, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid53" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid54" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(360, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid54" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid55" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(432, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid55" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid56" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(504, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid56" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid57" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1212, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid57" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid58" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1140, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid58" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid59" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1068, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid59" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid60" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(996, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid60" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid61" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(924, 360)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid61" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid62" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(960, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid62" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid63" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1032, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid63" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid64" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1104, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid64" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid65" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1176, 400)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid65" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid66" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1176, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid66" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid67" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1104, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid67" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid68" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1032, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid68" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid69" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(960, 320)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid69" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid70" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid70" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid71" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid71" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid72" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid72" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid73" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1380, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid73" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid74" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1380, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid74" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid75" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1344, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid75" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid76" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1308, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid76" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid77" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 140)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid77" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid78" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid78" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid79" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1380, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid79" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid80" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 560)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid80" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid81" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1344, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid81" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid82" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1380, 560)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid82" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid83" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1416, 520)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid83" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid84" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid84" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid85" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 560)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid85" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid86" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(60, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid86" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid87" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(96, 600)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid87" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid88" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(60, 560)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid88" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid89" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 520)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid89" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid90" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid90" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid91" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(60, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid91" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid92" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(96, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid92" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid93" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.682862, 0.682862, 0.682862, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid93" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid94" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid94" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid95" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(60, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickGlass.png"
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid95" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid96" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(132, 20)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid96" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid97" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(24, 140)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid97" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid98" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(60, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid98" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid99" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(96, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid99" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid100" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1344, 60)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid100" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid101" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1380, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(1, 0.139768, 0.139768, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid101" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="BrickRigid102" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(264, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid102" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid103" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(336, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid103" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid104" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(408, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid104" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid105" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(480, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid105" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid106" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(552, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid106" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid107" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(624, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid107" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid108" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(696, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid108" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid109" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(768, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid109" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid110" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(840, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid110" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid111" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(912, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid111" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid112" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(984, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid112" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid113" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1056, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid113" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="BrickRigid114" type="RigidBody2D" parent="Bricks" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+position = Vector2(1128, 100)
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickRect.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickMetal.png"
+shader_color = Color(0.721997, 0.705716, 0.705716, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/BrickRigid114" instance=ExtResource("4_s3lth")]
+polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+
+[node name="RemoteOffsetPath0" type="Node2D" parent="Bricks"]
+position = Vector2(444, 520)
+
+[node name="BrickRigid115" type="RigidBody2D" parent="Bricks/RemoteOffsetPath0" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.211728, 0.905931, 0.568087, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+init_health = 2
+init_score = 50
+path_group = 0
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/RemoteOffsetPath0/BrickRigid115" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="RemoteOffsetPath1" type="Node2D" parent="Bricks"]
+position = Vector2(420, 460)
+
+[node name="BrickRigid116" type="RigidBody2D" parent="Bricks/RemoteOffsetPath1" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.905931, 0.522043, 0.211728, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+init_health = 2
+init_score = 50
+path_group = 1
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/RemoteOffsetPath1/BrickRigid116" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="RemoteOffsetPath2" type="Node2D" parent="Bricks"]
+position = Vector2(384, 560)
+
+[node name="BrickRigid117" type="RigidBody2D" parent="Bricks/RemoteOffsetPath2" node_paths=PackedStringArray("hitbox", "base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"] instance=ExtResource("1_x15ws")]
+collision_layer = 4
+collision_mask = 8
+mass = 5.0
+physics_material_override = ExtResource("2_88x5v")
+can_sleep = false
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp_mode = 1
+linear_damp = 2.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("3_6sifu")
+base_texture_path = "res://Assets/Visuals/BrickTextures/BaseTypes/BrickSqr.png"
+texture_path = "res://Assets/Visuals/BrickTextures/BrickSpiral.png"
+shader_color = Color(0.905931, 0.211728, 0.855418, 1)
+hitbox = NodePath("HitboxComponent")
+base_sprite = NodePath("Sprite")
+texture_sprite = NodePath("Sprite/TextureSprite")
+health_comp = NodePath("HealthComp")
+score_comp = NodePath("ScoreComp")
+hit_sound_comp = NodePath("HitSoundComp")
+destroy_sound_comp = NodePath("DestroySoundComp")
+editor_hitbox = NodePath("EditorHitboxComp")
+init_health = 2
+init_score = 50
+path_group = 2
+
+[node name="HitboxComponent" type="CollisionPolygon2D" parent="Bricks/RemoteOffsetPath2/BrickRigid117" instance=ExtResource("5_sbs03")]
+polygon = PackedVector2Array(-12, -16, -16, -12, -16, 12, -12, 16, 12, 16, 16, 12, 16, -12, 12, -16)
+
+[node name="Paths" type="Node2D" parent="."]
+
+[node name="Path2D" type="Path2D" parent="Paths" node_paths=PackedStringArray("follower", "transformer", "line", "points_node", "transform_target") groups=["Path"] instance=ExtResource("6_6sifu")]
+curve = SubResource("Curve2D_sbs03")
+script = ExtResource("7_s3lth")
+speed = 50.0
+looped = true
+apply_rotation = true
+follower = NodePath("PathFollow2D")
+transformer = NodePath("PathFollow2D/RemoteTransform2D")
+line = NodePath("Visuals/Line2D")
+points_node = NodePath("Visuals/Points")
+transform_target = NodePath("../../Bricks/RemoteOffsetPath0")
+
+[node name="@Path2D@870" type="Path2D" parent="Paths" node_paths=PackedStringArray("follower", "transformer", "line", "points_node", "transform_target") groups=["Path"] instance=ExtResource("6_6sifu")]
+curve = SubResource("Curve2D_12mo6")
+script = ExtResource("7_s3lth")
+speed = 50.0
+looped = true
+apply_rotation = true
+follower = NodePath("PathFollow2D")
+transformer = NodePath("PathFollow2D/RemoteTransform2D")
+line = NodePath("Visuals/Line2D")
+points_node = NodePath("Visuals/Points")
+transform_target = NodePath("../../Bricks/RemoteOffsetPath1")
+
+[node name="@Path2D@903" type="Path2D" parent="Paths" node_paths=PackedStringArray("follower", "transformer", "line", "points_node", "transform_target") groups=["Path"] instance=ExtResource("6_6sifu")]
+curve = SubResource("Curve2D_dusfn")
+script = ExtResource("7_s3lth")
+speed = 50.0
+looped = true
+apply_rotation = true
+follower = NodePath("PathFollow2D")
+transformer = NodePath("PathFollow2D/RemoteTransform2D")
+line = NodePath("Visuals/Line2D")
+points_node = NodePath("Visuals/Points")
+transform_target = NodePath("../../Bricks/RemoteOffsetPath2")

@@ -56,6 +56,10 @@ static func load_settings() -> SaveSettings:
 	if incomplete_config:
 		Logger.write("Broken settings, resaving.", "SaveLoader");
 		save_settings();
+
+	# if (OS.has_feature("editor")):
+		# DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED);
+		# DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true);
 	
 	return settings;
 

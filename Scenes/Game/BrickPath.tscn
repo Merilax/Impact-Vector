@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://crvgnxifcrgnh" path="res://Scripts/Game/Path.gd" id="1_jkl7x"]
 
 [sub_resource type="Curve2D" id="Curve2D_ifem0"]
+resource_local_to_scene = true
 
 [node name="Path2D" type="Path2D" node_paths=PackedStringArray("follower", "transformer", "line", "points_node") groups=["Path"]]
 curve = SubResource("Curve2D_ifem0")
@@ -13,7 +14,6 @@ line = NodePath("Visuals/Line2D")
 points_node = NodePath("Visuals/Points")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
-rotates = false
 loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
@@ -25,3 +25,6 @@ update_scale = false
 [node name="Points" type="Node2D" parent="Visuals" groups=["PathPointVisual"]]
 
 [node name="Line2D" type="Line2D" parent="Visuals" groups=["PathLineVisual"]]
+width = 6.0
+joint_mode = 2
+antialiased = true
