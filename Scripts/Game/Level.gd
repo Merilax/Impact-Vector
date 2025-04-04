@@ -402,16 +402,16 @@ func win():
 
 func _on_child_entered_tree(node:Node):
 	if node.is_in_group('Ball'):
-		change_ball_speed.emit(ball_speed_mult, false);
-		change_ball_size.emit(ball_size_level);
 		if paddle: paddle.reposition_magnetised_balls();
 		if not self.is_connected('change_ball_speed', node.set_speed):
 			change_ball_speed.connect(node.set_speed);
 		if not self.is_connected('change_ball_size', node.set_size):
 			change_ball_size.connect(node.set_size);
+		change_ball_speed.emit(ball_speed_mult, false);
+		change_ball_size.emit(ball_size_level);
 
 	if node.is_in_group('PickUp'):
-		node.trigger_pickup.connect(process_pickup)
+		node.trigger_pickup.connect(process_pickup);
 
 func init_brick(brick, set_hidden:bool = false):
 	if brick.is_in_group('Brick'):
