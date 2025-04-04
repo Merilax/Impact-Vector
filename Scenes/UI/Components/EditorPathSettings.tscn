@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bla8o38kuix0l" path="res://Assets/Visuals/UI/CheckButtonUnchecked.png" id="5_anur8"]
 [ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_osdqj"]
 
-[node name="Path" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "path_looped", "apply_rotation", "create_path_button", "delete_path_button")]
+[node name="Path" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "path_looped", "apply_rotation", "path_steps", "create_path_button", "delete_path_button")]
 visible = false
 offset_right = 194.0
 offset_bottom = 144.0
@@ -16,6 +16,7 @@ path_number = NodePath("HBoxContainer2/PathNumber")
 path_speed = NodePath("HBoxContainer/PathSpeed")
 path_looped = NodePath("HBoxContainer/PathLooped")
 apply_rotation = NodePath("HBoxContainer/ApplyRotation")
+path_steps = NodePath("HBoxContainer/PathSteps")
 create_path_button = NodePath("HBoxContainer2/CreatePath")
 delete_path_button = NodePath("HBoxContainer2/DeletePath")
 
@@ -71,6 +72,22 @@ text = "Path speed"
 layout_mode = 2
 mouse_filter = 1
 value = 100.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label4" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path steps"
+
+[node name="PathSteps" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 50.0
+value = 1.0
 rounded = true
 alignment = 2
 update_on_text_changed = true

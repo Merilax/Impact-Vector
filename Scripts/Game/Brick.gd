@@ -23,6 +23,7 @@ signal brick_destroyed();
 @export var init_score:int = 10;
 @export var init_pushable:bool = false;
 @export var init_mass:int = 5;
+@export var is_path_clone:bool = false;
 @export var path_group:int = -1;
 
 @export var is_editor:bool = true;

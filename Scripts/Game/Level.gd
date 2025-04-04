@@ -443,21 +443,24 @@ func init_brick(brick, set_hidden:bool = false):
 						break;
 
 func init_path(path:BrickPath):
-	if path.speed == 0: return;
-	var min_speed := 0;
-	var max_speed := 100;
-	var min_time := 10;
-	var max_time := 0.15;
-	var time = (path.speed - min_speed) * (max_time - min_time) / (max_speed - min_speed) + min_time; # linear interpolation
+	path.setup_steps();
+	path.play_tweens(true);
 
-	var tween:Tween = path.follower.create_tween().set_loops();
-	if not path.looped:
-		tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT);
-		
-	tween.tween_property(path.follower, "progress_ratio", 1, time).from(0);
+	# if path.speed == 0: return;
+	# var min_speed := 0;
+	# var max_speed := 100;
+	# var min_time := 10;
+	# var max_time := 0.15;
+	# var time = (path.speed - min_speed) * (max_time - min_time) / (max_speed - min_speed) + min_time; # linear interpolation
 
-	if not path.looped: # Back & forth
-		tween.tween_property(path.follower, "progress_ratio", 0, time).from(1);
+	# var tween:Tween = path.first_follower.create_tween().set_loops();
+	# if not path.looped:
+		# tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT);
+		# 
+	# tween.tween_property(path.first_follower, "progress_ratio", 1, time).from(0);
+# 
+	# if not path.looped: # Back & forth
+		# tween.tween_property(path.first_follower, "progress_ratio", 0, time).from(1);
 
 func kill_paddle():
 	if is_instance_valid(paddle):
@@ -610,13 +613,16 @@ func load_level(dir:String) -> bool:
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		init_brick(brick, true);
 	
+	Logger.write(str("Initializing Paths."), "Level");
+	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
+		path.setup_steps();
+		
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
 		brick.show();
 	
-	Logger.write(str("Initializing Paths."), "Level");
 	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
-		init_path(path);
+		path.play_tweens(true);
 	
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;

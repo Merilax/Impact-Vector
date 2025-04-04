@@ -118,8 +118,9 @@ func _ready():
 	path_options_ctrl.delete_path_button.pressed.connect(on_delete_path);
 	path_options_ctrl.path_number.value_changed.connect(on_select_path.bind(-1));
 	path_options_ctrl.path_speed.value_changed.connect(func(value): if selected_path: selected_path.speed = value);
-	path_options_ctrl.path_looped.pressed.connect(func(): if selected_path: selected_path.looped = path_options_ctrl.path_looped.button_pressed);
+	path_options_ctrl.path_looped.pressed.connect(func(): set_path_looped(path_options_ctrl.path_looped.button_pressed));
 	path_options_ctrl.apply_rotation.pressed.connect(func(): set_path_apply_rotation(path_options_ctrl.apply_rotation.button_pressed));
+	path_options_ctrl.path_steps.value_changed.connect(func(value): set_path_steps(value));
 
 	grid_drawer.size = mouse_boundary.get_child(0).shape.size;
 	set_snap_size(snap_cell_size.x, 0);
@@ -183,7 +184,8 @@ func _process(_delta):
 		dragged_point.global_position = get_mouse_position_snapped();
 		selected_path.curve.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
 		selected_path.line.set_point_position(idx, get_mouse_position_snapped() - level_content.global_position);
-		selected_path.transformer.position = Vector2.ZERO;
+		# selected_path.first_transformer.position = Vector2.ZERO;
+		selected_path.reposition_steps();
 
 func set_snap(flag:bool):
 	use_snap = flag;
@@ -256,12 +258,20 @@ func on_create_path():
 
 	var remote_offset := Node2D.new();
 	remote_offset.name = str("RemoteOffsetPath", brick_paths.size() - 1);
-	path.transformer.add_child(remote_offset, true);
-	remote_offset.global_position = path.transformer.global_position;
+	level_content_bricks.add_child(remote_offset, true);
+	# remote_offset.global_position = path.first_transformer.global_position;
 	remote_offset.owner = level_content;
 
 	path.transform_target = remote_offset;
-	# path.transformer.remote_path = path.transformer.get_path_to(path.transform_target); # Taken care of in Path.ready(), but can be uncommented to move bric groups in editor. Potentially useful?
+
+	var step_offset := Node2D.new();
+	step_offset.name = str("StepOffset0");
+	remote_offset.add_child(step_offset, true);
+	step_offset.owner = level_content;
+
+	path.setup_steps();
+	# step_offset.global_position = path.first_transformer.global_position;
+	# path.first_transformer.remote_path = path.first_transformer.get_path_to(path.transform_target); # Taken care of in Path.ready(), but can be uncommented to move bric groups in editor. Potentially useful?
 
 	path_options_ctrl.path_number.max_value += 1;
 	data_options_ctrl.brick_path_group_control.max_value += 1;
@@ -277,7 +287,7 @@ func on_delete_path():
 		on_select_path(-1);
 		return;
 
-	for brick:Brick in brick_paths[idx].transform_target.get_children():
+	for brick:Brick in brick_paths[idx].transform_target.get_child(0).get_children():
 		brick.path_group = -1;
 		brick.reparent(level_content_bricks);
 
@@ -288,8 +298,9 @@ func on_delete_path():
 	for i:int in range(0, brick_paths.size()):
 		if i < idx: continue;
 		brick_paths[i].transform_target.name = str("RemoteOffsetPath", i);
-		for brick:Brick in brick_paths[i].transform_target.get_children():
-			brick.path_group = i;
+		for step_offset:Node2D in brick_paths[i].transform_target.get_children(): # Expensive, might disbale 'path_group' in cloned nodes altogether
+			for brick:Brick in step_offset.get_children():
+				brick.path_group = i;
 
 	path_options_ctrl.path_number.max_value -= 1;
 	data_options_ctrl.brick_path_group_control.max_value -= 1;
@@ -319,6 +330,7 @@ func on_select_path(value:float, offset:int = 0):
 	path_options_ctrl.path_speed.set_value_no_signal(selected_path.speed);
 	path_options_ctrl.path_looped.set_pressed_no_signal(selected_path.looped);
 	path_options_ctrl.apply_rotation.set_pressed_no_signal(selected_path.apply_rotation);
+	path_options_ctrl.path_steps.set_value_no_signal(selected_path.steps);
 
 func release_drag_point():
 	if not dragged_point or not selected_path: return;
@@ -327,16 +339,31 @@ func release_drag_point():
 func on_select_path_group(value:float, offset:int = 0, force_select:bool = false):
 	var idx:int = floor(value + offset);
 
+	if not selected_brick: return;
+	if selected_brick.is_path_clone:
+		data_options_ctrl.path_group.set_value_no_signal(selected_brick.path_group - 1);
+		return;
+
 	# Enabling apply on select and then changing the path group SpinBox
 	# would trigger this method on the currently selected brick, so it must be filtered.
 	if apply_on_select and not force_select: return;
-	if not selected_brick: return;
 
-	selected_brick.reparent(level_content_bricks);
+	var remote_offset:Node2D = brick_paths[idx].transform_target;
+
+	if value < 0:
+		selected_brick.reparent(level_content_bricks);
 
 	if value >= 0:
-		selected_brick.reparent(brick_paths[idx].transform_target);
+		selected_brick.reparent(remote_offset.get_child(0));
 		selected_brick.path_group = idx;
+
+		print(remote_offset.get_child_count())
+		for i:int in range(0, remote_offset.get_child_count()):
+			if i == 0: continue;
+			var new_brick := duplicate_bug_bypass(selected_brick);
+			remote_offset.get_child(i).add_child(new_brick, true);
+			new_brick.is_path_clone = true;
+			new_brick.position = selected_brick.position;
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if loading_level or saving_level: return
@@ -448,14 +475,16 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				selected_path.curve.add_point(mouse_pos - level_content.global_position);
 				selected_path.line.add_point(mouse_pos - level_content.global_position);
 
-				selected_path.transformer.position = Vector2.ZERO;
-				selected_path.transform_target.global_position = selected_path.curve.get_point_position(0);
-
 				var point:Node2D = PathPointVisual.instantiate();
 				point.set_meta("point_idx", selected_path.curve.point_count - 1);
 				selected_path.points_node.add_child(point);
 				point.global_position = mouse_pos;
 				point.owner = selected_path;
+
+				if selected_path.curve.point_count >= 2:
+					selected_path.reposition_steps();
+					# selected_path.first_transformer.position = Vector2.ZERO;
+					selected_path.transform_target.global_position = selected_path.curve.get_point_position(0);
 			return;			
 
 		# Delete point
@@ -480,6 +509,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				selected_path.curve.remove_point(remove_idx);
 				selected_path.line.remove_point(remove_idx);
 				result[0].collider.queue_free();
+				selected_path.reposition_steps();
 
 				# if selected_path.curve.point_count == 0:
 					# on_delete_path();
@@ -547,16 +577,14 @@ func refresh_brick_data_controls(brick:Brick):
 	data_options_ctrl.brick_health_control.set_value_no_signal(brick.init_health);
 	data_options_ctrl.brick_score_control.set_value_no_signal(brick.init_score);
 	data_options_ctrl.brick_pushable_control.set_pressed_no_signal(brick.init_pushable);
-	if brick.init_pushable:
-		data_options_ctrl.brick_path_group_control.editable = false;
-	else:
-		data_options_ctrl.brick_path_group_control.editable = true;
 	data_options_ctrl.brick_weight_control.set_value_no_signal(brick.init_mass);
 	data_options_ctrl.brick_path_group_control.set_value_no_signal(brick.path_group + 1);
-	if brick.collision_mask == 8:
-		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(false);
-	elif brick.collision_mask == 12:
-		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
+
+	if brick.collision_mask == 8: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(false);
+	elif brick.collision_mask == 12: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
+
+	data_options_ctrl.brick_path_group_control.editable = not brick.init_pushable;
+	data_options_ctrl.brick_path_group_control.editable = not brick.is_path_clone;
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
@@ -602,14 +630,56 @@ func reset_brick_collision_state():
 	collision_detected = false
 	illegal_collision_detected = false
 
+func set_path_looped(apply:bool):
+	if not selected_path: return;
+	selected_path.looped = apply;
+	selected_path.reposition_steps();
+
 func set_path_apply_rotation(apply:bool):
+	if not selected_path: return;
 	if apply:
-		print("yea")
 		selected_path.apply_rotation = true;
-		selected_path.transformer.rotation = 0;
+		for follower in selected_path.follower_array:
+			follower.get_child(0).rotation = 0;
 	else:
 		selected_path.apply_rotation = false;
-		selected_path.transformer.global_rotation = 0;
+		for follower in selected_path.follower_array:
+			follower.get_child(0).global_rotation = 0;
+
+func set_path_steps(value:float):
+	if not selected_path: return;
+	verify_valid_path();
+	var steps:int = floor(value);
+
+	if selected_path.steps == steps: return;
+
+	var remote_offset:Node2D = selected_path.transform_target;
+	var first_step_offset:Node2D = remote_offset.get_child(0);
+
+	for i:int in range(0, remote_offset.get_child_count()):
+		if i == 0: continue;
+		if i < steps: continue; 
+		remote_offset.get_child(i).queue_free();
+
+	await get_tree().process_frame;
+	for i:int in range(0, steps):
+		if i == 0: continue;
+		if i < selected_path.steps: continue; 		
+		var step_offset := Node2D.new();
+		step_offset.name = str("StepOffset", i);
+		remote_offset.add_child(step_offset, true);
+		step_offset.owner = level_content;
+		step_offset.global_position = first_step_offset.global_position;
+
+		for brick:Brick in first_step_offset.get_children():
+			var new_brick := duplicate_bug_bypass(brick);
+			new_brick.is_path_clone = true;
+			step_offset.add_child(new_brick);
+			new_brick.owner = level_content;
+			new_brick.position = brick.position;
+
+	selected_path.steps = steps;
+	selected_path.setup_steps();
 
 func verify_valid_path() -> bool:
 	if selected_path and selected_path.curve.point_count < 2:
@@ -644,7 +714,8 @@ func load_level(level_folder:String):
 		brick_paths.append(path);
 		path_options_ctrl.path_number.max_value += 1;
 		data_options_ctrl.brick_path_group_control.max_value += 1;
-		path.transform_target.reparent(path.transformer);
+		# path.transform_target.reparent(path.first_transformer);
+		path.setup_steps();
 	on_select_path(-1);
 
 	level_num = level_folder
@@ -666,12 +737,9 @@ func save_level():
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		brick.hitbox.owner = level_content;
 	
-	for path:BrickPath in brick_paths: # Shouldn't ever happen.
-		# if path.curve.point_count < 2:
-		# 	selected_path = path;
-		# 	on_delete_path();
-		# 	continue;
-		path.transform_target.reparent(level_content_bricks);
+	for path:BrickPath in brick_paths:
+		# path.transform_target.reparent(level_content_bricks);
+		pass
 	on_select_path(-1);
 	
 	Logger.write(str("Packing Scene."), "LevelEditor");
@@ -731,11 +799,23 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	var new_brick:Brick = BrickScene.instantiate();
 	var new_hitbox = brick.hitbox.duplicate();
 	new_brick.add_child(new_hitbox, true);
-	new_hitbox.owner = new_brick;
 	new_brick.hitbox = new_hitbox;
+	new_hitbox.owner = new_brick;
+
 	new_brick.base_texture_path = brick.base_texture_path;
-	if selected_texture_path: new_brick.texture_path = selected_texture_path;
-	if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
+	new_brick.texture_path = brick.texture_path;
+	new_brick.shader_color = brick.shader_color;
+	# if selected_texture_path: new_brick.texture_path = selected_texture_path;
+	# if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
+	
+	new_brick.init_health = brick.init_health;
+	new_brick.init_mass = brick.init_mass;
+	new_brick.init_pushable = brick.init_pushable;
+	new_brick.init_score = brick.init_score;
+	new_brick.path_group = brick.path_group;
+	new_brick.is_path_clone = brick.is_path_clone;
+	new_brick.is_editor = brick.is_editor;
+	
 	new_brick.setup(true);
 	return new_brick;
 
