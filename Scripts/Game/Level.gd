@@ -446,22 +446,6 @@ func init_path(path:BrickPath):
 	path.setup_steps();
 	path.play_tweens(true);
 
-	# if path.speed == 0: return;
-	# var min_speed := 0;
-	# var max_speed := 100;
-	# var min_time := 10;
-	# var max_time := 0.15;
-	# var time = (path.speed - min_speed) * (max_time - min_time) / (max_speed - min_speed) + min_time; # linear interpolation
-
-	# var tween:Tween = path.first_follower.create_tween().set_loops();
-	# if not path.looped:
-		# tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT);
-		# 
-	# tween.tween_property(path.first_follower, "progress_ratio", 1, time).from(0);
-# 
-	# if not path.looped: # Back & forth
-		# tween.tween_property(path.first_follower, "progress_ratio", 0, time).from(1);
-
 func kill_paddle():
 	if is_instance_valid(paddle):
 		paddle.die();

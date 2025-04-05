@@ -107,12 +107,13 @@ func _ready():
 	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
 	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
 	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
-	data_options_ctrl.brick_health_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_health = value);
-	data_options_ctrl.brick_score_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_score = value);
-	data_options_ctrl.brick_pushable_control.pressed.connect(func(): if selected_brick: set_brick_can_be_pushed(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed));
-	data_options_ctrl.brick_weight_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_mass = value);
-	data_options_ctrl.brick_can_collide_control.pressed.connect(func(): if selected_brick: set_brick_sollision(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed));
-	data_options_ctrl.brick_path_group_control.value_changed.connect(on_select_path_group.bind(-1));
+	# data_options_ctrl.brick_health_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_health = value);
+	# data_options_ctrl.brick_score_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_score = value);
+	data_options_ctrl.brick_pushable_control.pressed.connect(func(): set_ui_brick_pushable(data_options_ctrl.brick_pushable_control.button_pressed));
+	# data_options_ctrl.brick_weight_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_mass = value);
+	data_options_ctrl.brick_can_collide_control.pressed.connect(func(): set_ui_brick_collider(data_options_ctrl.brick_can_collide_control.button_pressed));
+	data_options_ctrl.brick_path_group_control.value_changed.connect(preview_path.bind(-1));
+	data_options_ctrl.apply_ctrl.pressed.connect(func(): apply_data_options());
 
 	path_options_ctrl.create_path_button.pressed.connect(on_create_path);
 	path_options_ctrl.delete_path_button.pressed.connect(on_delete_path);
@@ -144,6 +145,10 @@ func set_tool(type:String):
 	snap_options_ctrl.hide();
 	get_tree().call_group("PathPointVisual", "hide");
 	get_tree().call_group("PathLineVisual", "hide");
+	if previewed_line:
+		path_preview_tween.kill();
+		previewed_line.default_color = Color(1,1,1);
+		previewed_line = null;
 
 	match type.to_lower():
 		"place":
@@ -340,30 +345,32 @@ func on_select_path_group(value:float, offset:int = 0, force_select:bool = false
 	var idx:int = floor(value + offset);
 
 	if not selected_brick: return;
-	if selected_brick.is_path_clone:
-		data_options_ctrl.path_group.set_value_no_signal(selected_brick.path_group - 1);
+	if selected_brick.is_path_clone and idx >= 0:
+		data_options_ctrl.brick_path_group_control.set_value_no_signal(selected_brick.path_group - 1);
 		return;
+	if selected_brick.path_group == idx: return;
 
 	# Enabling apply on select and then changing the path group SpinBox
 	# would trigger this method on the currently selected brick, so it must be filtered.
 	if apply_on_select and not force_select: return;
 
 	var remote_offset:Node2D = brick_paths[idx].transform_target;
+	selected_brick.path_group = idx;
 
-	if value < 0:
+	if idx < 0:
 		selected_brick.reparent(level_content_bricks);
 
-	if value >= 0:
+	if idx >= 0:
 		selected_brick.reparent(remote_offset.get_child(0));
 		selected_brick.path_group = idx;
 
-		print(remote_offset.get_child_count())
 		for i:int in range(0, remote_offset.get_child_count()):
 			if i == 0: continue;
 			var new_brick := duplicate_bug_bypass(selected_brick);
 			remote_offset.get_child(i).add_child(new_brick, true);
 			new_brick.is_path_clone = true;
 			new_brick.position = selected_brick.position;
+			new_brick.owner = level_content;
 
 func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 	if loading_level or saving_level: return
@@ -407,14 +414,14 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 				selected_brick_sample = duplicate_bug_bypass(selected_brick); # Make a "Use selected" button instead.
 
 				if apply_on_select:
-					selected_brick.init_health = floor(data_options_ctrl.brick_health_control.value);
-					selected_brick.init_score = floor(data_options_ctrl.brick_score_control.value);
-					set_brick_can_be_pushed(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
-					selected_brick.init_mass = floor(data_options_ctrl.brick_weight_control.value);
+					selected_brick.init_health = data_options_ctrl.brick_health_control.value;
+					selected_brick.init_score = data_options_ctrl.brick_score_control.value;
+					selected_brick.init_mass = data_options_ctrl.brick_weight_control.value;
+					set_brick_pushable(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
+					set_brick_collider(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
 					selected_brick.path_group = floor(data_options_ctrl.brick_path_group_control.value) - 1;
-					on_select_path_group(floor(data_options_ctrl.brick_path_group_control.value) - 1, 0, true);
-					set_brick_sollision(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
-					
+					on_select_path_group(data_options_ctrl.brick_path_group_control.value, - 1, true);
+
 					#selected_brick.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
 					selected_brick.tween_size(Vector2(0.7, 0.7), 0.1, true);
 				else:
@@ -583,8 +590,18 @@ func refresh_brick_data_controls(brick:Brick):
 	if brick.collision_mask == 8: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(false);
 	elif brick.collision_mask == 12: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
 
-	data_options_ctrl.brick_path_group_control.editable = not brick.init_pushable;
-	data_options_ctrl.brick_path_group_control.editable = not brick.is_path_clone;
+	data_options_ctrl.brick_path_group_control.editable = true;
+	data_options_ctrl.brick_pushable_control.disabled = false;
+	data_options_ctrl.brick_can_collide_control.disabled = false;
+
+	if brick.init_pushable or brick.collision_mask == 12:
+		data_options_ctrl.brick_path_group_control.editable = false;
+
+	# if not data_options_ctrl.brick_path_group_control.editable:
+		# data_options_ctrl.brick_pushable_control.disabled = false;
+		# data_options_ctrl.brick_can_collide_control.disabled = false;
+
+	preview_path(data_options_ctrl.brick_path_group_control.value, -1);
 
 func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
@@ -613,18 +630,63 @@ func ui_set_brick_rotation(brick:Brick, rot:float) -> bool:
 		return false
 	return true
 
-func set_brick_can_be_pushed(brick:Brick, can_be_pushed:bool):
+func set_brick_pushable(brick:Brick, can_be_pushed:bool):
 	brick.init_pushable = can_be_pushed;
-	if can_be_pushed == true:
+	if can_be_pushed:
 		on_select_path_group(-1);
+
+func set_ui_brick_pushable(can_be_pushed:bool):
+	if can_be_pushed:
 		data_options_ctrl.brick_path_group_control.set_value_no_signal(0);
 		data_options_ctrl.brick_path_group_control.editable = false;
+		preview_path(-1);
 	else:
-		data_options_ctrl.brick_path_group_control.editable = true;
+		if not data_options_ctrl.brick_can_collide_control.button_pressed:
+			data_options_ctrl.brick_path_group_control.editable = true;
 
-func set_brick_sollision(brick:Brick, can_collide:bool):
-	if can_collide: brick.collision_mask = 12;
-	else: brick.collision_mask = 8;
+func set_brick_collider(brick:Brick, can_collide:bool):
+	if can_collide:
+		on_select_path_group(-1);
+		brick.collision_mask = 12;
+	else:
+		brick.collision_mask = 8;
+
+func set_ui_brick_collider(can_collide:bool):
+	if can_collide:
+		data_options_ctrl.brick_path_group_control.set_value_no_signal(0);
+		data_options_ctrl.brick_path_group_control.editable = false;
+		preview_path(-1);
+	else:
+		if not data_options_ctrl.brick_pushable_control.button_pressed:
+			data_options_ctrl.brick_path_group_control.editable = true;
+
+func apply_data_options() -> bool:
+	if not selected_brick: return false;
+
+	selected_brick.init_health = data_options_ctrl.brick_health_control.value;
+	selected_brick.init_mass = data_options_ctrl.brick_weight_control.value;
+	selected_brick.init_score = data_options_ctrl.brick_score_control.value;
+	set_brick_pushable(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
+	set_brick_collider(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
+	on_select_path_group(data_options_ctrl.brick_path_group_control.value, -1, false);
+
+	return true;
+
+var previewed_line:Line2D;
+var path_preview_tween:Tween;
+func preview_path(value:float, offset:int = 0):
+	if previewed_line:
+		path_preview_tween.kill();
+		previewed_line.default_color = Color(1,1,1);
+		previewed_line = null;
+
+	var idx:int = floor(value + offset);
+	if idx < 0: return;
+
+	previewed_line = brick_paths[idx].line;
+	path_preview_tween = previewed_line.create_tween().set_trans(Tween.TRANS_SINE).set_loops();
+	path_preview_tween.tween_property(previewed_line, "default_color", Color(0,0,0), 0.5).from_current();
+	path_preview_tween.tween_property(previewed_line, "default_color", previewed_line.default_color, 0.5);
 
 func reset_brick_collision_state():
 	collision_detected = false

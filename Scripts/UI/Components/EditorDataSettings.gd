@@ -13,3 +13,4 @@ class_name EditorDataSettings
 @export var brick_path_group_control:SpinBox;
 # @export var brick_hit_sound:Control;
 # @export var brick_kill_sound:Control;
+@export var apply_ctrl:Button;

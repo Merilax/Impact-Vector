@@ -16,10 +16,6 @@ func _ready():
 
 	await get_tree().process_frame;
 	
-	if (OS.has_feature("editor")):
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED);
-		# DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true);
-
 	Logger.write("Impact Vector ready.", "Root");
 
 func play_level(campaign_path, campaign_num, level_num, savedata):

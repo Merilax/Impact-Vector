@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bla8o38kuix0l" path="res://Assets/Visuals/UI/CheckButtonUnchecked.png" id="5_cx10j"]
 [ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_s6636"]
 
-[node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control")]
+[node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "apply_ctrl")]
 visible = false
 script = ExtResource("1_wx2ps")
 apply_brick_data_on_select_control = NodePath("HBoxContainer2/ApplySelect2")
@@ -21,6 +21,7 @@ brick_pushable_control = NodePath("Stats/VBoxContainer/Pushable")
 brick_weight_control = NodePath("Stats/VBoxContainer/Weight")
 brick_can_collide_control = NodePath("Stats/VBoxContainer/Collider")
 brick_path_group_control = NodePath("Stats/VBoxContainer3/PathGroup")
+apply_ctrl = NodePath("Stats/Apply")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -106,7 +107,7 @@ mouse_filter = 2
 
 [node name="Stats" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 20
 
 [node name="VBoxContainer" type="GridContainer" parent="Stats"]
 custom_minimum_size = Vector2(300, 0)
@@ -232,3 +233,8 @@ text = "Kill sound"
 visible = false
 layout_mode = 2
 theme = ExtResource("1_meml4")
+
+[node name="Apply" type="Button" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Apply"
