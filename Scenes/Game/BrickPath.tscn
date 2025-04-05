@@ -5,20 +5,11 @@
 [sub_resource type="Curve2D" id="Curve2D_ifem0"]
 resource_local_to_scene = true
 
-[node name="Path2D" type="Path2D" node_paths=PackedStringArray("follower", "transformer", "line", "points_node") groups=["Path"]]
+[node name="Path2D" type="Path2D" node_paths=PackedStringArray("line", "points_node") groups=["Path"]]
 curve = SubResource("Curve2D_ifem0")
 script = ExtResource("1_jkl7x")
-follower = NodePath("PathFollow2D")
-transformer = NodePath("PathFollow2D/RemoteTransform2D")
 line = NodePath("Visuals/Line2D")
 points_node = NodePath("Visuals/Points")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="."]
-loop = false
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
-update_rotation = false
-update_scale = false
 
 [node name="Visuals" type="Node2D" parent="."]
 

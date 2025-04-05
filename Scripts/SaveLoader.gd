@@ -2,6 +2,7 @@ class_name SaveLoader
 extends Node
 
 static func load_settings() -> SaveSettings:
+	Logger.write("Loading settings.", "SaveLoader");
 	var settings:SaveSettings;
 	var incomplete_config:bool = false;
 
@@ -56,14 +57,11 @@ static func load_settings() -> SaveSettings:
 	if incomplete_config:
 		Logger.write("Broken settings, resaving.", "SaveLoader");
 		save_settings();
-
-	# if (OS.has_feature("editor")):
-		# DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED);
-		# DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true);
 	
 	return settings;
 
 static func save_settings() -> bool:
+	Logger.write("Saving settings.", "SaveLoader");
 	var settings:SaveSettings = SaveSettings.new();
 
 	settings.arm_speed_multiplier = GlobalVars.arm_speed_multiplier;
@@ -78,11 +76,13 @@ static func save_settings() -> bool:
 	return true;
 
 static func load_gamedata() -> SaveGameData:
+	Logger.write("Loading SaveGameData.", "SaveLoader");
 	var game_data:SaveGameData = load("user://SaveGameData.tres");
 
 	return game_data;
 
 static func save_gamedata(data_node) -> bool:
+	Logger.write("Saving SaveGameData.", "SaveLoader");
 	var save_game_data:SaveGameData = SaveGameData.new();
 	
 	save_game_data.score = data_node.score;

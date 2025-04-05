@@ -19,10 +19,11 @@ signal process_score(score:int);
 signal spawn_pickup(global_position:Vector2, type:String, texture:String);
 signal brick_destroyed();
 
-@export var init_health:int = 1;
-@export var init_score:int = 10;
+@export var init_health:float = 1;
+@export var init_score:float = 10;
 @export var init_pushable:bool = false;
-@export var init_mass:int = 5;
+@export var init_mass:float = 5;
+@export var is_path_clone:bool = false;
 @export var path_group:int = -1;
 
 @export var is_editor:bool = true;
@@ -53,7 +54,7 @@ func setup_as_playable():
 		health_comp.health_depleted.connect(die.bind());
 
 	if score_comp:
-		if init_score: score_comp.score = init_score;
+		if init_score: score_comp.score = floor(init_score);
 		score_comp.process_score.connect(add_score.bind());
 
 	await get_tree().create_timer(randf_range(0, 1)).timeout;
