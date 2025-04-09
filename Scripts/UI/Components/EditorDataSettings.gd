@@ -7,6 +7,8 @@ class_name EditorDataSettings
 @export var brick_rot_ctrl:SpinBox;
 @export var brick_health_control:SpinBox;
 @export var brick_score_control:SpinBox;
+@export var brick_scoreable_control:BaseButton;
+@export var brick_indestructible_control:BaseButton;
 @export var brick_pushable_control:BaseButton;
 @export var brick_weight_control:SpinBox;
 @export var brick_can_collide_control:BaseButton;

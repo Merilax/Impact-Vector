@@ -1,10 +1,7 @@
 extends RigidBody2D
 class_name Brick
 
-@export var base_texture_path:String; # Must be set
-@export var texture_path:String; # Must be set
-@export var shader_color:Color = Color(1, 1, 1, 1);
-
+@export_group("Nodes")
 @export var hitbox:Node2D;
 @export var base_sprite:Sprite2D;
 @export var texture_sprite:Sprite2D;
@@ -15,21 +12,27 @@ class_name Brick
 @export var pickup_comp:PickupComponent;
 @export var editor_hitbox:EditorHitboxComponent;
 
-signal process_score(score:int);
-signal spawn_pickup(global_position:Vector2, type:String, texture:String);
-signal brick_destroyed();
-
+@export_group("Data")
+@export var base_texture_path:String; # Must be set
+@export var texture_path:String; # Must be set
+@export var shader_color:Color = Color(1, 1, 1, 1);
 @export var init_health:float = 1;
 @export var init_score:float = 10;
 @export var init_pushable:bool = false;
 @export var init_mass:float = 5;
+@export var can_collide:bool = false;
+@export var scoreable:bool = true;
+@export var is_indestructible:bool = false;
 @export var is_path_clone:bool = false;
 @export var path_group:int = -1;
-
 @export var is_editor:bool = true;
 
 var tweening_shader:bool = false;
 var tweening_size:bool = false;
+
+signal process_score(score:int);
+signal spawn_pickup(global_position:Vector2, type:String, texture:String);
+signal brick_destroyed(brick:Brick);
 
 func setup(as_editable:bool = true):
 	self.visible = true;
@@ -40,6 +43,11 @@ func setup(as_editable:bool = true):
 
 	if shader_color:
 		texture_sprite.material.set_shader_parameter("to", shader_color);
+
+	if can_collide:
+		self.collision_mask = 12;
+	else:
+		self.collision_mask = 8;
 
 	is_editor = as_editable;
 	if is_editor: setup_as_editable();
@@ -64,36 +72,45 @@ func setup_as_playable():
 func setup_as_editable():
 	self.editor_hitbox.add_child(self.hitbox.duplicate());
 
-func hit(node):
+func hit(node:Node2D = null, amount:float = 0):
 	if is_editor: return;
-	if node.is_in_group('Ball'):
-		if hit_sound_comp: hit_sound_comp.play();
-		if health_comp: health_comp.damage(node.damage);
-		
-	if node.is_in_group('Bullet'):
-		health_comp.damage(node.damage);
+	if node:
+		if node.is_in_group('Ball'):
+			if hit_sound_comp: hit_sound_comp.play();
+			if is_indestructible: return;
+			if node.is_corrosive:
+				die();
+				return;
+			if health_comp: health_comp.damage(amount);
+			
+		if node.is_in_group('Bullet'):
+			if hit_sound_comp: hit_sound_comp.play();
+			if is_indestructible: return;
+			if health_comp: health_comp.damage(amount);
+	# else:
+	# 	if not is_indestructible and (amount != 0) and health_comp: health_comp.damage(amount);
 
 func die():
 	if is_editor: return
-	hitbox.disabled = true
-	texture_sprite.hide()
-	if score_comp: score_comp.emit_score()
-	brick_destroyed.emit()
+	hitbox.disabled = true;
+	texture_sprite.hide();
+	if score_comp: score_comp.emit_score();
+	brick_destroyed.emit(self);
 
 	if pickup_comp:
-		spawn_pickup.emit(self.global_position, pickup_comp.pickup_type, pickup_comp.pickup_sprite)
+		spawn_pickup.emit(self.global_position, pickup_comp.pickup_type, pickup_comp.pickup_sprite);
 
 	if destroy_sound_comp and hit_sound_comp: # Stop hit sound and play kill sound
-		hit_sound_comp.stop()
-		destroy_sound_comp.play()
-		await destroy_sound_comp.finished
+		hit_sound_comp.stop();
+		destroy_sound_comp.play();
+		await destroy_sound_comp.finished;
 	elif destroy_sound_comp: # Without hit sound, just play kill sound
-		destroy_sound_comp.play()
-		await destroy_sound_comp.finished
+		destroy_sound_comp.play();
+		await destroy_sound_comp.finished;
 	elif hit_sound_comp: # Without kill sound, default to hit sound
-		await hit_sound_comp.finished
+		await hit_sound_comp.finished;
 
-	self.queue_free()
+	self.queue_free();
 
 func add_score(score:int):
 	if is_editor: return

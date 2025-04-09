@@ -14,7 +14,7 @@ config/name="Impact Vector"
 run/main_scene="res://Scenes/Root.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
-config/icon="res://Assets/Visuals/icon.svg"
+config/icon="uid://bic26ot13tys2"
 
 [audio]
 

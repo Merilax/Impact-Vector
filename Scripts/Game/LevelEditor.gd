@@ -104,14 +104,16 @@ func _ready():
 
 	data_options_ctrl.apply_brick_data_on_select_control.toggled.connect(set_apply_on_select);
 	apply_on_select = data_options_ctrl.apply_brick_data_on_select_control.button_pressed;
-	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, value, selected_brick.position.y));
-	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_position(selected_brick, selected_brick.position.x, value));
-	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: ui_set_brick_rotation(selected_brick, value));
+	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: set_ui_brick_position(selected_brick, value, selected_brick.position.y));
+	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: set_ui_brick_position(selected_brick, selected_brick.position.x, value));
+	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: set_ui__brick_rotation(selected_brick, value));
 	# data_options_ctrl.brick_health_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_health = value);
 	# data_options_ctrl.brick_score_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_score = value);
 	data_options_ctrl.brick_pushable_control.pressed.connect(func(): set_ui_brick_pushable(data_options_ctrl.brick_pushable_control.button_pressed));
 	# data_options_ctrl.brick_weight_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_mass = value);
-	data_options_ctrl.brick_can_collide_control.pressed.connect(func(): set_ui_brick_collider(data_options_ctrl.brick_can_collide_control.button_pressed));
+	# data_options_ctrl.brick_can_collide_control.pressed.connect(func(): set_ui_brick_collider(data_options_ctrl.brick_can_collide_control.button_pressed));
+	data_options_ctrl.brick_indestructible_control.pressed.connect(func(): set_ui_brick_indestructible(data_options_ctrl.brick_indestructible_control.button_pressed));
+	# data_options_ctrl.brick_scoreable_control.pressed.connect(func(): set_ui_brick_scoreable(data_options_ctrl.brick_pushable_control.button_pressed));
 	data_options_ctrl.brick_path_group_control.value_changed.connect(preview_path.bind(-1));
 	data_options_ctrl.apply_ctrl.pressed.connect(func(): apply_data_options());
 
@@ -403,11 +405,11 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 	if current_tool == "select":
 		if input.is_action_pressed("mouse_primary"):
-			var space_state = get_world_2d().direct_space_state
-			var query = PhysicsPointQueryParameters2D.new()
+			var space_state := get_world_2d().direct_space_state
+			var query := PhysicsPointQueryParameters2D.new()
 			query.position = get_global_mouse_position()
 			query.collision_mask = 4 # bits
-			var result = space_state.intersect_point(query)
+			var result := space_state.intersect_point(query)
 			
 			if result.size() > 0:
 				selected_brick = result[0].collider;
@@ -417,9 +419,9 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					selected_brick.init_health = data_options_ctrl.brick_health_control.value;
 					selected_brick.init_score = data_options_ctrl.brick_score_control.value;
 					selected_brick.init_mass = data_options_ctrl.brick_weight_control.value;
+					selected_brick.can_collide = data_options_ctrl.brick_can_collide_control.button_pressed;
 					set_brick_pushable(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
-					set_brick_collider(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
-					selected_brick.path_group = floor(data_options_ctrl.brick_path_group_control.value) - 1;
+					set_brick_indestructible(selected_brick, data_options_ctrl.brick_indestructible_control.button_pressed);
 					on_select_path_group(data_options_ctrl.brick_path_group_control.value, - 1, true);
 
 					#selected_brick.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
@@ -584,26 +586,31 @@ func refresh_brick_data_controls(brick:Brick):
 	data_options_ctrl.brick_health_control.set_value_no_signal(brick.init_health);
 	data_options_ctrl.brick_score_control.set_value_no_signal(brick.init_score);
 	data_options_ctrl.brick_pushable_control.set_pressed_no_signal(brick.init_pushable);
+	data_options_ctrl.brick_scoreable_control.set_pressed_no_signal(brick.scoreable);
+	data_options_ctrl.brick_indestructible_control.set_pressed_no_signal(brick.is_indestructible);
 	data_options_ctrl.brick_weight_control.set_value_no_signal(brick.init_mass);
 	data_options_ctrl.brick_path_group_control.set_value_no_signal(brick.path_group + 1);
-
-	if brick.collision_mask == 8: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(false);
-	elif brick.collision_mask == 12: data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
+	data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(brick.can_collide);
 
 	data_options_ctrl.brick_path_group_control.editable = true;
 	data_options_ctrl.brick_pushable_control.disabled = false;
 	data_options_ctrl.brick_can_collide_control.disabled = false;
+	data_options_ctrl.brick_scoreable_control.disabled = false;
 
-	if brick.init_pushable or brick.collision_mask == 12:
+	if brick.init_pushable or brick.can_collide:
 		data_options_ctrl.brick_path_group_control.editable = false;
 
-	# if not data_options_ctrl.brick_path_group_control.editable:
-		# data_options_ctrl.brick_pushable_control.disabled = false;
-		# data_options_ctrl.brick_can_collide_control.disabled = false;
+	if brick.is_indestructible:
+		data_options_ctrl.brick_scoreable_control.set_pressed_no_signal(false);
+		data_options_ctrl.brick_scoreable_control.disabled = true;
+		data_options_ctrl.brick_pushable_control.set_pressed_no_signal(false);
+		data_options_ctrl.brick_pushable_control.disabled = true;
+		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
+		data_options_ctrl.brick_can_collide_control.disabled = true;
 
 	preview_path(data_options_ctrl.brick_path_group_control.value, -1);
 
-func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
+func set_ui_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
 	var rollback:Vector2 = brick.position
 
@@ -620,7 +627,7 @@ func ui_set_brick_position(brick:Brick, x:float, y:float) -> bool:
 	print("ok")
 	return true
 
-func ui_set_brick_rotation(brick:Brick, rot:float) -> bool:
+func set_ui__brick_rotation(brick:Brick, rot:float) -> bool:
 	var rollback:float = brick.rotation_degrees
 
 	brick.rotation_degrees = rot
@@ -641,22 +648,28 @@ func set_ui_brick_pushable(can_be_pushed:bool):
 		data_options_ctrl.brick_path_group_control.editable = false;
 		preview_path(-1);
 	else:
-		if not data_options_ctrl.brick_can_collide_control.button_pressed:
+		if not data_options_ctrl.brick_indestructible_control.button_pressed:
 			data_options_ctrl.brick_path_group_control.editable = true;
 
-func set_brick_collider(brick:Brick, can_collide:bool):
-	if can_collide:
-		on_select_path_group(-1);
-		brick.collision_mask = 12;
-	else:
-		brick.collision_mask = 8;
+func set_brick_indestructible(brick:Brick, is_indestructible:bool):
+	brick.is_indestructible = is_indestructible;
+	if is_indestructible:
+		brick.scoreable = false;
+		brick.init_pushable = false;
+		brick.can_collide = true;
 
-func set_ui_brick_collider(can_collide:bool):
-	if can_collide:
-		data_options_ctrl.brick_path_group_control.set_value_no_signal(0);
-		data_options_ctrl.brick_path_group_control.editable = false;
-		preview_path(-1);
+func set_ui_brick_indestructible(is_indestructible:bool):
+	if is_indestructible:
+		data_options_ctrl.brick_scoreable_control.set_pressed_no_signal(false);
+		data_options_ctrl.brick_scoreable_control.disabled = true;
+		data_options_ctrl.brick_pushable_control.set_pressed_no_signal(false);
+		data_options_ctrl.brick_pushable_control.disabled = true;
+		data_options_ctrl.brick_can_collide_control.set_pressed_no_signal(true);
+		data_options_ctrl.brick_can_collide_control.disabled = true;
 	else:
+		data_options_ctrl.brick_scoreable_control.disabled = false;
+		data_options_ctrl.brick_pushable_control.disabled = false;
+		data_options_ctrl.brick_can_collide_control.disabled = false;
 		if not data_options_ctrl.brick_pushable_control.button_pressed:
 			data_options_ctrl.brick_path_group_control.editable = true;
 
@@ -666,8 +679,10 @@ func apply_data_options() -> bool:
 	selected_brick.init_health = data_options_ctrl.brick_health_control.value;
 	selected_brick.init_mass = data_options_ctrl.brick_weight_control.value;
 	selected_brick.init_score = data_options_ctrl.brick_score_control.value;
+	selected_brick.scoreable = data_options_ctrl.brick_scoreable_control.button_pressed;
+	selected_brick.can_collide = data_options_ctrl.brick_can_collide_control.button_pressed;
 	set_brick_pushable(selected_brick, data_options_ctrl.brick_pushable_control.button_pressed);
-	set_brick_collider(selected_brick, data_options_ctrl.brick_can_collide_control.button_pressed);
+	set_brick_indestructible(selected_brick, data_options_ctrl.brick_indestructible_control.button_pressed);
 	on_select_path_group(data_options_ctrl.brick_path_group_control.value, -1, false);
 
 	return true;

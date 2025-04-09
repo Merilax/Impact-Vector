@@ -13,70 +13,71 @@ var save_state:SaveGameData;
 var pickup_list:Array = [ 
 	{
 		"type": "slow",
-		"name": "Speed down",
 		"texture": "uid://caxekbaxpxgvy",
 		"weight": 10
 	},
 	{
 		"type": "speed",
-		"name": "Speed up",
 		"texture": "uid://b2ufqhunhh27l",
 		"weight": 10
 	},
 	{
 		"type": "narrow",
-		"name": "Smaller paddle",
 		"texture": "uid://1sfr7xkm72ia",
 		"weight": 10
 	},
 	{
 		"type": "wide",
-		"name": "Bigger paddle",
 		"texture": "uid://be6sue13o1ueb",
 		"weight": 10
 	},
 	{
 		"type": "small",
-		"name": "Smaller balls",
 		"texture": "uid://bx32kafyc2ca6",
 		"weight": 8
 	},
 	{
 		"type": "big",
-		"name": "Larger balls",
 		"texture": "uid://cvg4excj60cr3",
 		"weight": 8
 	},
 	{
+		"type": "explosive",
+		"texture": "uid://r8aenxq3msk3",
+		"weight": 6
+	},
+	{
+		"type": "corrosive",
+		"texture": "uid://di5m567wacjyy",
+		"weight": 6
+	},
+	{
 		"type": "turrets",
-		"name": "Turrets",
 		"texture": "uid://bsp8gm0swv3kh",
 		"weight": 6
 	},
 	{
 		"type": "magnet",
-		"name": "Magnet",
 		"texture": "uid://dil2gntnddaec",
 		"weight": 6
 	},
 	{
 		"type": "triple",
-		"name": "Triple balls",
 		"texture": "uid://ci00dwenehe35",
 		"weight": 6
 	},
 	{
 		"type": "death",
-		"name": "Death",
 		"texture": "uid://bvc6p2do3llr4",
 		"weight": 2
-	},
+	}
 ]
 var total_pickup_weight:int = 0;
+var pickup_texture_base_good = load("uid://da0tvxra80xwp");
+var pickup_texture_base_bad = load("uid://yke3nrm7jmix");
 
 var BallScene = preload("uid://dxbg7h6mg1dtd");
 var PaddleScene = preload("uid://bjjlgc7puyxfe");
-
 var PickupComp = preload("uid://c5ebe7unjhv0x");
 var PickupScene = preload("uid://dydm2dhj7p1nd");
 var BulletScene = preload("uid://dlvm63pvf1dym");
@@ -107,6 +108,7 @@ var ball_stuck_timer:SceneTreeTimer;
 @export var score_counter:Label;
 @export var speed_counter:Label;
 @export var life_counter:HBoxContainer;
+@export var ball_modifier_timer:Timer;	
 var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
 @export var world_border:WorldBorder;
@@ -119,6 +121,9 @@ var level_content_paths:Node2D;
 
 @export var speed_meter:TextureProgressBar;
 @export var magnet_meter:TextureProgressBar;
+@export var ball_modifier_meter:TextureProgressBar;
+var ball_modifier_timer_progress:float = 0;
+var ball_modifier_timer_active:bool = false;
 
 @export var arm_horizontal:Node2D;
 @export var arm_vertical:Node2D;
@@ -170,16 +175,25 @@ func _ready():
 
 	Logger.write(str("Ready."), "Level");
 
-func _process(_delta):
+	if ball_modifier_timer: ball_modifier_timer.timeout.connect(clear_ball_modifiers);
+
+	if brick_count <= 0: win(); # Broken level bypass
+
+func _process(delta):
 	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
 
 	if paddle and not tabbed_out:
-		var mouse_pos = DisplayServer.mouse_get_position();
+		# var mouse_pos = DisplayServer.mouse_get_position();
+		var mouse_pos = get_viewport().get_mouse_position();
 		if (mouse_pos.x < world_border.wall_left.global_position.x + (paddle.width / 2)):
-			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , mouse_pos.y));
+			get_viewport().warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , mouse_pos.y));
 		if (mouse_pos.x > world_border.wall_right.global_position.x - (paddle.width / 2)):
-			DisplayServer.warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , mouse_pos.y));
+			get_viewport().warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , mouse_pos.y));
+	
+	if ball_modifier_meter and ball_modifier_timer_active:
+		ball_modifier_timer_progress += delta;
+		ball_modifier_meter.value = (ball_modifier_timer_progress - ball_modifier_timer.wait_time) * 8 / (0 - ball_modifier_timer.wait_time);
 
 func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
@@ -196,7 +210,7 @@ func spawn_paddle() -> bool:
 	paddle.follow_mouse = true;
 	return true;
 
-func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true):
+func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true, copy_from:Ball = null):
 	if not can_spawn_balls: return;
 	if ball_count >= 100: return;
 	else:
@@ -216,7 +230,12 @@ func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZER
 
 		#ball.reset_stuck_timer.connect(_on_ball_reset_stuck_timer)
 
-		ball.speed_mult = ball_speed_mult
+		ball.speed_mult = ball_speed_mult;
+		if copy_from:
+			ball.set_size(copy_from.size_level);
+			if copy_from.is_explosive: ball.set_explosive(true);
+			if copy_from.is_corrosive: ball.set_corrosive(true);
+
 		if add_to_count:
 			ball_count += 1
 
@@ -307,10 +326,10 @@ func add_score(amount:int):
 	if floori(previous / 10000) < floori(score / 10000):
 		add_life(); # Extra life every 10000 score.
 
-func _on_brick_destroyed():
-	brick_count -= 1
+func _on_brick_destroyed(brick:Brick):
+	if brick.scoreable: brick_count -= 1
 	if brick_count <= 0:
-		win()
+		win();
 
 func _on_ball_reset_stuck_timer(free_timer:bool): # Multiply balls if nothing meaningful was hit in 30 seconds. Unsure if I want to continue with this.
 	return
@@ -407,8 +426,8 @@ func _on_child_entered_tree(node:Node):
 			change_ball_speed.connect(node.set_speed);
 		if not self.is_connected('change_ball_size', node.set_size):
 			change_ball_size.connect(node.set_size);
-		change_ball_speed.emit(ball_speed_mult, false);
-		change_ball_size.emit(ball_size_level);
+		# change_ball_speed.emit(ball_speed_mult, false);
+		# change_ball_size.emit(ball_size_level);
 
 	if node.is_in_group('PickUp'):
 		node.trigger_pickup.connect(process_pickup);
@@ -419,14 +438,14 @@ func init_brick(brick, set_hidden:bool = false):
 		if set_hidden: brick.hide();
 		
 		if brick.has_signal('process_score'):
-			brick.process_score.connect(add_score)
+			brick.process_score.connect(add_score);
 		if brick.has_signal('brick_destroyed'):
-			brick.brick_destroyed.connect(_on_brick_destroyed)
+			brick.brick_destroyed.connect(_on_brick_destroyed);
 		if brick.has_signal('spawn_pickup'):
-			brick.spawn_pickup.connect(_on_spawn_pickup)
+			brick.spawn_pickup.connect(_on_spawn_pickup);
 
 		if brick.is_in_group('Destructible'):
-			brick_count += 1;
+			if brick.scoreable: brick_count += 1;
 			if randi() % 101 <= 20: # Pickup spawn %
 				var pickup_comp:PickupComponent = PickupComp.instantiate();
 				brick.add_child(pickup_comp);
@@ -481,11 +500,11 @@ func process_pickup(type:String):
 		'speed':
 			notify("SPEED UP", "250 POINTS");
 			add_score(200);
-			add_speed_mult(true);
+			add_ball_speed_mult(true);
 		'slow':
 			notify("SPEED DOWN", "100 POINTS");
 			add_score(100);
-			add_speed_mult(false);
+			add_ball_speed_mult(false);
 		"magnet":
 			notify("MAGNET STRENGTH UP", "200 POINTS");
 			add_score(200);
@@ -502,7 +521,7 @@ func process_pickup(type:String):
 		"triple":
 			notify("TRIPLE BALLS", "200 POINTS");
 			add_score(100);
-			for ball:Ball in get_tree().get_nodes_in_group('Ball').duplicate():
+			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
 				if ball.lost: continue;
 				if ball.on_paddle:
 					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(PI/8));
@@ -521,13 +540,46 @@ func process_pickup(type:String):
 		"big":
 			notify("BIGGER BALLS", "100 POINTS");
 			add_score(100);
-			add_size_level(true);
+			add_ball_size_level(true);
 		"small":
 			notify("SMALLER BALLS", "250 POINTS");
 			add_score(250);
-			add_size_level(false);
+			add_ball_size_level(false);
+		"explosive":
+			notify("EXPLOSIVE BALL", "200 POINTS");
+			add_score(200);
+			start_ball_modifier_timer(20);
+			ball_modifier_meter.get_parent().get_child(0).texture = load("uid://r8aenxq3msk3");
+			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+				ball.set_explosive(true);
+		"corrosive":
+			notify("CORROSIVE BALL", "200 POINTS");
+			add_score(200);
+			start_ball_modifier_timer(20);
+			ball_modifier_meter.get_parent().get_child(0).texture = load("uid://di5m567wacjyy");
+			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+				ball.set_corrosive(true);
 
-func add_speed_mult(add:bool = true):
+func start_ball_modifier_timer(time:float):
+	ball_modifier_meter.get_parent().get_child(0).modulate = Color(1,1,1,1);
+	ball_modifier_meter.modulate = Color(1,1,1,1);
+	ball_modifier_timer_progress = 0;
+	ball_modifier_timer_active = true;
+	ball_modifier_timer.start(time);
+
+func timeout_ball_modifier_timer():
+	ball_modifier_meter.get_parent().get_child(0).modulate = Color(.4,.4,.4,1);
+	ball_modifier_meter.modulate = Color(.4,.4,.4,1);
+	ball_modifier_timer_progress = 0;
+	ball_modifier_timer_active = false;
+	ball_modifier_meter.get_parent().get_child(0).texture = pickup_texture_base_good;
+	clear_ball_modifiers();
+
+func clear_ball_modifiers():
+	for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+		ball.clear_modifiers();
+
+func add_ball_speed_mult(add:bool = true):
 	var previous:float = ball_speed_mult;
 	var amount:float = .1;
 	var visual_amount:int = 1; 
@@ -544,7 +596,7 @@ func add_speed_mult(add:bool = true):
 
 	if speed_meter: speed_meter.value = visual_speed_mult;
 
-func add_size_level(add:bool = true):
+func add_ball_size_level(add:bool = true):
 	var amount:int = 1;
 
 	if not add:

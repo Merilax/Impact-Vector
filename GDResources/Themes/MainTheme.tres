@@ -133,7 +133,7 @@ vertical = true
 
 [resource]
 default_base_scale = 2.0
-default_font_size = 30
+default_font_size = 26
 Button/styles/focus = SubResource("StyleBoxFlat_1fd6g")
 Button/styles/hover = SubResource("StyleBoxFlat_nivbn")
 Button/styles/normal = SubResource("StyleBoxFlat_pvnlk")

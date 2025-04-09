@@ -34,12 +34,12 @@ signal spawn_bullet(pos:Vector2, dir:float);
 func _ready():
 	pickup_area.body_entered.connect(_on_body_entered_pickup_area);
 	pickup_area.area_entered.connect(_on_area_entered_pickup_area);
-	width = sprite.get_rect().size.x * sprite.scale.x;
 
 	original_sprite_position = sprite.position;
 	original_sprite_scale = sprite.scale;
 	original_hitbox_polygon = hitbox.polygon;
 	original_pickup_hitbox_polygon = pickup_hitbox.polygon;
+	width = sprite.get_rect().size.x * original_sprite_scale.x;
 
 	if turrets_comp:
 		turrets_comp.spawn_bullet.connect(_on_turrets_fire);
@@ -55,9 +55,9 @@ func _process(_delta):
 
 func _physics_process(_delta):
 	if follow_mouse:
-		self.position.x = get_global_mouse_position().x;
+		self.global_position.x = get_global_mouse_position().x;
 	if world_border:
-		self.position.x = clampf(self.position.x, world_border.wall_left.global_position.x + width/2, world_border.wall_right.global_position.x - width/2);
+		self.global_position.x = clampf(self.position.x, world_border.wall_left.global_position.x + width/2, world_border.wall_right.global_position.x - width/2);
 
 func _on_turrets_fire(pos:Vector2, dir:float):
 	spawn_bullet.emit(pos, dir)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxbg7h6mg1dtd"]
+[gd_scene load_steps=5 format=3 uid="uid://dxbg7h6mg1dtd"]
 
 [ext_resource type="Script" uid="uid://b4blo2qcasfkq" path="res://Scripts/Game/Ball.gd" id="1_8lo0t"]
 [ext_resource type="Texture2D" uid="uid://d0y3qsom52lgg" path="res://Assets/Visuals/ball.png" id="2_ls637"]
@@ -6,13 +6,18 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_pudvg"]
 radius = 13.0
 
-[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape") groups=["Ball"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_y1sd5"]
+radius = 45.0
+
+[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "explosive_area") groups=["Ball"]]
 collision_mask = 6
 motion_mode = 1
-safe_margin = 0.15
+wall_min_slide_angle = 0.0
+platform_on_leave = 2
 script = ExtResource("1_8lo0t")
 sprite = NodePath("Sprite2D")
 collision_shape = NodePath("CollisionShape2D")
+explosive_area = NodePath("ExplosiveArea")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.22, 0.22)
@@ -20,3 +25,14 @@ texture = ExtResource("2_ls637")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_pudvg")
+
+[node name="ExplosiveArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 4
+input_pickable = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosiveArea"]
+shape = SubResource("CircleShape2D_y1sd5")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=34 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" uid="uid://dqpio87sxu3i2" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://b2ufqhunhh27l" path="res://Assets/Visuals/Pickups/PickupSpeed.png" id="10_qm7ro"]
 [ext_resource type="Texture2D" uid="uid://b7he2fbpqpjbg" path="res://Assets/Visuals/UI/SideRCover.PNG" id="11_sq82e"]
 [ext_resource type="Texture2D" uid="uid://dil2gntnddaec" path="res://Assets/Visuals/Pickups/PickupMagnet.png" id="13_ac123"]
+[ext_resource type="Texture2D" uid="uid://da0tvxra80xwp" path="res://Assets/Visuals/Pickups/PickupBaseGood.png" id="19_73o0s"]
 [ext_resource type="Texture2D" uid="uid://xdwigvnsi4hv" path="res://Assets/Visuals/UI/SideL.PNG" id="19_llcsm"]
 [ext_resource type="Texture2D" uid="uid://r4lbn70vqnoq" path="res://Assets/Visuals/UI/Separator.PNG" id="19_sq82e"]
 [ext_resource type="Script" uid="uid://lhx5olt740qw" path="res://Scripts/UI/Components/FPS.gd" id="20_73o0s"]
@@ -57,7 +58,7 @@ font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_5eta3"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_text_window", "notification_score_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "world_border", "ball_container", "background", "escape_layer", "speed_meter", "magnet_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_text_window", "notification_score_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "ball_modifier_timer", "world_border", "ball_container", "background", "escape_layer", "speed_meter", "magnet_meter", "ball_modifier_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
 notification_text_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/Notifs")
 notification_score_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/ScoreNotifs")
@@ -65,12 +66,14 @@ notification_window_timer = NodePath("UILayer/SidebarR/MarginContainer/VBoxConta
 score_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
 speed_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/SpeedVar")
 life_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
+ball_modifier_timer = NodePath("BallModifierTimer")
 world_border = NodePath("LevelContentOffset/WorldBorder")
 ball_container = NodePath("Balls")
 background = NodePath("Background")
 escape_layer = NodePath("EscapeLayer")
 speed_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/SpeedMeter/ProgressBar")
 magnet_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/MagnetMeter/ProgressBar")
+ball_modifier_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BallModBar/ProgressBar")
 arm_horizontal = NodePath("ConstructorArm/Horizontal")
 arm_vertical = NodePath("ConstructorArm/Vertical")
 arm_placer = NodePath("ConstructorArm/Nucleus")
@@ -299,12 +302,7 @@ size_flags_vertical = 8
 [node name="SpeedMeter" type="VBoxContainer" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/SpeedMeter"]
-visible = false
-layout_mode = 2
-text = "G"
-
-[node name="Label" type="TextureRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/SpeedMeter"]
+[node name="Icon" type="TextureRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/SpeedMeter"]
 layout_mode = 2
 texture = ExtResource("10_qm7ro")
 expand_mode = 5
@@ -329,7 +327,7 @@ tint_progress = Color(0, 0.754301, 7.70092e-07, 1)
 [node name="MagnetMeter" type="VBoxContainer" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters"]
 layout_mode = 2
 
-[node name="Label" type="TextureRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/MagnetMeter"]
+[node name="Icon" type="TextureRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/MagnetMeter"]
 layout_mode = 2
 texture = ExtResource("13_ac123")
 expand_mode = 5
@@ -354,14 +352,36 @@ tint_progress = Color(0, 0.752941, 0, 1)
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BulletMeter"]
-layout_mode = 2
-text = "G"
-
 [node name="ProgressBar" type="TextureProgressBar" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BulletMeter"]
 custom_minimum_size = Vector2(50, 256)
 layout_mode = 2
 max_value = 12.0
+rounded = true
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_left = 8
+stretch_margin_top = 8
+stretch_margin_right = 8
+stretch_margin_bottom = 8
+texture_over = ExtResource("8_113j4")
+texture_progress = ExtResource("9_k042e")
+tint_progress = Color(0, 0.752941, 0, 1)
+
+[node name="BallModBar" type="VBoxContainer" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters"]
+layout_mode = 2
+
+[node name="Icon2" type="TextureRect" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BallModBar"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 2
+texture = ExtResource("19_73o0s")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BallModBar"]
+modulate = Color(0.4, 0.4, 0.4, 1)
+custom_minimum_size = Vector2(50, 256)
+layout_mode = 2
+max_value = 8.0
 rounded = true
 fill_mode = 3
 nine_patch_stretch = true
@@ -596,3 +616,8 @@ text = "0"
 [node name="BackBtn" type="Button" parent="GameOverLayer/UI/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Back to menu"
+
+[node name="BallModifierTimer" type="Timer" parent="."]
+process_mode = 1
+wait_time = 20.0
+one_shot = true

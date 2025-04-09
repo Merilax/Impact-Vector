@@ -1,52 +1,106 @@
 extends CharacterBody2D
 class_name Ball
 
+var damage :float = 1;
+var speed :float = 700;
+var pushing_velocity:Vector2 = Vector2.ZERO;
+
 var lost:bool = false;
 var on_paddle:bool = false;
 var freeze:bool = true;
 var dir:Vector2 = Vector2.ZERO;
-var damage :float = 1;
-var speed :float = 700;
+var prev_dir:Vector2 = dir;
+
 var speed_mult :float = 1;
 var size_level:int = 0;
+var is_explosive:bool = false;
+var is_corrosive:bool = false;
+var damage_mult_from_size = 1;
+var damage_add_from_explosion = 10;
+
 @export var sprite:Sprite2D;
 @export var collision_shape:CollisionShape2D;
+@export var explosive_area:Area2D;
+@export var world_border:WorldBorder;
 
-#signal reset_stuck_timer(free_timer:bool)
 var original_sprite_scale:Vector2;
 var original_hitbox_radius:float;
+var diameter:float = 0;
 
 func _ready():
 	original_sprite_scale = sprite.scale;
 	original_hitbox_radius = collision_shape.shape.radius;
-
-func _physics_process(delta):
-	if self.freeze == true:
-		return
-	var motion:Vector2 = dir.normalized() * speed * speed_mult
 	
-	var collision = move_and_collide(motion * delta);
+	diameter = collision_shape.shape.radius;
 
+var collision_registered_this_frame:bool = false;
+var collided_array:Array = [];
+func _physics_process(delta):
+	prev_dir = dir;
+	velocity = dir.normalized() * speed * speed_mult
+	if pushing_velocity.length() > velocity.length():
+		velocity = pushing_velocity;
+		
+	if self.freeze == true: return;
+	var depenetration_test := move_and_collide(Vector2.ZERO, true);
+	if depenetration_test:
+		if depenetration_test.get_collider() is RigidBody2D: 
+			pushing_velocity = depenetration_test.get_collider().linear_velocity;
+			var space_state := get_world_2d().direct_space_state;
+			var query := PhysicsShapeQueryParameters2D.new();
+			query.collide_with_areas = false;
+			query.collision_mask = self.collision_mask;
+			query.shape = collision_shape.shape.duplicate();
+			for i in range(1, 100):
+				query.transform = Transform2D(0, self.global_position + (pushing_velocity.normalized() * i));
+				if space_state.intersect_shape(query, 1).size() == 0:
+					self.global_position += pushing_velocity.normalized() * i;
+					dir += pushing_velocity/500;
+					_on_collide(depenetration_test);
+					break;
+
+	var collision := move_and_collide(velocity * delta);
 	if collision:
-		var collided = collision.get_collider()
-		if collided.is_in_group('Hitable'):
-			dir = dir.bounce(collision.get_normal())
+		_on_collide(collision);
 
-			# Unstuck ball (can't do on X because paddle can bounce the ball vertically)
-			if abs(dir.y) < 0.05:
-				dir.y = randf_range(-0.1, 0.1)
-				
-			if collided.has_method('hit'):
-				collided.hit(self)
+	if collision_registered_this_frame:
+		collided_array.clear();
+		pushing_velocity = Vector2.ZERO;
+		collision_registered_this_frame = false;
 
-			if collided.is_in_group('Brick'):
-				#reset_stuck_timer.emit(false)
-				if collided.is_in_group('Rigid'):
-					collided.apply_impulse(motion, collision.get_position() - collided.global_position)
+	if world_border:
+		self.global_position.x = clampf(self.position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
+		self.global_position.y = clampf(self.position.x, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
 
-		if collided.is_in_group('Paddle'):
-			collided.receive_ball(self)
-			#reset_stuck_timer.emit(true)
+func _on_collide(collision:KinematicCollision2D):
+	var collided = collision.get_collider();
+		
+	if collided.is_in_group('Brick'):
+		if prev_dir.normalized().dot(collision.get_normal()) > 0: return;
+		if collided in collided_array: return;
+		collided_array.append(collided);
+		collision_registered_this_frame = true;
+			
+		if self.is_explosive: self.damage_area();
+		else: collided.hit(self, get_damage());
+		
+		if collided.is_indestructible: bounce(collision);
+		elif not is_corrosive: bounce(collision);
+		if collided.init_pushable:
+			collided.apply_impulse(velocity, collision.get_position() - collided.global_position);
+
+	if collided.is_in_group('Paddle'):
+		collided.receive_ball(self);
+
+	if collided.is_in_group("Wall"):
+		collided.hit(self);
+		bounce(collision);
+
+func bounce(collision:KinematicCollision2D):
+	dir = prev_dir.bounce(collision.get_normal());
+	# Unstuck ball (can't do on X because paddle can bounce the ball vertically)
+	if abs(dir.y) < 0.05:
+		dir.y = randf_range(-0.1, 0.1);
 
 func die():
 	lost = true;
@@ -61,11 +115,42 @@ func set_size(level:int) -> void:
 	size_level = level;
 
 	match size_level:
-		-2: damage = 0.5;
-		-1: damage = 1; # Don't want to punish the player too much.
-		0: damage = 1;
-		1: damage = 1.5;
-		2: damage = 2;
+		-2: damage_mult_from_size = 0.5;
+		-1: damage_mult_from_size = 1; # Don't want to punish the player too much.
+		0: damage_mult_from_size = 1;
+		1: damage_mult_from_size = 1.5;
+		2: damage_mult_from_size = 2;
 
 	sprite.scale = original_sprite_scale * (1 + (0.2 * size_level));
+	diameter = sprite.get_rect().size.x * sprite.scale.x;
 	collision_shape.shape.set_deferred("radius", original_hitbox_radius * (1 + (0.2 * size_level)));
+
+func set_explosive(toggle:bool):
+	if explosive_area:
+		explosive_area.monitoring = toggle;
+		is_explosive = toggle;
+	if toggle == true:
+		is_corrosive = false;
+
+func set_corrosive(toggle:bool):
+	is_corrosive = toggle;
+	if toggle == true:
+		explosive_area.monitoring = false;
+		is_explosive = false;
+
+func clear_modifiers():
+	self.set_corrosive(false);
+	self.set_explosive(false);
+
+func get_damage() -> float:
+	var calc:float = damage;
+	calc *= damage_mult_from_size;
+	if is_explosive: calc += damage_add_from_explosion;
+	return calc;
+
+func damage_area():
+	for node:Node2D in explosive_area.get_overlapping_bodies():
+		if node is Brick:
+			node.hit(self, self.get_damage());
+			if node.init_pushable:
+				node.apply_impulse(Vector2.RIGHT.rotated(self.get_angle_to(node.global_position)) * speed * 0.8);

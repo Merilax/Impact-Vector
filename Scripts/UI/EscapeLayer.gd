@@ -12,7 +12,7 @@ signal menu_closed();
 
 func _ready():
 	if escape_menu:
-		escape_menu.close_escape.connect(return_to_game);
+		escape_menu.close_escape.connect(close_menu);
 		escape_menu.open_settings.connect(open_settings);
 		escape_menu.save_and_quit.connect(save_and_quit);
 	if settings_menu: settings_menu.menu_closed.connect(close_settings);
@@ -21,28 +21,21 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("escape"):
-		open_menu();
+		if self.visible: close_menu();
+		else: open_menu();
 		
 func open_menu():
 	close_settings();
 
-	if self.visible == false:
-		show();
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
-		get_tree().paused = true;
-	else:
-		if forbid_unescape: return;
-		hide();
-		Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
-		menu_closed.emit();
-		get_tree().paused = false;
+	show();
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
+	get_tree().paused = true;
 
-func return_to_game():
+func close_menu():
 	hide();
 	if forbid_unescape: return;
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
 	menu_closed.emit();
-	#DisplayServer.warp_mouse(game_root.paddle.global_position);
 	get_tree().paused = false;
 
 func open_settings():

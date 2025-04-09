@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyjcgpe5qf8yv"
-path="res://.godot/imported/ball.png-bd19066b8e0f4e81d208d1dc03fc26fa.ctex"
+uid="uid://yke3nrm7jmix"
+path="res://.godot/imported/PickupBaseBad.png-0500bdd82d4b5debaf57db40e585caa6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/Pickups/ball.png"
-dest_files=["res://.godot/imported/ball.png-bd19066b8e0f4e81d208d1dc03fc26fa.ctex"]
+source_file="res://Assets/Visuals/Pickups/PickupBaseBad.png"
+dest_files=["res://.godot/imported/PickupBaseBad.png-0500bdd82d4b5debaf57db40e585caa6.ctex"]
 
 [params]
 
