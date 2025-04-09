@@ -14,45 +14,42 @@ static func load_settings() -> SaveSettings:
 		incomplete_config = true;
 
 	# GAME
-	if settings.arm_speed_multiplier != null and settings.arm_speed_multiplier != 0:
-		GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
-	else:
-		settings.arm_speed_multiplier = 1;
-		GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
+	if settings.arm_speed_multiplier == null:
 		incomplete_config = true;
+		settings.arm_speed_multiplier = 1;
+	GlobalVars.arm_speed_multiplier = settings.arm_speed_multiplier;
 
 	# VIDEO
-	if settings.vsync != null:
-		if DisplayServer.window_get_vsync_mode() != settings.vsync: DisplayServer.window_set_vsync_mode(settings.vsync);
-	else:
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);
+	if settings.vsync == null:
 		incomplete_config = true;
 		settings.vsync = 0;
+	DisplayServer.window_set_vsync_mode(settings.vsync);
+	if DisplayServer.window_get_vsync_mode() != settings.vsync: DisplayServer.window_set_vsync_mode(settings.vsync);
 
 	# AUDIO
-	if settings.master_volume != null:
-		AudioServer.set_bus_volume_db(0, settings.master_volume);
-		if settings.master_volume <= -30:
-			AudioServer.set_bus_mute(0, true);
-	else:
+	if settings.master_volume == null:
 		incomplete_config = true;
 		settings.master_volume = 0;
+	AudioServer.set_bus_volume_db(0, settings.master_volume);
+	if settings.master_volume <= -30: AudioServer.set_bus_mute(0, true);
 
-	if settings.music_volume != null:
-		AudioServer.set_bus_volume_db(1, settings.music_volume);
-		if settings.music_volume <= -30:
-			AudioServer.set_bus_mute(1, true);
-	else:
+	if settings.music_volume == null:
 		incomplete_config = true;
 		settings.music_volume = 0;
+	AudioServer.set_bus_volume_db(1, settings.music_volume);
+	if settings.music_volume <= -30: AudioServer.set_bus_mute(1, true);
 
-	if settings.sfx_volume != null:
-		AudioServer.set_bus_volume_db(2, settings.sfx_volume);
-		if settings.sfx_volume <= -30:
-			AudioServer.set_bus_mute(2, true);
-	else:
+	if settings.sfx_volume == null:
 		incomplete_config = true;
 		settings.sfx_volume = 0;
+	AudioServer.set_bus_volume_db(2, settings.sfx_volume);
+	if settings.sfx_volume <= -30: AudioServer.set_bus_mute(2, true);
+	
+	# OTHERS
+	if settings.has_seen_editor_help_once == null:
+		incomplete_config = true;
+		settings.has_seen_editor_help_once = false;
+	GlobalVars.has_seen_editor_help_once = settings.has_seen_editor_help_once;
 
 	if incomplete_config:
 		Logger.write("Broken settings, resaving.", "SaveLoader");
@@ -71,6 +68,8 @@ static func save_settings() -> bool:
 	settings.master_volume = AudioServer.get_bus_volume_db(0);
 	settings.music_volume = AudioServer.get_bus_volume_db(1);
 	settings.sfx_volume = AudioServer.get_bus_volume_db(2);
+
+	settings.has_seen_editor_help_once = GlobalVars.has_seen_editor_help_once;
 
 	ResourceSaver.save(settings, "user://SaveSettings.tres");
 	return true;

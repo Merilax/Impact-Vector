@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://4dydipk47clk"]
+[gd_scene load_steps=16 format=3 uid="uid://4dydipk47clk"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_t7gjp"]
 [ext_resource type="Script" uid="uid://ol4upq0krfh3" path="res://Scripts/UI/PaginatorMenu.gd" id="2_g2kb5"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://lqkxorxmvytd" path="res://Assets/Visuals/Icons/arrow_selector.svg" id="6_ua2b4"]
 [ext_resource type="Texture2D" uid="uid://cxyyyoeudto8h" path="res://Assets/Visuals/Icons/brush.svg" id="7_oc7j5"]
 [ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="8_h4i1i"]
-[ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="9_xoy47"]
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="10_pwxuv"]
 [ext_resource type="Texture2D" uid="uid://dygfcocq1apxy" path="res://Assets/Visuals/Icons/path.svg" id="10_q74m3"]
 [ext_resource type="Texture2D" uid="uid://cl8vb05s3lk5w" path="res://Assets/Visuals/UI/help1.png" id="12_did41"]
@@ -34,9 +33,9 @@ grow_vertical = 2
 theme = ExtResource("1_t7gjp")
 script = ExtResource("2_g2kb5")
 page_container = NodePath("Content/VBoxContainer/Control")
-exit = NodePath("Content/VBoxContainer/HBoxContainer/Exit")
-previous = NodePath("Content/VBoxContainer/HBoxContainer/Prev")
-next = NodePath("Content/VBoxContainer/HBoxContainer/Next")
+exit = NodePath("Content/VBoxContainer/HBoxButtons/Exit")
+previous = NodePath("Content/VBoxContainer/HBoxButtons/Prev")
+next = NodePath("Content/VBoxContainer/HBoxButtons/Next")
 metadata/_edit_use_anchors_ = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
@@ -78,7 +77,6 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_lcn1s")
 
 [node name="Page 1" type="PanelContainer" parent="Content/VBoxContainer/Control"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -92,6 +90,7 @@ size_flags_horizontal = 3
 [node name="Label" type="Label" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar"]
 layout_mode = 2
 text = "Editing tools"
+label_settings = ExtResource("12_wb27d")
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar"]
@@ -125,36 +124,8 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "Allows for placing bricks from the catalogue. Selecting a brick will also copy it to your place tool.
-Holding Shift permits stacking bricks on top of eachother."
-fit_content = true
-scroll_active = false
-
-[node name="MarginContainer2" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer"]
-layout_mode = 2
-theme = ExtResource("4_v3jtb")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_0o6ap")
-icon = ExtResource("6_ua2b4")
-icon_alignment = 1
-
-[node name="Label" type="Label" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2/VBoxContainer"]
-layout_mode = 2
-text = "Select"
-horizontal_alignment = 1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "Selected bricks can be edited in the Brick Data menu located on the lower left sidebar."
+text = "Allows for placing bricks from the catalogue.
+Holding Shift lets you stack bricks on top of eachother."
 fit_content = true
 scroll_active = false
 
@@ -182,7 +153,36 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "Used to apply textures to bricks. Textures that have a different size compared to the base brick will automatically scale to fit it."
+text = "Used to apply textures to bricks, and paint them. Textures of different sizes compared to the base brick will automatically scale to fit its shape. The selected texture is copied to your Place tool."
+fit_content = true
+scroll_active = false
+
+[node name="MarginContainer2" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme = ExtResource("4_v3jtb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_0o6ap")
+icon = ExtResource("6_ua2b4")
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Select"
+horizontal_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Content/VBoxContainer/Control/Page 1/HBoxContainer/Toolbar/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Select a brick to edit its stats and behaviour.
+Selecting a brick will also copy some of its data to your Place tool."
 fit_content = true
 scroll_active = false
 
@@ -238,7 +238,9 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "Used to setup paths for bricks to move through, in groups."
+text = "Used to setup paths for bricks to move through, in groups.
+Primary Mouse Button adds points, Secondary Mouse Button removes them.
+While holding Shift you can drag individual points around."
 fit_content = true
 scroll_active = false
 
@@ -256,9 +258,11 @@ size_flags_horizontal = 3
 [node name="Label2" type="Label" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar"]
 layout_mode = 2
 text = "Editor settings"
+label_settings = ExtResource("12_wb27d")
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar"]
+visible = false
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/MarginContainer"]
@@ -275,35 +279,6 @@ layout_mode = 2
 [node name="GridContainer" type="GridContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2"]
 layout_mode = 2
 columns = 2
-
-[node name="MarginContainer4" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer"]
-layout_mode = 2
-theme = ExtResource("4_v3jtb")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer4"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer4/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_0o6ap")
-icon = ExtResource("9_xoy47")
-icon_alignment = 1
-
-[node name="Label" type="Label" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer4/VBoxContainer"]
-layout_mode = 2
-text = "Brick Data"
-horizontal_alignment = 1
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "Shows the game data for the currently selected brick to be edited. 
-Toggling \"Select tool applies data\" will make the Select tool copy the data shown to any bricks you click on."
-fit_content = true
-scroll_active = false
 
 [node name="MarginContainer5" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer"]
 layout_mode = 2
@@ -333,38 +308,8 @@ text = "Used to snap brick position to an adjustable grid. The default settings 
 fit_content = true
 scroll_active = false
 
-[node name="MarginContainer6" type="MarginContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer"]
-layout_mode = 2
-theme = ExtResource("4_v3jtb")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer6"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer6/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_0o6ap")
-icon = ExtResource("10_q74m3")
-icon_alignment = 1
-
-[node name="Label" type="Label" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer/MarginContainer6/VBoxContainer"]
-layout_mode = 2
-text = "Path options
-(Path tool)"
-horizontal_alignment = 1
-
-[node name="RichTextLabel6" type="RichTextLabel" parent="Content/VBoxContainer/Control/Page 2/HBoxContainer/Toolbar/VBoxContainer2/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "Only appears with the path tool selected. Allows for creation and deletion of paths, and further adjustment of these.
-Points can be added to a path by left clicking on the level. Right clicking will remove a point.
-Hold Shift and Left Mouse Button to drag a point around."
-fit_content = true
-scroll_active = false
-
 [node name="Page 3" type="PanelContainer" parent="Content/VBoxContainer/Control"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -395,7 +340,6 @@ layout_mode = 2
 text = "The right sidebar contains a list of bricks. The behaviour varies depending on the tool currently selected.
 
 With the Place tool active, you select the type or shape of the brick to use.
-
 "
 label_settings = ExtResource("13_gv65v")
 autowrap_mode = 3
@@ -406,8 +350,6 @@ layout_mode = 2
 text = "With the Paint tool, you choose a texture to apply.
 While this tool is active, a brick preview also appears.
 Clicking on this preview brings up a color picker to paint the texture to your liking.
-Selecting a brick will also copy its texture to your Place tool.
-
 "
 label_settings = ExtResource("13_gv65v")
 autowrap_mode = 3
@@ -429,28 +371,28 @@ texture = ExtResource("12_did41")
 expand_mode = 3
 stretch_mode = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer"]
+[node name="HBoxButtons" type="HBoxContainer" parent="Content/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Prev" type="Button" parent="Content/VBoxContainer/HBoxContainer"]
+[node name="Prev" type="Button" parent="Content/VBoxContainer/HBoxButtons"]
 layout_mode = 2
 text = "<"
 
-[node name="Next" type="Button" parent="Content/VBoxContainer/HBoxContainer"]
+[node name="Next" type="Button" parent="Content/VBoxContainer/HBoxButtons"]
 layout_mode = 2
 text = ">"
 
-[node name="Control" type="Control" parent="Content/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="Content/VBoxContainer/HBoxButtons"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/HBoxButtons"]
 layout_mode = 2
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Exit" type="Button" parent="Content/VBoxContainer/HBoxContainer"]
+[node name="Exit" type="Button" parent="Content/VBoxContainer/HBoxButtons"]
 layout_mode = 2
 text = "Exit"

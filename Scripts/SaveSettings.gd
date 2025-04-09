@@ -1,10 +1,16 @@
 class_name SaveSettings
 extends Resource
 
-@export var arm_speed_multiplier = 1;
+# Settings / Game
+@export var arm_speed_multiplier = null;#1f
 
-@export var vsync: = 0;
+# Settings / Video
+@export var vsync = null;#0
 
-@export var master_volume = 0;
-@export var music_volume = 0;
-@export var sfx_volume = 0;
+# Settings / Audio
+@export var master_volume = null;#0f
+@export var music_volume = null;#0f
+@export var sfx_volume = null;#0f
+
+# Settings / Others
+@export var has_seen_editor_help_once = null;#false
