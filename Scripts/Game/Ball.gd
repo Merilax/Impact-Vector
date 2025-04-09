@@ -54,13 +54,17 @@ func _physics_process(delta):
 			query.collide_with_areas = false;
 			query.collision_mask = self.collision_mask;
 			query.shape = collision_shape.shape.duplicate();
-			for i in range(1, 100):
-				query.transform = Transform2D(0, self.global_position + (pushing_velocity.normalized() * i));
-				if space_state.intersect_shape(query, 1).size() == 0:
-					self.global_position += pushing_velocity.normalized() * i;
-					dir += pushing_velocity/500;
-					_on_collide(depenetration_test);
-					break;
+			if not is_corrosive:
+				for i in range(1, 100):
+					query.transform = Transform2D(0, self.global_position + (pushing_velocity.normalized() * i));
+					if space_state.intersect_shape(query, 1).size() == 0:
+						self.global_position += pushing_velocity.normalized() * i;
+						dir += pushing_velocity/500;
+						_on_collide(depenetration_test);
+						break;
+			else:
+				pushing_velocity = Vector2.ZERO;
+				_on_collide(depenetration_test);
 
 	var collision := move_and_collide(velocity * delta);
 	if collision:
