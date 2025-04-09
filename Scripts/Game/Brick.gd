@@ -91,7 +91,7 @@ func hit(node:Node2D = null, amount:float = 0):
 	# 	if not is_indestructible and (amount != 0) and health_comp: health_comp.damage(amount);
 
 func die():
-	if is_editor: return
+	if is_editor: return;
 	hitbox.disabled = true;
 	texture_sprite.hide();
 	if score_comp: score_comp.emit_score();

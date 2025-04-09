@@ -16,11 +16,13 @@ var size_level:int = 0;
 var is_explosive:bool = false;
 var is_corrosive:bool = false;
 var damage_mult_from_size = 1;
-var damage_add_from_explosion = 10;
+var damage_add_from_explosion = 5;
 
 @export var sprite:Sprite2D;
 @export var collision_shape:CollisionShape2D;
 @export var explosive_area:Area2D;
+@export var particles_corrosive:GPUParticles2D;
+@export var particles_explosive:GPUParticles2D;
 @export var world_border:WorldBorder;
 
 var original_sprite_scale:Vector2;
@@ -44,6 +46,7 @@ func _physics_process(delta):
 	if self.freeze == true: return;
 	var depenetration_test := move_and_collide(Vector2.ZERO, true);
 	if depenetration_test:
+		if self.lost: return;
 		if depenetration_test.get_collider() is RigidBody2D: 
 			pushing_velocity = depenetration_test.get_collider().linear_velocity;
 			var space_state := get_world_2d().direct_space_state;
@@ -69,13 +72,14 @@ func _physics_process(delta):
 		collision_registered_this_frame = false;
 
 	if world_border:
-		self.global_position.x = clampf(self.position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
-		self.global_position.y = clampf(self.position.x, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
+		self.global_position.x = clampf(self.global_position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
+		self.global_position.y = clampf(self.global_position.y, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
 
 func _on_collide(collision:KinematicCollision2D):
 	var collided = collision.get_collider();
 		
 	if collided.is_in_group('Brick'):
+		if self.lost: return;
 		if prev_dir.normalized().dot(collision.get_normal()) > 0: return;
 		if collided in collided_array: return;
 		collided_array.append(collided);
@@ -90,6 +94,7 @@ func _on_collide(collision:KinematicCollision2D):
 			collided.apply_impulse(velocity, collision.get_position() - collided.global_position);
 
 	if collided.is_in_group('Paddle'):
+		if self.lost: return;
 		collided.receive_ball(self);
 
 	if collided.is_in_group("Wall"):
@@ -104,6 +109,8 @@ func bounce(collision:KinematicCollision2D):
 
 func die():
 	lost = true;
+	collision_mask = 0;
+	await get_tree().create_timer(3).timeout;
 	queue_free();
 
 func set_speed(mult:float, _change_label:bool = false):
@@ -121,26 +128,37 @@ func set_size(level:int) -> void:
 		1: damage_mult_from_size = 1.5;
 		2: damage_mult_from_size = 2;
 
-	sprite.scale = original_sprite_scale * (1 + (0.2 * size_level));
 	diameter = sprite.get_rect().size.x * sprite.scale.x;
-	collision_shape.shape.set_deferred("radius", original_hitbox_radius * (1 + (0.2 * size_level)));
+	sprite.scale = original_sprite_scale * (1 + (0.2 * size_level));
+	var new_radius := original_hitbox_radius * (1 + (0.2 * size_level));
+	collision_shape.shape.set_deferred("radius", new_radius);
+	particles_corrosive.process_material.emission_sphere_radius = new_radius;
+	particles_explosive.process_material.emission_sphere_radius = new_radius;
 
 func set_explosive(toggle:bool):
-	if explosive_area:
-		explosive_area.monitoring = toggle;
-		is_explosive = toggle;
+	clear_modifiers();
 	if toggle == true:
-		is_corrosive = false;
+		explosive_area.monitoring = true;
+		is_explosive = true;
+		particles_explosive.emitting = true;
+		sprite.self_modulate = Color(1,.9,.55);
 
 func set_corrosive(toggle:bool):
-	is_corrosive = toggle;
+	clear_modifiers();
 	if toggle == true:
-		explosive_area.monitoring = false;
-		is_explosive = false;
+		is_corrosive = true;
+		particles_corrosive.emitting = true;
+		sprite.self_modulate = Color(.6,1,.6);
 
 func clear_modifiers():
-	self.set_corrosive(false);
-	self.set_explosive(false);
+	is_corrosive = false;
+	explosive_area.monitoring = false;
+	particles_corrosive.emitting = false;
+
+	is_explosive = false;
+	particles_explosive.emitting = false;
+
+	sprite.self_modulate = Color(1,1,1);
 
 func get_damage() -> float:
 	var calc:float = damage;

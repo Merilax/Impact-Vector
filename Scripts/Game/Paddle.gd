@@ -65,8 +65,9 @@ func _on_turrets_fire(pos:Vector2, dir:float):
 func _on_turrets_expire():
 	active_turrets = false
 
-func _on_body_entered_pickup_area(_node:Node2D):
-	pass
+func _on_body_entered_pickup_area(node:Node2D):
+	if node.is_in_group("Brick"):
+		node.die();
 		
 func _on_area_entered_pickup_area(node:Area2D):
 	if node.is_in_group('PickUp'):
@@ -102,6 +103,7 @@ func receive_ball(ball:Ball, centered:bool = false):
 
 func reposition_magnetised_balls():
 	for ball:Ball in balls:
+		if ball.lost: continue;
 		ball.position.y = - (sprite.get_rect().size.y * sprite.scale.y) - (ball.sprite.get_rect().size.y * ball.sprite.scale.y);
 
 func release_magnet():

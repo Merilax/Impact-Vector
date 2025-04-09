@@ -66,19 +66,17 @@ remote_path = NodePath("../../BallContainer")
 update_rotation = false
 update_scale = false
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Sprite2D"]
-show_behind_parent = true
+[node name="RemoteParticles" type="RemoteTransform2D" parent="Sprite2D"]
 position = Vector2(-134, 10)
-amount = 32
-lifetime = 1.2
-process_material = SubResource("ParticleProcessMaterial_4kcrd")
+remote_path = NodePath("../../GPUParticles2D")
+update_rotation = false
+update_scale = false
 
-[node name="GPUParticles2D2" type="GPUParticles2D" parent="Sprite2D"]
-show_behind_parent = true
+[node name="RemoteParticles2" type="RemoteTransform2D" parent="Sprite2D"]
 position = Vector2(134, 10)
-amount = 32
-lifetime = 1.2
-process_material = SubResource("ParticleProcessMaterial_4kcrd")
+remote_path = NodePath("../../GPUParticles2D2")
+update_rotation = false
+update_scale = false
 
 [node name="TurretsComp" type="Node2D" parent="Sprite2D"]
 visible = false
@@ -117,12 +115,12 @@ scale = Vector2(0.5, 0.5)
 
 [node name="PickupArea" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 16
+collision_mask = 20
 input_pickable = false
 monitorable = false
 
 [node name="PickupHitbox" type="CollisionPolygon2D" parent="PickupArea"]
-polygon = PackedVector2Array(100, 0, -100, 0, -100, -18, 100, -18)
+polygon = PackedVector2Array(103, 12, -103, 12, -103, -11, 103, -11)
 
 [node name="Hitbox" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(100, 12, -100, 12, -100, -10, 100, -10)
@@ -134,3 +132,19 @@ stream = ExtResource("4_yd0vt")
 
 [node name="MagnetSound" parent="." instance=ExtResource("3_8j1ci")]
 stream = ExtResource("5_nu7io")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2(-67, 11)
+scale = Vector2(0.5, 0.5)
+amount = 32
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_4kcrd")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2(67, 11)
+scale = Vector2(0.5, 0.5)
+amount = 32
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_4kcrd")

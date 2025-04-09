@@ -44,12 +44,12 @@ var pickup_list:Array = [
 	{
 		"type": "explosive",
 		"texture": "uid://r8aenxq3msk3",
-		"weight": 6
+		"weight": 666
 	},
 	{
 		"type": "corrosive",
 		"texture": "uid://di5m567wacjyy",
-		"weight": 6
+		"weight": 666
 	},
 	{
 		"type": "turrets",
@@ -131,6 +131,7 @@ var ball_modifier_timer_active:bool = false;
 @export var arm_placer_sound:AudioStreamPlayer;
 
 var transitioning_levels:bool = false;
+var animating_arm:bool = false;
 var skip_animations:bool = false;
 var tabbed_out:bool = false;
 
@@ -147,7 +148,7 @@ func _ready():
 	tabbed_out = not get_window().has_focus();
 
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
-	$"DeathZone".body_entered.connect(_on_ball_lost);
+	$"DeathZone".body_entered.connect(_on_body_entered_death_zone);
 
 	escape_layer.menu_closed.connect(func(): if paddle: DisplayServer.warp_mouse(paddle.global_position)); # Hacky
 
@@ -175,12 +176,12 @@ func _ready():
 
 	Logger.write(str("Ready."), "Level");
 
-	if ball_modifier_timer: ball_modifier_timer.timeout.connect(clear_ball_modifiers);
+	if ball_modifier_timer: ball_modifier_timer.timeout.connect(timeout_ball_modifier_timer);
 
 	if brick_count <= 0: win(); # Broken level bypass
 
 func _process(delta):
-	if transitioning_levels and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
+	if animating_arm and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
 
 	if paddle and not tabbed_out:
@@ -212,9 +213,11 @@ func spawn_paddle() -> bool:
 
 func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true, copy_from:Ball = null):
 	if not can_spawn_balls: return;
-	if ball_count >= 100: return;
+	if ball_count >= 40: return;
+	if copy_from and copy_from.lost: return;
 	else:
 		var ball:Ball = BallScene.instantiate();
+		ball.world_border = world_border;
 		ball_container.call_deferred("add_child", ball);
 
 		ball.dir = dir;
@@ -232,22 +235,27 @@ func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZER
 
 		ball.speed_mult = ball_speed_mult;
 		if copy_from:
-			ball.set_size(copy_from.size_level);
-			if copy_from.is_explosive: ball.set_explosive(true);
-			if copy_from.is_corrosive: ball.set_corrosive(true);
+			ball.call_deferred("set_speed", copy_from.speed_mult);
+			ball.call_deferred("set_size", copy_from.size_level);
+			# if copy_from.is_explosive: ball.set_explosive(true); # Disabled by personal choice.
+			# if copy_from.is_corrosive: ball.set_corrosive(true);
 
 		if add_to_count:
 			ball_count += 1
 
-func _on_ball_lost(node:Node2D):
+func _on_body_entered_death_zone(node:Node2D):
 	if node.is_in_group("Pickup"):
 		await get_tree().create_timer(3).timeout;
 		if node:
 			node.queue_free();
 	
+	if node.is_in_group("Brick"):
+		if node.path_group == -1:
+			node.die();
+
 	if node.is_in_group('Ball'):
-		node.lost = true;
-		node.collision_mask = 0; # Let the ball visibly get lost, eventually dying off-screen
+		if node.on_paddle: return;
+		node.die();
 
 		if transitioning_levels: return;
 
@@ -282,9 +290,10 @@ func _on_ball_lost(node:Node2D):
 					await spawn_paddle();
 
 				spawn_ball(true, true);
+				await get_tree().process_frame;
 				reset_speed_mult();
 				ball_size_level = 0;
-				change_ball_size.emit(ball_size_level);
+				
 				if paddle: paddle.reposition_magnetised_balls();
 
 func spawn_bullet(pos:Vector2, dir:float):
@@ -524,11 +533,11 @@ func process_pickup(type:String):
 			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
 				if ball.lost: continue;
 				if ball.on_paddle:
-					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(PI/8));
-					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(-PI/8));
+					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(PI/8), true, ball);
+					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(-PI/8), true, ball);
 				else:	
-					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8));
-					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8));
+					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8), true, ball);
+					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8), true, ball);
 		"wide":
 			notify("BIGGER PADDLE", "100 POINTS");
 			add_score(100);
@@ -653,9 +662,12 @@ func load_level(dir:String) -> bool:
 	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
 		path.setup_steps();
 		
+	animating_arm = true;
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
 		brick.show();
+	animating_arm = false;
+	skip_animations = false;
 	
 	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
 		path.play_tweens(true);

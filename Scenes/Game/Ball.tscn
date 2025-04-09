@@ -1,7 +1,66 @@
-[gd_scene load_steps=5 format=3 uid="uid://dxbg7h6mg1dtd"]
+[gd_scene load_steps=15 format=3 uid="uid://dxbg7h6mg1dtd"]
 
 [ext_resource type="Script" uid="uid://b4blo2qcasfkq" path="res://Scripts/Game/Ball.gd" id="1_8lo0t"]
 [ext_resource type="Texture2D" uid="uid://d0y3qsom52lgg" path="res://Assets/Visuals/ball.png" id="2_ls637"]
+
+[sub_resource type="Gradient" id="Gradient_y1sd5"]
+colors = PackedColorArray(0.52, 0.52, 0.52, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q21d6"]
+gradient = SubResource("Gradient_y1sd5")
+
+[sub_resource type="Curve" id="Curve_2hn5u"]
+_data = [Vector2(0, 1), 0.0, -0.574759, 0, 1, Vector2(1, 0.425241), -0.574759, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_t0b7y"]
+curve = SubResource("Curve_2hn5u")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i1wxl"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 13.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 12.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_t0b7y")
+color = Color(0.17, 1, 0.266833, 1)
+color_initial_ramp = SubResource("GradientTexture1D_q21d6")
+
+[sub_resource type="Gradient" id="Gradient_1ks0m"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6qj7f"]
+gradient = SubResource("Gradient_1ks0m")
+
+[sub_resource type="Curve" id="Curve_ba7i5"]
+_data = [Vector2(0, 1), 0.0, -0.595659, 0, 1, Vector2(1, 0.404341), -0.595659, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8gw4o"]
+curve = SubResource("Curve_ba7i5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2vjsi"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 13.0
+spread = 180.0
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -28.12
+linear_accel_max = -28.12
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_8gw4o")
+color = Color(1, 1, 0.35, 1)
+color_ramp = SubResource("GradientTexture1D_6qj7f")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pudvg"]
 radius = 13.0
@@ -9,7 +68,7 @@ radius = 13.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_y1sd5"]
 radius = 45.0
 
-[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "explosive_area") groups=["Ball"]]
+[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "explosive_area", "particles_corrosive", "particles_explosive") groups=["Ball"]]
 collision_mask = 6
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -18,12 +77,27 @@ script = ExtResource("1_8lo0t")
 sprite = NodePath("Sprite2D")
 collision_shape = NodePath("CollisionShape2D")
 explosive_area = NodePath("ExplosiveArea")
+particles_corrosive = NodePath("CorrosiveParticles")
+particles_explosive = NodePath("ExplosiveParticles")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.22, 0.22)
 texture = ExtResource("2_ls637")
 
+[node name="CorrosiveParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.35
+process_material = SubResource("ParticleProcessMaterial_i1wxl")
+
+[node name="ExplosiveParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_2vjsi")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_pudvg")
 
 [node name="ExplosiveArea" type="Area2D" parent="."]
