@@ -44,12 +44,12 @@ var pickup_list:Array = [
 	{
 		"type": "explosive",
 		"texture": "uid://r8aenxq3msk3",
-		"weight": 666
+		"weight": 6
 	},
 	{
 		"type": "corrosive",
 		"texture": "uid://di5m567wacjyy",
-		"weight": 666
+		"weight": 6
 	},
 	{
 		"type": "turrets",
