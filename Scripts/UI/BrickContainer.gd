@@ -12,14 +12,19 @@ func _ready() -> void:
 	for filename:String in filtered_array:
 		var brick_rect:EditorBrickSample = BrickRect.instantiate();
 		brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/BaseTypes/" + filename.trim_suffix(".import"));
-
+		
 		var hitbox:PackedScene = load("res://Scenes/Game/Components/Hitboxes/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn");
 		var polygon:PackedScene = load("res://Scenes/Game/Components/Polygons/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn");
 		var temp_hitbox = hitbox.instantiate();
 		var texture_type = temp_hitbox.get_meta("texture_type");
-		temp_hitbox.call_deferred("queue_free");
+		temp_hitbox.queue_free();
 		
-		brick_rect.resource = {"hitbox": hitbox, "polygon": polygon, "texture_uid": ResourceLoader.get_resource_uid("res://Assets/Visuals/BrickTextures/BaseTypes/" + filename.trim_suffix(".import")), "texture_type": texture_type};
+		brick_rect.resource = {
+			"hitbox": hitbox,
+			"polygon": polygon,
+			"texture_uid": ResourceLoader.get_resource_uid("res://Assets/Visuals/BrickTextures/BaseTypes/" + filename.trim_suffix(".import")),
+			"texture_type": texture_type
+		};
 		self.add_child(brick_rect);	
 		brick_rect.set_active_res.connect(set_active_res);
 

@@ -123,6 +123,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Place tool"
 theme = ExtResource("6_if84t")
+action_mode = 0
 icon = ExtResource("6_7hwva")
 icon_alignment = 1
 
@@ -132,6 +133,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Paint tool"
 theme = ExtResource("6_if84t")
+action_mode = 0
 icon = ExtResource("5_k43gj")
 icon_alignment = 1
 
@@ -141,6 +143,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Select tool"
 theme = ExtResource("6_if84t")
+action_mode = 0
 icon = ExtResource("10_3i04o")
 icon_alignment = 1
 
@@ -150,6 +153,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Erase tool"
 theme = ExtResource("6_if84t")
+action_mode = 0
 icon = ExtResource("7_evgdw")
 icon_alignment = 1
 
@@ -159,6 +163,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Erase tool"
 theme = ExtResource("6_if84t")
+action_mode = 0
 icon = ExtResource("15_gi63o")
 icon_alignment = 1
 
@@ -271,6 +276,7 @@ columns = 4
 script = ExtResource("2_ylr5r")
 
 [node name="Textures" type="VBoxContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer" node_paths=PackedStringArray("texture_button", "color_picker", "selector", "quad_grid", "circle_grid")]
+visible = false
 layout_mode = 2
 script = ExtResource("4_lhv3y")
 texture_button = NodePath("MarginContainer/VBoxContainer/TextureButton")
@@ -284,6 +290,7 @@ layout_mode = 2
 alignment = 1
 expand_icon = true
 selected = 0
+fit_to_longest_item = false
 item_count = 2
 popup/item_0/text = "Quadrangles"
 popup/item_0/icon = ExtResource("19_cqbwm")

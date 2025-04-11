@@ -25,13 +25,18 @@ func _ready() -> void:
 	];
 	current_texture_type = grid_array[0].type;
 
+	selector.item_selected.connect(show_menu);
+
 	for item in grid_array:
 		var file_array := DirAccess.get_files_at("res://Assets/Visuals/BrickTextures/" + item.type);
 		var filtered_array := Array(file_array.duplicate()).filter(func(string): return string.containsn(".import")); # There's no duplicates without .import
 		
 		for filename:String in filtered_array:
 			var brick_rect:EditorBrickSample = BrickRect.instantiate();
-			brick_rect.resource = {"texture_uid": ResourceLoader.get_resource_uid(str("res://Assets/Visuals/BrickTextures/" , item.type , '/' , filename.trim_suffix(".import"))), "texture_type": item.type};
+			brick_rect.resource = {
+				"texture_uid": ResourceLoader.get_resource_uid(str("res://Assets/Visuals/BrickTextures/" , item.type , '/' , filename.trim_suffix(".import"))),
+				"texture_type": item.type
+			};
 			brick_rect.texture_rect.texture = load(str("res://Assets/Visuals/BrickTextures/", item.type, '/', filename.trim_suffix(".import")));
 
 			item.control.add_child(brick_rect);
@@ -46,9 +51,9 @@ func show_menu(idx:int):
 	current_texture_type = grid_array[idx].type;
 	grid_array[idx].control.show();
 
-func set_active_res(res_path):
-	set_active_res_signal.emit(res_path);
-	texture_button.texture_normal = load(res_path);
+func set_active_res(res):
+	set_active_res_signal.emit(res);
+	texture_button.texture_normal = load(ResourceUID.get_id_path(res.texture_uid));
 
 func show_color_picker(toggled:bool):
 	color_picker.visible = toggled;
@@ -56,8 +61,3 @@ func show_color_picker(toggled:bool):
 func _on_color_changed(color:Color):
 	texture_button.material.set_shader_parameter("to", color);
 	shader_color = color;
-
-func _on_root_control_sort_children():
-	for item in grid_array:
-		for brick_rect:EditorBrickSample in item.control.get_children():
-			brick_rect.texture_rect.custom_minimum_size.x = item.control.size.x / item.control.columns;

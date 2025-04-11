@@ -56,7 +56,6 @@ var brick_paths:Array[BrickPath] = [];
 var can_place_bricks:bool = false;
 var selected_brick_sample:Brick;
 var active_brick_sample:Brick;
-var selected_base_texture_uid:int;
 var selected_texture_uid:int;
 var selected_texture_shader:Color;
 var current_texture_type:String;
@@ -79,9 +78,6 @@ func _ready():
 	texture_container.set_active_res_signal.connect(set_active_res);
 
 	save_button.pressed.connect(save_level);
-
-	selector.sort_children.connect(brick_container._on_root_control_sort_children);
-	selector.sort_children.connect(texture_container._on_root_control_sort_children)
 
 	place_tool.pressed.connect(set_tool.bind("place"));
 	select_tool.pressed.connect(set_tool.bind("select"));
@@ -237,11 +233,16 @@ func set_active_res(res = null):
 		if selected_brick_sample:
 			selected_brick_sample.queue_free();
 			selected_brick_sample = null;
+		if selected_brick:
+			selected_brick.queue_free();
+			selected_brick = null;
 		
 		var brick:Brick = BrickScene.instantiate();
 
 		var temp_polygon:Polygon2D = res.polygon.instantiate();
-		brick.texture_sprite.polygon = temp_polygon.polygon;
+		brick.polygon_array = temp_polygon.polygon.duplicate();
+		brick.polygon_texture_offset = temp_polygon.texture_offset;
+		brick.polygon_texture_scale = temp_polygon.texture_scale;
 		temp_polygon.queue_free();
 
 		var temp_hitbox:Node2D = res.hitbox.instantiate();
@@ -252,8 +253,7 @@ func set_active_res(res = null):
 		brick.texture_uid = res.texture_uid;
 		brick.setup(true);
 
-		selected_base_texture_uid = res.texture_uid;
-		selected_texture_uid = 0;
+		selected_texture_uid = res.texture_uid;
 		selected_brick_sample = brick;
 		selected_brick = brick;
 		selected_brick.texture_type = res.texture_type;
@@ -889,10 +889,15 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	new_brick.hitbox = new_hitbox;
 	new_hitbox.owner = new_brick;
 
-	new_brick.base_texture_path = brick.base_texture_path;
-	new_brick.texture_path = brick.texture_path;
+	var temp_polygon = brick.texture_sprite.duplicate();
+	new_brick.polygon_array = temp_polygon.polygon.duplicate();
+	new_brick.polygon_texture_offset = temp_polygon.texture_offset;
+	new_brick.polygon_texture_scale = temp_polygon.texture_scale;
+	temp_polygon.queue_free();
+
+	new_brick.texture_uid = brick.texture_uid;
 	new_brick.shader_color = brick.shader_color;
-	# if selected_texture_path: new_brick.texture_path = selected_texture_path;
+	# if selected_texture_uid: new_brick.texture_uid = selected_texture_uid;
 	# if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
 	
 	new_brick.init_health = brick.init_health;

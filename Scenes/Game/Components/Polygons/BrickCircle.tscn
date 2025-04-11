@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3l5ot17sff1s"]
 
 [node name="Polygon2D" type="Polygon2D"]
+offset = Vector2(7.47, 0)
 texture_offset = Vector2(32, 32)
 texture_scale = Vector2(2, 2)
 polygon = PackedVector2Array(-32, -8, -32, 8, -24, 24, -8, 32, 8, 32, 24, 24, 32, 8, 32, -8, 24, -24, 8, -32, -8, -32, -24, -24)
