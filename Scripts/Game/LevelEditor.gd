@@ -232,10 +232,8 @@ func set_active_res(res = null):
 	if current_tool == "place":
 		if selected_brick_sample:
 			selected_brick_sample.queue_free();
-			selected_brick_sample = null;
-		if selected_brick:
-			selected_brick.queue_free();
-			selected_brick = null;
+		# if selected_brick:
+		# 	selected_brick.queue_free();
 		
 		var brick:Brick = BrickScene.instantiate();
 
@@ -262,6 +260,7 @@ func set_active_res(res = null):
 	if current_tool == "paint":
 		selected_texture_uid = res.texture_uid;
 		selected_texture_shader = Color(1, 1, 1, 1);
+		texture_container.shader_color = Color(1, 1, 1, 1);
 		current_texture_type = res.texture_type;
 
 func on_create_path():
