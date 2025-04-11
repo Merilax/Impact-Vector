@@ -2,3 +2,4 @@
 
 [node name="HitboxComponent" type="CollisionPolygon2D"]
 polygon = PackedVector2Array(-28, -16, -32, -12, -32, 12, -28, 16, 28, 16, 32, 12, 32, -12, 28, -16)
+metadata/texture_type = "Quadrangle"

@@ -102,8 +102,8 @@ position = Vector2(42, 0)
 [node name="ConstructorArm" type="Node2D" parent="."]
 
 [node name="Horizontal" type="Sprite2D" parent="ConstructorArm"]
-position = Vector2(961, -68)
-scale = Vector2(1, 0.6)
+position = Vector2(759, -68)
+scale = Vector2(0.758333, 0.6)
 texture = ExtResource("4_0q1sm")
 
 [node name="Vertical" type="Sprite2D" parent="ConstructorArm"]
@@ -112,7 +112,7 @@ scale = Vector2(0.6, 1)
 texture = ExtResource("5_i4nkc")
 
 [node name="Nucleus" type="Sprite2D" parent="ConstructorArm"]
-position = Vector2(-71, -68)
+position = Vector2(-83, -68)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("6_0q1sm")
 
@@ -470,6 +470,8 @@ offset_right = 233.0
 offset_bottom = 284.0
 rotation = -1.5708
 text = "IMPACT VECTOR"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Separator" type="Control" parent="UILayer/SidebarL/MarginContainer/VBoxContainer"]
 layout_mode = 2

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://r7g18dafs200"
-path="res://.godot/imported/BrickSpiral.png-478d0994255b9145b2868f838e1bd7a5.ctex"
+uid="uid://drkb28nwgvim3"
+path="res://.godot/imported/BrickCircle.png-30a6c4d8c061bc2381cc6e571935a3d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/BrickSpiral.png"
-dest_files=["res://.godot/imported/BrickSpiral.png-478d0994255b9145b2868f838e1bd7a5.ctex"]
+source_file="res://Assets/Visuals/BrickTextures/Circle/BrickCircle.png"
+dest_files=["res://.godot/imported/BrickCircle.png-30a6c4d8c061bc2381cc6e571935a3d0.ctex"]
 
 [params]
 

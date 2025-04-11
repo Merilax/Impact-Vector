@@ -5,3 +5,4 @@ radius = 31.0161
 
 [node name="HitboxComponent" type="CollisionShape2D"]
 shape = SubResource("CircleShape2D_gd1tl")
+metadata/texture_type = "Circle"

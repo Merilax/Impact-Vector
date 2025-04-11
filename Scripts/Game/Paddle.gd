@@ -111,6 +111,7 @@ func release_magnet():
 	for ball:Ball in balls:
 		ball.on_paddle = false;
 		ball.call_deferred("reparent", target_ball_container);
+		# ball.launch_ball(calculate_bounce_vector(ball));
 		ball.dir = calculate_bounce_vector(ball);
 		ball.freeze = false;
 	balls.clear();

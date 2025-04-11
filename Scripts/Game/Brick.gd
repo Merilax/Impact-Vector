@@ -3,8 +3,7 @@ class_name Brick
 
 @export_group("Nodes")
 @export var hitbox:Node2D;
-@export var base_sprite:Sprite2D;
-@export var texture_sprite:Sprite2D;
+@export var texture_sprite:Polygon2D;
 @export var health_comp:HealthComponent;
 @export var score_comp:ScoreComponent;
 @export var hit_sound_comp:AudioStreamPlayer2D;
@@ -13,8 +12,7 @@ class_name Brick
 @export var editor_hitbox:EditorHitboxComponent;
 
 @export_group("Data")
-@export var base_texture_path:String; # Must be set
-@export var texture_path:String; # Must be set
+@export var texture_uid:int; # Must be set
 @export var shader_color:Color = Color(1, 1, 1, 1);
 @export var init_health:float = 1;
 @export var init_score:float = 10;
@@ -27,8 +25,13 @@ class_name Brick
 @export var path_group:int = -1;
 @export var is_editor:bool = true;
 
+@export var texture_type:String;
+
 var tweening_shader:bool = false;
 var tweening_size:bool = false;
+
+var base_x:float;
+var base_y:float;
 
 signal process_score(score:int);
 signal spawn_pickup(global_position:Vector2, type:String, texture:String);
@@ -36,7 +39,11 @@ signal brick_destroyed(brick:Brick);
 
 func setup(as_editable:bool = true):
 	self.visible = true;
-	set_base_sprite(base_texture_path);
+	set_texture_sprite(texture_uid, false);
+	texture_type = hitbox.get_meta("texture_type");
+
+	base_x = texture_sprite.texture.get_size().x;
+	base_y = texture_sprite.texture.get_size().y;
 
 	freeze = not init_pushable;
 	mass = init_mass;
@@ -116,12 +123,12 @@ func add_score(score:int):
 	if is_editor: return
 	process_score.emit(score)
 
+func get_shader_brightness() -> float:
+	return texture_sprite.material.get_shader_parameter("brightness");
+
 func set_shader_brightness(value:float):
 	value = clampf(value, -1, 1);
 	texture_sprite.material.set_shader_parameter("brightness", value);
-
-func get_shader_brightness() -> float:
-	return texture_sprite.material.get_shader_parameter("brightness");
 
 func get_texture_shader_color() -> Color:
 	return texture_sprite.material.get_shader_parameter("to")
@@ -173,36 +180,32 @@ func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, for
 	tweening_size = false
 	return true
 
-func set_base_sprite(path:String):
-	if path.is_empty(): return
-	base_sprite.texture = load(path)
-	base_texture_path = path
+func set_texture_sprite(uid:int, rescale:bool = false):
+	if not ResourceUID.get_id_path(uid): return;
+	texture_sprite.texture = load(ResourceUID.get_id_path(uid));
+	texture_uid = uid;
 
-	if texture_path: set_texture_sprite(texture_path)
-	else: set_texture_sprite(path)
-
-func set_texture_sprite(path:String):
-	if path.is_empty(): return
-	if base_texture_path.is_empty(): return
-	texture_sprite.texture = load(path)
-	texture_path = path
+	if rescale: rescale_sprite();
 	texture_sprite.show();
 
-	var base_x = base_sprite.texture.get_size().x #* base_sprite.scale.x
-	var base_y = base_sprite.texture.get_size().y #* base_sprite.scale.y
-	var textured_x = texture_sprite.texture.get_size().x #* texture_sprite.scale.x
-	var textured_y = texture_sprite.texture.get_size().y #* texture_sprite.scale.y
+func rescale_sprite():
+	var textured_x = texture_sprite.texture.get_size().x;
+	var textured_y = texture_sprite.texture.get_size().y;
 
 	# Scale texture sprite to base sprite, covered, keeping aspect ratio
 	# Scale up
 	if base_x > textured_x or base_y > textured_y:
 		if base_x > textured_x:
-			texture_sprite.scale *= base_x / textured_x
+			texture_sprite.scale *= (textured_x) / base_x;
 		elif base_y > textured_y:
-			texture_sprite.scale *= base_y / textured_y
+			texture_sprite.scale *= (textured_y) / base_y;
 	# Scale down
-	if textured_x > base_x and textured_y > base_y:
+	if textured_x > base_x or textured_y > base_y:
 		if textured_x > base_x:
-			texture_sprite.scale *= textured_x / base_x
+			texture_sprite.scale *= base_x / (textured_x);
 		elif textured_y > base_y:
-			texture_sprite.scale *= textured_y / base_y
+			texture_sprite.scale *= base_y / (textured_y);
+	# Recenter
+	texture_sprite.offset.x = texture_sprite.texture.get_size().x / 2 / texture_sprite.scale.x;
+	texture_sprite.offset.y = texture_sprite.texture.get_size().y / 2 / texture_sprite.scale.y;
+	

@@ -11,7 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://cai11ocuueh8w" path="res://Assets/Audio/SFX/bfh1_glass_hit_02.ogg" id="9_y0pj2"]
 [ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Game/Components/EditorHitboxComp.tscn" id="10_a4cop"]
 
-[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("base_sprite", "texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
+[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
 collision_layer = 4
 collision_mask = 8
 mass = 5.0
@@ -26,20 +26,14 @@ linear_damp = 2.0
 angular_damp_mode = 1
 angular_damp = 5.0
 script = ExtResource("2_yncpm")
-base_sprite = NodePath("Sprite")
-texture_sprite = NodePath("Sprite/TextureSprite")
+texture_sprite = NodePath("Polygon2D")
 health_comp = NodePath("HealthComp")
 score_comp = NodePath("ScoreComp")
 hit_sound_comp = NodePath("HitSoundComp")
 destroy_sound_comp = NodePath("DestroySoundComp")
 editor_hitbox = NodePath("EditorHitboxComp")
 
-[node name="Sprite" type="Sprite2D" parent="."]
-clip_children = 1
-scale = Vector2(0.5, 0.5)
-
-[node name="TextureSprite" type="Sprite2D" parent="Sprite"]
-visible = false
+[node name="Polygon2D" type="Polygon2D" parent="."]
 material = ExtResource("3_wd6an")
 
 [node name="HealthComp" parent="." instance=ExtResource("5_mnfrv")]

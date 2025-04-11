@@ -56,9 +56,10 @@ var brick_paths:Array[BrickPath] = [];
 var can_place_bricks:bool = false;
 var selected_brick_sample:Brick;
 var active_brick_sample:Brick;
-var selected_base_texture_path:String;
-var selected_texture_path:String;
+var selected_base_texture_uid:int;
+var selected_texture_uid:int;
 var selected_texture_shader:Color;
+var current_texture_type:String;
 
 var selected_brick:Brick
 var selected_path:BrickPath;
@@ -227,7 +228,7 @@ func set_active_res(res = null):
 	if res == null:
 		selected_brick_sample = null;
 		active_brick_sample = null;
-		selected_texture_path = "";
+		selected_texture_uid = 0;
 		selected_texture_shader = Color(1, 1, 1, 1);
 		texture_container.shader_color = Color(1, 1, 1, 1);
 		return;
@@ -238,22 +239,30 @@ func set_active_res(res = null):
 			selected_brick_sample = null;
 		
 		var brick:Brick = BrickScene.instantiate();
+
+		var temp_polygon:Polygon2D = res.polygon.instantiate();
+		brick.texture_sprite.polygon = temp_polygon.polygon;
+		temp_polygon.queue_free();
+
 		var temp_hitbox:Node2D = res.hitbox.instantiate();
 		brick.add_child(temp_hitbox, true);
 		temp_hitbox.owner = brick;
 		brick.hitbox = temp_hitbox;
-		brick.base_texture_path = res.texture_path;
+
+		brick.texture_uid = res.texture_uid;
 		brick.setup(true);
 
-		selected_base_texture_path = res.texture_path;
-		selected_texture_path = "";
+		selected_base_texture_uid = res.texture_uid;
+		selected_texture_uid = 0;
 		selected_brick_sample = brick;
 		selected_brick = brick;
+		selected_brick.texture_type = res.texture_type;
 		selected_texture_shader = Color(1, 1, 1, 1);
 
 	if current_tool == "paint":
-		selected_texture_path = res.trim_suffix(".remap");
+		selected_texture_uid = res.texture_uid;
 		selected_texture_shader = Color(1, 1, 1, 1);
+		current_texture_type = res.texture_type;
 
 func on_create_path():
 	if not verify_valid_path(): return;
@@ -430,22 +439,23 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					refresh_brick_data_controls(selected_brick);
 
 				selected_texture_shader = selected_brick.shader_color;
-				if selected_brick.texture_path: selected_texture_path = selected_brick.texture_path;
+				if selected_brick.texture_uid: selected_texture_uid = selected_brick.texture_uid;
 		#if Input.is_action_pressed("mouse_primary"):
 		return;
 
 	if current_tool == "paint":
 		if input.is_action_pressed("mouse_primary"):
-			if selected_texture_path.is_empty(): return
+			if not ResourceUID.has_id(selected_texture_uid): return;
 			
-			var space_state = get_world_2d().direct_space_state
-			var query = PhysicsPointQueryParameters2D.new()
-			query.position = get_global_mouse_position()
-			query.collision_mask = 4
-			var result = space_state.intersect_point(query)
+			var space_state = get_world_2d().direct_space_state;
+			var query = PhysicsPointQueryParameters2D.new();
+			query.position = get_global_mouse_position();
+			query.collision_mask = 4;
+			var result = space_state.intersect_point(query);
 			
 			if result.size() > 0:
-				result[0].collider.set_texture_sprite(selected_texture_path);
+				if current_texture_type != result[0].collider.texture_type: return;
+				result[0].collider.set_texture_sprite(selected_texture_uid, true);
 				result[0].collider.set_texture_shader_color(texture_container.shader_color, true);
 				selected_texture_shader = texture_container.shader_color;
 		# elif input.is_action_pressed("mouse_secondary"):

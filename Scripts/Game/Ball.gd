@@ -70,7 +70,12 @@ func _physics_process(delta):
 	if collision:
 		_on_collide(collision);
 
+	# var collision_happened := move_and_slide();
+	# if collision_happened:
+		# var collision = get_last_slide_collision();
+		# _on_collide(collision);
 	if collision_registered_this_frame:
+	# else:
 		collided_array.clear();
 		pushing_velocity = Vector2.ZERO;
 		collision_registered_this_frame = false;
@@ -105,11 +110,18 @@ func _on_collide(collision:KinematicCollision2D):
 		collided.hit(self);
 		bounce(collision);
 
+# func launch_ball(angle:Vector2):
+	# velocity = angle.normalized() * speed * speed_mult;
+	# self.freeze = false;
+
 func bounce(collision:KinematicCollision2D):
+	# return;
 	dir = prev_dir.bounce(collision.get_normal());
-	# Unstuck ball (can't do on X because paddle can bounce the ball vertically)
+	
 	if abs(dir.y) < 0.05:
 		dir.y = randf_range(-0.1, 0.1);
+	if abs(dir.x) < 0.02:
+		dir.x = randf_range(-0.02, 0.02);
 
 func die():
 	lost = true;

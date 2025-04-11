@@ -140,6 +140,7 @@ signal change_ball_speed(mult:float, update_counter:bool);
 signal change_ball_size(level:int);
 
 func _ready():
+	Performance.add_custom_monitor("game/bricks", func(): return brick_count);
 	transitioning_levels = true;
 	background.retrigger();
 
