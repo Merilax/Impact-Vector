@@ -13,6 +13,7 @@ config_version=5
 config/name="Impact Vector"
 run/main_scene="res://Scenes/Root.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=60
 config/icon="uid://bic26ot13tys2"
 
 [audio]
@@ -24,6 +25,7 @@ buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
 MusicPlayer="*res://Scenes/MusicPlayer.tscn"
 GlobalVars="*res://Scripts/GlobalVars.gd"
 Logger="*res://Scripts/Logger.gd"
+Utils="*res://Scripts/Utils.gd"
 
 [display]
 

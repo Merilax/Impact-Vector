@@ -94,7 +94,7 @@ func delete_campaign(campaign_folder_path:String, campaign_num:String, origin:Co
 
 	# TODO Warn user
 	for sub_dir in DirAccess.get_directories_at(campaign_folder_path + "/" + campaign_num):
-		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/level.tscn");
+		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/level.json");
 		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/data.tres");
 		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir);
 	
@@ -123,18 +123,18 @@ func play_level(level_num:String, savedata:SaveGameData = null):
 	if campaign_path.contains("res://"):
 		start_game.emit(campaign_path, campaign_folder, level_num, savedata);
 	else:
-		if FileAccess.file_exists(campaign_path + "/campaigns.json") and FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn"):
+		if FileAccess.file_exists(campaign_path + "/campaigns.json") and FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json"):
 			start_game.emit(campaign_path, campaign_folder, level_num, savedata);
 
 func edit_level(level_num:String):
 	Logger.write("Editing level: " + level_num, "MainMenu");
-	if FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn"):
+	if FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json"):
 		open_editor.emit(campaign_path, campaign_folder, level_num);
 
 func delete_level(level_num:String, origin:Control):
 	Logger.write("Deleting level: " + level_num, "MainMenu");
 	origin.queue_free();
-	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.tscn");
+	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json");
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/data.tres");
 	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num);
 

@@ -1,7 +1,7 @@
 extends Node2D
 class_name Game
 
-var current_build_number:int = 2;
+var current_build_number:int = 1;
 
 var campaign_path:String
 var campaign_num:String
@@ -76,6 +76,8 @@ var total_pickup_weight:int = 0;
 var pickup_texture_base_good = load("uid://da0tvxra80xwp");
 var pickup_texture_base_bad = load("uid://yke3nrm7jmix");
 
+var BrickScene = preload("uid://dtkn1xk6stg0v");
+var BrickPathScene = preload("uid://cmtfn8g03wdp8");
 var BallScene = preload("uid://dxbg7h6mg1dtd");
 var PaddleScene = preload("uid://bjjlgc7puyxfe");
 var PickupComp = preload("uid://c5ebe7unjhv0x");
@@ -102,29 +104,33 @@ var ball_size_level:int = 0;
 var can_spawn_balls:bool = true;
 var ball_stuck_timer:SceneTreeTimer;
 
-@export var notification_text_window:Label;
-@export var notification_score_window:Label;
-@export var notification_window_timer:Timer;
-@export var score_counter:Label;
-@export var speed_counter:Label;
-@export var life_counter:HBoxContainer;
-@export var ball_modifier_timer:Timer;	
 var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
+@export_group("Nodes")
 @export var world_border:WorldBorder;
 @export var ball_container:Node2D;
-var level_content:Node2D;
-var level_content_bricks:Node2D;
-var level_content_paths:Node2D;
+@export var level_content:Node2D;
+@export var level_content_bricks:Node2D;
+@export var level_content_paths:Node2D;
 @export var background:Parallax2D;
-@export var escape_layer:EscapeLayer;
 
+@export_group("UI")
+@export var escape_layer:EscapeLayer;
+@export var notification_text_window:Label;
+@export var notification_window_timer:Timer;
+@export var notification_score_window:Label;
+@export var score_counter:Label;
+@export var life_counter:HBoxContainer;
+
+@export_group("UI meters")
 @export var speed_meter:TextureProgressBar;
 @export var magnet_meter:TextureProgressBar;
 @export var ball_modifier_meter:TextureProgressBar;
+@export var ball_modifier_timer:Timer;
 var ball_modifier_timer_progress:float = 0;
 var ball_modifier_timer_active:bool = false;
 
+@export_group("Constructor arm nodes")
 @export var arm_horizontal:Node2D;
 @export var arm_vertical:Node2D;
 @export var arm_placer:Node2D;
@@ -140,7 +146,6 @@ signal change_ball_speed(mult:float, update_counter:bool);
 signal change_ball_size(level:int);
 
 func _ready():
-	Performance.add_custom_monitor("game/bricks", func(): return brick_count);
 	transitioning_levels = true;
 	background.retrigger();
 
@@ -158,8 +163,6 @@ func _ready():
 
 	for life in lives:
 		life_counter.add_child(BallLifeRect.instantiate());
-
-	change_ball_speed.connect(speed_counter.set_mult);
 
 	for i in range(0, pickup_list.size()):
 		total_pickup_weight += pickup_list[i].weight;
@@ -411,7 +414,7 @@ func win():
 		game_over(true);
 		return;
 		
-	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.tscn") or not await load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
+	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.json") or not await load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
 		game_over(true);
 		return;
 	
@@ -454,8 +457,8 @@ func init_brick(brick, set_hidden:bool = false):
 		if brick.has_signal('spawn_pickup'):
 			brick.spawn_pickup.connect(_on_spawn_pickup);
 
-		if brick.is_in_group('Destructible'):
-			if brick.scoreable: brick_count += 1;
+		if brick.scoreable: brick_count += 1;
+		if not brick.is_indestructible:
 			if randi() % 101 <= 20: # Pickup spawn %
 				var pickup_comp:PickupComponent = PickupComp.instantiate();
 				brick.add_child(pickup_comp);
@@ -470,10 +473,6 @@ func init_brick(brick, set_hidden:bool = false):
 						brick.pickup_comp.pickup_type = pickup_list[i].type;
 						brick.pickup_comp.pickup_sprite = pickup_list[i].texture;
 						break;
-
-func init_path(path:BrickPath):
-	path.setup_steps();
-	path.play_tweens(true);
 
 func kill_paddle():
 	if is_instance_valid(paddle):
@@ -627,42 +626,102 @@ func add_magnet():
 		var power:int = paddle.add_magnet();
 		if magnet_meter: magnet_meter.value = power;
 
-func load_level(dir:String) -> bool:
+func load_level(dir:String):
 	Logger.write(str("Loading level at ", dir), "Level");
-	if not DirAccess.dir_exists_absolute(dir): return false
+	if not DirAccess.dir_exists_absolute(dir): return false;
 
-	var level_data:LevelData = load(dir + "data.tres");
-	if not level_data: return false;
+	background.retrigger(); # Might tie to level data in the future.
+
+	for node in level_content_bricks.get_children(): node.queue_free();
+	for node in level_content_paths.get_children(): node.queue_free();
+	await get_tree().process_frame; # Just in case.
+
+	var level_data:LevelData = load(dir + "/data.tres");
+
+	var reader := FileAccess.open(dir + "/level.json", FileAccess.READ);
+	var level_dict = JSON.parse_string(reader.get_as_text());
+	reader.close();
+
+	if level_data.build_number < current_build_number:
+		var upgrade_successful := upgrade_version(level_data, level_dict);
+		if not upgrade_successful: return false;
+
+	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece.
+
+	Logger.write(str("Initializing Paths."), "Level");
+	for item:Dictionary in level_dict.paths:
+		var path:BrickPath = BrickPathScene.instantiate();
+		path.speed = item.speed;
+		path.looped = item.looped;
+		path.apply_rotation = item.apply_rotation;
+		path.steps = item.steps;
+
+		for i:int in range(item.points.size()):
+			var point:Dictionary = item.points[i];
+			var p_pos = Vector2(point.pos.x, point.pos.y);
+			var p_in = Vector2.ZERO;
+			var p_out = Vector2.ZERO;
+			if i > 0: p_in = Vector2(point.in.x, point.in.y);
+			if i < item.points.size() - 1: p_out = Vector2(point.out.x, point.out.y);
+
+			path.curve.add_point(p_pos, p_in, p_out);
+
+		var remote_offset := Node2D.new();
+		remote_offset.name = item.transform_target;
+		level_content_bricks.add_child(remote_offset, true);
+		remote_offset.owner = level_content;
+
+		path.transform_target = remote_offset;
+
+		for i:int in range(item.steps):
+			var step_offset := Node2D.new();
+			step_offset.name = str("StepOffset", i);
+			remote_offset.add_child(step_offset, true);
+			step_offset.owner = level_content;
+
+		level_content_paths.add_child(path, true);
+		path.setup_steps();
+
+		for i:int in range(item.steps):
+			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 	
-	var level_content_scene = load(dir + "level.tscn");
-	if not level_content_scene: return false;
-
-	var new_level_content:Node2D = level_content_scene.instantiate();
-	new_level_content.name = "LevelContent";
-	$LevelContentOffset.add_child(new_level_content, true);
-	new_level_content.position = Vector2.ZERO;
-	level_content = new_level_content;
-	
-	if level_data.build_number != current_build_number:
-		Logger.write(str("Upgrading level from version ", level_data.build_number), "Level");
-		upgrade_version(level_data);
-
-	level_content_bricks = level_content.find_child("Bricks");
-	level_content_paths = level_content.find_child("Paths");
 	get_tree().call_group("PathLineVisual", "hide");
 	get_tree().call_group("PathPointVisual", "hide");
 
-	background.retrigger(); # Might tie to level data in the future
-	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece
-
 	Logger.write(str("Initializing Bricks."), "Level");
-	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
+	for item:Dictionary in level_dict.bricks:
+		var brick:Brick = BrickScene.instantiate();
+
+		brick.hitbox_uid = int(item.hitbox_uid);
+		brick.texture_uid = int(item.texture_uid);
+		brick.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
+		brick.shader_color = Color(item.shader_color);
+		brick.init_health = item.init_health;
+		brick.init_score = item.init_score;
+		brick.init_pushable = item.init_pushable;
+		brick.init_mass = item.init_mass;
+		brick.can_collide = item.can_collide;
+		brick.scoreable = item.scoreable;
+		brick.is_indestructible = item.is_indestructible;
+		brick.polygon_array = Utils.compose_vector2_array(item.polygon_array);
+		brick.polygon_texture_offset = Vector2(item.polygon_texture_offset.x, item.polygon_texture_offset.y);
+		brick.polygon_texture_scale = Vector2(item.polygon_texture_scale.x, item.polygon_texture_scale.y);
+		brick.is_path_clone = item.is_path_clone;
+		brick.path_group = item.path_group as int;
+		
+		if brick.path_group >= 0:
+			var step_offset = level_content_bricks.find_child(str("RemoteOffsetPath", brick.path_group)).get_child(item.path_step as int);
+			step_offset.add_child(brick, true);
+		else:
+			level_content_bricks.add_child(brick, true);
+		brick.owner = level_content;
+
+		brick.global_position = Vector2(item.global_position.x, item.global_position.y);
+		brick.global_rotation_degrees = item.global_rotation_degrees;
+		brick.global_scale = Vector2(item.global_scale.x, item.global_scale.y);
+
 		init_brick(brick, true);
 	
-	Logger.write(str("Initializing Paths."), "Level");
-	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
-		path.setup_steps();
-		
 	animating_arm = true;
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
@@ -676,46 +735,36 @@ func load_level(dir:String) -> bool:
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;
 
-	Logger.write(str("Level finished loading."), "Level");
+	Logger.write(str("Level finished loading with ", brick_count, " bricks."), "Level");
 	return true;
 
-func upgrade_version(data:LevelData):
-	var from_version:int = data.build_number;
-	if from_version >= current_build_number:
+func upgrade_version(data:LevelData, level_dict:Dictionary) -> bool:
+	if data.build_number < current_build_number:
+		match data.build_number:
+				# Default pre-release
+				0:
+					# level_dict operations
+					pass; 
+					
+		data.build_number += 1;
+		Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
+		return upgrade_version(data, level_dict);
+	else:
 		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
 		if err != OK:
-			print("Level data save error: " + error_string(err));
-			ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+			Logger.write("Level data save error: " + error_string(err), "LevelEditor");
+			return false;
 
-		var modified_level_content:PackedScene = PackedScene.new();
-		modified_level_content.pack(level_content);
-		err = ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
-		if err != OK:
-			print("Level scene save error: " + error_string(err));
-			ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
-		return;
+		# var modified_level_content := get_dictionary_from_level_content();
+		var json := JSON.stringify(level_dict, "", false, true);
+		var writer := FileAccess.open(campaign_path + campaign_num + "/" + level_num  + "/level.json", FileAccess.WRITE);
+		if writer == null:
+			Logger.write("Level JSON save error." + error_string(FileAccess.get_open_error()), "LevelEditor");
+			return false;
+		writer.store_string(json);
+		writer.close();
 
-	match from_version:
-		# Default pre-release
-		1:
-			# Add Bricks container and reparent bricks from LevelContent
-			var new_level_content_bricks := Node2D.new();
-			new_level_content_bricks.name = "Bricks";
-			level_content.add_child(new_level_content_bricks, true);
-			new_level_content_bricks.owner = level_content;
-
-			for node:Brick in get_tree().get_nodes_in_group("Brick"):
-				node.reparent(new_level_content_bricks);
-
-			# Add Paths container
-			var new_level_content_paths := Node2D.new();
-			new_level_content_paths.name = "Paths";
-			level_content.add_child(new_level_content_paths, true);
-			new_level_content_paths.owner = level_content;
-			
-	data.build_number += 1;
-	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
-	upgrade_version(data);
+		return true;
 
 func save_gamedata():
 	Logger.write(str("Saving game in progress to storage."), "Level");

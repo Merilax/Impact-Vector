@@ -8,7 +8,7 @@ var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 
 var saving_level:bool = false
 var loading_level:bool = false
-var current_build_number:int = 2;
+var current_build_number:int = 1;
 
 @export var notification_popup:AcceptDialog;
 
@@ -56,6 +56,7 @@ var brick_paths:Array[BrickPath] = [];
 var can_place_bricks:bool = false;
 var selected_brick_sample:Brick;
 var active_brick_sample:Brick;
+var selected_hitbox_uid:int;
 var selected_texture_uid:int;
 var selected_texture_shader:Color;
 var current_texture_type:String;
@@ -237,24 +238,24 @@ func set_active_res(res = null):
 		
 		var brick:Brick = BrickScene.instantiate();
 
-		var temp_polygon:Polygon2D = res.polygon.instantiate();
+		var temp_polygon:Polygon2D = load(ResourceUID.get_id_path(res.polygon_uid)).instantiate();
 		brick.polygon_array = temp_polygon.polygon.duplicate();
 		brick.polygon_texture_offset = temp_polygon.texture_offset;
 		brick.polygon_texture_scale = temp_polygon.texture_scale;
 		temp_polygon.queue_free();
 
-		var temp_hitbox:Node2D = res.hitbox.instantiate();
-		brick.add_child(temp_hitbox, true);
-		temp_hitbox.owner = brick;
-		brick.hitbox = temp_hitbox;
-
+		# var temp_hitbox:Node2D = res.hitbox.instantiate();
+		# brick.add_child(temp_hitbox, true);
+		# temp_hitbox.owner = brick;
+		# brick.hitbox = temp_hitbox;
+		brick.hitbox_uid = res.hitbox_uid;
 		brick.texture_uid = res.texture_uid;
 		brick.setup(true);
 
 		selected_texture_uid = res.texture_uid;
 		selected_brick_sample = brick;
 		selected_brick = brick;
-		selected_brick.texture_type = res.texture_type;
+		# selected_brick.texture_type = res.texture_type;
 		selected_texture_shader = Color(1, 1, 1, 1);
 
 	if current_tool == "paint":
@@ -776,36 +777,94 @@ func verify_valid_path() -> bool:
 
 func load_level(level_folder:String):
 	Logger.write(str("Loading level from ", level_folder), "LevelEditor");
-	loading_level = true
-	var Level:PackedScene = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.tscn")
-	var loaded_level_content = Level.instantiate()
+	loading_level = true;
 
-	var level_data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/data.tres")
-	level_name.text = level_data.name
+	var level_data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/data.tres");
+	level_name.text = level_data.name;
 
-	level_content.free()
+	var reader := FileAccess.open(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.json", FileAccess.READ);
+	var level_dict = JSON.parse_string(reader.get_as_text());
+	reader.close();
 
-	loaded_level_content.name = "LevelContent";
-	$LevelEditor.add_child(loaded_level_content, true);
-	level_content = loaded_level_content;
-	level_content_bricks = level_content.find_child("Bricks");
-	level_content_paths = level_content.find_child("Paths");
+	if level_data.build_number < current_build_number:
+		var upgrade_successful := upgrade_version(level_data, level_dict);
+		if not upgrade_successful: go_back() # TODO Notify broken level 
 
-	Logger.write(str("Initializing Bricks."), "LevelEditor");
-	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
-		brick.setup(true);
+	for item:Dictionary in level_dict.paths:
+		var path:BrickPath = BrickPathScene.instantiate();
+		path.speed = item.speed;
+		path.looped = item.looped;
+		path.apply_rotation = item.apply_rotation;
+		path.steps = item.steps;
 
-	Logger.write(str("Initializing Paths."), "LevelEditor");
-	for path:BrickPath in level_content_paths.get_children():
+		for i:int in range(item.points.size()):
+			var point:Dictionary = item.points[i];
+			var p_pos = Vector2(point.pos.x, point.pos.y);
+			var p_in = Vector2.ZERO;
+			var p_out = Vector2.ZERO;
+			if i > 0: p_in = Vector2(point.in.x, point.in.y);
+			if i < item.points.size() - 1: p_out = Vector2(point.out.x, point.out.y);
+
+			path.curve.add_point(p_pos, p_in, p_out);
+
+		var remote_offset := Node2D.new();
+		remote_offset.name = item.transform_target;
+		level_content_bricks.add_child(remote_offset, true);
+		remote_offset.owner = level_content;
+
+		path.transform_target = remote_offset;
+
+		for i:int in range(item.steps):
+			var step_offset := Node2D.new();
+			step_offset.name = str("StepOffset", i);
+			remote_offset.add_child(step_offset, true);
+			step_offset.owner = level_content;
+
+		level_content_paths.add_child(path, true);
 		brick_paths.append(path);
 		path_options_ctrl.path_number.max_value += 1;
 		data_options_ctrl.brick_path_group_control.max_value += 1;
-		# path.transform_target.reparent(path.first_transformer);
 		path.setup_steps();
+
+		for i:int in range(item.steps):
+			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 	on_select_path(-1);
 
-	level_num = level_folder
-	loading_level = false
+	for item:Dictionary in level_dict.bricks:
+		var brick:Brick = BrickScene.instantiate();
+
+		brick.hitbox_uid = int(item.hitbox_uid);
+		brick.texture_uid = int(item.texture_uid);
+		brick.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
+		brick.shader_color = Color(item.shader_color);
+		brick.init_health = item.init_health;
+		brick.init_score = item.init_score;
+		brick.init_pushable = item.init_pushable;
+		brick.init_mass = item.init_mass;
+		brick.can_collide = item.can_collide;
+		brick.scoreable = item.scoreable;
+		brick.is_indestructible = item.is_indestructible;
+		brick.polygon_array = Utils.compose_vector2_array(item.polygon_array);
+		brick.polygon_texture_offset = Vector2(item.polygon_texture_offset.x, item.polygon_texture_offset.y);
+		brick.polygon_texture_scale = Vector2(item.polygon_texture_scale.x, item.polygon_texture_scale.y);
+		brick.is_path_clone = item.is_path_clone;
+		brick.path_group = item.path_group as int;
+		
+		if brick.path_group >= 0:
+			var step_offset = level_content_bricks.find_child(str("RemoteOffsetPath", brick.path_group)).get_child(item.path_step as int);
+			step_offset.add_child(brick, true);
+		else:
+			level_content_bricks.add_child(brick, true);
+		brick.owner = level_content;
+
+		brick.global_position = Vector2(item.global_position.x, item.global_position.y);
+		brick.global_rotation_degrees = item.global_rotation_degrees;
+		brick.global_scale = Vector2(item.global_scale.x, item.global_scale.y);
+
+		brick.setup(true);
+
+	level_num = level_folder;
+	loading_level = false;
 
 func save_level():
 	if level_name.text.is_empty():
@@ -813,37 +872,27 @@ func save_level():
 		return;
 	if not verify_valid_path(): return;
 
-	Logger.write(str("Saving level."), "LevelEditor");
 	saving_level = true;
+	Logger.write(str("Saving level."), "LevelEditor");
 
-	var new_level:PackedScene = PackedScene.new();
-
-	level_content_bricks.owner = level_content;
-	level_content_paths.owner = level_content;
-	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
-		brick.hitbox.owner = level_content;
-	
-	for path:BrickPath in brick_paths:
-		# path.transform_target.reparent(level_content_bricks);
-		pass
 	on_select_path(-1);
 	
-	Logger.write(str("Packing Scene."), "LevelEditor");
-	new_level.pack(level_content);
+	Logger.write(str("Generating level dictionary."), "LevelEditor");
 
-	#mode_options.hide();
+	var new_level := get_dictionary_from_level_content();
+
 	set_snap_visibility(false);
 	await get_tree().create_timer(0.25).timeout; # Give the UI time to hide.
 
-	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, $LevelEditor/LevelMouseBoundary/CollisionShape2D.shape.size.y)
-	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region)
+	var region = Rect2(world_border.wall_left.global_position.x, 0, world_border.wall_right.global_position.x - world_border.wall_left.global_position.x, $LevelEditor/LevelMouseBoundary/CollisionShape2D.shape.size.y);
+	var screenshot:Image = get_viewport().get_texture().get_image().get_region(region);
 
 	# Compress capture
 	@warning_ignore("integer_division")
 	screenshot.resize(screenshot.get_size().x / 4, screenshot.get_size().y / 4, Image.INTERPOLATE_LANCZOS) # Important !!!
-	var buffer:PackedByteArray = screenshot.save_webp_to_buffer(true)
-	var thumb:Image = Image.new()
-	thumb.load_webp_from_buffer(buffer)
+	var buffer:PackedByteArray = screenshot.save_webp_to_buffer(true);
+	var thumb:Image = Image.new();
+	thumb.load_webp_from_buffer(buffer);
 
 	var level_data:LevelData = LevelData.new();
 
@@ -853,9 +902,7 @@ func save_level():
 
 		level_data = load(dir + "data.tres"); # Load existing data.
 		level_data.thumbnail = ImageTexture.create_from_image(thumb);
-		level_data.name = level_name.text 
-		if level_data.build_number != current_build_number:
-			upgrade_version(level_data);
+		level_data.name = level_name.text;
 		level_data.build_number = current_build_number;
 		
 		FileManager.add_level(campaign_num, new_level, level_data, true, level_num);
@@ -871,10 +918,10 @@ func save_level():
 
 func go_back():
 	Logger.write(str("Exiting editor."), "LevelEditor");
-	var MainScene:PackedScene = load("uid://c0a7y1ep5uibb")
-	var main_scene = MainScene.instantiate()
-	add_sibling(main_scene)
-	queue_free()
+	var MainScene:PackedScene = load("uid://c0a7y1ep5uibb");
+	var main_scene = MainScene.instantiate();
+	add_sibling(main_scene);
+	queue_free();
 
 # Use in place of Brick.duplicate() in Godot 4.3, can't duplicate nodes with dynamically added children.
 func duplicate_bug_bypass(brick:Brick) -> Brick:
@@ -883,10 +930,6 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	#	print(child)
 	#	new_brick.add_child(child.duplicate());
 	var new_brick:Brick = BrickScene.instantiate();
-	var new_hitbox = brick.hitbox.duplicate();
-	new_brick.add_child(new_hitbox, true);
-	new_brick.hitbox = new_hitbox;
-	new_hitbox.owner = new_brick;
 
 	var temp_polygon = brick.texture_sprite.duplicate();
 	new_brick.polygon_array = temp_polygon.polygon.duplicate();
@@ -894,6 +937,7 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	new_brick.polygon_texture_scale = temp_polygon.texture_scale;
 	temp_polygon.queue_free();
 
+	new_brick.hitbox_uid = brick.hitbox_uid;
 	new_brick.texture_uid = brick.texture_uid;
 	new_brick.shader_color = brick.shader_color;
 	# if selected_texture_uid: new_brick.texture_uid = selected_texture_uid;
@@ -910,40 +954,111 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	new_brick.setup(true);
 	return new_brick;
 
-func upgrade_version(data:LevelData):
-	var from_version:int = data.build_number;
-	if from_version >= current_build_number:
+func upgrade_version(data:LevelData, level_dict:Dictionary) -> bool:
+	if data.build_number < current_build_number:
+		match data.build_number:
+				# Default pre-release
+				0:
+					# level_dict operations
+					pass; 
+					
+		data.build_number += 1;
+		Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
+		return upgrade_version(data, level_dict);
+	else:
 		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
 		if err != OK:
-			print("Level data save error: " + error_string(err));
-			ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
+			Logger.write("Level data save error: " + error_string(err), "LevelEditor");
+			return false;
 
-		var modified_level_content:PackedScene = PackedScene.new();
-		modified_level_content.pack(level_content);
-		err = ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
-		if err != OK:
-			print("Level scene save error: " + error_string(err));
-			ResourceSaver.save(modified_level_content, campaign_path + campaign_num + "/" + level_num + "/level.tscn");
-		return;
+		# var modified_level_content := get_dictionary_from_level_content();
+		var json := JSON.stringify(level_dict, "", false, true);
+		var writer := FileAccess.open(campaign_path + campaign_num + "/" + level_num  + "/level.json", FileAccess.WRITE);
+		if writer == null:
+			Logger.write("Level JSON save error." + error_string(FileAccess.get_open_error()), "LevelEditor");
+			return false;
+		writer.store_string(json);
+		writer.close();
 
-	match from_version:
-		# Default pre-release
-		1:
-			# Add Bricks container and reparent bricks from LevelContent
-			var new_level_content_bricks := Node2D.new();
-			new_level_content_bricks.name = "Bricks";
-			level_content.add_child(new_level_content_bricks, true);
-			new_level_content_bricks.owner = level_content;
+		return true;
 
-			for node:Brick in get_tree().get_nodes_in_group("Brick"):
-				node.reparent(new_level_content_bricks);
+func get_dictionary_from_level_content() -> Dictionary:
+	var level_dict:Dictionary = {"paths": [], "bricks": []};
+	for node:Node2D in level_content_paths.get_children():
+		if node is BrickPath:
+			var point_collection := [];
+			for j:int in range(node.curve.point_count):
+				var point = {};
+				point.pos = {"x": node.curve.get_point_position(j).x, "y": node.curve.get_point_position(j).y};
+				if j > 0: point.in = {"x": node.curve.get_point_in(j).x, "y": node.curve.get_point_in(j).y};
+				if j < node.curve.point_count - 1: point.out = {"x": node.curve.get_point_out(j).x, "y": node.curve.get_point_out(j).y};
+				point_collection.append(point);
 
-			# Add Paths container
-			var new_level_content_paths := Node2D.new();
-			new_level_content_paths.name = "Paths";
-			level_content.add_child(new_level_content_paths, true);
-			new_level_content_paths.owner = level_content;
-			
-	data.build_number += 1;
-	Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
-	upgrade_version(data);
+			var step_offset_position_collection := [];
+			for j:int in range(node.steps):
+				var step_offset:Node2D = node.transform_target.get_child(j);
+				var step_pos = {"x": step_offset.global_position.x, "y": step_offset.global_position.y};
+				step_offset_position_collection.append(step_pos);
+
+			level_dict.paths.append({
+				"speed": node.speed,
+				"looped": node.looped,
+				"apply_rotation": node.apply_rotation,
+				"steps": node.steps,
+				"points": point_collection,
+				"transform_target": node.transform_target.name,
+				"step_positions": step_offset_position_collection
+			});
+
+			for j:int in range(node.steps):
+				var step_offset:Node2D = node.transform_target.get_child(j);
+				for brick:Brick in step_offset.get_children():
+					level_dict.bricks.append({
+						"global_position": {"x": brick.global_position.x, "y": brick.global_position.y},
+						"global_rotation_degrees": brick.global_rotation_degrees,
+						"global_scale": {"x": brick.global_scale.x, "y": brick.global_scale.y},
+						"hitbox_uid": str(brick.hitbox_uid),
+						"texture_uid": str(brick.texture_uid),
+						"original_sprite_size": {"x": brick.original_sprite_size.x, "y": brick.original_sprite_size.y},
+						"shader_color": brick.shader_color.to_html(),
+						"init_health": brick.init_health,
+						"init_score": brick.init_score,
+						"init_pushable": brick.init_pushable,
+						"init_mass": brick.init_mass,
+						"can_collide": brick.can_collide,
+						"scoreable": brick.scoreable,
+						"is_indestructible": brick.is_indestructible,
+						"polygon_array": Utils.decompose_vector2_array(brick.polygon_array),
+						"polygon_texture_offset": {"x": brick.polygon_texture_offset.x, "y": brick.polygon_texture_offset.y},
+						"polygon_texture_scale": {"x": brick.polygon_texture_scale.x, "y": brick.polygon_texture_scale.y},
+						"is_path_clone": brick.is_path_clone,
+						"path_group": brick.path_group,
+						"path_step": j
+					});
+
+	for node in level_content_bricks.get_children():
+		if node is Brick:
+			level_dict.bricks.append({
+				"global_position": {"x": node.global_position.x, "y": node.global_position.y},
+				"global_rotation_degrees": node.global_rotation_degrees,
+				"global_scale": {"x": node.global_scale.x, "y": node.global_scale.y},
+				"hitbox_uid": str(node.hitbox_uid),
+				"texture_uid": str(node.texture_uid),
+				"original_sprite_size": {"x": node.original_sprite_size.x, "y": node.original_sprite_size.y},
+				"shader_color": node.shader_color.to_html(),
+				"init_health": node.init_health,
+				"init_score": node.init_score,
+				"init_pushable": node.init_pushable,
+				"init_mass": node.init_mass,
+				"can_collide": node.can_collide,
+				"scoreable": node.scoreable,
+				"is_indestructible": node.is_indestructible,
+				"polygon_array": Utils.decompose_vector2_array(node.polygon_array),
+				"polygon_texture_offset": {"x": node.polygon_texture_offset.x, "y": node.polygon_texture_offset.y},
+				"polygon_texture_scale": {"x": node.polygon_texture_scale.x, "y": node.polygon_texture_scale.y},
+				"is_path_clone": false,
+				"path_group": -1,
+				"path_step": 0
+			});
+
+	return level_dict;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=33 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" uid="uid://dqpio87sxu3i2" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
@@ -15,7 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://b7i168t34cg33" path="res://Scenes/UI/EscapeMenu.tscn" id="8_ds3nv"]
 [ext_resource type="LabelSettings" uid="uid://bapuh2nmt5m28" path="res://GDResources/Themes/Header.tres" id="8_lfrfq"]
 [ext_resource type="Texture2D" uid="uid://eb6c15t6ncxn" path="res://Assets/Visuals/UI/ProgressBar8.png" id="9_k042e"]
-[ext_resource type="Script" uid="uid://rvpsmndsm2rd" path="res://Scripts/UI/Components/LabelPercentMult.gd" id="10_0egqj"]
 [ext_resource type="Texture2D" uid="uid://blto1cna1p7rl" path="res://Assets/Visuals/UI/SideR.PNG" id="10_22vck"]
 [ext_resource type="Script" uid="uid://cusba52gpuwal" path="res://Scripts/UI/Components/LabelCounter.gd" id="10_ers3y"]
 [ext_resource type="Script" uid="uid://qmyt0gym44nx" path="res://Scripts/UI/GameOverLayer.gd" id="10_lyp6h"]
@@ -58,22 +57,24 @@ font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_5eta3"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("notification_text_window", "notification_score_window", "notification_window_timer", "score_counter", "speed_counter", "life_counter", "ball_modifier_timer", "world_border", "ball_container", "background", "escape_layer", "speed_meter", "magnet_meter", "ball_modifier_meter", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "ball_container", "level_content", "level_content_bricks", "level_content_paths", "background", "escape_layer", "notification_text_window", "notification_window_timer", "notification_score_window", "score_counter", "life_counter", "speed_meter", "magnet_meter", "ball_modifier_meter", "ball_modifier_timer", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
-notification_text_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/Notifs")
-notification_score_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/ScoreNotifs")
-notification_window_timer = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/Timer")
-score_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
-speed_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/SpeedVar")
-life_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
-ball_modifier_timer = NodePath("BallModifierTimer")
 world_border = NodePath("LevelContentOffset/WorldBorder")
 ball_container = NodePath("Balls")
+level_content = NodePath("LevelContentOffset/LevelContent")
+level_content_bricks = NodePath("LevelContentOffset/LevelContent/Bricks")
+level_content_paths = NodePath("LevelContentOffset/LevelContent/Paths")
 background = NodePath("Background")
 escape_layer = NodePath("EscapeLayer")
+notification_text_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/Notifs")
+notification_window_timer = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/Timer")
+notification_score_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/ScoreNotifs")
+score_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/ScoreVar")
+life_counter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer/LivesContainer")
 speed_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/SpeedMeter/ProgressBar")
 magnet_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/MagnetMeter/ProgressBar")
 ball_modifier_meter = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/PowerMeters/BallModBar/ProgressBar")
+ball_modifier_timer = NodePath("BallModifierTimer")
 arm_horizontal = NodePath("ConstructorArm/Horizontal")
 arm_vertical = NodePath("ConstructorArm/Vertical")
 arm_placer = NodePath("ConstructorArm/Nucleus")
@@ -96,6 +97,12 @@ shape = SubResource("RectangleShape2D_pborx")
 position = Vector2(42, 0)
 
 [node name="WorldBorder" parent="LevelContentOffset" instance=ExtResource("2_b1du0")]
+
+[node name="LevelContent" type="Node2D" parent="LevelContentOffset"]
+
+[node name="Bricks" type="Node2D" parent="LevelContentOffset/LevelContent"]
+
+[node name="Paths" type="Node2D" parent="LevelContentOffset/LevelContent"]
 
 [node name="Balls" type="Node2D" parent="."]
 
@@ -265,20 +272,6 @@ text = "0"
 label_settings = SubResource("LabelSettings_7pppu")
 horizontal_alignment = 2
 script = ExtResource("10_ers3y")
-
-[node name="SpeedTxt" type="Label" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer"]
-visible = false
-layout_mode = 2
-text = "Speed"
-label_settings = SubResource("LabelSettings_7pppu")
-
-[node name="SpeedVar" type="Label" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer"]
-visible = false
-layout_mode = 2
-text = "100%"
-label_settings = SubResource("LabelSettings_7pppu")
-horizontal_alignment = 2
-script = ExtResource("10_0egqj")
 
 [node name="LivesTxt" type="Label" parent="UILayer/SidebarR/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2

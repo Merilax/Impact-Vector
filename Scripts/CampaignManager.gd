@@ -53,7 +53,7 @@ static func validate_level(path:String) -> bool:
 		Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "CampaignManager");
 		return false;
 
-	if not zip.file_exists("level.tscn"): return false;
+	if not zip.file_exists("level.json"): return false;
 	if not zip.file_exists("data.tres"): return false;
 	zip.close();
 

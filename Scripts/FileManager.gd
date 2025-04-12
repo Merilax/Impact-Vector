@@ -18,7 +18,7 @@ static func clear_temp(folder:String = ""):
 
 	DirAccess.remove_absolute(folder);
 
-static func add_level(campaign_num:String, level:PackedScene, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> bool:
+static func add_level(campaign_num:String, level:Dictionary, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> bool:
 	Logger.write("Adding level " + level_num + " to campaign " + campaign_num + ", replace " + str(replace_existing), "FileManager");
 	CampaignManager.check_integrity();
 
@@ -35,28 +35,34 @@ static func add_level(campaign_num:String, level:PackedScene, level_data:LevelDa
 	var new_dir = path + level_num + "/";
 	DirAccess.make_dir_absolute(new_dir);
 
-	var err := ResourceSaver.save(level, new_dir + "level.tscn");
-	if err != OK:
-		Logger.write("Level Scene save error." + error_string(err), "FileManager");
+	var json := JSON.stringify(level, "", false, true);
+	var writer := FileAccess.open(new_dir + "level.json", FileAccess.WRITE);
+	if writer == null:
+		Logger.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
 		return false;
-	err = ResourceSaver.save(level_data, new_dir + "data.tres");
+	writer.store_string(json);
+	writer.close();
+	var err := ResourceSaver.save(level_data, new_dir + "data.tres");
 	if err != OK:
 		Logger.write("Level data save error." + error_string(err), "FileManager");
 		return false;
 
 	return true;
 
-static func replace_level(path:String, level:PackedScene, level_data:LevelData) -> bool:
+static func replace_level(path:String, level:Dictionary, level_data:LevelData) -> bool:
 	Logger.write("Replacing level at " + path, "FileManager");
 	if not DirAccess.dir_exists_absolute(path): return false;
-	if not FileAccess.file_exists(path + "level.tscn"): return false;
+	if not FileAccess.file_exists(path + "level.json"): return false;
 	if not FileAccess.file_exists(path + "data.tres"): return false;
 
-	var err := ResourceSaver.save(level, path + "level.tscn");
-	if err != OK:
-		Logger.write("Level Scene save error: " + error_string(err), "FileManager");
+	var json := JSON.stringify(level, "", false, true);
+	var writer := FileAccess.open(path + "level.json", FileAccess.WRITE);
+	if writer == null:
+		Logger.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
 		return false;
-	err = ResourceSaver.save(level_data, path + "data.tres");
+	writer.store_string(json);
+	writer.close();
+	var err := ResourceSaver.save(level_data, path + "data.tres");
 	if err != OK:
 		Logger.write("Level data save error: " + error_string(err), "FileManager");
 		return false;
@@ -86,8 +92,8 @@ static func import_level(from:String, campaign_num:String, level_num:String = "1
 			Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 			return false;
 
-		var level:PackedByteArray = zip.read_file("level.tscn");
-		writer = FileAccess.open("user://Temp/level.tscn", FileAccess.WRITE);
+		var level:PackedByteArray = zip.read_file("level.json");
+		writer = FileAccess.open("user://Temp/level.json", FileAccess.WRITE);
 		writer.store_buffer(level);
 		writer.close();
 
@@ -105,7 +111,7 @@ static func import_level(from:String, campaign_num:String, level_num:String = "1
 	var to_path:String = "user://Levels/" + campaign_num + "/" + level_num + "/";
 
 	if DirAccess.make_dir_absolute(to_path) != OK: return false;
-	DirAccess.copy_absolute(from + "level.tscn", to_path + "level.tscn");
+	DirAccess.copy_absolute(from + "level.json", to_path + "level.json");
 	DirAccess.copy_absolute(from + "data.tres", to_path + "data.tres");
 
 	if clear_temp_after: clear_temp("user://Temp/");
@@ -119,7 +125,7 @@ static func export_level(to:String, from:String) -> bool:
 	if to.substr(to.length()-1) != '/': to += '/';
 
 	if not DirAccess.dir_exists_absolute(from): return false;
-	if not FileAccess.file_exists(from + "level.tscn"): return false;
+	if not FileAccess.file_exists(from + "level.json"): return false;
 	if not FileAccess.file_exists(from + "data.tres"): return false;
 
 	if not DirAccess.dir_exists_absolute(to): return false;
@@ -133,8 +139,8 @@ static func export_level(to:String, from:String) -> bool:
 	if ok != OK:
 		Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 		return false;
-	zip.start_file("level.tscn");
-	zip.write_file(FileAccess.get_file_as_bytes(from + "level.tscn"));
+	zip.start_file("level.json");
+	zip.write_file(FileAccess.get_file_as_bytes(from + "level.json"));
 	zip.close_file();
 	zip.start_file("data.tres");
 	zip.write_file(FileAccess.get_file_as_bytes(from + "data.tres"));
@@ -167,8 +173,8 @@ static func import_campaign(from:String) -> bool:
 		DirAccess.make_dir_absolute("user://Temp/" + str(i));
 		var writer:FileAccess;
 
-		var level:PackedByteArray = zip.read_file("Levels/" + str(i) + "/level.tscn");
-		writer = FileAccess.open("user://Temp/" + str(i) + "/level.tscn", FileAccess.WRITE);
+		var level:PackedByteArray = zip.read_file("Levels/" + str(i) + "/level.json");
+		writer = FileAccess.open("user://Temp/" + str(i) + "/level.json", FileAccess.WRITE);
 		writer.store_buffer(level);
 		writer.close();
 
@@ -208,8 +214,8 @@ static func export_campaign(to:String, from:String) -> bool:
 
 	var i:int = 1;
 	for level_path in DirAccess.get_directories_at(from):
-		zip.start_file("Levels/" + str(i) + "/level.tscn");
-		zip.write_file(FileAccess.get_file_as_bytes(from + level_path + "/level.tscn"));
+		zip.start_file("Levels/" + str(i) + "/level.json");
+		zip.write_file(FileAccess.get_file_as_bytes(from + level_path + "/level.json"));
 		zip.close_file();
 		zip.start_file("Levels/" + str(i) + "/data.tres");
 		zip.write_file(FileAccess.get_file_as_bytes(from + level_path + "/data.tres"));

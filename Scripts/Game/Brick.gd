@@ -12,6 +12,7 @@ class_name Brick
 @export var editor_hitbox:EditorHitboxComponent;
 
 @export_group("Data")
+@export var hitbox_uid:int; # Must be set
 @export var texture_uid:int; # Must be set
 @export var shader_color:Color = Color(1, 1, 1, 1);
 @export var init_health:float = 1;
@@ -34,7 +35,7 @@ class_name Brick
 var tweening_shader:bool = false;
 var tweening_size:bool = false;
 
-@export var original_sprite_size:Vector2;
+@export var original_sprite_size := Vector2(0, 0);
 
 signal process_score(score:int);
 signal spawn_pickup(global_position:Vector2, type:String, texture:String);
@@ -49,10 +50,16 @@ func setup(as_editable:bool = true):
 	set_texture_sprite(texture_uid, false);
 	
 	rescale_sprite();
-	texture_type = hitbox.get_meta("texture_type");
 
 	freeze = not init_pushable;
 	mass = init_mass;
+
+	if ResourceUID.has_id(hitbox_uid):
+		var hitbox_node = load(ResourceUID.get_id_path(hitbox_uid)).instantiate();
+		self.add_child(hitbox_node, true);
+		hitbox_node.owner = self;
+		hitbox = hitbox_node;
+		texture_type = hitbox.get_meta("texture_type");
 
 	if shader_color:
 		texture_sprite.material.set_shader_parameter("to", shader_color);
@@ -190,6 +197,9 @@ func set_texture_sprite(uid:int, rescale:bool = false):
 	if not ResourceUID.has_id(uid): return;
 	texture_sprite.texture = load(ResourceUID.get_id_path(uid));
 	texture_uid = uid;
+
+	if not original_sprite_size:
+		original_sprite_size = texture_sprite.texture.get_size();
 
 	if rescale: rescale_sprite();
 	texture_sprite.show();

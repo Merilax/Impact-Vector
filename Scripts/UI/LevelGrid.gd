@@ -21,7 +21,9 @@ func on_select_campaign(set_campaign_path:String, set_campaign_num:String):
 		child.queue_free();
 
 	for folder_num:String in DirAccess.get_directories_at(set_campaign_path + "/" + set_campaign_num):
-		var level_data:LevelData = load(set_campaign_path + "/" + set_campaign_num + "/" + folder_num + "/data.tres"); 
+		if not FileAccess.file_exists(set_campaign_path + "/" + set_campaign_num + "/" + folder_num + "/data.tres"):
+			continue;
+		var level_data:LevelData = load(set_campaign_path + "/" + set_campaign_num + "/" + folder_num + "/data.tres");
 
 		var level_box:LevelBox = LevelBoxScene.instantiate();
 		level_box.get_node("LevelBox/LevelName").text = level_data.name;
