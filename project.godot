@@ -24,8 +24,6 @@ buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
 
 MusicPlayer="*res://Scenes/MusicPlayer.tscn"
 GlobalVars="*res://Scripts/GlobalVars.gd"
-Logger="*res://Scripts/Logger.gd"
-Utils="*res://Scripts/Utils.gd"
 
 [display]
 

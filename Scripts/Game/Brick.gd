@@ -12,8 +12,8 @@ class_name Brick
 @export var editor_hitbox:EditorHitboxComponent;
 
 @export_group("Data")
-@export var hitbox_uid:int; # Must be set
-@export var texture_uid:int; # Must be set
+@export var hitbox_path:String; # Must be set
+@export var texture_path:String; # Must be set
 @export var shader_color:Color = Color(1, 1, 1, 1);
 @export var init_health:float = 1;
 @export var init_score:float = 10;
@@ -46,20 +46,25 @@ func setup(as_editable:bool = true):
 	texture_sprite.texture_offset = polygon_texture_offset;
 	texture_sprite.texture_scale = polygon_texture_scale;
 
-	self.visible = true;
-	set_texture_sprite(texture_uid, false);
-	
+	if not load(texture_path):
+		Logger.write(str("Texture path does not exist: ", texture_path), "Brick");
+		return;
+	set_texture_sprite(texture_path, false);
 	rescale_sprite();
+	self.visible = true;
 
 	freeze = not init_pushable;
 	mass = init_mass;
 
-	if ResourceUID.has_id(hitbox_uid):
-		var hitbox_node = load(ResourceUID.get_id_path(hitbox_uid)).instantiate();
-		self.add_child(hitbox_node, true);
-		hitbox_node.owner = self;
-		hitbox = hitbox_node;
-		texture_type = hitbox.get_meta("texture_type");
+	var hitbox_scene = load(hitbox_path);
+	if not hitbox_scene:
+		Logger.write(str("Hitbox path does not exist: ", hitbox_path), "Brick");
+		return;
+	var hitbox_node = hitbox_scene.instantiate();
+	self.add_child(hitbox_node, true);
+	hitbox_node.owner = self;
+	hitbox = hitbox_node;
+	texture_type = hitbox.get_meta("texture_type");
 
 	if shader_color:
 		texture_sprite.material.set_shader_parameter("to", shader_color);
@@ -193,10 +198,13 @@ func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, for
 	tweening_size = false
 	return true
 
-func set_texture_sprite(uid:int, rescale:bool = false):
-	if not ResourceUID.has_id(uid): return;
-	texture_sprite.texture = load(ResourceUID.get_id_path(uid));
-	texture_uid = uid;
+func set_texture_sprite(path:String, rescale:bool = false):
+	var texture = load(path);
+	if not texture:
+		Logger.write(str("Texture path does not exist: ", path), "Brick");
+		return;
+	texture_sprite.texture = texture;
+	texture_path = path;
 
 	if not original_sprite_size:
 		original_sprite_size = texture_sprite.texture.get_size();

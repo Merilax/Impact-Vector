@@ -6,6 +6,8 @@ extends CanvasLayer
 @export var settings_menu:Control;
 @export var help_menu:Control;
 
+signal exit();
+
 func _ready():
 	if escape_menu:
 		escape_menu.close_escape.connect(close_menu);
@@ -58,9 +60,5 @@ func close_help():
 	help_menu.hide();
 
 func save_and_quit():
-	get_tree().paused = false;
-	var MainMenu:PackedScene = load("uid://c0a7y1ep5uibb");
-	var main_menu:Control = MainMenu.instantiate();
-
-	game_root.add_sibling(main_menu);
-	game_root.queue_free();
+	close_menu();
+	exit.emit();

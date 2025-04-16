@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckf4ch1vqgl3i"]
+
+[ext_resource type="Script" uid="uid://3wdj7ue72vd3" path="res://Scripts/UI/Components/EditorSaveSettings.gd" id="1_vqegn"]
+
+[node name="Save" type="VBoxContainer" node_paths=PackedStringArray("level_name", "save_btn", "play_btn", "load_btn", "exit_btn")]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 142.0
+grow_vertical = 2
+script = ExtResource("1_vqegn")
+level_name = NodePath("LineEdit")
+save_btn = NodePath("MarginContainer/VBoxContainer/Save")
+play_btn = NodePath("MarginContainer/VBoxContainer/Play")
+load_btn = NodePath("MarginContainer/VBoxContainer/Load")
+exit_btn = NodePath("MarginContainer/VBoxContainer/Quit")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "Level name"
+max_length = 50
+context_menu_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Save" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save changes"
+
+[node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Preview level"
+
+[node name="Load" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reload last save"
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3

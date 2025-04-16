@@ -9,6 +9,7 @@ class_name EscapeLayer
 var forbid_unescape:bool = false;
 
 signal menu_closed();
+signal exit();
 
 func _ready():
 	if escape_menu:
@@ -48,12 +49,8 @@ func close_settings():
 	settings_menu.hide()
 
 func save_and_quit():
-	get_tree().paused = false;
+	close_menu();
 
-	await game_root.save_gamedata(); # TODO Warn and ask.
+	
 
-	var MainMenu:PackedScene = load("uid://c0a7y1ep5uibb");
-	var main_menu:Control = MainMenu.instantiate();
-
-	game_root.add_sibling(main_menu);
-	game_root.queue_free();
+	exit.emit();

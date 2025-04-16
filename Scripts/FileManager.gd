@@ -18,15 +18,16 @@ static func clear_temp(folder:String = ""):
 
 	DirAccess.remove_absolute(folder);
 
-static func add_level(campaign_num:String, level:Dictionary, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> bool:
+static func add_level(campaign_num:String, level:Dictionary, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> String:
 	Logger.write("Adding level " + level_num + " to campaign " + campaign_num + ", replace " + str(replace_existing), "FileManager");
 	CampaignManager.check_integrity();
 
 	var path:String = "user://Levels/" + campaign_num + "/";
-	if not DirAccess.dir_exists_absolute(path): return false;
+	if not DirAccess.dir_exists_absolute(path): return "";
 
 	if replace_existing:
-		return replace_level(path + level_num + "/", level, level_data);
+		if replace_level(path + level_num + "/", level, level_data): return level_num;
+		else: return "";
 
 	var dirs = DirAccess.get_directories_at(path);
 	if dirs.size() != 0:
@@ -39,15 +40,15 @@ static func add_level(campaign_num:String, level:Dictionary, level_data:LevelDat
 	var writer := FileAccess.open(new_dir + "level.json", FileAccess.WRITE);
 	if writer == null:
 		Logger.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
-		return false;
+		return "";
 	writer.store_string(json);
 	writer.close();
 	var err := ResourceSaver.save(level_data, new_dir + "data.tres");
 	if err != OK:
 		Logger.write("Level data save error." + error_string(err), "FileManager");
-		return false;
+		return "";
 
-	return true;
+	return level_num;
 
 static func replace_level(path:String, level:Dictionary, level_data:LevelData) -> bool:
 	Logger.write("Replacing level at " + path, "FileManager");

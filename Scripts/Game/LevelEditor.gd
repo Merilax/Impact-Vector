@@ -6,11 +6,16 @@ var BrickPathScene = preload("uid://cmtfn8g03wdp8");
 var GodotIcon = preload("uid://dj47yk43bh08r");
 var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 
-var saving_level:bool = false
-var loading_level:bool = false
+var saving_level:bool = false;
+var loading_level:bool = false;
+var unsaved_progress:bool = false;
+var last_saved:float = Time.get_unix_time_from_system();
+
 var current_build_number:int = 1;
 
 @export var notification_popup:AcceptDialog;
+@export var confirmation_popup:ConfirmationDialog;
+var confirmation_popup_result:bool;
 
 @export_group("Nodes")
 @export var mouse_boundary:Area2D;
@@ -22,8 +27,7 @@ var current_build_number:int = 1;
 
 @export_group("Controls")
 @export var selector:Container;
-@export var level_name:LineEdit;
-@export var save_button:Button;
+@export var escape_layer:CanvasLayer;
 
 @export_group("Tool buttons")
 @export var place_tool:Button;
@@ -32,7 +36,7 @@ var current_build_number:int = 1;
 @export var erase_tool:Button;
 @export var path_tool:Button;
 @export var snap_options_btn:Button;
-#@export var data_options_btn:Button;
+@export var save_options_btn:Button;
 
 @export var mode_options:Control;
 
@@ -46,7 +50,7 @@ var snap_grid_offset:Vector2i = Vector2i(0, 0);
 var apply_on_select:bool = false;
 @export var path_options_ctrl:EditorPathSettings;
 @export var snap_options_ctrl:EditorSnapSettings;
-
+@export var save_options_ctrl:EditorSaveSettings;
 
 var level_num:String = "";
 var campaign_num:String;
@@ -56,8 +60,8 @@ var brick_paths:Array[BrickPath] = [];
 var can_place_bricks:bool = false;
 var selected_brick_sample:Brick;
 var active_brick_sample:Brick;
-var selected_hitbox_uid:int;
-var selected_texture_uid:int;
+var selected_hitbox_path:String;
+var selected_texture_path:String;
 var selected_texture_shader:Color;
 var current_texture_type:String;
 
@@ -70,15 +74,28 @@ var illegal_collision_detected:bool
 
 var current_tool:String = "place"
 
+signal confirmation_popup_resolved(result:bool);
+
 func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
+
 	mouse_boundary.mouse_entered.connect(on_mouse_enter_level_boundary);
 	mouse_boundary.mouse_exited.connect(on_mouse_leave_level_boundary);
 	mouse_boundary.input_event.connect(on_mouse_click);
 
+	escape_layer.exit.connect(go_back);
+
+	confirmation_popup.canceled.connect(func(): confirmation_popup_result = false; confirmation_popup_resolved.emit(false));
+	confirmation_popup.confirmed.connect(func(): confirmation_popup_result = true; confirmation_popup_resolved.emit(true));
+
 	brick_container.set_active_res_signal.connect(set_active_res);
 	texture_container.set_active_res_signal.connect(set_active_res);
 
-	save_button.pressed.connect(save_level);
+	save_options_btn.pressed.connect(set_tool.bind("save"));
+	save_options_ctrl.save_level.connect(save_level);
+	save_options_ctrl.preview_level.connect(preview_level);
+	save_options_ctrl.reload_level.connect(load_level.bind(level_num));
+	save_options_ctrl.exit.connect(go_back);
 
 	place_tool.pressed.connect(set_tool.bind("place"));
 	select_tool.pressed.connect(set_tool.bind("select"));
@@ -104,7 +121,7 @@ func _ready():
 	apply_on_select = data_options_ctrl.apply_brick_data_on_select_control.button_pressed;
 	data_options_ctrl.brick_x_ctrl.value_changed.connect(func(value): if selected_brick: set_ui_brick_position(selected_brick, value, selected_brick.position.y));
 	data_options_ctrl.brick_y_ctrl.value_changed.connect(func(value): if selected_brick: set_ui_brick_position(selected_brick, selected_brick.position.x, value));
-	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: set_ui__brick_rotation(selected_brick, value));
+	data_options_ctrl.brick_rot_ctrl.value_changed.connect(func(value): if selected_brick: set_ui_brick_rotation(selected_brick, value));
 	# data_options_ctrl.brick_health_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_health = value);
 	# data_options_ctrl.brick_score_control.value_changed.connect(func(value): if selected_brick: selected_brick.init_score = value);
 	data_options_ctrl.brick_pushable_control.pressed.connect(func(): set_ui_brick_pushable(data_options_ctrl.brick_pushable_control.button_pressed));
@@ -133,7 +150,7 @@ func set_tool(type:String):
 	if loading_level or saving_level: return;
 	if not verify_valid_path(): return;
 
-	if type not in ["place", "select", "paint", "erase", "path", "snap"]: return;
+	if type not in ["place", "select", "paint", "erase", "path", "snap", "save"]: return;
 
 	if type in ["place", "select", "paint", "erase", "path"]:
 		current_tool = type.to_lower();
@@ -143,6 +160,7 @@ func set_tool(type:String):
 	data_options_ctrl.hide();
 	path_options_ctrl.hide();
 	snap_options_ctrl.hide();
+	save_options_ctrl.hide();
 	get_tree().call_group("PathPointVisual", "hide");
 	get_tree().call_group("PathLineVisual", "hide");
 	if previewed_line:
@@ -168,6 +186,9 @@ func set_tool(type:String):
 			path_options_ctrl.show();
 		"snap":
 			snap_options_ctrl.show();
+		"save":
+			save_options_ctrl.show();
+			on_select_path(-1);
 
 func _process(_delta):
 	if selected_brick:
@@ -225,7 +246,7 @@ func set_active_res(res = null):
 	if res == null:
 		selected_brick_sample = null;
 		active_brick_sample = null;
-		selected_texture_uid = 0;
+		selected_texture_path = "";
 		selected_texture_shader = Color(1, 1, 1, 1);
 		texture_container.shader_color = Color(1, 1, 1, 1);
 		return;
@@ -238,34 +259,31 @@ func set_active_res(res = null):
 		
 		var brick:Brick = BrickScene.instantiate();
 
-		var temp_polygon:Polygon2D = load(ResourceUID.get_id_path(res.polygon_uid)).instantiate();
+		var temp_polygon:Polygon2D = load(res.polygon_path).instantiate();
 		brick.polygon_array = temp_polygon.polygon.duplicate();
 		brick.polygon_texture_offset = temp_polygon.texture_offset;
 		brick.polygon_texture_scale = temp_polygon.texture_scale;
 		temp_polygon.queue_free();
 
-		# var temp_hitbox:Node2D = res.hitbox.instantiate();
-		# brick.add_child(temp_hitbox, true);
-		# temp_hitbox.owner = brick;
-		# brick.hitbox = temp_hitbox;
-		brick.hitbox_uid = res.hitbox_uid;
-		brick.texture_uid = res.texture_uid;
+		brick.hitbox_path = res.hitbox_path;
+		brick.texture_path = res.texture_path;
 		brick.setup(true);
 
-		selected_texture_uid = res.texture_uid;
+		selected_texture_path = res.texture_path;
 		selected_brick_sample = brick;
 		selected_brick = brick;
 		# selected_brick.texture_type = res.texture_type;
 		selected_texture_shader = Color(1, 1, 1, 1);
 
 	if current_tool == "paint":
-		selected_texture_uid = res.texture_uid;
+		selected_texture_path = res.texture_path;
 		selected_texture_shader = Color(1, 1, 1, 1);
 		texture_container.shader_color = Color(1, 1, 1, 1);
 		current_texture_type = res.texture_type;
 
 func on_create_path():
 	if not verify_valid_path(): return;
+	unsaved_progress = true;
 	
 	var path:BrickPath = BrickPathScene.instantiate();
 	level_content_paths.add_child(path);
@@ -298,6 +316,8 @@ func on_create_path():
 func on_delete_path():
 	if brick_paths.size() == 0: return;
 	if not selected_path: return;
+	unsaved_progress = true;
+
 	var idx:int = floor(path_options_ctrl.path_number.value) - 1;
 	if idx < 0:
 		on_select_path(-1);
@@ -351,6 +371,7 @@ func on_select_path(value:float, offset:int = 0):
 func release_drag_point():
 	if not dragged_point or not selected_path: return;
 	dragged_point = null;
+	unsaved_progress = true;
 
 func on_select_path_group(value:float, offset:int = 0, force_select:bool = false):
 	var idx:int = floor(value + offset);
@@ -410,6 +431,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 			selected_brick = new_brick;
 			refresh_brick_data_controls(selected_brick);
+			unsaved_progress = true;
 		return;
 
 	if current_tool == "select":
@@ -439,14 +461,13 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					refresh_brick_data_controls(selected_brick);
 
 				selected_texture_shader = selected_brick.shader_color;
-				if selected_brick.texture_uid: selected_texture_uid = selected_brick.texture_uid;
+				if selected_brick.texture_path: selected_texture_path = selected_brick.texture_path;
+				unsaved_progress = true;
 		#if Input.is_action_pressed("mouse_primary"):
 		return;
 
 	if current_tool == "paint":
 		if input.is_action_pressed("mouse_primary"):
-			if not ResourceUID.has_id(selected_texture_uid): return;
-			
 			var space_state = get_world_2d().direct_space_state;
 			var query = PhysicsPointQueryParameters2D.new();
 			query.position = get_global_mouse_position();
@@ -455,24 +476,24 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 			
 			if result.size() > 0:
 				if current_texture_type != result[0].collider.texture_type: return;
-				result[0].collider.set_texture_sprite(selected_texture_uid, true);
+				result[0].collider.set_texture_sprite(selected_texture_path, true);
 				result[0].collider.set_texture_shader_color(texture_container.shader_color, true);
 				selected_texture_shader = texture_container.shader_color;
-		# elif input.is_action_pressed("mouse_secondary"):
-			# return # hue shift shader here maybe?
+				unsaved_progress = true;
 		return;
 
 	if current_tool == "erase":
 		if input.is_action_pressed("mouse_primary"):
-			var space_state = get_world_2d().direct_space_state
-			var query = PhysicsPointQueryParameters2D.new()
-			query.position = get_global_mouse_position()
-			query.collision_mask = 4
-			var result = space_state.intersect_point(query)
+			var space_state = get_world_2d().direct_space_state;
+			var query = PhysicsPointQueryParameters2D.new();
+			query.position = get_global_mouse_position();
+			query.collision_mask = 4;
+			var result = space_state.intersect_point(query);
 			
 			if result.size() > 0:
-				selected_brick = null
-				result[0].collider.queue_free()
+				selected_brick = null;
+				result[0].collider.queue_free();
+				unsaved_progress = true;
 		return;
 
 	if current_tool == "path":
@@ -488,6 +509,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 
 				if result.size() > 0:
 					dragged_point = result[0].collider;
+					unsaved_progress = true;
 			else:
 				# Add point
 				var mouse_pos:Vector2 = get_mouse_position_snapped();
@@ -504,6 +526,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					selected_path.reposition_steps();
 					# selected_path.first_transformer.position = Vector2.ZERO;
 					selected_path.transform_target.global_position = selected_path.curve.get_point_position(0);
+				unsaved_progress = true;
 			return;			
 
 		# Delete point
@@ -622,37 +645,37 @@ func refresh_brick_data_controls(brick:Brick):
 
 func set_ui_brick_position(brick:Brick, x:float, y:float) -> bool:
 	# Needs collision logic rework
-	var rollback:Vector2 = brick.position
+	unsaved_progress = true;
+	var rollback:Vector2 = brick.position;
 
-	brick.position = Vector2(x, y)
-	print(brick.position)
-	await get_tree().physics_frame
-	await get_tree().process_frame
-	print(brick.position)
+	brick.position = Vector2(x, y);
+	await get_tree().physics_frame;
+	await get_tree().process_frame;
 
 	if illegal_collision_detected: # Brick gets stuck because it leaves the wall collision after this function executes, resetting the brick back inside the wall.
-		brick.position = rollback
-		print("err")
-		return false
-	print("ok")
-	return true
+		brick.position = rollback;
+		return false;
+	return true;
 
-func set_ui__brick_rotation(brick:Brick, rot:float) -> bool:
-	var rollback:float = brick.rotation_degrees
+func set_ui_brick_rotation(brick:Brick, rot:float) -> bool:
+	unsaved_progress = true;
+	var rollback:float = brick.rotation_degrees;
 
-	brick.rotation_degrees = rot
+	brick.rotation_degrees = rot;
 
 	if illegal_collision_detected:
-		brick.rotation_degrees = rollback
-		return false
-	return true
+		brick.rotation_degrees = rollback;
+		return false;
+	return true;
 
 func set_brick_pushable(brick:Brick, can_be_pushed:bool):
+	unsaved_progress = true;
 	brick.init_pushable = can_be_pushed;
 	if can_be_pushed:
 		on_select_path_group(-1);
 
 func set_ui_brick_pushable(can_be_pushed:bool):
+	unsaved_progress = true;
 	if can_be_pushed:
 		data_options_ctrl.brick_path_group_control.set_value_no_signal(0);
 		data_options_ctrl.brick_path_group_control.editable = false;
@@ -662,6 +685,7 @@ func set_ui_brick_pushable(can_be_pushed:bool):
 			data_options_ctrl.brick_path_group_control.editable = true;
 
 func set_brick_indestructible(brick:Brick, is_indestructible:bool):
+	unsaved_progress = true;
 	brick.is_indestructible = is_indestructible;
 	if is_indestructible:
 		brick.scoreable = false;
@@ -669,6 +693,7 @@ func set_brick_indestructible(brick:Brick, is_indestructible:bool):
 		brick.can_collide = true;
 
 func set_ui_brick_indestructible(is_indestructible:bool):
+	unsaved_progress = true;
 	if is_indestructible:
 		data_options_ctrl.brick_scoreable_control.set_pressed_no_signal(false);
 		data_options_ctrl.brick_scoreable_control.disabled = true;
@@ -695,6 +720,7 @@ func apply_data_options() -> bool:
 	set_brick_indestructible(selected_brick, data_options_ctrl.brick_indestructible_control.button_pressed);
 	on_select_path_group(data_options_ctrl.brick_path_group_control.value, -1, false);
 
+	unsaved_progress = true;
 	return true;
 
 var previewed_line:Line2D;
@@ -721,6 +747,7 @@ func set_path_looped(apply:bool):
 	if not selected_path: return;
 	selected_path.looped = apply;
 	selected_path.reposition_steps();
+	unsaved_progress = true;
 
 func set_path_apply_rotation(apply:bool):
 	if not selected_path: return;
@@ -732,6 +759,7 @@ func set_path_apply_rotation(apply:bool):
 		selected_path.apply_rotation = false;
 		for follower in selected_path.follower_array:
 			follower.get_child(0).global_rotation = 0;
+	unsaved_progress = true;
 
 func set_path_steps(value:float):
 	if not selected_path: return;
@@ -740,6 +768,7 @@ func set_path_steps(value:float):
 
 	if selected_path.steps == steps: return;
 
+	unsaved_progress = true;
 	var remote_offset:Node2D = selected_path.transform_target;
 	var first_step_offset:Node2D = remote_offset.get_child(0);
 
@@ -775,20 +804,37 @@ func verify_valid_path() -> bool:
 		return false;
 	return true;
 
-func load_level(level_folder:String):
+func load_level(level_folder:String) -> bool:
+	if not FileAccess.file_exists(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.json"): return false;
+	if unsaved_progress:
+		var time_from_last_saved:float = Time.get_unix_time_from_system() - last_saved;
+		confirmation_popup.dialog_text = "Unsaved progress will be lost.\nLast saved: {m} minutes and {s} seconds ago.".format({
+			"m": int(time_from_last_saved / 60),
+			"s": int(time_from_last_saved) % 60
+		});
+		confirmation_popup.show();
+		await self.confirmation_popup_resolved;
+		if confirmation_popup_result == false: return false;
+
 	Logger.write(str("Loading level from ", level_folder), "LevelEditor");
 	loading_level = true;
 
+	for node in level_content_bricks.get_children(): node.queue_free();
+	for node in level_content_paths.get_children(): node.queue_free();
+	await get_tree().process_frame;
+
 	var level_data:LevelData = load(campaign_path + "/" + campaign_num + "/" + level_folder + "/data.tres");
-	level_name.text = level_data.name;
+	save_options_ctrl.level_name.text = level_data.name;
 
 	var reader := FileAccess.open(campaign_path + "/" + campaign_num + "/" + level_folder + "/level.json", FileAccess.READ);
 	var level_dict = JSON.parse_string(reader.get_as_text());
 	reader.close();
 
 	if level_data.build_number < current_build_number:
-		var upgrade_successful := upgrade_version(level_data, level_dict);
-		if not upgrade_successful: go_back() # TODO Notify broken level 
+		unsaved_progress = true;
+		var directory := str(campaign_path, campaign_num, "/", level_num);
+		var upgrade_successful := Utils.upgrade_level_version(level_data, level_dict, current_build_number, directory);
+		if not upgrade_successful: go_back(true); # TODO Notify broken level 
 
 	for item:Dictionary in level_dict.paths:
 		var path:BrickPath = BrickPathScene.instantiate();
@@ -829,12 +875,12 @@ func load_level(level_folder:String):
 		for i:int in range(item.steps):
 			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 	on_select_path(-1);
-
+	
 	for item:Dictionary in level_dict.bricks:
 		var brick:Brick = BrickScene.instantiate();
 
-		brick.hitbox_uid = int(item.hitbox_uid);
-		brick.texture_uid = int(item.texture_uid);
+		brick.hitbox_path = item.hitbox_path;
+		brick.texture_path = item.texture_path;
 		brick.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
 		brick.shader_color = Color(item.shader_color);
 		brick.init_health = item.init_health;
@@ -865,21 +911,41 @@ func load_level(level_folder:String):
 
 	level_num = level_folder;
 	loading_level = false;
+	return true;
 
-func save_level():
-	if level_name.text.is_empty():
-		level_name.call_deferred("grab_focus");
-		return;
-	if not verify_valid_path(): return;
+func save_level() -> bool:
+	if not verify_valid_path(): return false;
+	if save_options_ctrl.level_name.text.is_empty():
+		save_options_ctrl.level_name.call_deferred("grab_focus");
+		return false;
 
-	saving_level = true;
+	if unsaved_progress:
+		var time_from_last_saved:float = Time.get_unix_time_from_system() - last_saved;
+		confirmation_popup.dialog_text = "You are about to overwrite previous save data.\nLast saved: {m} minutes and {s} seconds ago.\nContinue?".format({
+			"m": int(time_from_last_saved / 60),
+			"s": int(time_from_last_saved) % 60
+		});
+		confirmation_popup.show();
+		await self.confirmation_popup_resolved;
+		if confirmation_popup_result == false: return false;
+
 	Logger.write(str("Saving level."), "LevelEditor");
+	saving_level = true;
 
 	on_select_path(-1);
-	
-	Logger.write(str("Generating level dictionary."), "LevelEditor");
 
+	var scoreable_bricks:int = 0;
+	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
+		if brick.scoreable: scoreable_bricks += 1;
+	if scoreable_bricks <= 0:
+		notification_popup.dialog_text = "The level must contain at least one scoreable brick.";
+		notification_popup.show();
+		return false;
+
+	Logger.write(str("Generating level dictionary."), "LevelEditor");
 	var new_level := get_dictionary_from_level_content();
+	new_level["last_saved"] = str(Time.get_unix_time_from_system());
+	last_saved = Time.get_unix_time_from_system();
 
 	set_snap_visibility(false);
 	await get_tree().create_timer(0.25).timeout; # Give the UI time to hide.
@@ -902,25 +968,65 @@ func save_level():
 
 		level_data = load(dir + "data.tres"); # Load existing data.
 		level_data.thumbnail = ImageTexture.create_from_image(thumb);
-		level_data.name = level_name.text;
+		level_data.name = save_options_ctrl.level_name.text;
 		level_data.build_number = current_build_number;
 		
 		FileManager.add_level(campaign_num, new_level, level_data, true, level_num);
 	else:
-		level_data.name = level_name.text;
+		level_data.name = save_options_ctrl.level_name.text;
 		level_data.thumbnail = ImageTexture.create_from_image(thumb);
 		level_data.build_number = current_build_number;
 
-		FileManager.add_level(campaign_num, new_level, level_data);
+		level_num = FileManager.add_level(campaign_num, new_level, level_data);
 
-	go_back();
-	#saving_level = false
+	unsaved_progress = false;
+	saving_level = false;
+	return true;
 
-func go_back():
+func preview_level():
+	if unsaved_progress or not FileAccess.file_exists(campaign_path + "/" + campaign_num + "/" + level_num + "/level.json"):
+		var time_from_last_saved:float = Time.get_unix_time_from_system() - last_saved;
+		confirmation_popup.dialog_text = "The level must be saved before previewing.\nContinue?".format({
+			"m": int(time_from_last_saved / 60),
+			"s": int(time_from_last_saved) % 60
+		});
+		confirmation_popup.show();
+		await self.confirmation_popup_resolved;
+		if confirmation_popup_result == false:
+			return;
+			
+	var save_success := await save_level();
+	if not save_success: return;
+
+	Logger.write(str("Instantiating Level preview: ", campaign_path, campaign_num, "/", level_num), "LevelEditor");
+
+	var GameScene:PackedScene = load("uid://la6hglf0tura");
+	var game:Game = GameScene.instantiate();
+	game.level_num = level_num;
+	game.campaign_path = campaign_path;
+	game.campaign_num = campaign_num;
+	game.return_to_editor = true;
+	add_sibling(game, true);
+	MusicPlayer.set_track_type("InGame");
+	self.queue_free();
+
+	Logger.write("Finished loading Level.", "LevelEditor");
+
+func go_back(force:bool = false):
+	if unsaved_progress and not force:
+		var time_from_last_saved:float = Time.get_unix_time_from_system() - last_saved;
+		confirmation_popup.dialog_text = "Unsaved progress will be lost.\nLast saved: {m} minutes and {s} seconds ago.".format({
+			"m": int(time_from_last_saved / 60),
+			"s": int(time_from_last_saved) % 60
+		});
+		confirmation_popup.show();
+		await self.confirmation_popup_resolved;
+		if confirmation_popup_result == false: return;
+	
 	Logger.write(str("Exiting editor."), "LevelEditor");
 	var MainScene:PackedScene = load("uid://c0a7y1ep5uibb");
 	var main_scene = MainScene.instantiate();
-	add_sibling(main_scene);
+	add_sibling(main_scene, true);
 	queue_free();
 
 # Use in place of Brick.duplicate() in Godot 4.3, can't duplicate nodes with dynamically added children.
@@ -937,10 +1043,10 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	new_brick.polygon_texture_scale = temp_polygon.texture_scale;
 	temp_polygon.queue_free();
 
-	new_brick.hitbox_uid = brick.hitbox_uid;
-	new_brick.texture_uid = brick.texture_uid;
+	new_brick.hitbox_path = brick.hitbox_path;
+	new_brick.texture_path = brick.texture_path;
 	new_brick.shader_color = brick.shader_color;
-	# if selected_texture_uid: new_brick.texture_uid = selected_texture_uid;
+	# if selected_texture_path: new_brick.texture_uid = selected_texture_path;
 	# if selected_texture_shader: new_brick.shader_color = selected_texture_shader;
 	
 	new_brick.init_health = brick.init_health;
@@ -953,34 +1059,6 @@ func duplicate_bug_bypass(brick:Brick) -> Brick:
 	
 	new_brick.setup(true);
 	return new_brick;
-
-func upgrade_version(data:LevelData, level_dict:Dictionary) -> bool:
-	if data.build_number < current_build_number:
-		match data.build_number:
-				# Default pre-release
-				0:
-					# level_dict operations
-					pass; 
-					
-		data.build_number += 1;
-		Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
-		return upgrade_version(data, level_dict);
-	else:
-		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
-		if err != OK:
-			Logger.write("Level data save error: " + error_string(err), "LevelEditor");
-			return false;
-
-		# var modified_level_content := get_dictionary_from_level_content();
-		var json := JSON.stringify(level_dict, "", false, true);
-		var writer := FileAccess.open(campaign_path + campaign_num + "/" + level_num  + "/level.json", FileAccess.WRITE);
-		if writer == null:
-			Logger.write("Level JSON save error." + error_string(FileAccess.get_open_error()), "LevelEditor");
-			return false;
-		writer.store_string(json);
-		writer.close();
-
-		return true;
 
 func get_dictionary_from_level_content() -> Dictionary:
 	var level_dict:Dictionary = {"paths": [], "bricks": []};
@@ -1017,8 +1095,8 @@ func get_dictionary_from_level_content() -> Dictionary:
 						"global_position": {"x": brick.global_position.x, "y": brick.global_position.y},
 						"global_rotation_degrees": brick.global_rotation_degrees,
 						"global_scale": {"x": brick.global_scale.x, "y": brick.global_scale.y},
-						"hitbox_uid": str(brick.hitbox_uid),
-						"texture_uid": str(brick.texture_uid),
+						"hitbox_path": brick.hitbox_path,
+						"texture_path": brick.texture_path,
 						"original_sprite_size": {"x": brick.original_sprite_size.x, "y": brick.original_sprite_size.y},
 						"shader_color": brick.shader_color.to_html(),
 						"init_health": brick.init_health,
@@ -1042,8 +1120,8 @@ func get_dictionary_from_level_content() -> Dictionary:
 				"global_position": {"x": node.global_position.x, "y": node.global_position.y},
 				"global_rotation_degrees": node.global_rotation_degrees,
 				"global_scale": {"x": node.global_scale.x, "y": node.global_scale.y},
-				"hitbox_uid": str(node.hitbox_uid),
-				"texture_uid": str(node.texture_uid),
+				"hitbox_path": node.hitbox_path,
+				"texture_path": node.texture_path,
 				"original_sprite_size": {"x": node.original_sprite_size.x, "y": node.original_sprite_size.y},
 				"shader_color": node.shader_color.to_html(),
 				"init_health": node.init_health,

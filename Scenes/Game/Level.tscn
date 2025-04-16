@@ -57,7 +57,7 @@ font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_5eta3"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "ball_container", "level_content", "level_content_bricks", "level_content_paths", "background", "escape_layer", "notification_text_window", "notification_window_timer", "notification_score_window", "score_counter", "life_counter", "speed_meter", "magnet_meter", "ball_modifier_meter", "ball_modifier_timer", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "ball_container", "level_content", "level_content_bricks", "level_content_paths", "background", "escape_layer", "game_over_layer", "notification_text_window", "notification_window_timer", "notification_score_window", "score_counter", "life_counter", "speed_meter", "magnet_meter", "ball_modifier_meter", "ball_modifier_timer", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
 world_border = NodePath("LevelContentOffset/WorldBorder")
 ball_container = NodePath("Balls")
@@ -66,6 +66,7 @@ level_content_bricks = NodePath("LevelContentOffset/LevelContent/Bricks")
 level_content_paths = NodePath("LevelContentOffset/LevelContent/Paths")
 background = NodePath("Background")
 escape_layer = NodePath("EscapeLayer")
+game_over_layer = NodePath("GameOverLayer")
 notification_text_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/Notifs")
 notification_window_timer = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/Timer")
 notification_score_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/ScoreNotifs")

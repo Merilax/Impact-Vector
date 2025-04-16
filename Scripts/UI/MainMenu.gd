@@ -211,5 +211,4 @@ func _on_fd_canceled():
 
 func quit():
 	Logger.write(str("Quitting game @ ", Time.get_datetime_string_from_system(false, true)), "MainMenu");
-	Logger.flush();
 	get_tree().quit();

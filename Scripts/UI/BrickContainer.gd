@@ -13,23 +13,16 @@ func _ready() -> void:
 		var brick_rect:EditorBrickSample = BrickRect.instantiate();
 		brick_rect.texture_rect.texture = load("res://Assets/Visuals/BrickTextures/BaseTypes/" + filename.trim_suffix(".import"));
 		
-		# var polygon:PackedScene = load("res://Scenes/Game/Components/Polygons/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn");
-		# var hitbox:PackedScene = load("res://Scenes/Game/Components/Hitboxes/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn");
-		# var temp_hitbox = hitbox.instantiate();
-		# var texture_type = temp_hitbox.get_meta("texture_type");
-		# temp_hitbox.queue_free();
-		
 		brick_rect.resource = {
-			"hitbox_uid": ResourceLoader.get_resource_uid("res://Scenes/Game/Components/Hitboxes/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn"),
-			"texture_uid": ResourceLoader.get_resource_uid("res://Assets/Visuals/BrickTextures/BaseTypes/" + filename.trim_suffix(".import")),
-			"polygon_uid": ResourceLoader.get_resource_uid("res://Scenes/Game/Components/Polygons/" + filename.trim_suffix(".import").trim_suffix(".png") + ".tscn"),
-			# "texture_type": texture_type
+			"hitbox_path": str("res://Scenes/Game/Components/Hitboxes/", filename.trim_suffix(".import").trim_suffix(".png"), ".tscn"),
+			"texture_path": str("res://Assets/Visuals/BrickTextures/BaseTypes/", filename.trim_suffix(".import")),
+			"polygon_path": str("res://Scenes/Game/Components/Polygons/", filename.trim_suffix(".import").trim_suffix(".png"), ".tscn"),
 		};
 		self.add_child(brick_rect);	
 		brick_rect.set_active_res.connect(set_active_res);
 
-func set_active_res(res_path):
-	set_active_res_signal.emit(res_path);
+func set_active_res(res):
+	set_active_res_signal.emit(res);
 
 func _on_root_control_sort_children():
 	for brick_rect:EditorBrickSample in self.get_children():

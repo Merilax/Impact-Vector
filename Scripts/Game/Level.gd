@@ -7,6 +7,8 @@ var campaign_path:String
 var campaign_num:String
 var level_num:String
 
+var return_to_editor:bool = false;
+
 var save_state:SaveGameData;
 
 # Higher weight = More spawns.
@@ -116,6 +118,7 @@ var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
 @export_group("UI")
 @export var escape_layer:EscapeLayer;
+@export var game_over_layer:GameOverLayer;
 @export var notification_text_window:Label;
 @export var notification_window_timer:Timer;
 @export var notification_score_window:Label;
@@ -157,6 +160,8 @@ func _ready():
 	$"DeathZone".body_entered.connect(_on_body_entered_death_zone);
 
 	escape_layer.menu_closed.connect(func(): if paddle: DisplayServer.warp_mouse(paddle.global_position)); # Hacky
+	escape_layer.exit.connect(go_back);
+	game_over_layer.exit.connect(go_back);
 
 	if notification_window_timer:
 		notification_window_timer.timeout.connect(func(): notification_text_window.text = ""; notification_score_window.text = "");
@@ -167,7 +172,7 @@ func _ready():
 	for i in range(0, pickup_list.size()):
 		total_pickup_weight += pickup_list[i].weight;
 
-	if save_state:
+	if save_state and not return_to_editor:
 		load_gamedata();
 	else:
 		await load_level(campaign_path + campaign_num + "/" + level_num + "/");
@@ -392,6 +397,8 @@ func win():
 	get_tree().call_group("Ball", "queue_free");
 	get_tree().call_group("PickUp", "queue_free");
 	get_tree().call_group("Brick", "queue_free");
+
+	if return_to_editor: go_back();
 
 	ball_count = 0;
 	ball_speed_mult = 1; # TODO Add difficulty.
@@ -626,7 +633,7 @@ func add_magnet():
 		var power:int = paddle.add_magnet();
 		if magnet_meter: magnet_meter.value = power;
 
-func load_level(dir:String):
+func load_level(dir:String) -> bool:
 	Logger.write(str("Loading level at ", dir), "Level");
 	if not DirAccess.dir_exists_absolute(dir): return false;
 
@@ -643,8 +650,10 @@ func load_level(dir:String):
 	reader.close();
 
 	if level_data.build_number < current_build_number:
-		var upgrade_successful := upgrade_version(level_data, level_dict);
-		if not upgrade_successful: return false;
+		var directory := str(campaign_path, campaign_num, "/", level_num)
+		var upgrade_successful := Utils.upgrade_level_version(level_data, level_dict, current_build_number, directory);
+		if not upgrade_successful:
+			return false;
 
 	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece.
 
@@ -692,8 +701,8 @@ func load_level(dir:String):
 	for item:Dictionary in level_dict.bricks:
 		var brick:Brick = BrickScene.instantiate();
 
-		brick.hitbox_uid = int(item.hitbox_uid);
-		brick.texture_uid = int(item.texture_uid);
+		brick.hitbox_path = item.hitbox_path;
+		brick.texture_path = item.texture_path;
 		brick.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
 		brick.shader_color = Color(item.shader_color);
 		brick.init_health = item.init_health;
@@ -738,34 +747,6 @@ func load_level(dir:String):
 	Logger.write(str("Level finished loading with ", brick_count, " bricks."), "Level");
 	return true;
 
-func upgrade_version(data:LevelData, level_dict:Dictionary) -> bool:
-	if data.build_number < current_build_number:
-		match data.build_number:
-				# Default pre-release
-				0:
-					# level_dict operations
-					pass; 
-					
-		data.build_number += 1;
-		Logger.write(str("Upgraded to build ", data.build_number, ", checking for further steps."), "LevelEditor");
-		return upgrade_version(data, level_dict);
-	else:
-		var err = ResourceSaver.save(data, campaign_path + campaign_num + "/" + level_num + "/data.tres");
-		if err != OK:
-			Logger.write("Level data save error: " + error_string(err), "LevelEditor");
-			return false;
-
-		# var modified_level_content := get_dictionary_from_level_content();
-		var json := JSON.stringify(level_dict, "", false, true);
-		var writer := FileAccess.open(campaign_path + campaign_num + "/" + level_num  + "/level.json", FileAccess.WRITE);
-		if writer == null:
-			Logger.write("Level JSON save error." + error_string(FileAccess.get_open_error()), "LevelEditor");
-			return false;
-		writer.store_string(json);
-		writer.close();
-
-		return true;
-
 func save_gamedata():
 	Logger.write(str("Saving game in progress to storage."), "Level");
 	var data:SaveGameData = SaveGameData.new();
@@ -790,3 +771,23 @@ func load_gamedata():
 	unsaved_score = score;
 	unsaved_lives = lives;
 	unsaved_total_lives = total_lives;
+
+func go_back():
+	if return_to_editor:
+		var LevelEditorScene:PackedScene = load("uid://bhtapwwblyog3");
+		var editor:LevelEditor = LevelEditorScene.instantiate();
+
+		editor.campaign_path = campaign_path;
+		editor.campaign_num = campaign_num;
+
+		add_sibling(editor);
+		editor.load_level(level_num);
+		self.queue_free();
+	else:
+		save_gamedata(); # TODO Warn and ask.
+
+		var MainMenu:PackedScene = load("uid://c0a7y1ep5uibb");
+		var main_menu:Control = MainMenu.instantiate();
+
+		add_sibling(main_menu);
+		self.queue_free();

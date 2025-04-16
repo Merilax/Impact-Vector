@@ -34,7 +34,7 @@ func _ready() -> void:
 		for filename:String in filtered_array:
 			var brick_rect:EditorBrickSample = BrickRect.instantiate();
 			brick_rect.resource = {
-				"texture_uid": ResourceLoader.get_resource_uid(str("res://Assets/Visuals/BrickTextures/" , item.type , '/' , filename.trim_suffix(".import"))),
+				"texture_path": str("res://Assets/Visuals/BrickTextures/", item.type, '/', filename.trim_suffix(".import")),
 				"texture_type": item.type
 			};
 			brick_rect.texture_rect.texture = load(str("res://Assets/Visuals/BrickTextures/", item.type, '/', filename.trim_suffix(".import")));
@@ -53,7 +53,7 @@ func show_menu(idx:int):
 
 func set_active_res(res):
 	set_active_res_signal.emit(res);
-	texture_button.texture_normal = load(ResourceUID.get_id_path(res.texture_uid));
+	texture_button.texture_normal = load(res.texture_path);
 
 func show_color_picker(toggled:bool):
 	color_picker.visible = toggled;

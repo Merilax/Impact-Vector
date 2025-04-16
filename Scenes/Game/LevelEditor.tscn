@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bhtapwwblyog3"]
+[gd_scene load_steps=33 format=3 uid="uid://bhtapwwblyog3"]
 
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="1_tjbma"]
 [ext_resource type="Script" uid="uid://dikwglkg781iq" path="res://Scripts/Game/LevelEditor.gd" id="1_ur272"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://chk6xx6v2aqnp" path="res://Assets/Visuals/Icons/grid.svg" id="9_1pd6n"]
 [ext_resource type="Texture2D" uid="uid://lqkxorxmvytd" path="res://Assets/Visuals/Icons/arrow_selector.svg" id="10_3i04o"]
 [ext_resource type="Texture2D" uid="uid://b6v66lv0pxr5d" path="res://Assets/Visuals/Icons/settings.svg" id="13_ppk2a"]
+[ext_resource type="Texture2D" uid="uid://drxl0itb0pf01" path="res://Assets/Visuals/Icons/floppy.svg" id="14_mmqld"]
 [ext_resource type="Texture2D" uid="uid://dygfcocq1apxy" path="res://Assets/Visuals/Icons/path.svg" id="15_gi63o"]
 [ext_resource type="Script" uid="uid://bman5vgdmoh27" path="res://Scripts/UI/EscapeEditorLayer.gd" id="15_pqil0"]
 [ext_resource type="PackedScene" uid="uid://cdhcnlm7k2s05" path="res://Scenes/UI/EscapeMenuEditor.tscn" id="16_eyoj6"]
@@ -28,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://4dydipk47clk" path="res://Scenes/UI/HelpMenu.tscn" id="20_yeifv"]
 [ext_resource type="PackedScene" uid="uid://c3wgp1cr6li5f" path="res://Scenes/UI/Components/EditorDataSettings.tscn" id="21_wt4fg"]
 [ext_resource type="PackedScene" uid="uid://dlo0wejwxqii0" path="res://Scenes/UI/Components/EditorPathSettings.tscn" id="22_cqbwm"]
+[ext_resource type="PackedScene" uid="uid://ckf4ch1vqgl3i" path="res://Scenes/UI/Components/EditorSaveSettings.tscn" id="25_tgkku"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1bnw"]
 size = Vector2(1437, 940)
@@ -35,9 +37,10 @@ size = Vector2(1437, 940)
 [sub_resource type="Theme" id="Theme_r56k3"]
 default_font_size = 26
 
-[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("notification_popup", "mouse_boundary", "world_border", "grid_drawer", "level_content", "level_content_bricks", "level_content_paths", "selector", "level_name", "save_button", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl")]
+[node name="EditorRoot" type="Node2D" node_paths=PackedStringArray("notification_popup", "confirmation_popup", "mouse_boundary", "world_border", "grid_drawer", "level_content", "level_content_bricks", "level_content_paths", "selector", "escape_layer", "place_tool", "paint_tool", "select_tool", "erase_tool", "path_tool", "snap_options_btn", "save_options_btn", "mode_options", "brick_container", "texture_container", "data_options_ctrl", "path_options_ctrl", "snap_options_ctrl", "save_options_ctrl")]
 script = ExtResource("1_ur272")
 notification_popup = NodePath("Popup")
+confirmation_popup = NodePath("ConfirmationDialog")
 mouse_boundary = NodePath("LevelEditor/LevelMouseBoundary")
 world_border = NodePath("LevelEditor/WorldBorder")
 grid_drawer = NodePath("LevelEditor/Grid")
@@ -45,20 +48,21 @@ level_content = NodePath("LevelEditor/LevelContent")
 level_content_bricks = NodePath("LevelEditor/LevelContent/Bricks")
 level_content_paths = NodePath("LevelEditor/LevelContent/Paths")
 selector = NodePath("EditorUI/SideBarR/Selector")
-level_name = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/LineEdit")
-save_button = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer/SaveBtn")
+escape_layer = NodePath("EscapeLayer")
 place_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Place")
 paint_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Paint")
 select_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Select")
 erase_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Erase")
 path_tool = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Tools/Path")
 snap_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Snap")
+save_options_btn = NodePath("EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes/Save")
 mode_options = NodePath("EditorUI/Options (unused)")
 brick_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Bricks")
 texture_container = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Textures")
 data_options_ctrl = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Data")
 path_options_ctrl = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Path")
 snap_options_ctrl = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Snap")
+save_options_ctrl = NodePath("EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer/Save")
 
 [node name="Background" type="Parallax2D" parent="."]
 modulate = Color(0.244776, 0.244776, 0.244776, 1)
@@ -191,6 +195,15 @@ size_flags_horizontal = 4
 tooltip_text = "Snap to grid"
 theme = ExtResource("6_if84t")
 icon = ExtResource("9_1pd6n")
+icon_alignment = 1
+
+[node name="Save" type="Button" parent="EditorUI/Toolbar/MarginContainer/VBoxContainer/Modes"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Snap to grid"
+theme = ExtResource("6_if84t")
+icon = ExtResource("14_mmqld")
 icon_alignment = 1
 
 [node name="SideBarR" type="Control" parent="EditorUI"]
@@ -351,7 +364,12 @@ layout_mode = 2
 [node name="Path" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer" instance=ExtResource("22_cqbwm")]
 layout_mode = 2
 
+[node name="Save" parent="EditorUI/SideBarR/Selector/VBoxContainer/MarginContainer" instance=ExtResource("25_tgkku")]
+visible = false
+layout_mode = 2
+
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SideBarR/Selector/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="LineEdit" type="LineEdit" parent="EditorUI/SideBarR/Selector/VBoxContainer/VBoxContainer"]
@@ -839,9 +857,19 @@ layout_mode = 2
 auto_translate_mode = 1
 title = ""
 initial_position = 4
-size = Vector2i(332, 155)
+size = Vector2i(353, 137)
+unresizable = true
 borderless = true
 popup_window = true
 theme = ExtResource("3_t1m56")
 dialog_text = "Unknown error.
 You just love to see it."
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+initial_position = 4
+size = Vector2i(364, 100)
+unresizable = true
+borderless = true
+popup_window = true
+theme = ExtResource("3_t1m56")
+dialog_text = "Unknown confirmation text"
