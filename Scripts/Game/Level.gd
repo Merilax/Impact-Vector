@@ -1,7 +1,7 @@
 extends Node2D
 class_name Game
 
-var current_build_number:int = 1;
+var current_build_number:int = 2;
 
 var campaign_path:String
 var campaign_num:String
@@ -111,10 +111,12 @@ var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 @export_group("Nodes")
 @export var world_border:WorldBorder;
 @export var ball_container:Node2D;
+@export var paddle_container:Node2D;
 @export var level_content:Node2D;
 @export var level_content_bricks:Node2D;
 @export var level_content_paths:Node2D;
 @export var background:Parallax2D;
+@export var transition_gates:Node2D;
 
 @export_group("UI")
 @export var escape_layer:EscapeLayer;
@@ -209,9 +211,9 @@ func spawn_paddle() -> bool:
 	paddle = PaddleScene.instantiate();
 	paddle.world_border = world_border;
 	paddle.target_ball_container = ball_container;
-	add_child(paddle);
+	paddle_container.add_child(paddle, true);
 	paddle.global_position = Vector2(750, 1120);
-	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 1).finished;
+	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 0.6).finished;
 	DisplayServer.warp_mouse(Vector2i(750, 1040));
 
 	if paddle.has_signal("spawn_bullet"):
@@ -389,14 +391,18 @@ func win():
 
 	var stored_speed_mult = ball_speed_mult;
 
-	create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
+	if not return_to_editor:
+		create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
+		await get_tree().create_timer(2.5).timeout;
+	else: 
+		create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 1);
+		await get_tree().create_timer(1).timeout;
 
-	await get_tree().create_timer(3.5).timeout;
+	if not return_to_editor: await transition_gates.close_transition_walls();
 
-	level_content.queue_free();
 	get_tree().call_group("Ball", "queue_free");
 	get_tree().call_group("PickUp", "queue_free");
-	get_tree().call_group("Brick", "queue_free");
+	# get_tree().call_group("Brick", "queue_free");
 
 	if return_to_editor: go_back();
 
@@ -417,11 +423,16 @@ func win():
 		next_level_num = str(BaseCampaignManager.find_next_level(campaign_path + campaign_num + '/', level_num.to_int()));
 	else: next_level_num = str(CampaignManager.find_next_level(campaign_path + campaign_num , level_num.to_int()));
 	
-	if next_level_num == "0":
+	if next_level_num == "0" or not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.json"):
 		game_over(true);
 		return;
+
+	background.retrigger();
+	await get_tree().create_timer(.75).timeout;
+	await transition_gates.open_transition_walls();
 		
-	if not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.json") or not await load_level(campaign_path + campaign_num + "/" + next_level_num + "/"):
+	var level_loaded_success := await load_level(campaign_path + campaign_num + "/" + next_level_num + "/");
+	if not level_loaded_success:
 		game_over(true);
 		return;
 	
@@ -637,10 +648,10 @@ func load_level(dir:String) -> bool:
 	Logger.write(str("Loading level at ", dir), "Level");
 	if not DirAccess.dir_exists_absolute(dir): return false;
 
-	background.retrigger(); # Might tie to level data in the future.
+	# background.retrigger(); # Might tie to level data in the future.
 
-	for node in level_content_bricks.get_children(): node.queue_free();
-	for node in level_content_paths.get_children(): node.queue_free();
+	for node in level_content_bricks.get_children(): if is_instance_valid(node): node.queue_free();
+	for node in level_content_paths.get_children():  if is_instance_valid(node): node.queue_free();
 	await get_tree().process_frame; # Just in case.
 
 	var level_data:LevelData = load(dir + "/data.tres");

@@ -1,6 +1,8 @@
 extends Node2D
 class_name LevelEditor
 
+var current_build_number:int = 2;
+
 var BrickScene = preload("uid://dtkn1xk6stg0v");
 var BrickPathScene = preload("uid://cmtfn8g03wdp8");
 var GodotIcon = preload("uid://dj47yk43bh08r");
@@ -10,8 +12,6 @@ var saving_level:bool = false;
 var loading_level:bool = false;
 var unsaved_progress:bool = false;
 var last_saved:float = Time.get_unix_time_from_system();
-
-var current_build_number:int = 1;
 
 @export var notification_popup:AcceptDialog;
 @export var confirmation_popup:ConfirmationDialog;
@@ -1006,6 +1006,7 @@ func preview_level():
 	game.campaign_path = campaign_path;
 	game.campaign_num = campaign_num;
 	game.return_to_editor = true;
+	game.skip_animations = true;
 	add_sibling(game, true);
 	MusicPlayer.set_track_type("InGame");
 	self.queue_free();

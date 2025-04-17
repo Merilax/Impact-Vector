@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://la6hglf0tura"]
+[gd_scene load_steps=38 format=3 uid="uid://la6hglf0tura"]
 
 [ext_resource type="Script" uid="uid://dqpio87sxu3i2" path="res://Scripts/Game/Level.gd" id="1_vf5nn"]
 [ext_resource type="PackedScene" uid="uid://b1ugkpvbo0utw" path="res://Scenes/Game/WorldBorder.tscn" id="2_b1du0"]
@@ -25,6 +25,11 @@
 [ext_resource type="Texture2D" uid="uid://xdwigvnsi4hv" path="res://Assets/Visuals/UI/SideL.PNG" id="19_llcsm"]
 [ext_resource type="Texture2D" uid="uid://r4lbn70vqnoq" path="res://Assets/Visuals/UI/Separator.PNG" id="19_sq82e"]
 [ext_resource type="Script" uid="uid://lhx5olt740qw" path="res://Scripts/UI/Components/FPS.gd" id="20_73o0s"]
+[ext_resource type="Texture2D" uid="uid://d4ex28c5yabi3" path="res://Assets/Visuals/TransWallUp.PNG" id="26_73o0s"]
+[ext_resource type="Script" uid="uid://bv2atxm6q0oxe" path="res://Scripts/Game/TransitionGates.gd" id="26_s72d7"]
+[ext_resource type="Texture2D" uid="uid://bx6nuh6xpeqb" path="res://Assets/Visuals/TransWallDown.PNG" id="27_5eta3"]
+[ext_resource type="AudioStream" uid="uid://hrbxjtnivxqm" path="res://Assets/Audio/SFX/door-close-4.wav" id="28_xgq3g"]
+[ext_resource type="AudioStream" uid="uid://dp7ns0tve2mxq" path="res://Assets/Audio/SFX/door-close-2.wav" id="29_s72d7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pborx"]
 size = Vector2(1702.5, 218)
@@ -57,14 +62,16 @@ font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_5eta3"]
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "ball_container", "level_content", "level_content_bricks", "level_content_paths", "background", "escape_layer", "game_over_layer", "notification_text_window", "notification_window_timer", "notification_score_window", "score_counter", "life_counter", "speed_meter", "magnet_meter", "ball_modifier_meter", "ball_modifier_timer", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("world_border", "ball_container", "paddle_container", "level_content", "level_content_bricks", "level_content_paths", "background", "transition_gates", "escape_layer", "game_over_layer", "notification_text_window", "notification_window_timer", "notification_score_window", "score_counter", "life_counter", "speed_meter", "magnet_meter", "ball_modifier_meter", "ball_modifier_timer", "arm_horizontal", "arm_vertical", "arm_placer", "arm_placer_sound")]
 script = ExtResource("1_vf5nn")
 world_border = NodePath("LevelContentOffset/WorldBorder")
 ball_container = NodePath("Balls")
+paddle_container = NodePath("Paddles")
 level_content = NodePath("LevelContentOffset/LevelContent")
 level_content_bricks = NodePath("LevelContentOffset/LevelContent/Bricks")
 level_content_paths = NodePath("LevelContentOffset/LevelContent/Paths")
 background = NodePath("Background")
+transition_gates = NodePath("TransitionGates")
 escape_layer = NodePath("EscapeLayer")
 game_over_layer = NodePath("GameOverLayer")
 notification_text_window = NodePath("UILayer/SidebarR/MarginContainer/VBoxContainer/NotifBox/VBoxContainer/Notifs")
@@ -142,6 +149,38 @@ process_material = SubResource("ParticleProcessMaterial_ncp33")
 stream = ExtResource("5_8ipbu")
 volume_db = -9.0
 pitch_scale = 0.8
+bus = &"SFX"
+
+[node name="Paddles" type="Node2D" parent="."]
+
+[node name="TransitionGates" type="Node2D" parent="." node_paths=PackedStringArray("transition_wall_up", "transition_wall_down", "open_sound", "close_sound")]
+script = ExtResource("26_s72d7")
+transition_wall_up = NodePath("UpperGate")
+transition_wall_down = NodePath("LowerGate")
+open_sound = NodePath("OpenSound")
+close_sound = NodePath("CloseSound")
+
+[node name="UpperGate" type="Sprite2D" parent="TransitionGates"]
+visible = false
+position = Vector2(766, -284)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("26_73o0s")
+
+[node name="LowerGate" type="Sprite2D" parent="TransitionGates"]
+visible = false
+position = Vector2(766, 1382)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("27_5eta3")
+
+[node name="OpenSound" type="AudioStreamPlayer" parent="TransitionGates"]
+process_mode = 3
+stream = ExtResource("28_xgq3g")
+bus = &"SFX"
+
+[node name="CloseSound" type="AudioStreamPlayer" parent="TransitionGates"]
+process_mode = 3
+stream = ExtResource("29_s72d7")
+volume_db = 3.0
 bus = &"SFX"
 
 [node name="UILayer" type="CanvasLayer" parent="."]

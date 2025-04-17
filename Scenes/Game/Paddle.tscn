@@ -134,6 +134,7 @@ stream = ExtResource("4_yd0vt")
 stream = ExtResource("5_nu7io")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+process_mode = 3
 show_behind_parent = true
 position = Vector2(-67, 11)
 scale = Vector2(0.5, 0.5)
@@ -142,6 +143,7 @@ lifetime = 1.2
 process_material = SubResource("ParticleProcessMaterial_4kcrd")
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
+process_mode = 3
 show_behind_parent = true
 position = Vector2(67, 11)
 scale = Vector2(0.5, 0.5)

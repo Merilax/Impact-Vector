@@ -23,4 +23,6 @@ func finalise(game_won:bool):
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
 
 func back_to_main():
+	hide();
+	get_tree().paused = false;
 	exit.emit();
