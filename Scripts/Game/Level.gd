@@ -10,6 +10,8 @@ var level_num:String
 var return_to_editor:bool = false;
 
 var save_state:SaveGameData;
+var level_paths:Array[BrickPath];
+var level_spinpaths:Array[SpinPath];
 
 # Higher weight = More spawns.
 var pickup_list:Array = [ 
@@ -80,6 +82,7 @@ var pickup_texture_base_bad = load("uid://yke3nrm7jmix");
 
 var BrickScene = preload("uid://dtkn1xk6stg0v");
 var BrickPathScene = preload("uid://cmtfn8g03wdp8");
+var SpinPathScene = preload("uid://ksq8cty5esmo");
 var BallScene = preload("uid://dxbg7h6mg1dtd");
 var PaddleScene = preload("uid://bjjlgc7puyxfe");
 var PickupComp = preload("uid://c5ebe7unjhv0x");
@@ -704,18 +707,54 @@ func load_level(dir:String) -> bool:
 
 		for i:int in range(item.steps):
 			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
+		
+		level_paths.append(path);
 	
 	get_tree().call_group("PathLineVisual", "hide");
 	get_tree().call_group("PathPointVisual", "hide");
+
+	Logger.write(str("Initializing SpinPaths."), "Level");
+	for item:Dictionary in level_dict.spinpaths:
+		var spinpath:SpinPath = SpinPathScene.instantiate();
+		spinpath.speed = item.speed;
+		spinpath.looped = item.looped;
+		spinpath.apply_rotation = item.apply_rotation;
+		spinpath.steps = item.steps;
+		spinpath.apply_rotation_equally = item.apply_rotation_equally;
+		spinpath.rotate_by = item.rotate_by;
+
+		level_content_paths.add_child(spinpath, true);
+		spinpath.position = Vector2(item.position.x, item.position.y);
+		spinpath.rotation_degrees = item.rotation_degrees;
+
+
+
+		level_spinpaths.append(spinpath);
+
+		var remote_offset := Node2D.new();
+		remote_offset.name = item.transform_target;
+		level_content_bricks.add_child(remote_offset, true);
+		remote_offset.owner = level_content;
+		spinpath.transform_target = remote_offset;
+
+		for i in range(item.steps):
+			var step_offset := Node2D.new();
+			step_offset.name = str("StepOffset", i);
+			remote_offset.add_child(step_offset, true);
+			step_offset.owner = level_content;
+	
+	get_tree().call_group("SpinPathVisual", "hide");
+	get_tree().call_group("SpinPath", "setup");
 
 	Logger.write(str("Initializing Bricks."), "Level");
 	for item:Dictionary in level_dict.bricks:
 		var brick:Brick = BrickScene.instantiate();
 
 		brick.hitbox_path = item.hitbox_path;
-		brick.texture_path = item.texture_path;
-		brick.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
-		brick.shader_color = Color(item.shader_color);
+		brick.texture_manager.texture_path = item.texture_path;
+		brick.texture_manager.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
+		brick.texture_manager.shader_colors = [Color(item.shader_colors[0]), Color(item.shader_colors[1]), Color(item.shader_colors[2]), Color(item.shader_colors[3])];
+		brick.texture_manager.shader_color_count = item.shader_color_count;
 		brick.init_health = item.init_health;
 		brick.init_score = item.init_score;
 		brick.init_pushable = item.init_pushable;
@@ -728,20 +767,28 @@ func load_level(dir:String) -> bool:
 		brick.polygon_texture_scale = Vector2(item.polygon_texture_scale.x, item.polygon_texture_scale.y);
 		brick.is_path_clone = item.is_path_clone;
 		brick.path_group = item.path_group as int;
+		brick.spin_group = item.spin_group as int;
 		
+		level_content_bricks.add_child(brick, true);
+		brick.owner = level_content;
+		brick.scale = Vector2(item.scale.x, item.scale.y);
+
 		if brick.path_group >= 0:
 			var step_offset = level_content_bricks.find_child(str("RemoteOffsetPath", brick.path_group)).get_child(item.path_step as int);
-			step_offset.add_child(brick, true);
-		else:
-			level_content_bricks.add_child(brick, true);
-		brick.owner = level_content;
+			brick.reparent(step_offset);
 
-		brick.global_position = Vector2(item.global_position.x, item.global_position.y);
-		brick.global_rotation_degrees = item.global_rotation_degrees;
-		brick.global_scale = Vector2(item.global_scale.x, item.global_scale.y);
+		if brick.spin_group >= 0:
+			var step_offset = level_content_bricks.find_child(str("RemoteOffsetSpinPath", brick.spin_group)).get_child(item.spin_step as int);
+			brick.reparent(step_offset);
+			level_spinpaths[brick.spin_group].bricks.append({"brick": brick, "step": item.spin_step as int});
 
+		brick.position = Vector2(item.position.x, item.position.y);
+		brick.rotation_degrees = item.rotation_degrees;
 		init_brick(brick, true);
 	
+	get_tree().call_group("SpinPath", "setup_transforms");
+	get_tree().call_group("SpinPath", "reposition_steps_for_play");
+
 	animating_arm = true;
 	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
@@ -749,8 +796,8 @@ func load_level(dir:String) -> bool:
 	animating_arm = false;
 	skip_animations = false;
 	
-	for path:BrickPath in get_tree().get_nodes_in_group("Path"):
-		path.play_tweens(true);
+	get_tree().call_group("Path", "play_tweens", true);
+	get_tree().call_group("SpinPath", "play_tweens", true);
 	
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;

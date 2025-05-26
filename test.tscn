@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://xnpnye0j7q5y"]
+
+[ext_resource type="Texture2D" uid="uid://bvw6ydrco4mte" path="res://gradient_test.png" id="2_6uqi0"]
+[ext_resource type="Shader" uid="uid://c8dyvwjdjv8je" path="res://GDResources/BrickShader.gdshader" id="2_8uh7m"]
+[ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="3_ppyta"]
+[ext_resource type="Texture2D" uid="uid://d4ivou6hulmig" path="res://Assets/Visuals/BrickTextures/Quadrangle/2/BrickQuad1.png" id="4_ykrsh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppyta"]
+resource_local_to_scene = true
+shader = ExtResource("2_8uh7m")
+shader_parameter/color_count = 3
+shader_parameter/target_color1 = Color(0, 1, 1, 1)
+shader_parameter/target_color2 = Color(0.0666666, 0, 1, 1)
+shader_parameter/target_color3 = Color(1, 1, 0, 1)
+shader_parameter/target_color4 = Color(0, 0, 0, 1)
+shader_parameter/brightness = 0.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Original" type="Sprite2D" parent="."]
+texture = ExtResource("2_6uqi0")
+
+[node name="Shifted" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ppyta")
+position = Vector2(0, 106)
+texture = ExtResource("2_6uqi0")
+
+[node name="BrickQuad1" type="Sprite2D" parent="."]
+material = ExtResource("3_ppyta")
+position = Vector2(-201, 50)
+texture = ExtResource("4_ykrsh")

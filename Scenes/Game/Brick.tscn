@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://dtkn1xk6stg0v"]
+[gd_scene load_steps=12 format=3 uid="uid://dtkn1xk6stg0v"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
 [ext_resource type="Script" uid="uid://lka5qbnsai4d" path="res://Scripts/Game/Brick.gd" id="2_yncpm"]
 [ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="3_wd6an"]
+[ext_resource type="Script" uid="uid://dkttui87dye4h" path="res://Scripts/Game/Components/TextureManager.gd" id="4_6l75g"]
 [ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_o56l3"]
 [ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Game/Components/HealthComp.tscn" id="5_mnfrv"]
 [ext_resource type="PackedScene" uid="uid://rjotxsowve6o" path="res://Scenes/Game/Components/ScoreComp.tscn" id="6_6yfpm"]
@@ -11,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://cai11ocuueh8w" path="res://Assets/Audio/SFX/bfh1_glass_hit_02.ogg" id="9_y0pj2"]
 [ext_resource type="PackedScene" uid="uid://c1e6rtu6u8o0b" path="res://Scenes/Game/Components/EditorHitboxComp.tscn" id="10_a4cop"]
 
-[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("texture_sprite", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
+[node name="BrickRigid" type="RigidBody2D" node_paths=PackedStringArray("texture_manager", "health_comp", "score_comp", "hit_sound_comp", "destroy_sound_comp", "editor_hitbox") groups=["Brick", "Destructible", "Hitable", "Rigid"]]
 collision_layer = 4
 collision_mask = 8
 mass = 5.0
@@ -26,7 +27,7 @@ linear_damp = 2.0
 angular_damp_mode = 1
 angular_damp = 5.0
 script = ExtResource("2_yncpm")
-texture_sprite = NodePath("Polygon2D")
+texture_manager = NodePath("TextureManager")
 health_comp = NodePath("HealthComp")
 score_comp = NodePath("ScoreComp")
 hit_sound_comp = NodePath("HitSoundComp")
@@ -35,6 +36,10 @@ editor_hitbox = NodePath("EditorHitboxComp")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 material = ExtResource("3_wd6an")
+
+[node name="TextureManager" type="Node2D" parent="." node_paths=PackedStringArray("texture_sprite")]
+script = ExtResource("4_6l75g")
+texture_sprite = NodePath("../Polygon2D")
 
 [node name="HealthComp" parent="." instance=ExtResource("5_mnfrv")]
 

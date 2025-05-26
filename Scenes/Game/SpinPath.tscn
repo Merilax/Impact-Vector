@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ksq8cty5esmo"]
+
+[ext_resource type="Script" uid="uid://83ogt4vyi8ji" path="res://Scripts/Game/SpinPath.gd" id="1_u37co"]
+[ext_resource type="PackedScene" uid="uid://bkbhsiv24h3ro" path="res://Scenes/Game/Components/PathPointVisual.tscn" id="2_nw5yu"]
+
+[node name="SpinPath" type="Node2D" node_paths=PackedStringArray("center_transformer", "visuals_node", "visuals_center_node") groups=["SpinPath"]]
+script = ExtResource("1_u37co")
+center_transformer = NodePath("CenterTransformer")
+visuals_node = NodePath("Visuals")
+visuals_center_node = NodePath("PathCenterVisual")
+
+[node name="PathCenterVisual" parent="." groups=["SpinPathCenterVisual"] instance=ExtResource("2_nw5yu")]
+visible = false
+
+[node name="Visuals" type="Node2D" parent="." groups=["SpinPathVisual"]]
+
+[node name="CenterTransformer" type="RemoteTransform2D" parent="."]

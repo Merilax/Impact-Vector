@@ -11,8 +11,6 @@ var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 @export var line:Line2D;
 @export var points_node:Node2D;
 @export var follower_array:Array[PathFollow2D];
-@export var first_follower:PathFollow2D;
-@export var first_transformer:RemoteTransform2D;
 @export var transform_target:Node2D;
 
 var tweens:Array[Tween] = [];
@@ -62,10 +60,6 @@ func setup_steps():
 			step_offset.global_position = new_transform.global_position;
 
 		new_transform.remote_path = new_transform.get_path_to(step_offset);
-
-		if i == 0:
-			first_follower = new_follower;
-			first_transformer = new_transform;
 		
 	reposition_steps();
 	setup_tweens();
@@ -109,5 +103,5 @@ func reposition_steps():
 	if self.looped:
 		section = (1 / steps);
 
-	for i:int in range(0, follower_array.size()):
+	for i:int in range(follower_array.size()):
 		follower_array[i].progress_ratio = clampf(section * i, 0, 1);

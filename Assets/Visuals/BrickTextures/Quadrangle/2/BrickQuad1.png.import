@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://km2u1r6q1dgv"
-path="res://.godot/imported/BrickFullRect.png-6cd73675b28bf14da841e8e5beb6a8cb.ctex"
+uid="uid://d4ivou6hulmig"
+path="res://.godot/imported/BrickQuad1.png-432695c9dad9b24789b0b38db6b83506.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/Quadrangle/BrickFullRect.png"
-dest_files=["res://.godot/imported/BrickFullRect.png-6cd73675b28bf14da841e8e5beb6a8cb.ctex"]
+source_file="res://Assets/Visuals/BrickTextures/Quadrangle/2/BrickQuad1.png"
+dest_files=["res://.godot/imported/BrickQuad1.png-432695c9dad9b24789b0b38db6b83506.ctex"]
 
 [params]
 

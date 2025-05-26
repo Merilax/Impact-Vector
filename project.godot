@@ -24,6 +24,7 @@ buses/default_bus_layout="res://GDResources/default_bus_layout.tres"
 
 MusicPlayer="*res://Scenes/MusicPlayer.tscn"
 GlobalVars="*res://Scripts/GlobalVars.gd"
+UtilsNode="*res://Scripts/UtilsNode.gd"
 
 [display]
 
@@ -63,6 +64,9 @@ Bullet=""
 PathPointVisual=""
 PathLineVisual=""
 Path=""
+SpinPathVisual=""
+SpinPath=""
+SpinPathCenterVisual=""
 
 [input]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqx1mva2q54w6"
-path="res://.godot/imported/BrickMetal.png-1bd58e4f2a70eb2112b9ddb5037a8a3f.ctex"
+uid="uid://hdg0osc34mp4"
+path="res://.godot/imported/BrickBaseSqr.png-82aa9564ac869f360111818e47d4a0c6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/Quadrangle/BrickMetal.png"
-dest_files=["res://.godot/imported/BrickMetal.png-1bd58e4f2a70eb2112b9ddb5037a8a3f.ctex"]
+source_file="res://Assets/Visuals/BrickTextures/Quadrangle/0/BrickBaseSqr.png"
+dest_files=["res://.godot/imported/BrickBaseSqr.png-82aa9564ac869f360111818e47d4a0c6.ctex"]
 
 [params]
 

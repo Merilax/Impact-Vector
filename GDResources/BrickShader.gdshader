@@ -1,14 +1,10 @@
-// https://godotshaders.com/shader/color-swap-with-hue-variation-preservation
 shader_type canvas_item;
 
-// How to use:
-// 1) Store the initial color in `from`
-// 2) Store the target color in `to`
-// 3) Adjust tolerance to grab a range of hues or set to 0 for exact match
-
-uniform vec4 from : source_color;
-uniform vec4 to : source_color;
-uniform float tolerance: hint_range(0.0, 1.0);
+uniform int color_count: hint_range(0, 4, 1);
+uniform vec4 target_color1: source_color;
+uniform vec4 target_color2: source_color;
+uniform vec4 target_color3: source_color;
+uniform vec4 target_color4: source_color;
 uniform float brightness : hint_range(-1, 1) = 0;
 
 mat4 brightnessMatrix( float _brightness ) {
@@ -18,7 +14,6 @@ mat4 brightnessMatrix( float _brightness ) {
                  vec4(_brightness, _brightness, _brightness, 1));
 }
 
-// Color space conversion from https://godotshaders.com/shader/color-range-swap/
 vec3 rgb2hsv(vec3 c) {
     vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
     vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
@@ -28,31 +23,41 @@ vec3 rgb2hsv(vec3 c) {
     float e = 1.0e-10;
     return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
-
-// All components are in the range [0…1], including hue.
 vec3 hsv2rgb(vec3 c) {
     vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+// All arguments are HSV
+vec3 shift_hsv(vec3 source, vec3 from, vec3 to) {
+	vec3 hsv_shift = to - from;
+	return source + hsv_shift;
+}
+
 void fragment() {
-	// we usually want more granularity the closer we are to the original color
-	float _tol = tolerance * tolerance;
-
 	vec4 tex = texture(TEXTURE, UV);
-	vec3 source_hsv = rgb2hsv(tex.rgb);
-	vec3 initial_hsv = rgb2hsv(from.rgb);
-	vec3 hsv_shift = rgb2hsv(to.rgb) - initial_hsv;
+	vec3 hsv_src = rgb2hsv(tex.rgb);
+	float threshold = 1.0 / (float(color_count) * 2.0);
 
-	float hue = initial_hsv.r;
+	for (int i = 1; i <= color_count; i++) {
+		vec3 hsv_i = vec3((1.0 / float(color_count)) * float(i - 1) , 1.0, 1.0);
 
-	// the .r here represents HUE, .g is SATURATION, .b is LUMINANCE
-	if (hue - source_hsv.r >= -_tol && hue - source_hsv.r <= +_tol)
-	{
-		vec3 final_hsv = source_hsv + hsv_shift;
-		tex.rgb = hsv2rgb(final_hsv);
+		if (min(abs(hsv_src.r - hsv_i.r), 1.0 - abs(hsv_src.r - hsv_i.r)) <= threshold) {
+			if (i == 1) {
+				//tex.rgb = hsv2rgb(hsv_src * rgb2hsv(target_color1.rgb));
+				tex.rgb = hsv2rgb(shift_hsv(hsv_src, hsv_i, rgb2hsv(target_color1.rgb)));
+			}
+			if (i == 2) {
+				tex.rgb = hsv2rgb(shift_hsv(hsv_src, hsv_i, rgb2hsv(target_color2.rgb)));
+			}
+			if (i == 3) {
+				tex.rgb = hsv2rgb(shift_hsv(hsv_src, hsv_i, rgb2hsv(target_color3.rgb)));
+			}
+			if (i == 4) {
+				tex.rgb = hsv2rgb(shift_hsv(hsv_src, hsv_i, rgb2hsv(target_color4.rgb)));
+			}
+		}
 	}
-
 	COLOR = tex * brightnessMatrix( brightness );
 }

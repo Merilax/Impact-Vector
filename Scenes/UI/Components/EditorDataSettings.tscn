@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bla8o38kuix0l" path="res://Assets/Visuals/UI/CheckButtonUnchecked.png" id="5_cx10j"]
 [ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_s6636"]
 
-[node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_scoreable_control", "brick_indestructible_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "apply_ctrl")]
+[node name="Data" type="VBoxContainer" node_paths=PackedStringArray("apply_brick_data_on_select_control", "brick_x_ctrl", "brick_y_ctrl", "brick_rot_ctrl", "brick_health_control", "brick_score_control", "brick_scoreable_control", "brick_indestructible_control", "brick_pushable_control", "brick_weight_control", "brick_can_collide_control", "brick_path_group_control", "brick_spinpath_group_control", "apply_ctrl")]
 visible = false
 script = ExtResource("1_wx2ps")
 apply_brick_data_on_select_control = NodePath("HBoxContainer2/ApplySelect")
@@ -23,6 +23,7 @@ brick_pushable_control = NodePath("Stats/VBoxContainer/Pushable")
 brick_weight_control = NodePath("Stats/VBoxContainer/Weight")
 brick_can_collide_control = NodePath("Stats/VBoxContainer/Collider")
 brick_path_group_control = NodePath("Stats/VBoxContainer3/PathGroup")
+brick_spinpath_group_control = NodePath("Stats/VBoxContainer3/SpinPathGroup")
 apply_ctrl = NodePath("Stats/Apply")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
@@ -241,6 +242,20 @@ size_flags_horizontal = 3
 text = "Path group"
 
 [node name="PathGroup" type="SpinBox" parent="Stats/VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="SpinPathGroupLbl" type="Label" parent="Stats/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spin group"
+
+[node name="SpinPathGroup" type="SpinBox" parent="Stats/VBoxContainer3"]
 layout_mode = 2
 mouse_filter = 1
 max_value = 0.0

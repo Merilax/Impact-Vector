@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drkb28nwgvim3"
-path="res://.godot/imported/BrickCircle.png-30a6c4d8c061bc2381cc6e571935a3d0.ctex"
+uid="uid://dspb6xb3f0ys3"
+path="res://.godot/imported/fan.svg-0c64029df212a8fb160bc9b8034dbe3d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/Circle/BrickCircle.png"
-dest_files=["res://.godot/imported/BrickCircle.png-30a6c4d8c061bc2381cc6e571935a3d0.ctex"]
+source_file="res://Assets/Visuals/Icons/fan.svg"
+dest_files=["res://.godot/imported/fan.svg-0c64029df212a8fb160bc9b8034dbe3d.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

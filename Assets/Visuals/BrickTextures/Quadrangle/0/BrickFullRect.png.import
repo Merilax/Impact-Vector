@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2dinph02wcbc"
-path="res://.godot/imported/BrickGlass.png-15afd1814682419c319517ea900b1dd9.ctex"
+uid="uid://km2u1r6q1dgv"
+path="res://.godot/imported/BrickFullRect.png-275b8953740deccb01ecedf348c89777.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Visuals/BrickTextures/Quadrangle/BrickGlass.png"
-dest_files=["res://.godot/imported/BrickGlass.png-15afd1814682419c319517ea900b1dd9.ctex"]
+source_file="res://Assets/Visuals/BrickTextures/Quadrangle/0/BrickFullRect.png"
+dest_files=["res://.godot/imported/BrickFullRect.png-275b8953740deccb01ecedf348c89777.ctex"]
 
 [params]
 

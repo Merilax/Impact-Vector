@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://itcb0dsqcwvh"]
+
+[ext_resource type="Script" uid="uid://cclx401ohudvl" path="res://Scripts/Game/Components/TransformLock.gd" id="1_p5adv"]
+
+[node name="TransformLock" type="Node2D"]
+script = ExtResource("1_p5adv")
