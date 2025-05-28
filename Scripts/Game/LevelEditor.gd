@@ -1,7 +1,7 @@
 extends Node2D
 class_name LevelEditor
 
-var current_build_number:int = 2;
+var current_build_number:int = 3;
 
 var BrickScene = preload("uid://dtkn1xk6stg0v");
 var BrickPathScene = preload("uid://cmtfn8g03wdp8");
@@ -1321,6 +1321,7 @@ func build_level_content_from_dictionary(level_dict:Dictionary) -> bool:
 		brick.texture_manager.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
 		brick.texture_manager.shader_colors = [Color(item.shader_colors[0]), Color(item.shader_colors[1]), Color(item.shader_colors[2]), Color(item.shader_colors[3])];
 		brick.texture_manager.shader_color_count = item.shader_color_count;
+		brick.texture_manager.shader_modulation = item.shader_modulation;
 		brick.init_health = item.init_health;
 		brick.init_score = item.init_score;
 		brick.init_pushable = item.init_pushable;
@@ -1397,6 +1398,7 @@ func get_dictionary_from_level_content() -> Dictionary:
 						"original_sprite_size": {"x": brick.texture_manager.original_sprite_size.x, "y": brick.texture_manager.original_sprite_size.y},
 						"shader_colors": [brick.texture_manager.shader_colors[0].to_html(), brick.texture_manager.shader_colors[1].to_html(), brick.texture_manager.shader_colors[2].to_html(), brick.texture_manager.shader_colors[3].to_html()],#brick.shader_color.to_html(),
 						"shader_color_count": brick.texture_manager.shader_color_count,
+						"shader_modulation": brick.texture_manager.shader_modulation,
 						"init_health": brick.init_health,
 						"init_score": brick.init_score,
 						"init_pushable": brick.init_pushable,
@@ -1439,6 +1441,7 @@ func get_dictionary_from_level_content() -> Dictionary:
 						"original_sprite_size": {"x": brick.texture_manager.original_sprite_size.x, "y": brick.texture_manager.original_sprite_size.y},
 						"shader_colors": [brick.texture_manager.shader_colors[0].to_html(), brick.texture_manager.shader_colors[1].to_html(), brick.texture_manager.shader_colors[2].to_html(), brick.texture_manager.shader_colors[3].to_html()],#brick.shader_color.to_html(),
 						"shader_color_count": brick.texture_manager.shader_color_count,
+						"shader_modulation": brick.texture_manager.shader_modulation,
 						"init_health": brick.init_health,
 						"init_score": brick.init_score,
 						"init_pushable": brick.init_pushable,
@@ -1467,6 +1470,7 @@ func get_dictionary_from_level_content() -> Dictionary:
 				"original_sprite_size": {"x": node.texture_manager.original_sprite_size.x, "y": node.texture_manager.original_sprite_size.y},
  				"shader_colors": [node.texture_manager.shader_colors[0].to_html(), node.texture_manager.shader_colors[1].to_html(), node.texture_manager.shader_colors[2].to_html(), node.texture_manager.shader_colors[3].to_html()],
 				"shader_color_count": node.texture_manager.shader_color_count,
+				"shader_modulation": node.texture_manager.shader_modulation,
 				"init_health": node.init_health,
 				"init_score": node.init_score,
 				"init_pushable": node.init_pushable,

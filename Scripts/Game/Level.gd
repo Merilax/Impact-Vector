@@ -1,7 +1,7 @@
 extends Node2D
 class_name Game
 
-var current_build_number:int = 2;
+var current_build_number:int = 3;
 
 var campaign_path:String
 var campaign_num:String
@@ -753,6 +753,7 @@ func load_level(dir:String) -> bool:
 		brick.texture_manager.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
 		brick.texture_manager.shader_colors = [Color(item.shader_colors[0]), Color(item.shader_colors[1]), Color(item.shader_colors[2]), Color(item.shader_colors[3])];
 		brick.texture_manager.shader_color_count = item.shader_color_count;
+		brick.texture_manager.shader_modulation = item.shader_modulation;
 		brick.init_health = item.init_health;
 		brick.init_score = item.init_score;
 		brick.init_pushable = item.init_pushable;

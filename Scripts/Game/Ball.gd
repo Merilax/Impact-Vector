@@ -76,7 +76,7 @@ func _on_collide(collision:KinematicCollision2D):
 	if collided.is_in_group('Brick'):
 		if self.lost: return;
 		
-		if not collided.linear_velocity.is_zero_approx() and collided.linear_velocity.normalized().dot(collision.get_normal()) < 0:
+		if collided.is_indestructible and not collided.linear_velocity.is_zero_approx() and collided.linear_velocity.normalized().dot(collision.get_normal()) < 0:
 			dir += collided.linear_velocity/10; # Let the brick gently shove the ball if their directions match.
 		if dir.normalized().dot(collision.get_normal()) > 0: return; # Don't act if the Ball is being pushed.
 			

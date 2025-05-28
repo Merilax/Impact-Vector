@@ -33,6 +33,7 @@ func setup():
 	set_shader_color(2, shader_colors[1]);
 	set_shader_color(3, shader_colors[2]);
 	set_shader_color(4, shader_colors[3]);
+	set_shader_modulation(shader_modulation);
 
 func get_shader_brightness() -> float:
 	return texture_sprite.material.get_shader_parameter("brightness");

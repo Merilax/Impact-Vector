@@ -100,6 +100,8 @@ func hit(node:Node2D = null, amount:float = 0):
 func die():
 	if is_editor: return;
 	hitbox.disabled = true;
+	self.collision_layer = 0;
+	self.collision_mask = 0;
 	texture_manager.texture_sprite.hide();
 	if score_comp: score_comp.emit_score();
 	brick_destroyed.emit(self);
