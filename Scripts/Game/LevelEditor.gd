@@ -733,7 +733,7 @@ func refresh_brick_data_controls(brick:Brick):
 	data_options_ctrl.brick_can_collide_control.disabled = false;
 	data_options_ctrl.brick_scoreable_control.disabled = false;
 
-	if brick.init_pushable or brick.can_collide:
+	if brick.init_pushable:
 		data_options_ctrl.brick_path_group_control.editable = false;
 
 	if brick.is_indestructible:
@@ -885,7 +885,7 @@ func on_mouse_click(_viewport:Node, input:InputEvent, _shape_idx:int):
 					on_select_path_group(data_options_ctrl.brick_path_group_control.value, - 1, true);
 
 					#selected_brick.tween_shader_color(Color(1, 1, 1, 0), 0.2, true) # Bad, current shader ignores Alpha
-					selected_brick.tween_size(Vector2(0.7, 0.7), 0.1, true);
+					selected_brick.texture_manager.tween_size(Vector2(0.7, 0.7), 0.1, true);
 				else:
 					refresh_brick_data_controls(selected_brick);
 
@@ -1117,6 +1117,7 @@ func save_level() -> bool:
 	if not verify_valid_path(): return false;
 	if save_options_ctrl.level_name.text.is_empty():
 		save_options_ctrl.level_name.call_deferred("grab_focus");
+		saving_level = false;
 		return false;
 
 	if unsaved_progress:
@@ -1127,7 +1128,9 @@ func save_level() -> bool:
 		});
 		confirmation_popup.show();
 		await self.confirmation_popup_resolved;
-		if confirmation_popup_result == false: return false;
+		if confirmation_popup_result == false:
+			saving_level = false;
+			return false;
 
 	Logger.write(str("Saving level."), "LevelEditor");
 	saving_level = true;
@@ -1141,6 +1144,7 @@ func save_level() -> bool:
 	if scoreable_bricks <= 0:
 		notification_popup.dialog_text = "The level must contain at least one scoreable brick.";
 		notification_popup.show();
+		saving_level = false;
 		return false;
 
 	Logger.write(str("Generating level dictionary."), "LevelEditor");
@@ -1275,7 +1279,7 @@ func build_level_content_from_dictionary(level_dict:Dictionary) -> bool:
 		path.setup_steps();
 
 		for i:int in range(item.steps):
-			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
+			remote_offset.get_child(i).position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 	on_select_path(-1);
 	
 	for item:Dictionary in level_dict.spinpaths:
@@ -1368,7 +1372,7 @@ func get_dictionary_from_level_content() -> Dictionary:
 			var step_offset_position_collection := [];
 			for j:int in range(node.steps):
 				var step_offset:Node2D = node.transform_target.get_child(j);
-				var step_pos = {"x": step_offset.global_position.x, "y": step_offset.global_position.y};
+				var step_pos = {"x": step_offset.position.x, "y": step_offset.position.y};
 				step_offset_position_collection.append(step_pos);
 
 			level_dict.paths.append({
@@ -1385,9 +1389,9 @@ func get_dictionary_from_level_content() -> Dictionary:
 				var step_offset:Node2D = node.transform_target.get_child(j);
 				for brick:Brick in step_offset.get_children():
 					level_dict.bricks.append({
-						"global_position": {"x": brick.global_position.x, "y": brick.global_position.y},
-						"global_rotation_degrees": brick.global_rotation_degrees,
-						"global_scale": {"x": brick.global_scale.x, "y": brick.global_scale.y},
+						"position": {"x": brick.position.x, "y": brick.position.y},
+						"rotation_degrees": brick.rotation_degrees,
+						"scale": {"x": brick.scale.x, "y": brick.scale.y},
 						"hitbox_path": brick.hitbox_path,
 						"texture_path": brick.texture_manager.texture_path,
 						"original_sprite_size": {"x": brick.texture_manager.original_sprite_size.x, "y": brick.texture_manager.original_sprite_size.y},

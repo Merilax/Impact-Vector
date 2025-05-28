@@ -4,10 +4,11 @@ class_name TextureManager
 @export var texture_sprite:Polygon2D;
 @export var texture_path:String; # Must be set
 
-@export var shader_color_count:int = 1;
+@export var shader_color_count:int = 0;
 var brick:Brick;
 
 var shader_colors:Array[Color] = [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)];
+var shader_modulation:Color = Color(1,1,1,1);
 
 @export var original_sprite_size := Vector2(0, 0);
 
@@ -45,6 +46,7 @@ func get_shader_color_count() -> int:
 
 func set_shader_color_count(value:int):
 	texture_sprite.material.set_shader_parameter("color_count", value);
+	shader_color_count = value;
 
 func get_shader_color(channel:int) -> Color:
 	if channel < 1 or channel > 4: return Color(0,0,0,1);
@@ -52,7 +54,7 @@ func get_shader_color(channel:int) -> Color:
 
 func set_shader_color(channel:int, color:Color, store:bool = false):
 	if channel < 1 or channel > 4: return;
-	
+
 	texture_sprite.material.set_shader_parameter(str("target_color", channel), color);
 	if store:
 		shader_colors[channel-1] = color;	
@@ -66,13 +68,16 @@ func tween_brightness(brightness:float, duration:float, reset_after:bool = false
 		tween.tween_method(func(value): set_shader_brightness(value), brightness, previous_brightness, duration).set_delay(step_delay);
 
 func tween_shader_shift_by(channel:int, set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
+	if shader_color_count <= 0: # Use modulate instead if texture has no custom colour support.
+		tween_shader_modulation(set_color, duration, reset_after, looping, step_delay, loop_delay);
+		return;
+		
 	if channel < 0 or channel > 4: return;
-	var target_color:Color = shader_colors[channel] + set_color;
-	
-	target_color = target_color.clamp();
-	var tween:Tween = create_tween();
+	var target_color:Color = (shader_colors[channel] + set_color).clamp();
 
+	var tween:Tween = create_tween();
 	if looping: tween.set_loops();
+
 	if channel == 0: # All channels
 		var previous_colors := shader_colors.duplicate();
 		for i in range(1, 5):
@@ -89,10 +94,15 @@ func tween_shader_shift_by(channel:int, set_color:Color, duration:float, reset_a
 			tween.tween_property(texture_sprite, str("target_color", channel), previous_color, duration).set_delay(step_delay);
 
 func tween_shader_color(channel:int, set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
-	if channel < 0 or channel > 4: return;
-	var tween:Tween = create_tween();
+	if shader_color_count <= 0: # Use modulate instead if texture has no custom colour support.
+		tween_shader_modulation(set_color, duration, reset_after, looping, step_delay, loop_delay);
+		return;
 
+	if channel < 0 or channel > 4: return;
+
+	var tween:Tween = create_tween();
 	if looping: tween.set_loops();
+
 	if channel == 0: # All channels
 		var previous_colors := shader_colors.duplicate();
 		for i in range(1, 5):
@@ -107,6 +117,23 @@ func tween_shader_color(channel:int, set_color:Color, duration:float, reset_afte
 		tween.tween_method(func(value): set_shader_color(channel, value), previous_color, set_color, duration).set_delay(loop_delay);
 		if reset_after:
 			tween.tween_method(func(value): set_shader_color(channel, value), set_color, previous_color, duration).set_delay(step_delay);
+
+func tween_shader_modulation(set_color:Color, duration:float, reset_after:bool = false, looping:bool = false, step_delay:float = 0, loop_delay:float = 0):
+	var tween:Tween = create_tween();
+	if looping: tween.set_loops();
+
+	var previous_modulation := get_shader_modulation();
+	tween.tween_method(func(value): set_shader_modulation(value), previous_modulation, set_color, duration).set_delay(loop_delay);
+	if reset_after:
+		tween.tween_method(func(value): set_shader_modulation(value), set_color, previous_modulation, duration).set_delay(step_delay);
+
+func get_shader_modulation() -> Color:
+	return texture_sprite.material.get_shader_parameter("modulate");
+
+func set_shader_modulation(color:Color, store:bool = false):
+	texture_sprite.material.set_shader_parameter("modulate", color);
+	if store:
+		shader_modulation = color;
 
 func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, force:bool = false) -> bool:
 	if tweening_size and not force: return false;

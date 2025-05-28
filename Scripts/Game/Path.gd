@@ -3,7 +3,7 @@ class_name BrickPath
 
 var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 
-@export var speed:float = 100;
+@export var speed:float = 75;
 @export var looped:bool = false;
 @export var apply_rotation:bool = false;
 @export var steps:float = 1;

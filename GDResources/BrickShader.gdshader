@@ -1,11 +1,12 @@
 shader_type canvas_item;
 
-uniform int color_count: hint_range(0, 4, 1);
-uniform vec4 target_color1: source_color;
-uniform vec4 target_color2: source_color;
-uniform vec4 target_color3: source_color;
-uniform vec4 target_color4: source_color;
+uniform int color_count: hint_range(0, 4, 1) = 0;
+uniform vec4 target_color1: source_color = vec4(1,1,1,1);
+uniform vec4 target_color2: source_color = vec4(1,1,1,1);
+uniform vec4 target_color3: source_color = vec4(1,1,1,1);
+uniform vec4 target_color4: source_color = vec4(1,1,1,1);
 uniform float brightness : hint_range(-1, 1) = 0;
+uniform vec4 modulate: source_color = vec4(1,1,1,1);
 
 mat4 brightnessMatrix( float _brightness ) {
     return mat4( vec4(1, 0, 0, 0),
@@ -59,5 +60,5 @@ void fragment() {
 			}
 		}
 	}
-	COLOR = tex * brightnessMatrix( brightness );
+	COLOR = tex * brightnessMatrix( brightness ) * modulate;
 }

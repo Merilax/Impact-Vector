@@ -3,7 +3,7 @@ class_name Ball
 
 var damage :float = 1;
 var speed :float = 700;
-var pushing_velocity:Vector2 = Vector2.ZERO;
+var last_collider_velocity:Vector2 = Vector2.ZERO;
 
 var lost:bool = false;
 var on_paddle:bool = false;
@@ -35,70 +35,56 @@ func _ready():
 	
 	diameter = collision_shape.shape.radius;
 
-var collision_registered_this_frame:bool = false;
-var collided_array:Array = [];
 func _physics_process(delta):
-	prev_dir = dir;
 	velocity = dir.normalized() * speed * speed_mult
-	if pushing_velocity.length() > velocity.length():
-		velocity = pushing_velocity;
 		
-	if self.freeze == true: return;
 	var depenetration_test := move_and_collide(Vector2.ZERO, true);
 	if depenetration_test:
+		var pen_collider := depenetration_test.get_collider();
+
 		if self.lost: return;
-		if depenetration_test.get_collider() is RigidBody2D: 
-			pushing_velocity = depenetration_test.get_collider().linear_velocity;
+		if pen_collider.is_in_group("Brick"):
+			last_collider_velocity = pen_collider.linear_velocity;
+
 			var space_state := get_world_2d().direct_space_state;
 			var query := PhysicsShapeQueryParameters2D.new();
 			query.collide_with_areas = false;
 			query.collision_mask = self.collision_mask;
 			query.shape = collision_shape.shape.duplicate();
-			if not is_corrosive:
-				for i in range(1, 100):
-					query.transform = Transform2D(0, self.global_position + (pushing_velocity.normalized() * i));
-					if space_state.intersect_shape(query, 1).size() == 0:
-						self.global_position += pushing_velocity.normalized() * i;
-						dir += pushing_velocity/500;
-						_on_collide(depenetration_test);
-						break;
-			else:
-				pushing_velocity = Vector2.ZERO;
-				_on_collide(depenetration_test);
 
-	var collision := move_and_collide(velocity * delta);
+			if pen_collider.is_indestructible or not is_corrosive:
+				for i in range(1, 100):
+					query.transform = Transform2D(0, self.global_position + (depenetration_test.get_normal().normalized() * i));
+					if space_state.intersect_shape(query, 1).size() == 0:
+						self.global_position += depenetration_test.get_normal().normalized() * i;
+						break;
+
+	var collision := move_and_collide(velocity * delta, true);
 	if collision:
 		_on_collide(collision);
-
-	# var collision_happened := move_and_slide();
-	# if collision_happened:
-		# var collision = get_last_slide_collision();
-		# _on_collide(collision);
-	if collision_registered_this_frame:
-	# else:
-		collided_array.clear();
-		pushing_velocity = Vector2.ZERO;
-		collision_registered_this_frame = false;
-
+		
 	if world_border:
 		self.global_position.x = clampf(self.global_position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
 		self.global_position.y = clampf(self.global_position.y, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
+
+	if self.freeze == true: return;
+	self.global_position += velocity * delta;
 
 func _on_collide(collision:KinematicCollision2D):
 	var collided = collision.get_collider();
 		
 	if collided.is_in_group('Brick'):
 		if self.lost: return;
-		if prev_dir.normalized().dot(collision.get_normal()) > 0: return;
-		if collided in collided_array: return;
-		collided_array.append(collided);
-		collision_registered_this_frame = true;
+		
+		if not collided.linear_velocity.is_zero_approx() and collided.linear_velocity.normalized().dot(collision.get_normal()) < 0:
+			dir += collided.linear_velocity/10; # Let the brick gently shove the ball if their directions match.
+		if dir.normalized().dot(collision.get_normal()) > 0: return; # Don't act if the Ball is being pushed.
 			
 		if self.is_explosive: self.damage_area();
 		else: collided.hit(self, get_damage());
 		
-		if collided.is_indestructible: bounce(collision);
-		elif not is_corrosive: bounce(collision);
+		if collided.is_indestructible or not is_corrosive: bounce(collision);
+
 		if collided.init_pushable:
 			collided.apply_impulse(velocity, collision.get_position() - collided.global_position);
 
@@ -110,13 +96,9 @@ func _on_collide(collision:KinematicCollision2D):
 		collided.hit(self);
 		bounce(collision);
 
-# func launch_ball(angle:Vector2):
-	# velocity = angle.normalized() * speed * speed_mult;
-	# self.freeze = false;
-
 func bounce(collision:KinematicCollision2D):
-	# return;
-	dir = prev_dir.bounce(collision.get_normal());
+	if freeze: return;
+	dir = dir.bounce(collision.get_normal());
 	
 	if abs(dir.y) < 0.05:
 		dir.y = randf_range(-0.1, 0.1);
