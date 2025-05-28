@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_2t1k8"]
 
 [node name="SpinPath" type="VBoxContainer" node_paths=PackedStringArray("path_number", "path_speed", "path_looped", "apply_rotation", "path_steps", "offset_by", "rotate_by", "apply_rotation_equally", "create_path_button", "delete_path_button")]
+visible = false
 offset_right = 194.0
 offset_bottom = 144.0
 script = ExtResource("1_0freg")
@@ -73,7 +74,7 @@ text = "Path speed"
 [node name="PathSpeed" type="SpinBox" parent="HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
-max_value = 50.0
+max_value = 75.0
 value = 50.0
 rounded = true
 alignment = 2

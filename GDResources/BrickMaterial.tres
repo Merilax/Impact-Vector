@@ -11,3 +11,4 @@ shader_parameter/target_color2 = Color(1, 1, 1, 1)
 shader_parameter/target_color3 = Color(1, 1, 1, 1)
 shader_parameter/target_color4 = Color(1, 1, 1, 1)
 shader_parameter/brightness = 0.0
+shader_parameter/modulate = Color(1, 1, 1, 1)

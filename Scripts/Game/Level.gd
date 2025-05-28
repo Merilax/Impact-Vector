@@ -480,7 +480,7 @@ func init_brick(brick, set_hidden:bool = false):
 
 		if brick.scoreable: brick_count += 1;
 		if not brick.is_indestructible:
-			if randi() % 101 <= 20: # Pickup spawn %
+			if randi() % 101 <= 25: # Pickup spawn % (under)
 				var pickup_comp:PickupComponent = PickupComp.instantiate();
 				brick.add_child(pickup_comp);
 				brick.pickup_comp = pickup_comp;
@@ -706,7 +706,7 @@ func load_level(dir:String) -> bool:
 		path.setup_steps();
 
 		for i:int in range(item.steps):
-			remote_offset.get_child(i).global_position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
+			remote_offset.get_child(i).position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 		
 		level_paths.append(path);
 	
@@ -726,8 +726,6 @@ func load_level(dir:String) -> bool:
 		level_content_paths.add_child(spinpath, true);
 		spinpath.position = Vector2(item.position.x, item.position.y);
 		spinpath.rotation_degrees = item.rotation_degrees;
-
-
 
 		level_spinpaths.append(spinpath);
 

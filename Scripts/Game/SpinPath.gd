@@ -3,7 +3,7 @@ class_name SpinPath
 
 var PathPointVisual = preload("uid://bkbhsiv24h3ro");
 
-@export var speed:float = 100;
+@export var speed:float = 75;
 @export var looped:bool = false;
 @export var apply_rotation:bool = true;
 @export var steps:float = 1;

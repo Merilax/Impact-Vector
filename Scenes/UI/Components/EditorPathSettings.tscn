@@ -71,6 +71,7 @@ text = "Path speed"
 [node name="PathSpeed" type="SpinBox" parent="HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
+max_value = 75.0
 value = 50.0
 rounded = true
 alignment = 2
