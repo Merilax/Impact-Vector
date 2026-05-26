@@ -1,0 +1,289 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlo0wejwxqii0"]
+
+[ext_resource type="Script" uid="uid://c1ykdsekov41t" path="res://Scripts/UI/Components/EditorPathSettings.gd" id="1_8ww4a"]
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_osdqj"]
+[ext_resource type="Theme" uid="uid://ds81bykqvpxnr" path="res://GDResources/Themes/EditorButtonTheme.tres" id="1_qekrq"]
+[ext_resource type="Texture2D" uid="uid://b8duuhc30bxrx" path="res://Assets/Visuals/Icons/add.svg" id="2_8ww4a"]
+[ext_resource type="Texture2D" uid="uid://dwb31n8kx132x" path="res://Assets/Visuals/Icons/delete.svg" id="3_3j4ph"]
+[ext_resource type="Texture2D" uid="uid://dygfcocq1apxy" path="res://Assets/Visuals/Icons/path.svg" id="3_i8wxg"]
+[ext_resource type="Texture2D" uid="uid://dspb6xb3f0ys3" path="res://Assets/Visuals/Icons/fan.svg" id="4_8tl2e"]
+[ext_resource type="Texture2D" uid="uid://bla8o38kuix0l" path="res://Assets/Visuals/UI/CheckButtonUnchecked.png" id="5_anur8"]
+[ext_resource type="Texture2D" uid="uid://cqqeekdlk1dxy" path="res://Assets/Visuals/UI/CheckButtonChecked.png" id="6_osdqj"]
+
+[node name="Action" type="VBoxContainer" node_paths=PackedStringArray("action_id", "action_type", "create_action_button", "delete_action_button", "move_controls", "move_speed", "move_looped", "move_apply_rotation", "move_steps", "spin_controls", "spin_speed", "spin_looped", "spin_apply_rotation", "spin_steps", "spin_offset_by", "spin_rotate_by", "spin_apply_rotation_equally")]
+offset_right = 356.0
+offset_bottom = 450.0
+theme = ExtResource("1_osdqj")
+script = ExtResource("1_8ww4a")
+action_id = NodePath("HBoxContainer/PathNumber")
+action_type = NodePath("HBoxContainer2/OptionButton")
+create_action_button = NodePath("HBoxContainer2/CreateAction")
+delete_action_button = NodePath("HBoxContainer2/DeleteAction")
+move_controls = NodePath("Movement Action")
+move_speed = NodePath("Movement Action/Speed")
+move_looped = NodePath("Movement Action/Looped")
+move_apply_rotation = NodePath("Movement Action/ApplyRotation")
+move_steps = NodePath("Movement Action/Steps")
+spin_controls = NodePath("Spin Action")
+spin_speed = NodePath("Spin Action/Speed")
+spin_looped = NodePath("Spin Action/Looped")
+spin_apply_rotation = NodePath("Spin Action/ApplyRotation")
+spin_steps = NodePath("Spin Action/Steps")
+spin_offset_by = NodePath("Spin Action/OffsetBy")
+spin_rotate_by = NodePath("Spin Action/RotateBy")
+spin_apply_rotation_equally = NodePath("Spin Action/ApplyRotationEqually")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Selected action group:"
+
+[node name="PathNumber" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+max_value = 0.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="VSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+clip_text = true
+expand_icon = true
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "Movement"
+popup/item_0/icon = ExtResource("3_i8wxg")
+popup/item_0/id = 0
+popup/item_1/text = "Spin"
+popup/item_1/icon = ExtResource("4_8tl2e")
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="CreateAction" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_qekrq")
+icon = ExtResource("2_8ww4a")
+icon_alignment = 1
+expand_icon = true
+
+[node name="DeleteAction" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_qekrq")
+icon = ExtResource("3_3j4ph")
+icon_alignment = 1
+expand_icon = true
+
+[node name="VSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Movement Action" type="GridContainer" parent="."]
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="SpeedLabel" type="Label" parent="Movement Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path speed"
+
+[node name="Speed" type="SpinBox" parent="Movement Action"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 75.0
+value = 50.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="StepsLabel" type="Label" parent="Movement Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path steps"
+
+[node name="Steps" type="SpinBox" parent="Movement Action"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 50.0
+value = 1.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="LoopedLabel" type="Label" parent="Movement Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path looped"
+
+[node name="Looped" type="TextureButton" parent="Movement Action"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_anur8")
+texture_pressed = ExtResource("6_osdqj")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ApplyRotLabel" type="Label" parent="Movement Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Apply rotation"
+
+[node name="ApplyRotation" type="TextureButton" parent="Movement Action"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_anur8")
+texture_pressed = ExtResource("6_osdqj")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Spin Action" type="GridContainer" parent="."]
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="SpeedLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path speed"
+
+[node name="Speed" type="SpinBox" parent="Spin Action"]
+layout_mode = 2
+mouse_filter = 1
+max_value = 75.0
+value = 50.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="StepsLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path steps"
+
+[node name="Steps" type="SpinBox" parent="Spin Action"]
+layout_mode = 2
+mouse_filter = 1
+min_value = 1.0
+max_value = 50.0
+value = 1.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="LoopedLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path looped"
+
+[node name="Looped" type="TextureButton" parent="Spin Action"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_anur8")
+texture_pressed = ExtResource("6_osdqj")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ApplyRotationLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Unlock brick rotation"
+
+[node name="ApplyRotation" type="TextureButton" parent="Spin Action"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_anur8")
+texture_pressed = ExtResource("6_osdqj")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="OffsetLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Initial angle"
+
+[node name="OffsetBy" type="SpinBox" parent="Spin Action"]
+layout_mode = 2
+mouse_filter = 1
+min_value = -360.0
+max_value = 360.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="RotateLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rotation angle"
+
+[node name="RotateBy" type="SpinBox" parent="Spin Action"]
+layout_mode = 2
+mouse_filter = 1
+min_value = -360.0
+max_value = 360.0
+rounded = true
+alignment = 2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="ApplyRotEquallyLabel" type="Label" parent="Spin Action"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Apply rotation equally"
+
+[node name="ApplyRotationEqually" type="TextureButton" parent="Spin Action"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+toggle_mode = true
+texture_normal = ExtResource("5_anur8")
+texture_pressed = ExtResource("6_osdqj")
+ignore_texture_size = true
+stretch_mode = 5

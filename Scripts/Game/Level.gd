@@ -1,20 +1,19 @@
 extends Node2D
 class_name Game
 
-var current_build_number:int = 3;
+var current_build_number: int = 3;
 
-var campaign_path:String
-var campaign_num:String
-var level_num:String
+var campaign_is_custom: bool;
+var campaign_num: String
+var level_num: String
 
-var return_to_editor:bool = false;
+var return_to_editor: bool = false;
 
-var save_state:SaveGameData;
-var level_paths:Array[BrickPath];
-var level_spinpaths:Array[SpinPath];
+var save_state: SaveGameData;
+var action_groups: Array = [];
 
 # Higher weight = More spawns.
-var pickup_list:Array = [ 
+var pickup_list: Array = [
 	{
 		"type": "slow",
 		"texture": "uid://caxekbaxpxgvy",
@@ -68,7 +67,7 @@ var pickup_list:Array = [
 	{
 		"type": "triple",
 		"texture": "uid://ci00dwenehe35",
-		"weight": 6
+		"weight": 5
 	},
 	{
 		"type": "death",
@@ -76,7 +75,7 @@ var pickup_list:Array = [
 		"weight": 2
 	}
 ]
-var total_pickup_weight:int = 0;
+var total_pickup_weight: int = 0;
 var pickup_texture_base_good = load("uid://da0tvxra80xwp");
 var pickup_texture_base_bad = load("uid://yke3nrm7jmix");
 
@@ -89,69 +88,72 @@ var PickupComp = preload("uid://c5ebe7unjhv0x");
 var PickupScene = preload("uid://dydm2dhj7p1nd");
 var BulletScene = preload("uid://dlvm63pvf1dym");
 
-var paddle:Paddle;
+var paddles: Array[Paddle] = [];
+var player_paddles: Array[Paddle] = [];
 
-var score:int = 0;
-var unsaved_score:int = score;
+var score: int = 0;
+var unsaved_score: int = score;
 
-var lives:int = 3;
-var total_lives:int = 3;
-var unsaved_lives:int = lives;
-var unsaved_total_lives:int = total_lives;
+var lives: int = 3;
+var total_lives: int = 3;
+var unsaved_lives: int = lives;
+var unsaved_total_lives: int = total_lives;
 
-var brick_count:int = 0;
-var ball_count:int = 0;
+var balls: Array[Ball] = [];
+var brick_count: int = 0;
+var ball_count: int = 0;
 
-var ball_speed_mult:float = 1;
-var visual_speed_mult:int = 3;
-var ball_size_level:int = 0;
+var ball_speed_mult: float = 1;
+var visual_speed_mult: int = 3;
+var ball_size_level: int = 0;
+var paddle_size_level: int = 0;
 
-var can_spawn_balls:bool = true;
-var ball_stuck_timer:SceneTreeTimer;
+var can_spawn_balls: bool = true;
+var ball_stuck_timer: SceneTreeTimer;
 
 var BallLifeRect = preload("uid://b5s0bxfmkxjel");
 
 @export_group("Nodes")
-@export var world_border:WorldBorder;
-@export var ball_container:Node2D;
-@export var paddle_container:Node2D;
-@export var level_content:Node2D;
-@export var level_content_bricks:Node2D;
-@export var level_content_paths:Node2D;
-@export var background:Parallax2D;
-@export var transition_gates:Node2D;
+@export var world_border: WorldBorder;
+@export var ball_container: Node2D;
+@export var paddle_container: Node2D;
+@export var level_content: Node2D;
+@export var level_content_bricks: Node2D;
+@export var level_content_paths: Node2D;
+@export var background: Parallax2D;
+@export var transition_gates: Node2D;
 
 @export_group("UI")
-@export var escape_layer:EscapeLayer;
-@export var game_over_layer:GameOverLayer;
-@export var notification_text_window:Label;
-@export var notification_window_timer:Timer;
-@export var notification_score_window:Label;
-@export var score_counter:Label;
-@export var life_counter:HBoxContainer;
+@export var escape_layer: EscapeLayer;
+@export var game_over_layer: GameOverLayer;
+@export var notification_text_window: Label;
+@export var notification_window_timer: Timer;
+@export var notification_score_window: Label;
+@export var score_counter: Label;
+@export var life_counter: HBoxContainer;
 
 @export_group("UI meters")
-@export var speed_meter:TextureProgressBar;
-@export var magnet_meter:TextureProgressBar;
-@export var ball_modifier_meter:TextureProgressBar;
-@export var ball_modifier_timer:Timer;
-var ball_modifier_timer_progress:float = 0;
-var ball_modifier_timer_active:bool = false;
+@export var speed_meter: TextureProgressBar;
+@export var magnet_meter: TextureProgressBar;
+@export var ball_modifier_meter: TextureProgressBar;
+@export var ball_modifier_timer: Timer;
+var ball_modifier_timer_progress: float = 0;
+var ball_modifier_timer_active: bool = false;
 
 @export_group("Constructor arm nodes")
-@export var arm_horizontal:Node2D;
-@export var arm_vertical:Node2D;
-@export var arm_placer:Node2D;
-@export var arm_placer_sound:AudioStreamPlayer;
+@export var arm_horizontal: Node2D;
+@export var arm_vertical: Node2D;
+@export var arm_placer: Node2D;
+@export var arm_placer_sound: AudioStreamPlayer;
 
-var transitioning_levels:bool = false;
-var animating_arm:bool = false;
-var skip_animations:bool = false;
-var tabbed_out:bool = false;
+var transitioning_levels: bool = false;
+var animating_arm: bool = false;
+var skip_animations: bool = false;
+var tabbed_out: bool = false;
 
-signal game_over_signal(game_won:bool);
-signal change_ball_speed(mult:float, update_counter:bool);
-signal change_ball_size(level:int);
+signal game_over_signal(game_won: bool);
+signal change_ball_speed(mult: float, update_counter: bool);
+signal change_ball_size(level: int);
 
 func _ready():
 	transitioning_levels = true;
@@ -161,10 +163,11 @@ func _ready():
 	get_window().focus_entered.connect(func(): tabbed_out = false);
 	tabbed_out = not get_window().has_focus();
 
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+	Input.use_accumulated_input = true;
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED;
 	$"DeathZone".body_entered.connect(_on_body_entered_death_zone);
 
-	escape_layer.menu_closed.connect(func(): if paddle: DisplayServer.warp_mouse(paddle.global_position)); # Hacky
+	# escape_layer.menu_closed.connect(func(): if paddle: DisplayServer.warp_mouse(paddle.global_position)); # Hacky
 	escape_layer.exit.connect(go_back);
 	game_over_layer.exit.connect(go_back);
 
@@ -180,15 +183,16 @@ func _ready():
 	if save_state and not return_to_editor:
 		load_gamedata();
 	else:
-		await load_level(campaign_path + campaign_num + "/" + level_num + "/");
-
-	get_tree().node_added.connect(_on_child_entered_tree);
+		var base_dir;
+		if campaign_is_custom: base_dir = "user://Levels/";
+		else: base_dir = "res://Levels/";
+		await load_level(base_dir + campaign_num + "/" + level_num + "/");
 
 	transitioning_levels = false;
-	await spawn_paddle();
-	spawn_ball(true, true);
+	var paddle = await spawn_paddle();
+	spawn_ball_on_paddle(paddle);
 
-	Logger.write(str("Ready."), "Level");
+	LoggerFile.write(str("Ready."), "Level");
 
 	if ball_modifier_timer: ball_modifier_timer.timeout.connect(timeout_ball_modifier_timer);
 
@@ -197,67 +201,100 @@ func _ready():
 func _process(delta):
 	if animating_arm and (Input.is_action_pressed("mouse_primary") or Input.is_action_pressed("mouse_secondary")):
 		skip_animations = true;
-
-	if paddle and not tabbed_out:
-		# var mouse_pos = DisplayServer.mouse_get_position();
-		var mouse_pos = get_viewport().get_mouse_position();
-		if (mouse_pos.x < world_border.wall_left.global_position.x + (paddle.width / 2)):
-			get_viewport().warp_mouse(Vector2i(roundi(world_border.wall_left.global_position.x + (paddle.width / 2)) , mouse_pos.y));
-		if (mouse_pos.x > world_border.wall_right.global_position.x - (paddle.width / 2)):
-			get_viewport().warp_mouse(Vector2i(roundi(world_border.wall_right.global_position.x - (paddle.width / 2)) , mouse_pos.y));
 	
 	if ball_modifier_meter and ball_modifier_timer_active:
 		ball_modifier_timer_progress += delta;
 		ball_modifier_meter.value = (ball_modifier_timer_progress - ball_modifier_timer.wait_time) * 8 / (0 - ball_modifier_timer.wait_time);
 
-func spawn_paddle() -> bool:
-	paddle = PaddleScene.instantiate();
+func spawn_paddle() -> Paddle:
+	var paddle = PaddleScene.instantiate();
 	paddle.world_border = world_border;
 	paddle.target_ball_container = ball_container;
 	paddle_container.add_child(paddle, true);
 	paddle.global_position = Vector2(750, 1120);
-	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1040, 0.6).finished;
-	DisplayServer.warp_mouse(Vector2i(750, 1040));
+	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(paddle, "global_position:y", 1030, 0.6).finished;
 
-	if paddle.has_signal("spawn_bullet"):
-		paddle.spawn_bullet.connect(spawn_bullet);
+	paddle.spawn_bullet.connect(spawn_bullet);
+	paddle.caught_pickup.connect(process_pickup);
 
+	player_paddles.append(paddle);
 	paddle.follow_mouse = true;
-	return true;
+	return paddle;
 
-func spawn_ball(on_paddle:bool, centered:bool = false, pos:Vector2 = Vector2.ZERO, dir:Vector2 = Vector2.ZERO, add_to_count:bool = true, copy_from:Ball = null):
-	if not can_spawn_balls: return;
-	if ball_count >= 40: return;
-	if copy_from and copy_from.lost: return;
+func spawn_bot_paddle(from_paddle: Paddle) -> Paddle:
+	var found_ball = find_ball_for_bot();
+	if not found_ball:
+		return ;
+
+	var paddle = PaddleScene.instantiate();
+	paddle.world_border = world_border;
+	paddle.target_ball_container = ball_container;
+	paddle.is_bot = true;
+	paddle.modulate = Color(0.6, 0.77, 1.0, 0.275);
+	paddle.request_new_ball_target.connect(_on_bot_request_new_ball.bind(paddle));
+	paddle.target_ball = found_ball;
+
+	paddle_container.add_child(paddle, true);
+	paddle.global_position.x = from_paddle.global_position.x;
+
+	paddles.append(paddle);
+	return paddle;
+
+func spawn_ball_on_paddle(paddle: Paddle) -> Ball:
+	var ball: Ball = BallScene.instantiate();
+	ball.world_border = world_border;
+	ball.speed_mult = ball_speed_mult;
+
+	ball_container.add_child(ball);
+	ball_count += 1;
+	paddle.receive_ball(ball, true);
+
+	paddle.set_magnet(true);
+	return ball;
+
+func spawn_ball(pos: Vector2 = Vector2.ZERO, dir: Vector2 = Vector2.ZERO, add_to_count: bool = true, copy_from: Ball = null) -> Ball:
+	if not can_spawn_balls: return ;
+	if ball_count >= 40: return ;
+	if copy_from and copy_from.lost: return ;
+	
+	var ball: Ball = BallScene.instantiate();
+	ball.world_border = world_border;
+	ball_container.add_child(ball);
+
+	ball.dir = dir;
+	ball.global_position = pos;
+	ball.freeze = false;
+
+	ball.speed_mult = ball_speed_mult;
+	if copy_from:
+		ball.set_speed(copy_from.speed_mult);
+		ball.set_size(copy_from.size_level);
+		# if copy_from.is_explosive: ball.set_explosive(true); # Disabled by personal choice.
+		# if copy_from.is_corrosive: ball.set_corrosive(true);
+
+	if add_to_count:
+		ball_count += 1;
+	
+	return ball;
+
+func _on_bot_request_new_ball(paddle: Paddle):
+	var ball := find_ball_for_bot();
+	if ball:
+		paddle.target_ball = ball;
 	else:
-		var ball:Ball = BallScene.instantiate();
-		ball.world_border = world_border;
-		ball_container.call_deferred("add_child", ball);
+		paddle.die();
 
-		ball.dir = dir;
-		if on_paddle:
-			if centered:
-				paddle.add_magnet(true);
-			ball.set_deferred("global_position", pos);
-			paddle.call_deferred("receive_ball", ball, centered);
-			#ball.set_deferred("position", Vector2(paddle.global_position.x, paddle.global_position.y - (paddle.get_node("Sprite2D").get_rect().size.y * paddle.get_node("Sprite2D").scale.y)))
-		else:
-			ball.set_deferred("global_position", pos);
-			ball.set_deferred("freeze", false);
+func find_ball_for_bot() -> Ball:
+	for ball in balls:
+		if not ball.bot_target and not ball.lost:
+			return ball;
+	# Repeat if all balls are being targetted by bots.
+	for ball in balls:
+		if not ball.lost:
+			return ball;
+	return null;
 
-		#ball.reset_stuck_timer.connect(_on_ball_reset_stuck_timer)
-
-		ball.speed_mult = ball_speed_mult;
-		if copy_from:
-			ball.call_deferred("set_speed", copy_from.speed_mult);
-			ball.call_deferred("set_size", copy_from.size_level);
-			# if copy_from.is_explosive: ball.set_explosive(true); # Disabled by personal choice.
-			# if copy_from.is_corrosive: ball.set_corrosive(true);
-
-		if add_to_count:
-			ball_count += 1
-
-func _on_body_entered_death_zone(node:Node2D):
+func _on_body_entered_death_zone(node: Node2D):
 	if node.is_in_group("Pickup"):
 		await get_tree().create_timer(3).timeout;
 		if node:
@@ -268,17 +305,19 @@ func _on_body_entered_death_zone(node:Node2D):
 			node.die();
 
 	if node.is_in_group('Ball'):
-		if node.on_paddle: return;
+		if node.on_paddle: return ;
+		balls.erase(node);
 		node.die();
 
-		if transitioning_levels: return;
+		if transitioning_levels: return ;
 
 		ball_count -= 1;
 
 		if ball_count <= 0:
 			lives -= 1;
-			kill_paddle();
+			kill_paddle(player_paddles[0]); # TODO
 
+			# Process lives counter
 			if lives >= 3:
 				var livesVar = life_counter.get_node("LivesVar");
 				if lives == 3:
@@ -290,37 +329,30 @@ func _on_body_entered_death_zone(node:Node2D):
 			else:
 				life_counter.get_child(0).queue_free();
 			
-			await get_tree().create_timer(1).timeout;
-			node.die();
+			await get_tree().create_timer(2).timeout;
+			get_tree().call_group("PickUp", "queue_free");
 
 			if lives <= 0:
-				await get_tree().create_timer(2).timeout;
-				get_tree().call_group("PickUp", "queue_free");
 				game_over(false);
-			else:
-				await get_tree().create_timer(1).timeout;
-				get_tree().call_group("PickUp", "queue_free");
-				if not paddle:
-					await spawn_paddle();
-
-				spawn_ball(true, true);
-				await get_tree().process_frame;
-				reset_speed_mult();
-				ball_size_level = 0;
+				return ;
 				
-				if paddle: paddle.reposition_magnetised_balls();
+			reset_speed_mult();
+			ball_size_level = 0;
 
-func spawn_bullet(pos:Vector2, dir:float):
-	var bullet:Bullet = BulletScene.instantiate()
+			var paddle = await spawn_paddle();
+			spawn_ball_on_paddle(paddle);
+
+func spawn_bullet(pos: Vector2, dir: float):
+	var bullet: Bullet = BulletScene.instantiate()
 	level_content.add_child(bullet)
 	bullet.global_position = pos
 	bullet.rotation = dir
 	bullet.freeze = false
 
 func add_life():
-	var livesVar:Label
+	var livesVar: Label
 	if lives == 3:
-		for item:Node in life_counter.get_children()	:
+		for item: Node in life_counter.get_children():
 			item.queue_free()
 		life_counter.add_child(BallLifeRect.instantiate())
 		var newLabel = Label.new()
@@ -339,134 +371,113 @@ func add_life():
 	else:
 		life_counter.add_child(BallLifeRect.instantiate())
 
-func add_score(amount:int):
-	score_counter.add_score(amount)
+func add_score(amount: int):
+	score_counter.add_score(amount);
 
-	var previous:int = score
-	score += amount
+	var previous: int = score;
+	score += amount;
 
 	@warning_ignore("integer_division")
 	if floori(previous / 10000) < floori(score / 10000):
 		add_life(); # Extra life every 10000 score.
 
-func _on_brick_destroyed(brick:Brick):
+func _on_brick_destroyed(brick: Brick):
 	if brick.scoreable: brick_count -= 1
 	if brick_count <= 0:
 		win();
 
-func _on_ball_reset_stuck_timer(free_timer:bool): # Multiply balls if nothing meaningful was hit in 30 seconds. Unsure if I want to continue with this.
-	return
-	@warning_ignore("unreachable_code")
-	ball_stuck_timer.free()
-	if free_timer: return
+func _on_spawn_pickup(global_pos: Vector2, type: String, texture: String):
+	var pickup: Pickup = PickupScene.instantiate();
+	pickup.type = type;
+	pickup.get_node("Sprite2D").texture = load(texture);
+	level_content.add_child(pickup);
+	pickup.global_position = global_pos;
 
-	ball_stuck_timer = get_tree().create_timer(30, false)
-
-	if ball_count == 1:
-		await ball_stuck_timer.timeout
-
-func _on_spawn_pickup(global_pos:Vector2, type:String, texture:String):
-	var pickup:Pickup = PickupScene.instantiate()
-	pickup.type = type
-	pickup.get_node("Sprite2D").texture = load(texture)
-	level_content.add_child(pickup)
-	pickup.global_position = global_pos
-
-func notify(display_text:String, display_score:String):
+func notify(display_text: String, display_score: String):
 	#notification_window_timer.stop();
 	notification_text_window.text = display_text;
 	notification_score_window.text = display_score;
 	notification_window_timer.start();
 
-func game_over(game_won:bool):
-	escape_layer.forbid_unescape = true; # Don't let the Escape key do anything anymore, it's over. 
-	Logger.write(str("Game over."), "Level");
+func game_over(game_won: bool):
+	escape_layer.forbid_unescape = true; # Don't let the Escape key do anything anymore, it's over.
+	LoggerFile.write(str("Game over."), "Level");
 	can_spawn_balls = false
 	if game_won == true:
 		DirAccess.remove_absolute("user://SaveGameData.tres");
-		Logger.write(str("Deleted game in progress data."), "Level");
+		LoggerFile.write(str("Deleted game in progress data."), "Level");
 	game_over_signal.emit(game_won);
 
 func win():
-	Logger.write(str("Transitioning levels."), "Level");
+	LoggerFile.write(str("Transitioning levels."), "Level");
 	transitioning_levels = true;
 	can_spawn_balls = false;
 
 	var stored_speed_mult = ball_speed_mult;
 
-	if not return_to_editor:
-		create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 2.5);
-		await get_tree().create_timer(2.5).timeout;
-	else: 
-		create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, 1);
-		await get_tree().create_timer(1).timeout;
+	var slowdown_time = 2.5;
+	if return_to_editor:
+		slowdown_time = 1;
 
-	if not return_to_editor: await transition_gates.close_transition_walls();
+	create_tween().tween_method(func(speed): change_ball_speed.emit(speed, false), stored_speed_mult, 0, slowdown_time);
+	await get_tree().create_timer(slowdown_time).timeout;
+
+	if return_to_editor:
+		go_back();
+
+	await transition_gates.close_transition_walls();
 
 	get_tree().call_group("Ball", "queue_free");
 	get_tree().call_group("PickUp", "queue_free");
-	# get_tree().call_group("Brick", "queue_free");
 
-	if return_to_editor: go_back();
+	for pad in player_paddles:
+		kill_paddle(pad, true);
 
 	ball_count = 0;
 	ball_speed_mult = 1; # TODO Add difficulty.
 	reset_speed_mult();
 	ball_size_level = 0;
 	change_ball_size.emit(ball_size_level);
-	if paddle: paddle.reposition_magnetised_balls();
+	magnet_meter.value = 0;
 
 	unsaved_score = score;
 	unsaved_lives = lives;
 	unsaved_total_lives = total_lives;
 	
-	var next_level_num:String = "0";
-	
-	if campaign_path.contains("res://"):
-		next_level_num = str(BaseCampaignManager.find_next_level(campaign_path + campaign_num + '/', level_num.to_int()));
-	else: next_level_num = str(CampaignManager.find_next_level(campaign_path + campaign_num , level_num.to_int()));
-	
-	if next_level_num == "0" or not FileAccess.file_exists(campaign_path + campaign_num + "/" + next_level_num + "/level.json"):
-		game_over(true);
-		return;
+	var next_level_num: String = "0";
 
-	background.retrigger();
+	var base_dir;
+	if campaign_is_custom: base_dir = "user://Levels/";
+	else: base_dir = "res://Levels/";
+
+	next_level_num = str(CampaignManager.find_next_level(base_dir + campaign_num, level_num.to_int()));
+	
+	if next_level_num == "0" or not FileAccess.file_exists(base_dir + campaign_num + "/" + next_level_num + "/level.json"):
+		game_over(true);
+		return ;
+
 	await get_tree().create_timer(.75).timeout;
 	await transition_gates.open_transition_walls();
 		
-	var level_loaded_success := await load_level(campaign_path + campaign_num + "/" + next_level_num + "/");
+	var level_loaded_success := await load_level(base_dir + campaign_num + "/" + next_level_num + "/");
 	if not level_loaded_success:
 		game_over(true);
-		return;
+		return ;
 	
-	Logger.write(str("Next level found: ", next_level_num), "Level");
+	LoggerFile.write(str("Next level found: ", next_level_num), "Level");
 
 	level_num = next_level_num;
 	save_gamedata();
 
 	transitioning_levels = false;
 	skip_animations = false;
-	if is_instance_valid(paddle):
-		paddle.reset_powers();
-	else:
-		await spawn_paddle();
+
+	var paddle = await spawn_paddle();
+
 	can_spawn_balls = true;
-	spawn_ball(true, true);
+	spawn_ball_on_paddle(paddle);
 
-func _on_child_entered_tree(node:Node):
-	if node.is_in_group('Ball'):
-		if paddle: paddle.reposition_magnetised_balls();
-		if not self.is_connected('change_ball_speed', node.set_speed):
-			change_ball_speed.connect(node.set_speed);
-		if not self.is_connected('change_ball_size', node.set_size):
-			change_ball_size.connect(node.set_size);
-		# change_ball_speed.emit(ball_speed_mult, false);
-		# change_ball_size.emit(ball_size_level);
-
-	if node.is_in_group('PickUp'):
-		node.trigger_pickup.connect(process_pickup);
-
-func init_brick(brick, set_hidden:bool = false):
+func init_brick(brick, set_hidden: bool = false):
 	if brick.is_in_group('Brick'):
 		brick.setup(false);
 		if set_hidden: brick.hide();
@@ -481,27 +492,32 @@ func init_brick(brick, set_hidden:bool = false):
 		if brick.scoreable: brick_count += 1;
 		if not brick.is_indestructible:
 			if randi() % 101 <= 25: # Pickup spawn % (under)
-				var pickup_comp:PickupComponent = PickupComp.instantiate();
+				var pickup_comp: PickupComponent = PickupComp.instantiate();
 				brick.add_child(pickup_comp);
 				brick.pickup_comp = pickup_comp;
 				brick.pickup_comp.shader_target = brick;
 
 				var random_weight = randi() % total_pickup_weight + 1;
-				var weight_sum:int = 0;
+				var weight_sum: int = 0;
 				for i in range(0, pickup_list.size()):
 					weight_sum += pickup_list[i].weight;
 					if random_weight <= weight_sum:
 						brick.pickup_comp.pickup_type = pickup_list[i].type;
 						brick.pickup_comp.pickup_sprite = pickup_list[i].texture;
-						break;
+						break ;
 
-func kill_paddle():
-	if is_instance_valid(paddle):
-		paddle.die();
-		magnet_meter.value = 0;
+func kill_paddle(paddle: Paddle, _immediately: bool = false):
+	var paddles_copy := paddles.duplicate();
+	for pad in paddles:
+		if pad.team == paddle.team:
+			pad.die();
+			paddles_copy.erase(pad);
+	paddles = paddles_copy;
+	player_paddles.erase(paddle);
+	paddle.die();
 
-var arm_tweener:Tween;
-func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
+var arm_tweener: Tween;
+func position_arm(pos: Vector2, play_sound: bool = true) -> bool:
 	if skip_animations:
 		if arm_tweener: arm_tweener.kill();
 		arm_horizontal.global_position.y = -100;
@@ -522,9 +538,9 @@ func position_arm(pos:Vector2, play_sound:bool = true) -> bool:
 	await get_tree().create_timer(.04).timeout;
 	return true;
 
-func process_pickup(type:String):
-	if transitioning_levels: return;
-	if not is_instance_valid(paddle): return;
+func process_pickup(type: String, paddle: Paddle):
+	if transitioning_levels: return ;
+	if not is_instance_valid(paddle): return ;
 	# TODO SFX each
 	match type.to_lower():
 		'speed':
@@ -538,7 +554,7 @@ func process_pickup(type:String):
 		"magnet":
 			notify("MAGNET STRENGTH UP", "200 POINTS");
 			add_score(200);
-			add_magnet();
+			add_magnet(paddle);
 		"turrets":
 			notify("RELOAD GUNS", "200 POINTS");
 			add_score(200);
@@ -547,26 +563,40 @@ func process_pickup(type:String):
 		"death":
 			notify("QUESTIONABLE\nLIFE CHOICES", "2000 POINTS");
 			add_score(2000);
-			kill_paddle();
+			kill_paddle(paddle);
 		"triple":
 			notify("TRIPLE BALLS", "200 POINTS");
 			add_score(100);
-			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
-				if ball.lost: continue;
+			for ball in balls:
+				if ball.lost: continue ;
 				if ball.on_paddle:
-					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(PI/8), true, ball);
-					spawn_ball(false, false, ball.global_position, Vector2.UP.rotated(-PI/8), true, ball);
-				else:	
-					spawn_ball(false, false, ball.global_position, ball.dir.rotated(PI/8), true, ball);
-					spawn_ball(false, false, ball.global_position, ball.dir.rotated(-PI/8), true, ball);
+					spawn_ball(ball.global_position, Vector2.UP.rotated(PI / 8), true, ball);
+					spawn_ball(ball.global_position, Vector2.UP.rotated(-PI / 8), true, ball);
+				else:
+					spawn_ball(ball.global_position, ball.dir.rotated(PI / 8), true, ball);
+					spawn_ball(ball.global_position, ball.dir.rotated(-PI / 8), true, ball);
 		"wide":
 			notify("BIGGER PADDLE", "100 POINTS");
 			add_score(100);
-			paddle.adjust_size(true);
+			if paddle_size_level < 2:
+				paddle_size_level += 1;
+				for pad in player_paddles:
+					if pad.team == paddle.team:
+						paddle.adjust_size(paddle_size_level);
+				for pad in paddles:
+					if pad.team == paddle.team:
+						paddle.adjust_size(paddle_size_level);
 		"narrow":
 			notify("SMALLER PADDLE", "250 POINTS");
 			add_score(200);
-			paddle.adjust_size(false);
+			if paddle_size_level > -2:
+				paddle_size_level -= 1;
+				for pad in player_paddles:
+					if pad.team == paddle.team:
+						paddle.adjust_size(paddle_size_level);
+				for pad in paddles:
+					if pad.team == paddle.team:
+						paddle.adjust_size(paddle_size_level);
 		"big":
 			notify("BIGGER BALLS", "100 POINTS");
 			add_score(100);
@@ -580,42 +610,42 @@ func process_pickup(type:String):
 			add_score(200);
 			start_ball_modifier_timer(20);
 			ball_modifier_meter.get_parent().get_child(0).texture = load("uid://r8aenxq3msk3");
-			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+			for ball in balls:
 				ball.set_explosive(true);
 		"corrosive":
 			notify("CORROSIVE BALL", "200 POINTS");
 			add_score(200);
 			start_ball_modifier_timer(20);
 			ball_modifier_meter.get_parent().get_child(0).texture = load("uid://di5m567wacjyy");
-			for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+			for ball in balls:
 				ball.set_corrosive(true);
 
-func start_ball_modifier_timer(time:float):
-	ball_modifier_meter.get_parent().get_child(0).modulate = Color(1,1,1,1);
-	ball_modifier_meter.modulate = Color(1,1,1,1);
+func start_ball_modifier_timer(time: float):
+	ball_modifier_meter.get_parent().get_child(0).modulate = Color(1, 1, 1, 1);
+	ball_modifier_meter.modulate = Color(1, 1, 1, 1);
 	ball_modifier_timer_progress = 0;
 	ball_modifier_timer_active = true;
 	ball_modifier_timer.start(time);
 
 func timeout_ball_modifier_timer():
-	ball_modifier_meter.get_parent().get_child(0).modulate = Color(.4,.4,.4,1);
-	ball_modifier_meter.modulate = Color(.4,.4,.4,1);
+	ball_modifier_meter.get_parent().get_child(0).modulate = Color(.4, .4, .4, 1);
+	ball_modifier_meter.modulate = Color(.4, .4, .4, 1);
 	ball_modifier_timer_progress = 0;
 	ball_modifier_timer_active = false;
 	ball_modifier_meter.get_parent().get_child(0).texture = pickup_texture_base_good;
 	clear_ball_modifiers();
 
 func clear_ball_modifiers():
-	for ball:Ball in get_tree().get_nodes_in_group('Ball'):
+	for ball in balls:
 		ball.clear_modifiers();
 
-func add_ball_speed_mult(add:bool = true):
-	var previous:float = ball_speed_mult;
-	var amount:float = .1;
-	var visual_amount:int = 1; 
+func add_ball_speed_mult(add: bool = true):
+	var previous: float = ball_speed_mult;
+	var amount: float = .1;
+	var visual_amount: int = 1;
 	if not add:
-		amount = -amount;
-		visual_amount = -visual_amount;
+		amount = - amount;
+		visual_amount = - visual_amount;
 
 	ball_speed_mult = clampf(ball_speed_mult + amount, 0.7, 1.5);
 	visual_speed_mult = clampi(visual_speed_mult + visual_amount, 0, 8); # TODO Split into two meters, 1,5 green, 0,-3 red, neutral difficulty at 1
@@ -624,17 +654,21 @@ func add_ball_speed_mult(add:bool = true):
 		add_score(800);
 		notify("SENSATIONAL!\nMAX SPEED", "1000 POINTS"); # 200 speedup + 800 bonus
 
+	for ball in balls:
+		ball.set_speed(ball_speed_mult);
+
 	if speed_meter: speed_meter.value = visual_speed_mult;
 
-func add_ball_size_level(add:bool = true):
-	var amount:int = 1;
+func add_ball_size_level(add: bool = true):
+	var amount: int = 1;
 
 	if not add:
-		amount = -amount;
+		amount = - amount;
 	
 	ball_size_level = clampi(ball_size_level + amount, -2, 2);
-	change_ball_size.emit(ball_size_level);
-	if paddle: paddle.reposition_magnetised_balls();
+	
+	for ball in balls: ball.set_size(ball_size_level);
+	for paddle in player_paddles: paddle.reposition_magnetised_balls();
 
 func reset_speed_mult(): # TODO Add difficulty
 	ball_speed_mult = 1;
@@ -642,52 +676,60 @@ func reset_speed_mult(): # TODO Add difficulty
 	if speed_meter: speed_meter.value = visual_speed_mult;
 	change_ball_speed.emit(ball_speed_mult, true) # Reset speed
 
-func add_magnet():
-	if is_instance_valid(paddle):
-		var power:int = paddle.add_magnet();
-		if magnet_meter: magnet_meter.value = power;
+func add_magnet(paddle: Paddle):
+	for pad in player_paddles:
+		if pad.team == paddle.team:
+			var power: int = paddle.add_magnet();
+			if magnet_meter: magnet_meter.value = power;
 
-func load_level(dir:String) -> bool:
-	Logger.write(str("Loading level at ", dir), "Level");
+func load_level(dir: String) -> bool:
+	LoggerFile.write(str("Loading level at ", dir), "Level");
 	if not DirAccess.dir_exists_absolute(dir): return false;
 
-	# background.retrigger(); # Might tie to level data in the future.
+	background.retrigger(); # Might tie to level data in the future.
 
 	for node in level_content_bricks.get_children(): if is_instance_valid(node): node.queue_free();
-	for node in level_content_paths.get_children():  if is_instance_valid(node): node.queue_free();
+	for node in level_content_paths.get_children(): if is_instance_valid(node): node.queue_free();
 	await get_tree().process_frame; # Just in case.
 
-	var level_data:LevelData = load(dir + "/data.tres");
+	var level_data: LevelData = load(dir + "data.tres");
 
-	var reader := FileAccess.open(dir + "/level.json", FileAccess.READ);
+	var reader := FileAccess.open(dir + "level.json", FileAccess.READ);
 	var level_dict = JSON.parse_string(reader.get_as_text());
 	reader.close();
 
 	if level_data.build_number < current_build_number:
-		var directory := str(campaign_path, campaign_num, "/", level_num)
+		var base_dir;
+		if campaign_is_custom: base_dir = "user://Levels/";
+		else: base_dir = "res://Levels/";
+
+		var directory := str(base_dir, campaign_num, "/", level_num, "/")
 		var upgrade_successful := Utils.upgrade_level_version(level_data, level_dict, current_build_number, directory);
 		if not upgrade_successful:
 			return false;
 
 	await position_arm(Vector2(-100, -100), false); # Reset once to sync every arm piece.
 
-	Logger.write(str("Initializing Paths."), "Level");
-	for item:Dictionary in level_dict.paths:
-		var path:BrickPath = BrickPathScene.instantiate();
+	LoggerFile.write(str("Initializing Paths."), "Level");
+	for item: Dictionary in level_dict.paths:
+		var path: BrickPath = BrickPathScene.instantiate();
 		path.speed = item.speed;
 		path.looped = item.looped;
 		path.apply_rotation = item.apply_rotation;
 		path.steps = item.steps;
 
-		for i:int in range(item.points.size()):
-			var point:Dictionary = item.points[i];
+		var curve = Curve2D.new();
+		for i: int in range(item.points.size()):
+			var point: Dictionary = item.points[i];
 			var p_pos = Vector2(point.pos.x, point.pos.y);
 			var p_in = Vector2.ZERO;
 			var p_out = Vector2.ZERO;
 			if i > 0: p_in = Vector2(point.in.x, point.in.y);
 			if i < item.points.size() - 1: p_out = Vector2(point.out.x, point.out.y);
 
-			path.curve.add_point(p_pos, p_in, p_out);
+			curve.add_point(p_pos, p_in, p_out);
+
+		path.curve = curve;
 
 		var remote_offset := Node2D.new();
 		remote_offset.name = item.transform_target;
@@ -696,7 +738,7 @@ func load_level(dir:String) -> bool:
 
 		path.transform_target = remote_offset;
 
-		for i:int in range(item.steps):
+		for i: int in range(item.steps):
 			var step_offset := Node2D.new();
 			step_offset.name = str("StepOffset", i);
 			remote_offset.add_child(step_offset, true);
@@ -705,17 +747,17 @@ func load_level(dir:String) -> bool:
 		level_content_paths.add_child(path, true);
 		path.setup_steps();
 
-		for i:int in range(item.steps):
+		for i: int in range(item.steps):
 			remote_offset.get_child(i).position = Vector2(item.step_positions[i].x, item.step_positions[i].y);
 		
-		level_paths.append(path);
+		action_groups.append(path);
 	
 	get_tree().call_group("PathLineVisual", "hide");
 	get_tree().call_group("PathPointVisual", "hide");
 
-	Logger.write(str("Initializing SpinPaths."), "Level");
-	for item:Dictionary in level_dict.spinpaths:
-		var spinpath:SpinPath = SpinPathScene.instantiate();
+	LoggerFile.write(str("Initializing SpinPaths."), "Level");
+	for item: Dictionary in level_dict.spinpaths:
+		var spinpath: SpinPath = SpinPathScene.instantiate();
 		spinpath.speed = item.speed;
 		spinpath.looped = item.looped;
 		spinpath.apply_rotation = item.apply_rotation;
@@ -727,7 +769,7 @@ func load_level(dir:String) -> bool:
 		spinpath.position = Vector2(item.position.x, item.position.y);
 		spinpath.rotation_degrees = item.rotation_degrees;
 
-		level_spinpaths.append(spinpath);
+		action_groups.append(spinpath);
 
 		var remote_offset := Node2D.new();
 		remote_offset.name = item.transform_target;
@@ -744,16 +786,16 @@ func load_level(dir:String) -> bool:
 	get_tree().call_group("SpinPathVisual", "hide");
 	get_tree().call_group("SpinPath", "setup");
 
-	Logger.write(str("Initializing Bricks."), "Level");
-	for item:Dictionary in level_dict.bricks:
-		var brick:Brick = BrickScene.instantiate();
+	LoggerFile.write(str("Initializing Bricks."), "Level");
+	for item: Dictionary in level_dict.bricks:
+		var brick: Brick = BrickScene.instantiate();
 
 		brick.hitbox_path = item.hitbox_path;
 		brick.texture_manager.texture_path = item.texture_path;
 		brick.texture_manager.original_sprite_size = Vector2(item.original_sprite_size.x, item.original_sprite_size.y);
 		brick.texture_manager.shader_colors = [Color(item.shader_colors[0]), Color(item.shader_colors[1]), Color(item.shader_colors[2]), Color(item.shader_colors[3])];
 		brick.texture_manager.shader_color_count = item.shader_color_count;
-		brick.texture_manager.shader_modulation = item.shader_modulation;
+		# brick.texture_manager.shader_modulation = Color(item.shader_modulation);
 		brick.init_health = item.init_health;
 		brick.init_score = item.init_score;
 		brick.init_pushable = item.init_pushable;
@@ -765,22 +807,22 @@ func load_level(dir:String) -> bool:
 		brick.polygon_texture_offset = Vector2(item.polygon_texture_offset.x, item.polygon_texture_offset.y);
 		brick.polygon_texture_scale = Vector2(item.polygon_texture_scale.x, item.polygon_texture_scale.y);
 		brick.is_path_clone = item.is_path_clone;
-		brick.path_group = item.path_group as int;
-		brick.spin_group = item.spin_group as int;
+		brick.action_group = item.action_group as int;
 		
 		level_content_bricks.add_child(brick, true);
 		brick.owner = level_content;
 		brick.scale = Vector2(item.scale.x, item.scale.y);
 
-		if brick.path_group >= 0:
-			var step_offset = level_content_bricks.find_child(str("RemoteOffsetPath", brick.path_group)).get_child(item.path_step as int);
-			brick.reparent(step_offset);
-
-		if brick.spin_group >= 0:
-			var step_offset = level_content_bricks.find_child(str("RemoteOffsetSpinPath", brick.spin_group)).get_child(item.spin_step as int);
-			brick.reparent(step_offset);
-			level_spinpaths[brick.spin_group].bricks.append({"brick": brick, "step": item.spin_step as int});
-
+		if brick.action_group >= 0:
+			match typeof(action_groups[brick.action_group]):
+				BrickPath:
+					var step_offset = level_content_bricks.find_child(str("RemoteOffsetPath", brick.action_group)).get_child(item.action_step as int);
+					brick.reparent(step_offset);
+				SpinPath:
+					var step_offset = level_content_bricks.find_child(str("RemoteOffsetSpinPath", brick.action_group)).get_child(item.action_step as int);
+					brick.reparent(step_offset);
+					action_groups[brick.action_group].bricks.append({"brick": brick, "step": item.action_step as int});
+		
 		brick.position = Vector2(item.position.x, item.position.y);
 		brick.rotation_degrees = item.rotation_degrees;
 		init_brick(brick, true);
@@ -789,7 +831,7 @@ func load_level(dir:String) -> bool:
 	get_tree().call_group("SpinPath", "reposition_steps_for_play");
 
 	animating_arm = true;
-	for brick:Brick in get_tree().get_nodes_in_group("Brick"):
+	for brick: Brick in get_tree().get_nodes_in_group("Brick"):
 		await position_arm(brick.global_position);
 		brick.show();
 	animating_arm = false;
@@ -801,27 +843,33 @@ func load_level(dir:String) -> bool:
 	await position_arm(Vector2(-100, -100), false);
 	await get_tree().create_timer(.5).timeout;
 
-	Logger.write(str("Level finished loading with ", brick_count, " bricks."), "Level");
+	LoggerFile.write(str("Level finished loading with ", brick_count, " bricks."), "Level");
 	return true;
 
 func save_gamedata():
-	Logger.write(str("Saving game in progress to storage."), "Level");
-	var data:SaveGameData = SaveGameData.new();
-	data.level_path = campaign_path + "/" + campaign_num + "/" + level_num;
+	LoggerFile.write(str("Saving game in progress to storage."), "Level");
+	var data: SaveGameData = SaveGameData.new();
+	data.campaign_is_custom = campaign_is_custom;
+	data.campaign_num = campaign_num;
+	data.level_num = level_num;
 	data.score = unsaved_score;
 	data.lives = unsaved_lives;
 	data.total_lives = unsaved_total_lives;
 	
 	var err = ResourceSaver.save(data, "user://SaveGameData.tres");
 	if err != OK:
-		Logger.write("Level data save error: " + error_string(err), "Level");
+		LoggerFile.write("Level data save error: " + error_string(err), "Level");
 		ResourceSaver.save(data, "user://SaveGameData.tres");
 
 	return true;
 
 func load_gamedata():
-	Logger.write(str("Loading game in progress from storage."), "Level");
-	await load_level(save_state.level_path);
+	LoggerFile.write(str("Loading game in progress from storage."), "Level");
+	var base_dir;
+	if save_state.campaign_is_custom: base_dir = "user://Levels/";
+	else: base_dir = "res://Levels/";
+
+	await load_level(base_dir + save_state.campaign_num + "/" + save_state.level_num + "/");
 	score = save_state.score;
 	lives = save_state.lives;
 	total_lives = save_state.total_lives;
@@ -831,10 +879,9 @@ func load_gamedata():
 
 func go_back():
 	if return_to_editor:
-		var LevelEditorScene:PackedScene = load("uid://bhtapwwblyog3");
-		var editor:LevelEditor = LevelEditorScene.instantiate();
+		var LevelEditorScene: PackedScene = load("uid://bhtapwwblyog3");
+		var editor: LevelEditor = LevelEditorScene.instantiate();
 
-		editor.campaign_path = campaign_path;
 		editor.campaign_num = campaign_num;
 
 		add_sibling(editor);
@@ -843,8 +890,8 @@ func go_back():
 	else:
 		save_gamedata(); # TODO Warn and ask.
 
-		var MainMenu:PackedScene = load("uid://c0a7y1ep5uibb");
-		var main_menu:Control = MainMenu.instantiate();
+		var MainMenu: PackedScene = load("uid://c0a7y1ep5uibb");
+		var main_menu: Control = MainMenu.instantiate();
 
 		add_sibling(main_menu);
 		self.queue_free();

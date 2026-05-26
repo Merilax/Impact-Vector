@@ -194,7 +194,7 @@ func add_and_position_brick(brick:Brick, create_first_transform:bool = true, ign
 		var new_brick := brick;
 		
 		if i > 0: # Original brick must keep position.
-			new_brick = UtilsNode.duplicate_bug_bypass(brick, true);
+			new_brick = UtilsNode.duplicate_brick(brick, true);
 			transform_target.get_child(i).add_child(new_brick, true);
 
 			new_brick.position = brick.position.rotated(stepper.rotation);

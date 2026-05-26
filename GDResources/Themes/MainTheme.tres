@@ -132,8 +132,7 @@ thickness = 2
 vertical = true
 
 [resource]
-default_base_scale = 2.0
-default_font_size = 26
+default_font_size = 20
 Button/styles/focus = SubResource("StyleBoxFlat_1fd6g")
 Button/styles/hover = SubResource("StyleBoxFlat_nivbn")
 Button/styles/normal = SubResource("StyleBoxFlat_pvnlk")
@@ -150,6 +149,7 @@ CheckButton/styles/hover = SubResource("StyleBoxEmpty_y1e2g")
 CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_fn0ue")
 CheckButton/styles/normal = SubResource("StyleBoxEmpty_ece8h")
 CheckButton/styles/pressed = SubResource("StyleBoxEmpty_eh7rn")
+GridContainer/constants/v_separation = 5
 HSeparator/constants/separation = 10
 HSeparator/styles/separator = SubResource("StyleBoxLine_oiydr")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_hhdrc")

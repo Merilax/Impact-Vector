@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Impact Vector"
+config/name="Impact Vector (Redot)"
+config/tags=PackedStringArray("breakout")
 run/main_scene="res://Scenes/Root.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("26.1", "Forward Plus", "Redot")
 run/max_fps=60
 config/icon="uid://bic26ot13tys2"
 
@@ -26,16 +27,20 @@ MusicPlayer="*res://Scenes/MusicPlayer.tscn"
 GlobalVars="*res://Scripts/GlobalVars.gd"
 UtilsNode="*res://Scripts/UtilsNode.gd"
 
+[debug]
+
+settings/gdscript/always_track_call_stacks=true
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
 window/size/resizable=false
+window/size/borderless=true
 window/size/sharp_corners=true
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
-window/ios/allow_high_refresh_rate=false
 
 [dotnet]
 

@@ -22,7 +22,7 @@ func setup():
 	texture_sprite.texture_scale = brick.polygon_texture_scale;
 
 	if not load(texture_path):
-		Logger.write(str("Texture path does not exist: ", texture_path), "Brick");
+		LoggerFile.write(str("Texture path does not exist: ", texture_path), "Brick");
 		return;
 	set_texture_sprite(texture_path, false);
 	rescale_sprite();
@@ -33,7 +33,7 @@ func setup():
 	set_shader_color(2, shader_colors[1]);
 	set_shader_color(3, shader_colors[2]);
 	set_shader_color(4, shader_colors[3]);
-	set_shader_modulation(shader_modulation);
+	# set_shader_modulation(shader_modulation);
 
 func get_shader_brightness() -> float:
 	return texture_sprite.material.get_shader_parameter("brightness");
@@ -154,7 +154,7 @@ func tween_size(new_scale:Vector2, duration:float, reset_after:bool = false, for
 func set_texture_sprite(path:String, rescale:bool = false):
 	var texture = load(path);
 	if not texture:
-		Logger.write(str("Texture path does not exist: ", path), "Brick");
+		LoggerFile.write(str("Texture path does not exist: ", path), "Brick");
 		return;
 	texture_sprite.texture = texture;
 	texture_path = path;

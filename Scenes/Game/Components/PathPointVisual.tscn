@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bkbhsiv24h3ro"]
 
-[ext_resource type="Texture2D" uid="uid://dj47yk43bh08r" path="res://Assets/Visuals/icon.svg" id="1_6lcj5"]
+[ext_resource type="Texture2D" uid="uid://dsu0haq6wk23k" path="res://Assets/Visuals/Icons/triangle.svg" id="1_ufwm6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eecio"]
 size = Vector2(28, 28)
@@ -12,8 +12,10 @@ collision_mask = 0
 metadata/point_idx = 0
 
 [node name="PathPointVisual" type="Sprite2D" parent="."]
-scale = Vector2(0.21875, 0.21875)
-texture = ExtResource("1_6lcj5")
+position = Vector2(-1.1920929e-07, -1.390775e-06)
+rotation = 3.1415882
+scale = Vector2(0.6666666, 0.6666666)
+texture = ExtResource("1_ufwm6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_eecio")

@@ -2,7 +2,7 @@
 
 [ext_resource type="PhysicsMaterial" uid="uid://8vvceopkngr3" path="res://GDResources/Wall.tres" id="1_g5dda"]
 [ext_resource type="Script" uid="uid://lka5qbnsai4d" path="res://Scripts/Game/Brick.gd" id="2_yncpm"]
-[ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="3_wd6an"]
+[ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="3_6l75g"]
 [ext_resource type="Script" uid="uid://dkttui87dye4h" path="res://Scripts/Game/Components/TextureManager.gd" id="4_6l75g"]
 [ext_resource type="AudioStream" uid="uid://7xuugeu05ffq" path="res://Assets/Audio/SFX/bfh1_metal_hit_05.ogg" id="4_o56l3"]
 [ext_resource type="PackedScene" uid="uid://bntsqk84a7bea" path="res://Scenes/Game/Components/HealthComp.tscn" id="5_mnfrv"]
@@ -35,7 +35,7 @@ destroy_sound_comp = NodePath("DestroySoundComp")
 editor_hitbox = NodePath("EditorHitboxComp")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-material = ExtResource("3_wd6an")
+material = ExtResource("3_6l75g")
 
 [node name="TextureManager" type="Node2D" parent="." node_paths=PackedStringArray("texture_sprite")]
 script = ExtResource("4_6l75g")

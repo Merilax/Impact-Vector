@@ -31,12 +31,14 @@ func open_menu():
 	show();
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
 	get_tree().paused = true;
+	Input.use_accumulated_input = true;
 
 func close_menu():
 	hide();
 	if forbid_unescape: return;
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN;
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED;
 	menu_closed.emit();
+	Input.use_accumulated_input = false;
 	get_tree().paused = false;
 
 func open_settings():
@@ -50,7 +52,5 @@ func close_settings():
 
 func save_and_quit():
 	close_menu();
-
-	
 
 	exit.emit();

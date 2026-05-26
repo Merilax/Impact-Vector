@@ -6,6 +6,7 @@ var speed :float = 700;
 var last_collider_velocity:Vector2 = Vector2.ZERO;
 
 var lost:bool = false;
+var bot_target:bool = false;
 var on_paddle:bool = false;
 var freeze:bool = true;
 var dir:Vector2 = Vector2.ZERO;
@@ -38,34 +39,36 @@ func _ready():
 func _physics_process(delta):
 	velocity = dir.normalized() * speed * speed_mult
 		
-	var depenetration_test := move_and_collide(Vector2.ZERO, true);
+	var depenetration_test := move_and_collide(Vector2.ZERO, true); # What if it collides with multiple objects at once?
 	if depenetration_test:
-		var pen_collider := depenetration_test.get_collider();
-
 		if self.lost: return;
+
+		var pen_collider := depenetration_test.get_collider(); 
+
+		var space_state := get_world_2d().direct_space_state;
+		var query := PhysicsShapeQueryParameters2D.new();
+		query.collide_with_areas = false;
+		query.collision_mask = self.collision_mask;
+		query.shape = collision_shape.shape.duplicate();
+
 		if pen_collider.is_in_group("Brick"):
 			last_collider_velocity = pen_collider.linear_velocity;
 
-			var space_state := get_world_2d().direct_space_state;
-			var query := PhysicsShapeQueryParameters2D.new();
-			query.collide_with_areas = false;
-			query.collision_mask = self.collision_mask;
-			query.shape = collision_shape.shape.duplicate();
-
 			if pen_collider.is_indestructible or not is_corrosive:
-				for i in range(1, 100):
+				for i in range(1, 50):
 					query.transform = Transform2D(0, self.global_position + (depenetration_test.get_normal().normalized() * i));
 					if space_state.intersect_shape(query, 1).size() == 0:
 						self.global_position += depenetration_test.get_normal().normalized() * i;
 						break;
-
+		
+		if pen_collider.is_in_group("Wall"):
+			if world_border: # Consider moving this earlier in the logic. Worried about edge cases of Brick + Wall crushing.
+				self.global_position.x = clampf(self.global_position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
+				self.global_position.y = clampf(self.global_position.y, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
+			
 	var collision := move_and_collide(velocity * delta, true);
 	if collision:
-		_on_collide(collision);
-		
-	if world_border:
-		self.global_position.x = clampf(self.global_position.x, world_border.wall_left.global_position.x + collision_shape.shape.radius, world_border.wall_right.global_position.x - collision_shape.shape.radius);
-		self.global_position.y = clampf(self.global_position.y, world_border.wall_up.global_position.y + collision_shape.shape.radius, INF);
+		_on_collide(collision);	
 
 	if self.freeze == true: return;
 	self.global_position += velocity * delta;
@@ -88,9 +91,9 @@ func _on_collide(collision:KinematicCollision2D):
 		if collided.init_pushable:
 			collided.apply_impulse(velocity, collision.get_position() - collided.global_position);
 
-	if collided.is_in_group('Paddle'):
-		if self.lost: return;
-		collided.receive_ball(self);
+	# if collided.is_in_group('Paddle'):
+	# 	if self.lost: return;
+	# 	collided.receive_ball(self);
 
 	if collided.is_in_group("Wall"):
 		collided.hit(self);

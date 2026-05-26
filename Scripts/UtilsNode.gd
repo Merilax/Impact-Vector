@@ -3,7 +3,7 @@ extends Node
 var BrickScene = preload("uid://dtkn1xk6stg0v");
 
 # Use in place of Brick.duplicate() in Godot 4.3+, can't duplicate nodes with dynamically added children.
-func duplicate_bug_bypass(brick:Brick, as_editor:bool) -> Brick:
+func duplicate_brick(brick:Brick, as_editor:bool) -> Brick:
 	var new_brick:Brick = BrickScene.instantiate();
 
 	var temp_polygon = brick.texture_manager.texture_sprite.duplicate();
@@ -21,7 +21,7 @@ func duplicate_bug_bypass(brick:Brick, as_editor:bool) -> Brick:
 	new_brick.init_mass = brick.init_mass;
 	new_brick.init_pushable = brick.init_pushable;
 	new_brick.init_score = brick.init_score;
-	new_brick.path_group = brick.path_group;
+	new_brick.action_group = brick.action_group;
 	new_brick.is_path_clone = brick.is_path_clone;
 	new_brick.is_editor = brick.is_editor;
 	

@@ -3,12 +3,7 @@ class_name Pickup
 
 @export var type:String
 @export var falling_speed:int = 200
+@export var falling_dir:Vector2 = Vector2.DOWN;
 
-signal trigger_pickup(type:String)
-
-func _process(delta: float):
-	position += Vector2(0, falling_speed) * delta
-
-func send_signal():
-	trigger_pickup.emit(type)
-	queue_free()
+func _physics_process(delta: float):
+	self.global_position += Vector2(0, falling_speed) * delta

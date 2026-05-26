@@ -11,12 +11,13 @@ signal value_changed(value:float)
 func _ready():
 	range_slider.min_value = min_value;
 	range_slider.max_value = max_value;
+	range_slider.tick_count =  floori((max_value - min_value) / 10) + 1;
 
 func _on_value_changed(value:float) -> void:
 	if range_value_label:
-		range_value_label.text = str(roundi(value)) + '%'
+		range_value_label.text = str(roundi(value)) + '%';
 
 func _on_drag_ended(value_changed_flag:bool) -> void:
 	if value_changed_flag:
-		var value:float = range_slider.value
-		value_changed.emit(value)
+		var value:float = range_slider.value;
+		value_changed.emit(value);

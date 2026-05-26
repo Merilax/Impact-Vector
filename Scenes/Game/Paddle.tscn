@@ -1,51 +1,116 @@
-[gd_scene load_steps=16 format=3 uid="uid://bjjlgc7puyxfe"]
+[gd_scene load_steps=29 format=3 uid="uid://bjjlgc7puyxfe"]
 
 [ext_resource type="Script" uid="uid://bkdtbht80pap3" path="res://Scripts/Game/Paddle.gd" id="1_7bdbb"]
-[ext_resource type="Texture2D" uid="uid://dvwwmabobipqu" path="res://Assets/Visuals/Paddle.png" id="2_futbw"]
+[ext_resource type="Texture2D" uid="uid://u5pygcsobiwe" path="res://Assets/Visuals/Paddle/Paddle Base.png" id="2_560kt"]
 [ext_resource type="PackedScene" uid="uid://4lkk3bvqiyxk" path="res://Scenes/Game/Components/HitSoundComp.tscn" id="3_8j1ci"]
+[ext_resource type="Texture2D" uid="uid://ci2qy36auungv" path="res://Assets/Visuals/Paddle/Paddle Corner.png" id="3_x3vta"]
+[ext_resource type="Texture2D" uid="uid://r21serps47qo" path="res://Assets/Visuals/Paddle/Engine particle.png" id="4_y2ya6"]
 [ext_resource type="AudioStream" uid="uid://bd4eq5v6sj2g3" path="res://Assets/Audio/SFX/bfh1_hit_08.ogg" id="4_yd0vt"]
 [ext_resource type="AudioStream" uid="uid://d0a8nfaxxfi12" path="res://Assets/Audio/SFX/bfh1_metal_falling_04.ogg" id="5_nu7io"]
-[ext_resource type="Texture2D" uid="uid://dhobb8nxuhatk" path="res://Assets/Visuals/Minigun_.png" id="6_bfeil"]
-[ext_resource type="Script" uid="uid://bhc3dsstgbkhm" path="res://Scripts/Game/Components/TurretsComp.gd" id="6_hmvgb"]
-[ext_resource type="AudioStream" uid="uid://c42a22fl3ld2h" path="res://Assets/Audio/SFX/gunfire.ogg" id="8_mdpqr"]
+[ext_resource type="Texture2D" uid="uid://crxa4wymasaas" path="res://Assets/Visuals/Paddle/Paddle Engine.png" id="5_w7lyj"]
+[ext_resource type="Texture2D" uid="uid://dhobb8nxuhatk" path="res://Assets/Visuals/Paddle/Minigun_.png" id="6_x3vta"]
+[ext_resource type="Script" uid="uid://ctyp7yrx34rne" path="res://Scripts/Game/Components/TurretComp.gd" id="7_y2ya6"]
+[ext_resource type="AudioStream" uid="uid://c42a22fl3ld2h" path="res://Assets/Audio/SFX/gunfire.ogg" id="11_w7lyj"]
 
-[sub_resource type="Gradient" id="Gradient_560kt"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 0.113725, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_x3vta"]
-gradient = SubResource("Gradient_560kt")
-
-[sub_resource type="Curve" id="Curve_y2ya6"]
-_limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.8, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_0qvok"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_w7lyj"]
-curve = SubResource("Curve_y2ya6")
+[sub_resource type="CurveTexture" id="CurveTexture_qcr62"]
+curve = SubResource("Curve_0qvok")
+
+[sub_resource type="Gradient" id="Gradient_hdv5f"]
+offsets = PackedFloat32Array(0, 0.5089286)
+colors = PackedColorArray(0.14117648, 0.78431374, 1, 1, 0.7669565, 0.9841936, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_oru28"]
+gradient = SubResource("Gradient_hdv5f")
+
+[sub_resource type="Curve" id="Curve_kovux"]
+_data = [Vector2(0, 1), 0.0, -0.40308112, 0, 1, Vector2(1, 0.5969189), -0.40308112, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qd05d"]
+curve = SubResource("Curve_kovux")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4034h"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(360, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 10.0
+initial_velocity_min = -50.0
+initial_velocity_max = 100.0
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+scale_min = 0.14999999
+scale_max = 0.29999998
+scale_curve = SubResource("CurveTexture_qd05d")
+color_ramp = SubResource("GradientTexture1D_oru28")
+alpha_curve = SubResource("CurveTexture_qcr62")
 
 [sub_resource type="Curve" id="Curve_e83q6"]
-_limits = [0.0, 3.0, 0.0, 1.0]
-_data = [Vector2(0, 0), 0.0, 4.2, 0, 0, Vector2(1, 3), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_qn2ie"]
 curve = SubResource("Curve_e83q6")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4kcrd"]
+[sub_resource type="Gradient" id="Gradient_4kcrd"]
+colors = PackedColorArray(1, 0.95478255, 0, 1, 0.8234783, 0.22770965, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_we0gs"]
+gradient = SubResource("Gradient_4kcrd")
+
+[sub_resource type="Curve" id="Curve_p5xa8"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2n0no"]
+curve = SubResource("Curve_p5xa8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_560kt"]
+lifetime_randomness = 0.5
 particle_flag_disable_z = true
 direction = Vector3(0, 1, 0)
-spread = 20.0
-initial_velocity_min = 100.0
-initial_velocity_max = 150.0
-linear_accel_min = -40.0
-linear_accel_max = -40.0
-scale_over_velocity_max = 70.31
-scale_over_velocity_curve = SubResource("CurveTexture_qn2ie")
-color = Color(1, 1, 0.54902, 1)
-color_ramp = SubResource("GradientTexture1D_x3vta")
-hue_variation_curve = SubResource("CurveTexture_w7lyj")
+spread = 5.0
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_2n0no")
+color_ramp = SubResource("GradientTexture1D_we0gs")
+alpha_curve = SubResource("CurveTexture_qn2ie")
 
-[node name="Paddle" type="CharacterBody2D" node_paths=PackedStringArray("hit_sound_comp", "magnet_sound", "turrets_comp", "ball_container") groups=["Paddle"]]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xcr80"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 5.0
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_2n0no")
+color_ramp = SubResource("GradientTexture1D_we0gs")
+alpha_curve = SubResource("CurveTexture_qn2ie")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y2ya6"]
+resource_local_to_scene = true
+size = Vector2(190, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7lyj"]
+resource_local_to_scene = true
+size = Vector2(190, 17)
+
+[node name="Paddle" type="CharacterBody2D" node_paths=PackedStringArray("hit_sound_comp", "magnet_sound", "ball_container", "turret_comp_left", "turret_comp_right") groups=["Paddle"]]
 collision_layer = 2
 collision_mask = 4
 motion_mode = 1
@@ -53,65 +118,84 @@ platform_on_leave = 2
 script = ExtResource("1_7bdbb")
 hit_sound_comp = NodePath("HitSoundComp")
 magnet_sound = NodePath("MagnetSound")
-turrets_comp = NodePath("Sprite2D/TurretsComp")
-ball_container = NodePath("BallContainer")
+ball_container = NodePath("Sprites/BallContainer")
+turret_comp_left = NodePath("Sprites/Corner L/Turret L")
+turret_comp_right = NodePath("Sprites/Corner R/Turret R")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 6)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_futbw")
+[node name="Sprites" type="Node2D" parent="."]
+scale = Vector2(0.2, 0.2)
 
-[node name="RemoteTransformBalls" type="RemoteTransform2D" parent="Sprite2D"]
-remote_path = NodePath("../../BallContainer")
-update_rotation = false
-update_scale = false
+[node name="Base" type="Sprite2D" parent="Sprites"]
+texture = ExtResource("2_560kt")
 
-[node name="RemoteParticles" type="RemoteTransform2D" parent="Sprite2D"]
-position = Vector2(-134, 10)
-remote_path = NodePath("../../GPUParticles2D")
-update_rotation = false
-update_scale = false
+[node name="PaddleBaseParticles" type="GPUParticles2D" parent="Sprites/Base"]
+position = Vector2(0, -34.999996)
+scale = Vector2(0.99999964, 0.99999964)
+amount = 150
+texture = ExtResource("4_y2ya6")
+process_material = SubResource("ParticleProcessMaterial_4034h")
 
-[node name="RemoteParticles2" type="RemoteTransform2D" parent="Sprite2D"]
-position = Vector2(134, 10)
-remote_path = NodePath("../../GPUParticles2D2")
-update_rotation = false
-update_scale = false
+[node name="Corner L" type="Sprite2D" parent="Sprites"]
+position = Vector2(-365.00012, 61)
+texture = ExtResource("3_x3vta")
 
-[node name="TurretsComp" type="Node2D" parent="Sprite2D"]
+[node name="Engine L" type="Node2D" parent="Sprites/Corner L"]
+position = Vector2(-17, 50)
+rotation = 0.5235988
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Sprites/Corner L/Engine L"]
+position = Vector2(0, 50)
+scale = Vector2(0.99999994, 0.99999994)
+amount = 100
+texture = ExtResource("4_y2ya6")
+lifetime = 0.2
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_560kt")
+
+[node name="Engine L" type="Sprite2D" parent="Sprites/Corner L/Engine L"]
+scale = Vector2(1.0000001, 1.0000001)
+texture = ExtResource("5_w7lyj")
+
+[node name="Turret L" type="Sprite2D" parent="Sprites/Corner L" node_paths=PackedStringArray("fire_player")]
 visible = false
-position = Vector2(0, -13)
-scale = Vector2(2, 2)
-script = ExtResource("6_hmvgb")
-ammo = null
-reload = null
+position = Vector2(-134.99979, -30.999983)
+scale = Vector2(2.999999, 2.999999)
+texture = ExtResource("6_x3vta")
+script = ExtResource("7_y2ya6")
+fire_player = NodePath("../../../FireSound")
 
-[node name="GunL" type="Sprite2D" parent="Sprite2D/TurretsComp"]
-position = Vector2(-100, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_bfeil")
+[node name="Corner R" type="Sprite2D" parent="Sprites"]
+position = Vector2(365, 61)
+scale = Vector2(-1, 1)
+texture = ExtResource("3_x3vta")
 
-[node name="GunR" type="Sprite2D" parent="Sprite2D/TurretsComp"]
-position = Vector2(100, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_bfeil")
+[node name="Engine R" type="Node2D" parent="Sprites/Corner R"]
+position = Vector2(-17, 50)
+rotation = 0.5235988
 
-[node name="MuzzlePos" type="Node2D" parent="Sprite2D/TurretsComp"]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Sprites/Corner R/Engine R"]
+position = Vector2(0, 50)
+amount = 100
+texture = ExtResource("4_y2ya6")
+lifetime = 0.2
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_xcr80")
 
-[node name="Marker2D" type="Marker2D" parent="Sprite2D/TurretsComp/MuzzlePos"]
-position = Vector2(-100, -15)
+[node name="Engine R" type="Sprite2D" parent="Sprites/Corner R/Engine R"]
+scale = Vector2(1.0000001, 1.0000001)
+texture = ExtResource("5_w7lyj")
 
-[node name="Marker2D2" type="Marker2D" parent="Sprite2D/TurretsComp/MuzzlePos"]
-position = Vector2(100, -15)
+[node name="Turret R" type="Sprite2D" parent="Sprites/Corner R" node_paths=PackedStringArray("fire_player")]
+visible = false
+position = Vector2(-135, -31)
+rotation = 3.1415927
+scale = Vector2(2.999999, -2.999999)
+texture = ExtResource("6_x3vta")
+script = ExtResource("7_y2ya6")
+fire_player = NodePath("../../../FireSound")
 
-[node name="FireSound" type="AudioStreamPlayer2D" parent="Sprite2D/TurretsComp"]
-stream = ExtResource("8_mdpqr")
-volume_db = -2.0
-bus = &"SFX"
-
-[node name="BallContainer" type="Node2D" parent="."]
-position = Vector2(0, 6)
-scale = Vector2(0.5, 0.5)
+[node name="BallContainer" type="Node2D" parent="Sprites"]
+scale = Vector2(2.4999998, 2.4999998)
 
 [node name="PickupArea" type="Area2D" parent="."]
 collision_layer = 2
@@ -119,13 +203,17 @@ collision_mask = 20
 input_pickable = false
 monitorable = false
 
-[node name="PickupHitbox" type="CollisionPolygon2D" parent="PickupArea"]
-polygon = PackedVector2Array(103, 12, -103, 12, -103, -11, 103, -11)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+visible = false
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_y2ya6")
 
-[node name="Hitbox" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(100, 12, -100, 12, -100, -10, 100, -10)
-one_way_collision = true
-one_way_collision_margin = 5.0
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_w7lyj")
 
 [node name="HitSoundComp" parent="." instance=ExtResource("3_8j1ci")]
 stream = ExtResource("4_yd0vt")
@@ -133,20 +221,9 @@ stream = ExtResource("4_yd0vt")
 [node name="MagnetSound" parent="." instance=ExtResource("3_8j1ci")]
 stream = ExtResource("5_nu7io")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-process_mode = 3
-show_behind_parent = true
-position = Vector2(-67, 11)
-scale = Vector2(0.5, 0.5)
-amount = 32
-lifetime = 1.2
-process_material = SubResource("ParticleProcessMaterial_4kcrd")
-
-[node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
-process_mode = 3
-show_behind_parent = true
-position = Vector2(67, 11)
-scale = Vector2(0.5, 0.5)
-amount = 32
-lifetime = 1.2
-process_material = SubResource("ParticleProcessMaterial_4kcrd")
+[node name="FireSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_w7lyj")
+volume_db = -5.0
+max_polyphony = 10
+panning_strength = 0.42
+bus = &"SFX"

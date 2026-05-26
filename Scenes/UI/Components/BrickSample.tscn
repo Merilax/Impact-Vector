@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c47txkxxgap4t"]
+[gd_scene load_steps=3 format=3 uid="uid://c47txkxxgap4t"]
 
+[ext_resource type="Material" uid="uid://docw4l0sx722e" path="res://GDResources/BrickMaterial.tres" id="2_6hoa2"]
 [ext_resource type="Script" uid="uid://baej7tkynp0r5" path="res://Scripts/UI/Components/EditorBrickSample.gd" id="2_eycb0"]
 
 [node name="BrickSample" type="PanelContainer" node_paths=PackedStringArray("texture_rect")]
@@ -20,6 +21,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+material = ExtResource("2_6hoa2")
 layout_mode = 2
 expand_mode = 5
 stretch_mode = 5

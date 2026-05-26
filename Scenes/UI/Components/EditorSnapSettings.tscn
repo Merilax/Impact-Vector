@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk1flyauof5sk"]
+[gd_scene load_steps=6 format=3 uid="uid://dk1flyauof5sk"]
 
+[ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_odga4"]
 [ext_resource type="Script" uid="uid://ceuc68tpthge7" path="res://Scripts/UI/Components/EditorSnapSettings.gd" id="1_ov2he"]
 [ext_resource type="Texture2D" uid="uid://bxtj8nkgjk52r" path="res://Assets/Visuals/UI/ToggleButtonUnchecked.png" id="2_mr0xb"]
 [ext_resource type="Texture2D" uid="uid://cnq1cqtbxu6n1" path="res://Assets/Visuals/UI/ToggleButtonChecked.png" id="3_odga4"]
@@ -7,7 +8,8 @@
 
 [node name="Snap" type="VBoxContainer" node_paths=PackedStringArray("use_snap_control", "show_snap_grid", "snap_width", "snap_height", "x_offset", "y_offset")]
 visible = false
-theme_override_constants/separation = 50
+theme = ExtResource("1_odga4")
+theme_override_constants/separation = 20
 script = ExtResource("1_ov2he")
 use_snap_control = NodePath("VBoxContainer/Snap")
 show_snap_grid = NodePath("VBoxContainer/ShowSnap")

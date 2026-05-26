@@ -1,0 +1,146 @@
+[gd_scene load_steps=13 format=3 uid="uid://xnpnye0j7q5y"]
+
+[ext_resource type="Script" uid="uid://ca4w8ib16e7rd" path="res://Test/test.gd" id="1_ppyta"]
+[ext_resource type="Texture2D" uid="uid://bvw6ydrco4mte" path="res://Test/gradient_test.png" id="2_6uqi0"]
+[ext_resource type="Shader" uid="uid://c8dyvwjdjv8je" path="res://GDResources/BrickShader.gdshader" id="2_8uh7m"]
+[ext_resource type="Texture2D" uid="uid://g5rvbbb3hyla" path="res://Test/Gradient Test Full.png" id="4_ehkex"]
+[ext_resource type="Texture2D" uid="uid://d4ivou6hulmig" path="res://Assets/Visuals/BrickTextures/Quadrangle/2/BrickQuad1.png" id="4_ykrsh"]
+[ext_resource type="Texture2D" uid="uid://cg4j38sw255bw" path="res://Test/Gradient Test.png" id="5_vbegm"]
+[ext_resource type="Texture2D" uid="uid://d0q8hkla5pgjt" path="res://Test/Gradient Test Dark.png" id="6_ehkex"]
+[ext_resource type="Texture2D" uid="uid://c71k5o7yi8qm4" path="res://Test/Gradient Test Light.png" id="7_xersf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykrsh"]
+resource_local_to_scene = true
+shader = ExtResource("2_8uh7m")
+shader_parameter/color_count = 0
+shader_parameter/target_color1 = Color(1, 1, 1, 1)
+shader_parameter/target_color2 = Color(1, 1, 1, 1)
+shader_parameter/target_color3 = Color(1, 1, 1, 1)
+shader_parameter/target_color4 = Color(0.4, 0.4, 0.4, 1)
+shader_parameter/brightness = 0.0
+shader_parameter/modulate = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6uqi0"]
+resource_local_to_scene = true
+shader = ExtResource("2_8uh7m")
+shader_parameter/color_count = 2
+shader_parameter/target_color1 = Color(1, 0, 0, 1)
+shader_parameter/target_color2 = Color(0, 0.95, 1, 1)
+shader_parameter/target_color3 = Color(1, 1, 1, 1)
+shader_parameter/target_color4 = Color(1, 1, 1, 1)
+shader_parameter/brightness = 0.0
+shader_parameter/modulate = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppyta"]
+resource_local_to_scene = true
+shader = ExtResource("2_8uh7m")
+shader_parameter/color_count = 3
+shader_parameter/target_color1 = Color(0.533333, 0, 1, 1)
+shader_parameter/target_color2 = Color(0.9935, 1, 0.61, 1)
+shader_parameter/target_color3 = Color(0, 0.107333, 0.23, 1)
+shader_parameter/target_color4 = Color(1, 1, 1, 1)
+shader_parameter/brightness = 0.0
+shader_parameter/modulate = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_00tp4"]
+resource_local_to_scene = true
+shader = ExtResource("2_8uh7m")
+shader_parameter/color_count = 1
+shader_parameter/target_color1 = Color(0, 0.366667, 1, 1)
+shader_parameter/target_color2 = Color(1, 1, 1, 1)
+shader_parameter/target_color3 = Color(1, 1, 1, 1)
+shader_parameter/target_color4 = Color(1, 1, 1, 1)
+shader_parameter/brightness = 0.0
+shader_parameter/modulate = Color(1, 1, 1, 1)
+
+[node name="Node2D" type="Node2D"]
+position = Vector2(103, 50)
+script = ExtResource("1_ppyta")
+
+[node name="Bricks" type="Node2D" parent="."]
+
+[node name="Brick" type="Sprite2D" parent="Bricks"]
+material = SubResource("ShaderMaterial_ykrsh")
+position = Vector2(-182, 0)
+texture = ExtResource("4_ykrsh")
+
+[node name="BrickShaded" type="Sprite2D" parent="Bricks"]
+material = SubResource("ShaderMaterial_6uqi0")
+position = Vector2(-181, 105)
+texture = ExtResource("4_ykrsh")
+
+[node name="Mixed Gradients" type="Node2D" parent="."]
+
+[node name="GradientLinear" type="Sprite2D" parent="Mixed Gradients"]
+position = Vector2(7.62939e-06, -25)
+scale = Vector2(0.4, 0.151961)
+texture = ExtResource("4_ehkex")
+
+[node name="GradientLinearShaded" type="Sprite2D" parent="Mixed Gradients"]
+material = SubResource("ShaderMaterial_ppyta")
+position = Vector2(0, 4)
+scale = Vector2(0.4, 0.145882)
+texture = ExtResource("4_ehkex")
+
+[node name="GradientDarker" type="Sprite2D" parent="Mixed Gradients"]
+position = Vector2(0, 46)
+scale = Vector2(1, 0.303922)
+texture = ExtResource("2_6uqi0")
+
+[node name="GradientDarkerShaded" type="Sprite2D" parent="Mixed Gradients"]
+material = SubResource("ShaderMaterial_ppyta")
+position = Vector2(0, 76.5)
+scale = Vector2(1, 0.31)
+texture = ExtResource("2_6uqi0")
+
+[node name="GradientBlend2" type="Sprite2D" parent="Mixed Gradients"]
+position = Vector2(0, 46)
+scale = Vector2(1, 0.303922)
+texture = ExtResource("2_6uqi0")
+
+[node name="GradientBlendShaded2" type="Sprite2D" parent="Mixed Gradients"]
+material = SubResource("ShaderMaterial_ppyta")
+position = Vector2(0, 76.5)
+scale = Vector2(1, 0.31)
+texture = ExtResource("2_6uqi0")
+
+[node name="Pure Gradients" type="Node2D" parent="."]
+
+[node name="GradientPureShaded" type="Sprite2D" parent="Pure Gradients"]
+material = SubResource("ShaderMaterial_00tp4")
+position = Vector2(260, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.11)
+texture = ExtResource("5_vbegm")
+
+[node name="GradientDarkShaded" type="Sprite2D" parent="Pure Gradients"]
+material = SubResource("ShaderMaterial_00tp4")
+position = Vector2(285, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.11)
+texture = ExtResource("6_ehkex")
+
+[node name="GradientLightShaded" type="Sprite2D" parent="Pure Gradients"]
+material = SubResource("ShaderMaterial_00tp4")
+position = Vector2(310, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.11)
+texture = ExtResource("7_xersf")
+
+[node name="GradientPure" type="Sprite2D" parent="Pure Gradients"]
+position = Vector2(180, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.1075)
+texture = ExtResource("5_vbegm")
+
+[node name="GradientDark" type="Sprite2D" parent="Pure Gradients"]
+position = Vector2(205, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.1075)
+texture = ExtResource("6_ehkex")
+
+[node name="GradientLight" type="Sprite2D" parent="Pure Gradients"]
+position = Vector2(230, 55)
+rotation = 1.57079
+scale = Vector2(0.405, 0.1075)
+texture = ExtResource("7_xersf")

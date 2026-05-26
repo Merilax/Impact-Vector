@@ -2,7 +2,7 @@ extends Node
 class_name FileManager
 
 static func clear_temp(folder:String = ""):
-	Logger.write("Clearing temporary folder.", "FileManager");
+	LoggerFile.write("Clearing temporary folder.", "FileManager");
 
 	if folder == "res://": return;
 	if folder == "user://": return;
@@ -19,7 +19,7 @@ static func clear_temp(folder:String = ""):
 	DirAccess.remove_absolute(folder);
 
 static func add_level(campaign_num:String, level:Dictionary, level_data:LevelData, replace_existing:bool = false, level_num:String = "1") -> String:
-	Logger.write("Adding level " + level_num + " to campaign " + campaign_num + ", replace " + str(replace_existing), "FileManager");
+	LoggerFile.write("Adding level " + level_num + " to campaign " + campaign_num + ", replace " + str(replace_existing), "FileManager");
 	CampaignManager.check_integrity();
 
 	var path:String = "user://Levels/" + campaign_num + "/";
@@ -39,19 +39,19 @@ static func add_level(campaign_num:String, level:Dictionary, level_data:LevelDat
 	var json := JSON.stringify(level, "", false, true);
 	var writer := FileAccess.open(new_dir + "level.json", FileAccess.WRITE);
 	if writer == null:
-		Logger.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
+		LoggerFile.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
 		return "";
 	writer.store_string(json);
 	writer.close();
 	var err := ResourceSaver.save(level_data, new_dir + "data.tres");
 	if err != OK:
-		Logger.write("Level data save error." + error_string(err), "FileManager");
+		LoggerFile.write("Level data save error." + error_string(err), "FileManager");
 		return "";
 
 	return level_num;
 
 static func replace_level(path:String, level:Dictionary, level_data:LevelData) -> bool:
-	Logger.write("Replacing level at " + path, "FileManager");
+	LoggerFile.write("Replacing level at " + path, "FileManager");
 	if not DirAccess.dir_exists_absolute(path): return false;
 	if not FileAccess.file_exists(path + "level.json"): return false;
 	if not FileAccess.file_exists(path + "data.tres"): return false;
@@ -59,13 +59,13 @@ static func replace_level(path:String, level:Dictionary, level_data:LevelData) -
 	var json := JSON.stringify(level, "", false, true);
 	var writer := FileAccess.open(path + "level.json", FileAccess.WRITE);
 	if writer == null:
-		Logger.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
+		LoggerFile.write("Level Scene save error." + error_string(FileAccess.get_open_error()), "FileManager");
 		return false;
 	writer.store_string(json);
 	writer.close();
 	var err := ResourceSaver.save(level_data, path + "data.tres");
 	if err != OK:
-		Logger.write("Level data save error: " + error_string(err), "FileManager");
+		LoggerFile.write("Level data save error: " + error_string(err), "FileManager");
 		return false;
 
 	return true;
@@ -78,7 +78,7 @@ static func import_any(from:String, campaign_num:String = "") -> bool:
 	return true;
 
 static func import_level(from:String, campaign_num:String, level_num:String = "1", clear_temp_after:bool = true, extract:bool = true) -> bool:
-	Logger.write(str("Importing level from ", from, ", campaign ", campaign_num, ", level ", level_num), "FileManager");
+	LoggerFile.write(str("Importing level from ", from, ", campaign ", campaign_num, ", level ", level_num), "FileManager");
 	CampaignManager.check_integrity();
 	if clear_temp_after:
 		clear_temp("user://Temp/");
@@ -90,7 +90,7 @@ static func import_level(from:String, campaign_num:String, level_num:String = "1
 		if not CampaignManager.validate_level(from): return false;
 		var ok = zip.open(from);
 		if ok != OK:
-			Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
+			LoggerFile.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 			return false;
 
 		var level:PackedByteArray = zip.read_file("level.json");
@@ -116,11 +116,11 @@ static func import_level(from:String, campaign_num:String, level_num:String = "1
 	DirAccess.copy_absolute(from + "data.tres", to_path + "data.tres");
 
 	if clear_temp_after: clear_temp("user://Temp/");
-	Logger.write(str("Import OK."), "FileManager");
+	LoggerFile.write(str("Import OK."), "FileManager");
 	return true;
 
 static func export_level(to:String, from:String) -> bool:
-	Logger.write(str("Exporting level from ", from), "FileManager");
+	LoggerFile.write(str("Exporting level from ", from), "FileManager");
 	CampaignManager.check_integrity();
 	if from.substr(from.length()-1) != '/': from += '/';
 	if to.substr(to.length()-1) != '/': to += '/';
@@ -138,7 +138,7 @@ static func export_level(to:String, from:String) -> bool:
 	var zip:ZIPPacker = ZIPPacker.new();
 	var ok = zip.open(to_copy + ".ivl")
 	if ok != OK:
-		Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
+		LoggerFile.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 		return false;
 	zip.start_file("level.json");
 	zip.write_file(FileAccess.get_file_as_bytes(from + "level.json"));
@@ -148,11 +148,11 @@ static func export_level(to:String, from:String) -> bool:
 	zip.close_file();
 	zip.close();
 
-	Logger.write(str("Export OK"), "FileManager");
+	LoggerFile.write(str("Export OK"), "FileManager");
 	return true;
 
 static func import_campaign(from:String) -> bool:
-	Logger.write(str("Importing campaign from ", from), "FileManager");
+	LoggerFile.write(str("Importing campaign from ", from), "FileManager");
 	CampaignManager.check_integrity();
 	clear_temp("user://Temp/");
 	DirAccess.make_dir_absolute("user://Temp/");
@@ -160,7 +160,7 @@ static func import_campaign(from:String) -> bool:
 	var zip:ZIPReader = ZIPReader.new();
 	var ok:int = zip.open(from);
 	if ok != OK:
-		Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
+		LoggerFile.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 		return false;
 	var data:String = zip.read_file("campaign.json").get_string_from_utf8();
 	var campaign:Dictionary = JSON.parse_string(data);
@@ -187,11 +187,11 @@ static func import_campaign(from:String) -> bool:
 		if not import_level("user://Temp/" + str(i) + "/", str(campaign_num), str(i), false, false): return false;
 
 	clear_temp("user://Temp/");
-	Logger.write(str("Import OK"), "FileManager");
+	LoggerFile.write(str("Import OK"), "FileManager");
 	return true;
 
 static func export_campaign(to:String, from:String) -> bool:
-	Logger.write(str("Exporting campaign from ", from), "FileManager");
+	LoggerFile.write(str("Exporting campaign from ", from), "FileManager");
 	CampaignManager.check_integrity();
 	if from.substr(from.length()-1) != '/': from += '/';
 	if to.substr(to.length()-1) != '/': to += '/';
@@ -210,7 +210,7 @@ static func export_campaign(to:String, from:String) -> bool:
 	var zip:ZIPPacker = ZIPPacker.new();
 	var ok:int = zip.open(to_copy + ".ivc");
 	if ok != OK:
-		Logger.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
+		LoggerFile.write(str("Couldn't open ZIP: ", error_string(ok)), "FileManager");
 		return false;
 
 	var i:int = 1;
@@ -228,5 +228,5 @@ static func export_campaign(to:String, from:String) -> bool:
 	zip.close_file();
 	zip.close();
 
-	Logger.write(str("Export OK"), "FileManager");
+	LoggerFile.write(str("Export OK"), "FileManager");
 	return true;

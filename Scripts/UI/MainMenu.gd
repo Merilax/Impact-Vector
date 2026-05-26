@@ -1,17 +1,19 @@
 extends Control
 
 @export var continue_button:Button;
+@export var base_campaigns_button:Button;
+@export var custom_campaigns_button:Button;
 @export var settings_button:Button;
 @export var exit_button:Button;
 
-var campaign_folder:String;
-var campaign_path:String;
+# var campaign_folder:String;
+# var campaign_path:String;
 
-@export var campaign_selector:VBoxContainer;
-@export var level_selector:VBoxContainer;
-@export var level_grid:GridContainer;
+@export var base_campaigns:Control;
+@export var custom_campaigns:Control;
+@export var campaign_levels:Control;
+@export var settings_menu:Control;
 
-@export var back_to_campaigns_button:Button;
 @export var create_level_button:Button;
 @export var import_campaign_button:Button;
 @export var import_level_button:Button;
@@ -19,27 +21,43 @@ var campaign_path:String;
 @export var file_dialog:FileDialog;
 var file_dialog_path:String;
 @export var notification_popup:AcceptDialog;
+@export var confirmation_popup:ConfirmationDialog;
 
 signal start_game(campaign_path:String, campaign_folder:String, level_num:String, savedata:SaveGameData);
 signal open_editor(campaign_path:String, campaign_folder:String, level_num:String);
-signal open_settings_menu();
 signal fd_processed();
+signal file_management_finished(ok:bool);
+signal confirmation_popup_processed(ok:bool);
+
+var last_campaign_type_is_custom:bool;
+var confirmation_popup_result:bool;
 
 func _ready():
-	if campaign_selector:
-		campaign_selector.select_campaign.connect(select_campaign);
-		campaign_selector.edit_campaign.connect(edit_campaign);
-		campaign_selector.delete_campaign.connect(delete_campaign);
-		if file_dialog: campaign_selector.export_campaign.connect(export_campaign);
+	if base_campaigns_button:
+		base_campaigns_button.pressed.connect(view_campaigns.bind(false));
+	if custom_campaigns_button:
+		custom_campaigns_button.pressed.connect(view_campaigns.bind(true));
 
-	if level_grid:
-		level_grid.play_level.connect(play_level);
-		level_grid.edit_level.connect(edit_level);
-		level_grid.delete_level.connect(delete_level);
-		if file_dialog: level_grid.export_level.connect(export_level);
+	if base_campaigns:
+		base_campaigns.select_campaign.connect(select_campaign);
 
-	if back_to_campaigns_button:
-		back_to_campaigns_button.pressed.connect(to_campaign_selector);
+	if custom_campaigns:
+		custom_campaigns.import_campaign.connect(import_campaign);
+		custom_campaigns.select_campaign.connect(select_campaign);
+		if file_dialog: custom_campaigns.export_campaign.connect(export_campaign);
+
+	if campaign_levels:
+		campaign_levels.go_back.connect(return_from_campaign_levels);
+		campaign_levels.create_level.connect(create_level);
+		campaign_levels.play_level.connect(play_level);
+		campaign_levels.edit_level.connect(edit_level);
+		if file_dialog:
+			campaign_levels.import_level.connect(import_level);
+			campaign_levels.export_level.connect(export_level);
+
+	if settings_menu:
+		settings_menu.menu_closed.connect(close_settings);
+
 	if create_level_button:
 		create_level_button.pressed.connect(create_level);
 	if import_campaign_button and file_dialog:
@@ -50,7 +68,7 @@ func _ready():
 	if continue_button:
 		continue_button.pressed.connect(continue_game);
 	if settings_button:
-		settings_button.pressed.connect(goto_settings);
+		settings_button.pressed.connect(open_settings);
 	if exit_button:
 		exit_button.pressed.connect(quit);
 
@@ -59,87 +77,110 @@ func _ready():
 		file_dialog.file_selected.connect(_on_fd_confirmed);
 		file_dialog.canceled.connect(_on_fd_canceled);
 
+	if confirmation_popup:
+		confirmation_popup.canceled.connect(func(): confirmation_popup_processed.emit(false));
+		confirmation_popup.confirmed.connect(func(): confirmation_popup_processed.emit(true));
+
 	# Check for a saved game.
 	if FileAccess.file_exists("user://SaveGameData.tres"):
-		continue_button.show();
+		continue_button.disabled = false;
 
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE;
-	Logger.write("Ready.", "MainMenu");
+	LoggerFile.write("Ready.", "MainMenu");
 
-func to_campaign_selector():
-	level_selector.hide();
-	campaign_selector.show();
+func close_settings():
+	settings_menu.hide();
+	SaveLoader.load_settings();
 
-func to_level_selector():
-	campaign_selector.hide();
-	level_selector.show();
+func open_settings():
+	campaign_levels.hide();
+	base_campaigns.hide();
+	custom_campaigns.hide();
+	settings_menu.refresh();
+	settings_menu.show();
 
-func select_campaign(campaign_folder_path:String, campaign_num:String):
-	campaign_path = campaign_folder_path;
-	campaign_folder = campaign_num;
-	to_level_selector();
-	if campaign_folder_path.contains("res://"):
+func view_campaigns(custom:bool = false):
+	settings_menu.hide();
+	campaign_levels.hide();
+	base_campaigns.hide();
+	custom_campaigns.hide();
+	
+	last_campaign_type_is_custom = custom;
+
+	if not custom:
+		base_campaigns.show();
+		base_campaigns.refresh();
+	else:
+		custom_campaigns.show();
+		custom_campaigns.refresh();
+
+func return_from_campaign_levels():
+	view_campaigns(last_campaign_type_is_custom);
+
+func select_campaign(campaign_num:String):
+	if not last_campaign_type_is_custom:
 		create_level_button.hide();
 		import_level_button.hide();
+		last_campaign_type_is_custom = false;
 	else:
 		create_level_button.show();
 		import_level_button.show();
-	level_grid.on_select_campaign(campaign_path, campaign_folder);
+		last_campaign_type_is_custom = true;
 
-func edit_campaign(_campaign_folder_path:String, campaign_num:String, new_name:String):
-	CampaignManager.rename_campaign(campaign_num, new_name);
+	campaign_levels.on_select_campaign(last_campaign_type_is_custom, campaign_num);
 
-func delete_campaign(campaign_folder_path:String, campaign_num:String, origin:Control):
-	if campaign_folder_path.contains("res://"): return;
+	base_campaigns.hide();
+	custom_campaigns.hide();
+	campaign_levels.show();
 
-	# TODO Warn user
-	for sub_dir in DirAccess.get_directories_at(campaign_folder_path + "/" + campaign_num):
-		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/level.json");
-		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir + "/data.tres");
-		DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num + "/" + sub_dir);
+func confirm_delete_campaign() -> bool:
+	notification_popup.dialog_text = "Are you sure you want to delete this campaign?";
+	notification_popup.show();
 	
-	if DirAccess.dir_exists_absolute(campaign_folder_path + "/" + campaign_num): DirAccess.remove_absolute(campaign_folder_path + "/" + campaign_num);
-	CampaignManager.remove_campaign(campaign_num);
-	origin.queue_free();
+	return await self.confirmation_popup_processed;
 
-func create_level():
-	Logger.write("Creating new level.", "MainMenu");
-	open_editor.emit(campaign_path, campaign_folder);
+func confirm_delete_level() -> bool:
+	notification_popup.dialog_text = "Are you sure you want to delete this level?";
+	notification_popup.show();
+	
+	return await self.confirmation_popup_processed;
+
+func create_level(campaign_folder:String):
+	LoggerFile.write("Creating new level.", "MainMenu");
+	open_editor.emit(campaign_folder);
 
 func continue_game():
-	Logger.write("Continuing existing game.", "MainMenu");
+	LoggerFile.write("Continuing existing game.", "MainMenu");
 	var save_state:SaveGameData = load("user://SaveGameData.tres");
 	
-	var regex = RegEx.new();
-	regex.compile("(\\w|\\d|://)+");
-	var paths:Array[RegExMatch] = regex.search_all(save_state.level_path);
+	# var regex = RegEx.new();
+	# regex.compile("(\\w|\\d|://)+");
+	# var paths:Array[RegExMatch] = regex.search_all(save_state.level_path);
 	
-	campaign_path = paths[0].get_string();
-	campaign_folder = paths[1].get_string();
-	play_level(paths[2].get_string(), save_state);
+	play_level(save_state.campaign_num, save_state.level_num, save_state);
 
-func play_level(level_num:String, savedata:SaveGameData = null):
-	Logger.write("Playing level: " + level_num, "MainMenu");
-	if campaign_path.contains("res://"):
-		start_game.emit(campaign_path, campaign_folder, level_num, savedata);
+func play_level(campaign_num:String, level_num:String, savedata:SaveGameData = null):
+	var base_dir;
+
+	if savedata:
+		last_campaign_type_is_custom = savedata.campaign_is_custom;
+		
+	if last_campaign_type_is_custom:
+		base_dir = "user://Levels/";
 	else:
-		if FileAccess.file_exists(campaign_path + "/campaigns.json") and FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json"):
-			start_game.emit(campaign_path, campaign_folder, level_num, savedata);
+		base_dir = "res://Levels/";
 
-func edit_level(level_num:String):
-	Logger.write("Editing level: " + level_num, "MainMenu");
-	if FileAccess.file_exists(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json"):
-		open_editor.emit(campaign_path, campaign_folder, level_num);
+	LoggerFile.write("Playing level " + level_num + " from campaign " + campaign_num, "MainMenu");
+	
+	if last_campaign_type_is_custom and not FileAccess.file_exists(base_dir + campaign_num + "/" + level_num + "/level.json"):
+		return;
 
-func delete_level(level_num:String, origin:Control):
-	Logger.write("Deleting level: " + level_num, "MainMenu");
-	origin.queue_free();
-	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/level.json");
-	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num + "/data.tres");
-	DirAccess.remove_absolute(campaign_path + "/" + campaign_folder + "/" + level_num);
+	start_game.emit(last_campaign_type_is_custom, campaign_num, level_num, savedata);
 
-func goto_settings():
-	open_settings_menu.emit();
+func edit_level(campaign_num:String, level_num:String):
+	LoggerFile.write("Editing level: " + level_num, "MainMenu");
+	if FileAccess.file_exists("user://Levels/" + campaign_num + "/" + level_num + "/level.json"):
+		open_editor.emit(campaign_num, level_num);
 
 func import_campaign():
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
@@ -149,55 +190,67 @@ func import_campaign():
 
 	if file_dialog_path.is_empty(): return;
 	var ok = FileManager.import_any(file_dialog_path);
-	campaign_selector.refresh();
+	custom_campaigns.refresh();
 	if ok:
 		notification_popup.dialog_text = "Campaign imported successfuly.";
 	else:
 		notification_popup.dialog_text = "An error ocurred while importing a campaign.";
 	notification_popup.show();
+	file_management_finished.emit(ok);
 
-func import_level():
+func import_level(from_campaign_num:String):
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE;
 	file_dialog.filters = PackedStringArray(["*.ivl"]);
 	file_dialog.show();
 	await self.fd_processed;
 
 	if file_dialog_path.is_empty(): return;
-	var ok = FileManager.import_any(file_dialog_path, campaign_folder);
-	level_grid.refresh();
+	var ok = FileManager.import_any(file_dialog_path, from_campaign_num);
+	campaign_levels.refresh();
 	if ok:
 		notification_popup.dialog_text = "Level imported successfuly.";
 	else:
 		notification_popup.dialog_text = "An error ocurred while importing a level.";
 	notification_popup.show();
+	file_management_finished.emit(ok);
 
-func export_campaign(from_campaign_folder:String, from_campaign_num:String):
+func export_campaign(from_campaign_num:String):
+	var base_dir;
+	if last_campaign_type_is_custom: base_dir = "user://Levels/";
+	else: base_dir = "res://Levels/";
+
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
 	file_dialog.filters = PackedStringArray();
 	file_dialog.show();
 	await self.fd_processed;
 
 	if file_dialog_path.is_empty(): return;
-	var ok = FileManager.export_campaign(file_dialog_path, from_campaign_folder + from_campaign_num + '/');
+	var ok = FileManager.export_campaign(file_dialog_path, base_dir + from_campaign_num + '/');
 	if ok:
 		notification_popup.dialog_text = "Campaign exported successfuly.";
 	else:
 		notification_popup.dialog_text = "An error ocurred while exporting a campaign.";
 	notification_popup.show();
+	file_management_finished.emit(ok);
 
-func export_level(from_level_num:String):
+func export_level(from_campaign_num:String, from_level_num:String):
+	var base_dir;
+	if last_campaign_type_is_custom: base_dir = "user://Levels/";
+	else: base_dir = "res://Levels/";
+	
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR;
 	file_dialog.filters = PackedStringArray();
 	file_dialog.show();
 	await self.fd_processed;
 
 	if file_dialog_path.is_empty(): return;
-	var ok = FileManager.export_level(file_dialog_path, campaign_path + campaign_folder + "/" + from_level_num + "/");
+	var ok = FileManager.export_level(file_dialog_path, base_dir + from_campaign_num + "/" + from_level_num + "/");
 	if ok:
 		notification_popup.dialog_text = "Level exported successfuly.";
 	else:
 		notification_popup.dialog_text = "An error ocurred while exporting a level.";
 	notification_popup.show();
+	file_management_finished.emit(ok);
 
 func _on_fd_confirmed(path:String):
 	file_dialog.hide();
@@ -210,5 +263,5 @@ func _on_fd_canceled():
 	fd_processed.emit();
 
 func quit():
-	Logger.write(str("Quitting game @ ", Time.get_datetime_string_from_system(false, true)), "MainMenu");
+	LoggerFile.write(str("Quitting game @ ", Time.get_datetime_string_from_system(false, true)), "MainMenu");
 	get_tree().quit();

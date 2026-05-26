@@ -1,5 +1,5 @@
 extends StaticBody2D
 
-func hit(node, _damage:float = 0):
+func hit(node):
 	if node.is_in_group('Ball'):
-		$'HitSound'.play()
+		$'HitSound'.play();

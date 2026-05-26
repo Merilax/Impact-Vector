@@ -41,17 +41,17 @@ func edit_name():
 		name_label.show()
 		name_lineedit.hide()
 
-		edit_campaign.emit(get_meta("folder_path"), get_meta("folder_num"), name_label.text)
+		edit_campaign.emit(get_meta("folder_num"), name_label.text)
 
 		select_button.show()
 		delete_button.show()
 		editing_name = false
 
 func _on_export_campaign() -> void:
-	export_campaign.emit(get_meta("folder_path"), get_meta("folder_num"));
+	export_campaign.emit(get_meta("folder_num"));
 
 func _on_select_pressed() -> void:
-	select_campaign.emit(get_meta("folder_path"), get_meta("folder_num"));
+	select_campaign.emit(get_meta("folder_num"));
 
 func _on_delete_pressed() -> void:
-	delete_campaign.emit(get_meta("folder_path"), get_meta("folder_num"), self);
+	delete_campaign.emit(get_meta("folder_num"), self);

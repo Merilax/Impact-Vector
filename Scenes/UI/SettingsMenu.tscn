@@ -1,169 +1,132 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwcxgw014glpw"]
+[gd_scene load_steps=5 format=3 uid="uid://bwcxgw014glpw"]
 
 [ext_resource type="Theme" uid="uid://dck5wvqkfemjm" path="res://GDResources/Themes/MainTheme.tres" id="1_3ne4r"]
 [ext_resource type="Script" uid="uid://c2fjdn101chcp" path="res://Scripts/UI/SettingsMenu.gd" id="1_nb1hl"]
 [ext_resource type="PackedScene" uid="uid://c72ch5oksy083" path="res://Scenes/UI/Components/VolumeRangeSetting.tscn" id="2_2hjfl"]
-[ext_resource type="Texture2D" uid="uid://b38oun4fqugw" path="res://Assets/Visuals/UI/UIBox.png" id="2_q662l"]
 [ext_resource type="PackedScene" uid="uid://g4vmyu75g0f8" path="res://Scenes/UI/Components/RangeSetting.tscn" id="4_217fq"]
 
-[node name="PanelContainer" type="PanelContainer" node_paths=PackedStringArray("arm_speed_setting", "window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
+[node name="SettingsMenu" type="PanelContainer" node_paths=PackedStringArray("arm_speed_setting", "window_mode_setting", "resolution_setting", "borderless_setting", "vsync_setting", "master_volume_setting", "music_volume_setting", "sfx_volume_setting", "save_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_3ne4r")
 script = ExtResource("1_nb1hl")
-arm_speed_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer/ArmSpeedSetting")
-window_mode_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/WindowMode Setting")
-resolution_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Resolution Setting")
-borderless_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Borderless Setting")
-vsync_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/VSync Setting")
-master_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
-music_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
-sfx_volume_setting = NodePath("MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
-save_button = NodePath("MarginContainer/SettingMenu/ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
+arm_speed_setting = NodePath("SettingMenu/SettingTabs/Game/MarginContainer/GridContainer/ArmSpeedSetting")
+window_mode_setting = NodePath("SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/WindowMode Setting")
+resolution_setting = NodePath("SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Resolution Setting")
+borderless_setting = NodePath("SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/Borderless Setting")
+vsync_setting = NodePath("SettingMenu/SettingTabs/Video/MarginContainer/GridContainer/VSync Setting")
+master_volume_setting = NodePath("SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Master Setting")
+music_volume_setting = NodePath("SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/Music Setting")
+sfx_volume_setting = NodePath("SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer/SFX Setting")
+save_button = NodePath("SettingMenu/ActionBtns/MarginContainer/HBoxContainer/SaveAndBack")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
-layout_mode = 2
-theme = ExtResource("1_3ne4r")
-texture = ExtResource("2_q662l")
-region_rect = Rect2(0, 0, 512, 512)
-patch_margin_left = 42
-patch_margin_top = 42
-patch_margin_right = 42
-patch_margin_bottom = 42
-
-[node name="BG" type="MarginContainer" parent="NinePatchRect"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="PanelContainer" type="ColorRect" parent="NinePatchRect/BG"]
-layout_mode = 2
-color = Color(0.168627, 0.192157, 0.219608, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-
-[node name="SettingMenu" type="VBoxContainer" parent="MarginContainer"]
+[node name="SettingMenu" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="SettingTabs" type="TabContainer" parent="MarginContainer/SettingMenu"]
+[node name="SettingTabs" type="TabContainer" parent="SettingMenu"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 2
+use_hidden_tabs_for_min_size = true
 
-[node name="Game" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
+[node name="Game" type="TabBar" parent="SettingMenu/SettingTabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Game"]
+[node name="MarginContainer" type="MarginContainer" parent="SettingMenu/SettingTabs/Game"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 80.0
 grow_horizontal = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="SettingMenu/SettingTabs/Game/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="ArmSpeed" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer"]
+[node name="ArmSpeed" type="Label" parent="SettingMenu/SettingTabs/Game/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Level construction speed"
 
-[node name="ArmSpeedSetting" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer" instance=ExtResource("4_217fq")]
+[node name="ArmSpeedSetting" parent="SettingMenu/SettingTabs/Game/MarginContainer/GridContainer" instance=ExtResource("4_217fq")]
 layout_mode = 2
 max_value = 200.0
-min_value = 25.0
+min_value = 20.0
 
-[node name="test" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer"]
-visible = false
-layout_mode = 2
-text = "Arm speed"
-
-[node name="testSetting" parent="MarginContainer/SettingMenu/SettingTabs/Game/MarginContainer/GridContainer" instance=ExtResource("4_217fq")]
-visible = false
-layout_mode = 2
-
-[node name="Audio" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
+[node name="Audio" type="TabBar" parent="SettingMenu/SettingTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Audio"]
+[node name="MarginContainer" type="MarginContainer" parent="SettingMenu/SettingTabs/Audio"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 285.0
 grow_horizontal = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="SettingMenu/SettingTabs/Audio/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="Master Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="Master Volume" type="Label" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Master volume"
 
-[node name="Master Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="Master Setting" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 
-[node name="Music Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="Music Volume" type="Label" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Music volume"
 
-[node name="Music Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="Music Setting" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 
-[node name="SFX Volume" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
+[node name="SFX Volume" type="Label" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "SFX volume"
 
-[node name="SFX Setting" parent="MarginContainer/SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
+[node name="SFX Setting" parent="SettingMenu/SettingTabs/Audio/MarginContainer/GridContainer" instance=ExtResource("2_2hjfl")]
 layout_mode = 2
 
-[node name="Video" type="TabBar" parent="MarginContainer/SettingMenu/SettingTabs"]
-visible = false
+[node name="Video" type="TabBar" parent="SettingMenu/SettingTabs"]
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/SettingTabs/Video"]
+[node name="MarginContainer" type="MarginContainer" parent="SettingMenu/SettingTabs/Video"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 285.0
 grow_horizontal = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="SettingMenu/SettingTabs/Video/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="WindowMode" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="WindowMode" type="Label" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Window mode"
 
-[node name="WindowMode Setting" type="OptionButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="WindowMode Setting" type="OptionButton" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 selected = 0
@@ -173,12 +136,12 @@ popup/item_0/id = 0
 popup/item_1/text = "Windowed"
 popup/item_1/id = 1
 
-[node name="Resolution" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Resolution" type="Label" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Resolution (Window only)"
 
-[node name="Resolution Setting" type="OptionButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Resolution Setting" type="OptionButton" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 selected = 0
@@ -192,35 +155,33 @@ popup/item_2/id = 2
 popup/item_3/text = "1280 x 720"
 popup/item_3/id = 3
 
-[node name="Borderless" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Borderless" type="Label" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 text = "Borderless"
 
-[node name="Borderless Setting" type="CheckButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
+[node name="Borderless Setting" type="CheckButton" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VSync" type="Label" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
-visible = false
+[node name="VSync" type="Label" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "V-Sync"
 
-[node name="VSync Setting" type="CheckButton" parent="MarginContainer/SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
-visible = false
+[node name="VSync Setting" type="CheckButton" parent="SettingMenu/SettingTabs/Video/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ActionBtns" type="PanelContainer" parent="MarginContainer/SettingMenu"]
+[node name="ActionBtns" type="PanelContainer" parent="SettingMenu"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SettingMenu/ActionBtns"]
+[node name="MarginContainer" type="MarginContainer" parent="SettingMenu/ActionBtns"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SettingMenu/ActionBtns/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingMenu/ActionBtns/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="SaveAndBack" type="Button" parent="MarginContainer/SettingMenu/ActionBtns/MarginContainer/HBoxContainer"]
+[node name="SaveAndBack" type="Button" parent="SettingMenu/ActionBtns/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Save & Back"

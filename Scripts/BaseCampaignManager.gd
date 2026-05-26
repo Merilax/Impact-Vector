@@ -1,6 +1,8 @@
 class_name BaseCampaignManager
 extends Object
 
+# DEPRECATED
+
 static func check_integrity():
 	var dir:DirAccess = DirAccess.open("res://Levels/")
 	if not dir:

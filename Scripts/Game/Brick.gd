@@ -12,6 +12,7 @@ class_name Brick
 @export var editor_hitbox:EditorHitboxComponent;
 
 @export_group("Data")
+@export var id:int = 0;
 @export var hitbox_path:String; # Must be set
 @export var init_health:float = 1;
 @export var init_score:float = 10;
@@ -21,8 +22,7 @@ class_name Brick
 @export var scoreable:bool = true;
 @export var is_indestructible:bool = false;
 @export var is_path_clone:bool = false;
-@export var path_group:int = -1;
-@export var spin_group:int = -1;
+@export var action_group:int = -1;
 @export var is_editor:bool = true;
 
 @export var polygon_array:PackedVector2Array;
@@ -44,7 +44,7 @@ func setup(as_editable:bool = true):
 
 	var hitbox_scene = load(hitbox_path);
 	if not hitbox_scene:
-		Logger.write(str("Hitbox path does not exist: ", hitbox_path), "Brick");
+		LoggerFile.write(str("Hitbox path does not exist: ", hitbox_path), "Brick");
 		return;
 	var hitbox_node = hitbox_scene.instantiate();
 	self.add_child(hitbox_node, true);

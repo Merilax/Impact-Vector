@@ -1,5 +1,5 @@
 extends Node
-class_name Logger;
+class_name LoggerFile;
 
 # var logger:FileAccess;
 
@@ -19,10 +19,10 @@ class_name Logger;
 #         print("Couldn't initialize logger: " + error_string(FileAccess.get_open_error()));
 #         return;
 
-# Logger.write(str(""), "");
+# LoggerFile.write(str(""), "");
 static func write(text:String, origin:String = "Undefined") -> void:
     if text.is_empty(): return;
-    var line:String = str(Time.get_time_string_from_system(), " [", origin, "] ", text);
+    var line:String = str("%s [%s] %s" % [Time.get_time_string_from_system(), origin, text]);
     print(line);
     # if logger:
     #     logger.store_line(line);

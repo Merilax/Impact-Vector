@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://crydngrhwhc8b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hef34"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.57481587, 0.6533979, 0.70173913, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+anti_aliasing = false
+
+[node name="SwatchColour" type="Panel"]
+custom_minimum_size = Vector2(30, 30)
+theme_override_styles/panel = SubResource("StyleBoxFlat_hef34")

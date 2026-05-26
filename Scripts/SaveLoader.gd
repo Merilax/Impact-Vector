@@ -2,14 +2,14 @@ class_name SaveLoader
 extends Node
 
 static func load_settings() -> SaveSettings:
-	Logger.write("Loading settings.", "SaveLoader");
+	LoggerFile.write("Loading settings.", "SaveLoader");
 	var settings:SaveSettings;
 	var incomplete_config:bool = false;
 
 	if FileAccess.file_exists("user://SaveSettings.tres"):
 		settings = load("user://SaveSettings.tres");
 	else:
-		Logger.write("No settings, creating blank save.", "SaveLoader");
+		LoggerFile.write("No settings, creating blank save.", "SaveLoader");
 		settings = SaveSettings.new();
 		incomplete_config = true;
 
@@ -52,13 +52,13 @@ static func load_settings() -> SaveSettings:
 	GlobalVars.has_seen_editor_help_once = settings.has_seen_editor_help_once;
 
 	if incomplete_config:
-		Logger.write("Broken settings, resaving.", "SaveLoader");
+		LoggerFile.write("Broken settings, resaving.", "SaveLoader");
 		save_settings();
 	
 	return settings;
 
 static func save_settings() -> bool:
-	Logger.write("Saving settings.", "SaveLoader");
+	LoggerFile.write("Saving settings.", "SaveLoader");
 	var settings:SaveSettings = SaveSettings.new();
 
 	settings.arm_speed_multiplier = GlobalVars.arm_speed_multiplier;
@@ -75,13 +75,13 @@ static func save_settings() -> bool:
 	return true;
 
 static func load_gamedata() -> SaveGameData:
-	Logger.write("Loading SaveGameData.", "SaveLoader");
+	LoggerFile.write("Loading SaveGameData.", "SaveLoader");
 	var game_data:SaveGameData = load("user://SaveGameData.tres");
 
 	return game_data;
 
 static func save_gamedata(data_node) -> bool:
-	Logger.write("Saving SaveGameData.", "SaveLoader");
+	LoggerFile.write("Saving SaveGameData.", "SaveLoader");
 	var save_game_data:SaveGameData = SaveGameData.new();
 	
 	save_game_data.score = data_node.score;
